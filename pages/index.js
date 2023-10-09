@@ -1,32 +1,30 @@
-import React, { Fragment, useEffect } from "react";
-import Banner from "../components/layouts/Fashion/Components/Banner";
-import CollectionBanner from "../components/layouts/Fashion/Components/Collection-Banner";
+import React, { Fragment, useContext, useEffect } from "react";
 import TopCollection from "../components/common/Collections/Collection3";
-import Parallax from "../components/layouts/Fashion/Components/Parallax";
-import SpecialProducts from "../components/common/Collections/TabCollection1";
-import ServiceLayout from "../components/common/Service/service1";
 import Blog from "../components/common/Blog/blog1";
 import Instagram from "../components/common/instagram/instagram1";
-import LogoBlock from "../components/common/logo-block";
-import HeaderOne from "../components/headers/header-one";
-import { Product4, Product5 } from "../services/script";
-import Paragraph from "../components/common/Paragraph";
+import { Product5 } from "../services/script";
 import ModalComponent from "../components/common/Modal";
-import Head from 'next/head'
-import { useRouter } from "next/router";
+import Head from 'next/head';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { useTranslation } from 'next-i18next';
-
 import MasterFooter from "../components/footers/common/MasterFooter";
 import MainBanner from "./layouts/Beauty/components/MainBanner";
 import AboutSection from "./layouts/Beauty/components/About-Section";
 import VideoSection from "@/components/layouts/Beauty/components/Video-Section";
 import ThemeSettings from "@/components/customizer/theme-settings";
+import { useRouter } from "next/router";
 
 const Fashion = () => {
+  const { locale } = useRouter();
+
   useEffect(() => {
     document.documentElement.style.setProperty("--theme-deafult", "#f0b54d");
-
+    if (locale == 'ar-KW') {
+      document.documentElement.dir = 'rtl';
+      document.body.classList.add("rtl");
+    }else{
+      document.documentElement.dir = 'ltr';
+      document.body.classList.remove("rtl");
+    }
     return () => {
       document.documentElement.style.removeProperty("--theme-deafult");
     };
