@@ -3,9 +3,10 @@ import { useQuery } from "@apollo/client";
 import { gql } from "@apollo/client";
 import { Media } from "reactstrap";
 import language from "../../constant/langConfig.json";
-// import i18next from "../../constant/i18n";
+import { useTranslation } from 'next-i18next';
 import { CurrencyContext } from "../../../helpers/Currency/CurrencyContext";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 const GET_CURRENCY = gql`
   query {
@@ -18,13 +19,13 @@ const GET_CURRENCY = gql`
   }
 `;
 
-const Currency = ({ icon ,locale}) => {
+const Currency = ({ icon }) => {
   var { data } = useQuery(GET_CURRENCY);
   const Context = useContext(CurrencyContext);
   const selectedCurrency = Context.currencyContext.selectedCurrency;
-
+  const { t } = useTranslation();
   console.log("data", data);
-
+  const { locale, locales } = useRouter();
 
   return (
     <li className="onhover-div mobile-setting">
@@ -35,10 +36,10 @@ const Currency = ({ icon ,locale}) => {
       <div className="show-div setting">
         <h6>language</h6>
         <ul>
-          {language.map((item, i) => (
+          {locales.map((l, i) => (
             <li key={i}>
-              <Link href='' locale={item.val}>
-                {item.lang}
+              <Link href='' locale={l}>
+                {t(l.toLowerCase().replace('-',''))}
               </Link>
             </li>
           ))}
@@ -58,18 +59,5 @@ const Currency = ({ icon ,locale}) => {
     </li>
   );
 };
-export async function getStaticProps({locale}) {
-  // Call an external API endpoint to get posts.
-  // You can use any data fetching library
-  
- 
-  // By returning { props: { posts } }, the Blog component
-  // will receive `posts` as a prop at build time
-  return {
-    props: {
-      locale,
-    },
-  }
-}
 
 export default Currency;

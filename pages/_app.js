@@ -10,13 +10,14 @@ import FilterProvider from "../helpers/filter/FilterProvider";
 import SettingProvider from "../helpers/theme-setting/SettingProvider";
 import { CompareContextProvider } from "../helpers/Compare/CompareContext";
 import { CurrencyContextProvider } from "../helpers/Currency/CurrencyContext";
+import { appWithTranslation } from 'next-i18next'
 // import Helmet from "react-helmet";
 
 import { ApolloProvider } from "@apollo/client";
 import { useApollo } from "../helpers/apollo";
 import Head from "next/head";
 
-export default function MyApp({ Component, pageProps }) {
+function MyApp({ Component, pageProps }) {
   const [isLoading, setIsLoading] = useState(true);
   const [url, setUrl] = useState();
   const apolloClient = useApollo(pageProps);
@@ -69,3 +70,5 @@ export default function MyApp({ Component, pageProps }) {
     </>
   );
 }
+
+export default appWithTranslation(MyApp)

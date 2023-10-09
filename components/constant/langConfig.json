@@ -1,5 +1,5 @@
 [
     { "lang": "English", "val":"en-US", "dir" : "ltr"},
     { "lang": "Arabic", "val":"ar-KW", "dir" : "rtl"},
-    { "lang": "Franch", "val":"tr-TR", "dir" : "ltr"}
+    { "lang": "Turkish", "val":"tr-TR", "dir" : "ltr"}
 ]

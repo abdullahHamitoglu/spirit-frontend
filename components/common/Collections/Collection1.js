@@ -15,7 +15,7 @@ const GET_PRODUCTS = gql`
         products (type: $type,indexFrom:$indexFrom ,limit:$limit){
             items {
                 id
-                title
+                name
                 description 
                 type
                 brand
@@ -36,7 +36,7 @@ const GET_PRODUCTS = gql`
                     image_id
                     id
                     alt
-                    src
+                    url
                 }
             }
         }

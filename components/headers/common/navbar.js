@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { MENUITEMS } from "../../constant/menu";
 import { Container, Row } from "reactstrap";
-// import { useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { useRouter } from "next/router";
 
 const NavBar = () => {
@@ -149,14 +149,14 @@ const NavBar = () => {
                   {menuItem.type == "link" ? (
                     <Link href={menuItem.path} className="nav-link">
                       {/* <a > */}
-                      title {i}
-                      {/* {t(menuItem.title)} */}
+                      {/* title {i} */}
+                      {t(menuItem.title)}
                       {/* </a> */}
                     </Link>
                   ) : (
                     <a className="nav-link" onClick={(e) => openMblNav(e)}>
-                      {/* {t(menuItem.title)} */}
-                      title {i}
+                      {t(menuItem.title)}
+                      {/* title {i} */}
                       <span className="sub-arrow"></span>
                     </a>
                   )}

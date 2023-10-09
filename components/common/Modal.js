@@ -38,9 +38,9 @@ const ModalComponent = () => {
                 </Button>
                 <div className="offer-content">
                   <Image
-                    src="/assets/images/banner2.jpg"
+                    src="/assets/images/offer-banner.png"
                     width={680}
-                    height={300}
+                    height={120}
                     objectFit={'cover'}
                      alt="Picture of the author" />
                   <h2>newsletter</h2>
