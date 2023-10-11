@@ -6,7 +6,9 @@ import Currency from "./currency";
 import CartContainer from "../../containers/CartContainer";
 import SearchOverlay from "./search-overlay";
 import Image from "next/image";
+import { useRouter } from "next/router";
 const IconTopbar = () => {
+  const router = useRouter()
   const context = useContext(CartContext);
   const openNav = () => {
     var openmylside = document.getElementById("mySidenav");
@@ -22,7 +24,10 @@ const IconTopbar = () => {
   const closeSearch = () => {
     document.getElementById("search-overlay").style.display = "none";
   };
-
+const handelLogOut = () => {
+    sessionStorage.removeItem('token');
+    router.reload()
+  }
   const cartList = context.state;
   const total = context.cartTotal;
   const symbol = "$";
@@ -83,7 +88,7 @@ const IconTopbar = () => {
                         </Link>
                       </li>
                       <li>
-                        <Link href="/" data-lng="es">
+                        <Link  onClick={()=>handelLogOut()} data-lng="es">
                           Logout
                         </Link>
                       </li>

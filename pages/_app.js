@@ -9,6 +9,7 @@ import { WishlistContextProvider } from "../helpers/wishlist/WishlistContext";
 import FilterProvider from "../helpers/filter/FilterProvider";
 import SettingProvider from "../helpers/theme-setting/SettingProvider";
 import { CompareContextProvider } from "../helpers/Compare/CompareContext";
+import { UserProvider } from "../helpers/user/userContext";
 import { CurrencyContextProvider } from "../helpers/Currency/CurrencyContext";
 import { appWithTranslation } from 'next-i18next'
 // import Helmet from "react-helmet";
@@ -46,7 +47,7 @@ function MyApp({ Component, pageProps }) {
               <link rel="icon" type="image/x-icon" href='assets/images/favicon.png' />
               <title>Multikart - Multi-purpopse E-commerce React Template</title>
             </Head>
-            <div>
+            <UserProvider>
               <SettingProvider>
                 <CompareContextProvider>
                   <CurrencyContextProvider>
@@ -63,7 +64,7 @@ function MyApp({ Component, pageProps }) {
               </SettingProvider>
               <ToastContainer />
               <TapTop />
-            </div>
+            </UserProvider>
           </>
         )}
       </ApolloProvider>

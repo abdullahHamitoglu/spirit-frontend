@@ -2,13 +2,17 @@ import React from "react";
 import { Container, Row, Col } from "reactstrap";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useUser } from "@/helpers/user/userContext";
 
 const TopBarDark = ({ topClass, fluid }) => {
+  const { state, dispatch } = useUser();
+
   const router = useRouter();
   const Logout = () => {
-    localStorage.setItem("user", false);
-    router.push("/page/account/login-auth");
+    dispatch({ type: 'LOGOUT' });
+    router.reload()
   };
+
   return (
     <div className={topClass}>
       <Container fluid={fluid}>
@@ -38,19 +42,14 @@ const TopBarDark = ({ topClass, fluid }) => {
                 <ul className="onhover-show-div">
                   <li>
                     <Link href={`/page/account/login`}>
-                      {/* <a> */}
                       Login
-                      {/* </a> */}
                     </Link>
                   </li>
                   <li>
                     <Link href={`/page/account/register`}>
-                      {/* <a> */}
                       Register
-                      {/* </a> */}
                     </Link>
-                  </li>
-                  <li onClick={() => Logout()}>
+                  </li><li onClick={() => Logout()}>
                     <a>Logout</a>
                   </li>
                 </ul>

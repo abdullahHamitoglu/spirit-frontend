@@ -21,7 +21,7 @@ const Fashion = () => {
     if (locale == 'ar-KW') {
       document.documentElement.dir = 'rtl';
       document.body.classList.add("rtl");
-    }else{
+    } else {
       document.documentElement.dir = 'ltr';
       document.body.classList.remove("rtl");
     }

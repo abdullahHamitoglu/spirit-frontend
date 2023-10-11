@@ -321,20 +321,6 @@ hr.style1 {
 .bg_cls {
   background-color: #fafafa;
 }
-.Toastify__toast {
-  min-height: 36px;
-  .Toastify__toast-body {
-    div {
-      color: $white;
-    }
-  }
-  .Toastify__close-button--light {
-    opacity: 0.7;
-    svg {
-      color: $white;
-    }
-  }
-}
 .input-range__track--active {
   background: var(--theme-deafult) !important;
 }

@@ -7,8 +7,12 @@ import Currency from "./common/currency";
 import CartContainer from "../containers/CartContainer";
 import SearchOverlay from "./common/search-overlay";
 import Image from "next/image";
+import { useRouter } from "next/router";
 
 const HeaderSeven = ({ logoName }) => {
+  const { state, dispatch } = useUser();
+
+  const router = useRouter()
   useEffect(() => {
     setTimeout(function () {
       document.querySelectorAll(".loader-wrapper").style = "display:none";
@@ -17,8 +21,12 @@ const HeaderSeven = ({ logoName }) => {
 
   const openSearch = () => {
     document.getElementById("search-overlay").style.display = "block";
+    router.reload()
   };
-
+  const handelLogOut = () => {
+    dispatch({ type: 'LOGOUT' });
+    router.reload()
+  }
   return (
     <>
       <header className="header-5">
@@ -52,13 +60,11 @@ const HeaderSeven = ({ logoName }) => {
                         <ul className="onhover-show-div">
                           <li>
                             <Link href="/page/account/login" data-lng="en">
-                              {/* <a > */}
                               Login
-                              {/* </a> */}
                             </Link>
                           </li>
                           <li>
-                            <Link href="/" data-lng="en">
+                            <Link onClick={() => handelLogOut()} data-lng="en">
                               {/* <a > */}
                               Logout
                               {/* </a> */}

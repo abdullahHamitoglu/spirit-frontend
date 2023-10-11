@@ -8,7 +8,7 @@ const nextConfig = {
   reactStrictMode: true,
   env: {
     // API_URL: "https://multikart-graphql-reactpixelstrap.vercel.app/server.js",
-    API_URL: "http://127.0.0.1:8000/graphql",
+    API_URL: "http://96.30.193.192/",
   },
   images: {
     formats: ['image/webp' , 'image/avif'],

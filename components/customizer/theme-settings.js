@@ -516,8 +516,6 @@ const ThemeSettings = () => {
           </p>
         </ModalFooter>
       </Modal>
-
-      <ToastContainer />
     </div>
   );
 };

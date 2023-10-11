@@ -32,7 +32,6 @@ const GET_PRODUCTS = gql`
       priceMax: $priceMax
       priceMin: $priceMin
     ) {
-      
       data {
         id
         name
