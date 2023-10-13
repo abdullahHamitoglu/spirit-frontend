@@ -5,29 +5,35 @@ import { Formik, Field } from "formik";
 import { useTranslation } from "react-i18next";
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/router';
-import axios from 'axios';
+import { getUserAgent } from '../../../helpers/user/getUserAgent';
 import { useUser } from '../../../helpers/user/userContext';
 const Login = () => {
-  const { state, dispatch } = useUser();
-  const { locale, locales } = useRouter();
+  const osDetails = getUserAgent();
+  const { state, login } = useUser();
+  const { locale } = useRouter();
   const { t } = useTranslation();
-  var userAgent = window.navigator.userAgent;
   const router = useRouter();
-  console.log(state)
-  const [deviceName, setDeviceName] = useState();
-  useEffect(() => {
-    const userAgent = window.navigator.userAgent;
-    if (userAgent.indexOf('Windows') !== -1) {
-      setDeviceName('Windows.');
-    } else if (userAgent.indexOf('Mac OS') !== -1) {
-      setDeviceName('macOS.');
-    } else if (userAgent.indexOf('Linux') !== -1) {
-      setDeviceName('Linux.');
-    } else if (userAgent.indexOf('Android')) {
-      setDeviceName('Android.');
-    }
-  }, [deviceName]);
-  if(state.isAuthenticated){
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+    device_name: '',
+    locale: ''
+  });
+  
+  const handleLogin = () => {
+    login(formData)
+  }
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+      device_name : osDetails.name
+    });
+  };
+
+  if (state.isAuthenticated) {
     router.push('/')
   }
   return (
@@ -45,64 +51,22 @@ const Login = () => {
                     device_name: ''
                   }}
                   onSubmit={(values, { setSubmitting }) => {
-                    axios({
-                      method: 'post',
-                      url: process.env.API_URL + `api/v1/customer/login?locale=${locale.slice(0, 2)}`,
-                      data: {
-                        email: values.email,
-                        password: values.password,
-                        device_name: deviceName
-                      },
-                    }).then(res => {
-                      if (res.status == 200) {
-                        toast.success(res.data.message)
-                        // sessionStorage.setItem('token', res.data.token)
-                        // if (res.data.token) {
-                        //   router.push('/')
-                        // }
-                        dispatch({ type: 'LOGIN', user: res.data });
-                      } else {
-                        toast.success(res.data.message)
-                      }
-                    }).catch(function (error, errors) {
-                      if (error.response) {
-                        toast.error(error.response.data.message);
-                        console.log(error.response.data);
-                        console.log(error.response.status);
-                        console.log(error.response.headers);
-                      } else if (error.request) {
-                        // The request was made but no response was received
-                        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-                        // http.ClientRequest in node.js
-                        console.log(error.request);
-                      } else {
-                        // Something happened in setting up the request that triggered an Error
-                        console.log('Error', error.message);
-                      }
-                      console.log(errors);
-                    });
+                    handleLogin(values);
                     setSubmitting(false);
                   }} >
                   {({
-                    values,
-                    errors,
-                    touched,
-                    handleChange,
-                    handleBlur,
                     handleSubmit,
-                    isSubmitting,
                     /* and other goodies */
                   }) => (
                     <Form className="theme-form" onSubmit={handleSubmit}>
                       <Row>
                         <Col md="12">
                           <Label className="form-label" for="email">{t('email')}</Label>
-                          <Field type="email" className="form-control" id="email" name="email" placeholder={t('email')} required="" />
-                          <Field type="text" className="form-control d-none" id="device_name" value={deviceName} name="device_name" required="" />
+                          <Field type="email" className="form-control" id="email" name="email" placeholder={t('email')} required="" onChange={handleChange} value={formData.email} />
                         </Col>
                         <Col md="12">
                           <Label className="form-label" for="password">{t('password')}</Label>
-                          <Field type="password" className="form-control" id="password" name="password"
+                          <Field type="password" className="form-control" id="password" name="password" onChange={handleChange} value={formData.email}
                             placeholder={t('enter_your_password')} required="" />
                         </Col>
                         <Col md="12">
@@ -130,5 +94,15 @@ const Login = () => {
     </CommonLayout>
   );
 };
+export async function getStaticProps(context) {
+  // extract the locale identifier from the URL
+  const { locale } = context
 
+  return {
+    props: {
+      // pass the translation props to the page component
+      ...(await serverSideTranslations(locale)),
+    },
+  }
+}
 export default Login;

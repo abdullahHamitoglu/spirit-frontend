@@ -11,18 +11,33 @@ import SettingProvider from "../helpers/theme-setting/SettingProvider";
 import { CompareContextProvider } from "../helpers/Compare/CompareContext";
 import { UserProvider } from "../helpers/user/userContext";
 import { CurrencyContextProvider } from "../helpers/Currency/CurrencyContext";
-import { appWithTranslation } from 'next-i18next'
+import { appWithTranslation } from 'next-i18next';
+
 // import Helmet from "react-helmet";
 
 import { ApolloProvider } from "@apollo/client";
 import { useApollo } from "../helpers/apollo";
 import Head from "next/head";
+import { useRouter } from "next/router";
 
 function MyApp({ Component, pageProps }) {
   const [isLoading, setIsLoading] = useState(true);
   const [url, setUrl] = useState();
   const apolloClient = useApollo(pageProps);
-
+  const { locale } = useRouter();
+  useEffect(() => {
+    document.documentElement.style.setProperty("--theme-deafult", "#ff4c3b");
+    if (locale == 'ar-KW') {
+      document.documentElement.dir = 'rtl';
+      document.body.classList.add("rtl");
+    } else {
+      document.documentElement.dir = 'ltr';
+      document.body.classList.remove("rtl");
+    }
+    return () => {
+      document.documentElement.style.removeProperty("--theme-deafult");
+    };
+  });
   useEffect(() => {
     const path = window.location.pathname.split("/");
     const url = path[path.length - 1];
@@ -47,24 +62,24 @@ function MyApp({ Component, pageProps }) {
               <link rel="icon" type="image/x-icon" href='assets/images/favicon.png' />
               <title>Multikart - Multi-purpopse E-commerce React Template</title>
             </Head>
-            <UserProvider>
-              <SettingProvider>
-                <CompareContextProvider>
-                  <CurrencyContextProvider>
-                    <CartContextProvider>
-                      <WishlistContextProvider>
-                        <FilterProvider>
+            <SettingProvider>
+              <CompareContextProvider>
+                <CurrencyContextProvider>
+                  <CartContextProvider>
+                    <WishlistContextProvider>
+                      <FilterProvider>
+                        <UserProvider>
                           <Component {...pageProps} />
-                        </FilterProvider>
-                      </WishlistContextProvider>
-                    </CartContextProvider>
-                  </CurrencyContextProvider>
-                  <ThemeSettings />
-                </CompareContextProvider>
-              </SettingProvider>
-              <ToastContainer />
-              <TapTop />
-            </UserProvider>
+                        </UserProvider>
+                      </FilterProvider>
+                    </WishlistContextProvider>
+                  </CartContextProvider>
+                </CurrencyContextProvider>
+                <ThemeSettings />
+              </CompareContextProvider>
+            </SettingProvider>
+            <ToastContainer />
+            <TapTop />
           </>
         )}
       </ApolloProvider>

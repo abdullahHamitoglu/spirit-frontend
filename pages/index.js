@@ -14,21 +14,7 @@ import ThemeSettings from "@/components/customizer/theme-settings";
 import { useRouter } from "next/router";
 
 const Fashion = () => {
-  const { locale } = useRouter();
-
-  useEffect(() => {
-    document.documentElement.style.setProperty("--theme-deafult", "#f0b54d");
-    if (locale == 'ar-KW') {
-      document.documentElement.dir = 'rtl';
-      document.body.classList.add("rtl");
-    } else {
-      document.documentElement.dir = 'ltr';
-      document.body.classList.remove("rtl");
-    }
-    return () => {
-      document.documentElement.style.removeProperty("--theme-deafult");
-    };
-  });
+  
   return (
     <Fragment>
       <Head>

@@ -85,7 +85,7 @@ const LeftSidebarPage = ({ pathId }) => {
     slider2.current?.slickGoTo(img_id);
   };
 
-  console.log("data.product.images", data?.product?.images?.length);
+
 
   return (
     <section className="">

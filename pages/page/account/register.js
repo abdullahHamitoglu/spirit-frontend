@@ -2,19 +2,42 @@ import React, { useEffect, useState } from 'react';
 import CommonLayout from '../../../components/shop/common-layout';
 
 import { useTranslation } from 'react-i18next';
-import {  Field, Formik } from 'formik';
+import { Field, Formik } from 'formik';
 import { Col, Container, Form, Input, Label, Row } from 'reactstrap';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/router';
 import axios from 'axios';
+import { useUser } from '@/helpers/user/userContext';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 
 const Register = () => {
     const { locale, locales } = useRouter();
-    const [user, setUser] = useState();
-
     const { t } = useTranslation();
+    const { register, state } = useUser();
+    const [formData, setFormData] = useState({
+        first_name: '',
+        last_name: '',
+        email: '',
+        password: '',
+        // Add other registration fields here
+    });
 
+    const handleRegistration = async () => {
+        await register(formData);
+    };
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({
+            ...formData,
+            [name]: value,
+        });
+    };
+    
+    if (state.isAuthenticated) {
+        router.push('/')
+    }
     return (
         <CommonLayout parent="home" title="register">
             <section className="register-page section-b-space">
@@ -29,43 +52,17 @@ const Register = () => {
                                         last_name: '',
                                         email: '',
                                         password: '',
+                                        password_confirmation: ''
                                     }}
                                     onSubmit={(values, { setSubmitting }) => {
-                                        axios({
-                                            method: 'post',
-                                            url: process.env.API_URL + `api/v1/customer/register?locale=${locale.slice(0, 2)}`,
-                                            data: values,
-                                        }).then(res => {
-                                            if (res.status == 200) {
-                                                toast.success(res.data.message)
-                                            } else {
-                                                toast.success(res.data.message)
-                                            }
-                                        }).catch(function (error, errors) {
-                                            if (error.response) {
-                                                toast.error(error.response.data.message);
-                                                console.log(error.response.data);
-                                                console.log(error.response.status);
-                                                console.log(error.response.headers);
-                                            } else if (error.request) {
-                                                // The request was made but no response was received
-                                                // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-                                                // http.ClientRequest in node.js
-                                                console.log(error.request);
-                                            } else {
-                                                // Something happened in setting up the request that triggered an Error
-                                                console.log('Error', error.message);
-                                            }
-                                            console.log(errors);
-                                        });
+                                        setFormData(values);
+                                        handleRegistration();
                                         setSubmitting(false);
                                     }} >
                                     {({
                                         values,
                                         errors,
                                         touched,
-                                        handleChange,
-                                        handleBlur,
                                         handleSubmit,
                                         isSubmitting,
                                         /* and other goodies */
@@ -74,32 +71,32 @@ const Register = () => {
                                             <Row>
                                                 <Col md="6">
                                                     <Label className="form-label" htmlFor="first_name">{t('first_name')}</Label>
-                                                    <Field type="text" className="form-control" id="first_name" name="first_name" placeholder={t('first_name')}
+                                                    <Field type="text" className="form-control" id="first_name" name="first_name" value={formData.first_name} onChange={handleChange} placeholder={t('first_name')}
                                                         required="" />
                                                 </Col>
                                                 <Col md="6">
                                                     <Label className="form-label" for="last_name">{t('last_name')}</Label>
-                                                    <Field type="text" className="form-control" id="last_name" name="last_name" placeholder={t('last_name')}
+                                                    <Field type="text" className="form-control" id="last_name" name="last_name" onChange={handleChange} value={formData.last_name} placeholder={t('last_name')}
                                                         required="" />
                                                 </Col>
                                             </Row>
                                             <Row>
                                                 <Col md="6">
                                                     <Label className="form-label" for="email">{t('email')}</Label>
-                                                    <Field type="email" className="form-control" id="email" name="email" placeholder={t('email')} required="" />
+                                                    <Field type="email" className="form-control" id="email" name="email" onChange={handleChange} value={formData.email} placeholder={t('email')} required="" />
                                                 </Col>
                                                 <Col md="6">
-                                                    <Label className="form-label" for="password">{t('password')}</Label>
-                                                    <Field type="password" className="form-control" id="password" name="password"
+                                                    <Label className="form-label" for="password" >{t('password')}</Label>
+                                                    <Field type="password" className="form-control" id="password" name="password" onChange={handleChange} value={formData.password}
                                                         placeholder={t('enter_your_password')} required="" />
                                                 </Col>
                                                 <Col md="6">
                                                     <Label className="form-label" for="password">{t('password')}</Label>
-                                                    <Field type="password" className="form-control" id="password_confirmation" name="password_confirmation"
-                                                        placeholder={t('password_confirmation')} required="" />
+                                                    <Field type="password" className="form-control" id="password_confirmation" onChange={handleChange} value={formData.password_confirmation} name="password_confirmation"
+                                                        placeholder={t('confirm_password')} required="" />
                                                 </Col>
                                                 <Col md="12">
-                                                    <button type="submit" className="btn btn-solid w-auto">{t('create_account')}</button>
+                                                    <button type="submit" className="btn btn-solid w-auto">{isSubmitting ? 'loading' : t('create_account')}</button>
                                                 </Col>
                                             </Row>
                                         </Form>
@@ -114,4 +111,15 @@ const Register = () => {
     )
 }
 
+export async function getStaticProps(context) {
+    // extract the locale identifier from the URL
+    const { locale } = context
+  
+    return {
+      props: {
+        // pass the translation props to the page component
+        ...(await serverSideTranslations(locale)),
+      },
+    }
+  }
 export default Register

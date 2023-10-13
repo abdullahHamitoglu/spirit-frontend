@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
 import Link from "next/link";
-import { ToastContainer } from "react-toastify";
 import {
   Media,
   Col,
@@ -25,9 +24,7 @@ const ThemeSettings = () => {
   const layoutState = context.layoutState;
   const [modal, setModal] = useState(false);
   const toggle = () => setModal(!modal);
-
-  console.log("rtl", layoutState);
-
+  
   /*=====================
      Tap on Top
      ==========================*/

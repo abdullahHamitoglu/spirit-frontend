@@ -45,7 +45,7 @@ const CheckoutPage = () => {
     setObj(obj);
   };
 
-  console.log("cartItems", cartItems);
+  
   return (
     <section className="section-b-space">
       <Container>
