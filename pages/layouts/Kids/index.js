@@ -11,7 +11,7 @@ import { Product5 } from "../../../services/script";
 import Paragraph from "../../../components/common/Paragraph";
 import ModalComponent from "../../../components/common/Modal";
 import Helmet from "react-helmet";
-import favicon from "assets/images/favicon/10.png";
+import favicon from "assets/images/favicon/1.png";
 import MasterParallaxBanner from "../Fashion/Components/MasterParallaxBanner";
 import MasterFooter from "../../../components/footers/common/MasterFooter";
 
@@ -23,7 +23,7 @@ const Kids = () => {
     <>
       <Helmet>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" type="image/x-icon" href={"/assets/images/favicon/10.png"} />
+        <link rel="icon" type="image/x-icon" href={"/assets/images/favicon/1.png"} />
       </Helmet>
       <ModalComponent />
       <HeaderOne logoName={"logo/6.png"} topClass="top-header" />

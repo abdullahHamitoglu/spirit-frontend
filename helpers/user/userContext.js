@@ -58,9 +58,6 @@ export function UserProvider({ children }) {
                 console.log(errors, error);
             });
             
-            // Dispatch an action to update the user context
-            
-            // You can also save the user data in a secure cookie or local storage for persistence
         } catch (error) {
             
             console.error('Registration failed:', error);
@@ -78,6 +75,7 @@ export function UserProvider({ children }) {
             if (res.data) {
                 toast.success(res.data.message)
                 dispatch({ type: 'LOGIN', user: res.data.user });
+                localStorage.setItem(res.data.user.token)
             }
             if(res.status == 200 ){
                 router.push('/page/account/login')

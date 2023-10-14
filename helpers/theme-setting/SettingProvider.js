@@ -3,7 +3,7 @@ import SettingContext from "./SettingContext";
 import config from "../../components/customizer/config.json";
 const SettingProvider = (props) => {
   const [layoutState, setLayoutState] = useState("RTL");
-  const [layoutColor, setLayoutColor] = useState("#ff4c3b");
+  const [layoutColor, setLayoutColor] = useState("#00c2b5");
   const layoutFun = (item) => {
     if (item === "RTL") {
       document.body.classList.remove("ltr");

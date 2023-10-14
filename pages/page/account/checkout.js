@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import CommonLayout from '../../../components/shop/common-layout';
 import CheckoutPage from './common/checkout-page';
 import Login from '../../page/account/login-auth'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 const Checkout = () => {
     const [currentUser, setCurrentUser] = useState(localStorage.getItem('user'));
@@ -19,6 +20,19 @@ const Checkout = () => {
             }
         </>
     )
+}
+
+
+export async function getStaticProps(context) {
+    // extract the locale identifier from the URL
+    const { locale } = context
+
+    return {
+        props: {
+            // pass the translation props to the page component
+            ...(await serverSideTranslations(locale)),
+        },
+    }
 }
 
 export default Checkout;

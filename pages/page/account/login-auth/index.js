@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import CommonLayout from '../../../../components/shop/common-layout';
 import { Container, Row, Form, Label, Input, Col } from 'reactstrap';
 import { useRouter } from 'next/router';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 const Login = () => {
 
@@ -73,6 +74,19 @@ const Login = () => {
             </section>
         </CommonLayout>
     )
+}
+
+
+export async function getStaticProps(context) {
+    // extract the locale identifier from the URL
+    const { locale } = context
+
+    return {
+        props: {
+            // pass the translation props to the page component
+            ...(await serverSideTranslations(locale)),
+        },
+    }
 }
 
 export default Login;

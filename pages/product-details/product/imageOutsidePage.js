@@ -11,7 +11,6 @@ import {
 } from "reactstrap";
 import Link from "next/link";
 import Slider from "react-slick";
-import sizeChart from "assets/images/size-chart.jpg";
 import { gql } from "@apollo/client";
 import { useQuery } from "@apollo/client";
 import { CurrencyContext } from "../../../helpers/Currency/CurrencyContext";
@@ -198,7 +197,7 @@ const OutsideImagePage = () => {
                               </ModalHeader>
                               <ModalBody>
                                 <Media
-                                  src={sizeChart.src}
+                                  src="assets/images/size-chart.jpg"
                                   alt="size"
                                   className="img-fluid"
                                 />

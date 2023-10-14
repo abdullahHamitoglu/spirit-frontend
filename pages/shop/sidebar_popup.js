@@ -1,8 +1,9 @@
-import React,{useState} from 'react';
+import React, { useState } from 'react';
 import CommonLayout from '../../components/shop/common-layout';
 // import { withApollo } from '../../helpers/apollo/apollo';
 import Popupsidebr from './common/Popupsidebr';
-import { Container, Row} from 'reactstrap';
+import { Container, Row } from 'reactstrap';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 const SidebarPopup = () => {
     return (
@@ -11,7 +12,7 @@ const SidebarPopup = () => {
                 <div className="collection-wrapper">
                     <Container>
                         <Row>
-                            <Popupsidebr colClass="col-xl-3 col-6 col-grid-box"/>
+                            <Popupsidebr colClass="col-xl-3 col-6 col-grid-box" />
                         </Row>
                     </Container>
                 </div>
@@ -19,5 +20,20 @@ const SidebarPopup = () => {
         </CommonLayout>
     )
 }
+
+
+
+export async function getStaticProps(context) {
+    // extract the locale identifier from the URL
+    const { locale } = context
+
+    return {
+        props: {
+            // pass the translation props to the page component
+            ...(await serverSideTranslations(locale)),
+        },
+    }
+}
+
 
 export default SidebarPopup;

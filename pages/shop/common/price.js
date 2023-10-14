@@ -3,6 +3,7 @@ import { Range, getTrackBackground } from "react-range";
 import FilterContext from "../../../helpers/filter/FilterContext";
 import { useRouter } from "next/router";
 import { Collapse } from "reactstrap";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 const Price = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -94,5 +95,17 @@ const Price = () => {
     </div>
   );
 };
+
+export async function getStaticProps(context) {
+  // extract the locale identifier from the URL
+  const { locale } = context
+
+  return {
+    props: {
+      // pass the translation props to the page component
+      ...(await serverSideTranslations(locale)),
+    },
+  }
+}
 
 export default Price;

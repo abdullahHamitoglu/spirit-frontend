@@ -3,6 +3,7 @@ import CommonLayout from "../../components/shop/common-layout";
 import { Slider4 } from "../../services/script";
 import { Container, Row, Col } from "reactstrap";
 import Slider from "react-slick";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 const CompareItemsData = [
   {
@@ -215,5 +216,18 @@ const CompareTwo = () => {
     </CommonLayout>
   );
 };
+
+
+export async function getStaticProps(context) {
+  // extract the locale identifier from the URL
+  const { locale } = context
+
+  return {
+    props: {
+      // pass the translation props to the page component
+      ...(await serverSideTranslations(locale)),
+    },
+  }
+}
 
 export default CompareTwo;

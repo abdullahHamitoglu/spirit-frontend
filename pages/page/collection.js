@@ -9,6 +9,7 @@ import seven from "assets/images/collection/7.jpg";
 import eight from "assets/images/collection/8.jpg";
 import nine from "assets/images/collection/9.jpg";
 import eleven from "assets/images/collection/11.jpg";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 const MasterCollectionData = [
   {
@@ -149,5 +150,18 @@ const Collection = () => {
     </CommonLayout>
   );
 };
+
+
+export async function getStaticProps(context) {
+  // extract the locale identifier from the URL
+  const { locale } = context
+
+  return {
+    props: {
+      // pass the translation props to the page component
+      ...(await serverSideTranslations(locale)),
+    },
+  }
+}
 
 export default Collection;

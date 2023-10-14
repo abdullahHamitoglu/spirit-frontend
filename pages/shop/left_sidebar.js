@@ -2,15 +2,16 @@ import React, { useState } from 'react';
 import CommonLayout from '../../components/shop/common-layout';
 // import { withApollo } from '../../helpers/apollo/apollo';
 import ProductList from './common/productList';
-import { Container, Row} from 'reactstrap';
+import { Container, Row } from 'reactstrap';
 import FilterPage from './common/filter';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 const LeftSidebar = () => {
 
-    const [sidebarView,setSidebarView] = useState(false)
-    
+    const [sidebarView, setSidebarView] = useState(false)
+
     const openCloseSidebar = () => {
-        if(sidebarView){
+        if (sidebarView) {
             setSidebarView(!sidebarView)
         } else {
             setSidebarView(!sidebarView)
@@ -23,7 +24,7 @@ const LeftSidebar = () => {
                     <Container>
                         <Row>
                             <FilterPage sm="3" sidebarView={sidebarView} closeSidebar={() => openCloseSidebar(sidebarView)} />
-                            <ProductList colClass="col-xl-3 col-6 col-grid-box" layoutList=''  openSidebar={() => openCloseSidebar(sidebarView)}/>
+                            <ProductList colClass="col-xl-3 col-6 col-grid-box" layoutList='' openSidebar={() => openCloseSidebar(sidebarView)} />
                         </Row>
                     </Container>
                 </div>
@@ -31,5 +32,19 @@ const LeftSidebar = () => {
         </CommonLayout>
     )
 }
+
+
+export async function getStaticProps(context) {
+    // extract the locale identifier from the URL
+    const { locale } = context
+
+    return {
+        props: {
+            // pass the translation props to the page component
+            ...(await serverSideTranslations(locale)),
+        },
+    }
+}
+
 
 export default LeftSidebar;

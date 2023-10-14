@@ -21,7 +21,7 @@ const getLocalCompareItems = () => {
 };
 
 export const Provider = (props) => {
-  const [compareItems, setcompareItems] = useState(getLocalCompareItems());
+  const [compareItems, setCompareItems] = useState(getLocalCompareItems());
 
   useEffect(() => {
     localStorage.setItem("compare", JSON.stringify(compareItems));
@@ -32,7 +32,7 @@ export const Provider = (props) => {
     const index = compareItems.findIndex((compare) => compare.id === item.id);
     if (index === -1) {
       toast.success("Product Added Successfully !");
-      setcompareItems([...compareItems, item]);
+      setCompareItems([...compareItems, item]);
     } else {
       toast.error("This Product Already Added !");
     }
@@ -40,7 +40,7 @@ export const Provider = (props) => {
 
   // Remove Product From compare
   const removeFromComapre = (item) => {
-    setcompareItems(compareItems.filter((e) => e.id !== item.id));
+    setCompareItems(compareItems.filter((e) => e.id !== item.id));
     toast.error("Product Removed Successfully !");
   };
 

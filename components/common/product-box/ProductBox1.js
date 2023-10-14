@@ -5,6 +5,7 @@ import { Row, Col, Media, Modal, ModalBody, ModalHeader } from "reactstrap";
 import CartContext from "../../../helpers/cart";
 import { CurrencyContext } from "../../../helpers/Currency/CurrencyContext";
 import MasterProductDetail from "./MasterProductDetail";
+import Image from "next/image";
 
 const ProductItem = ({ product, addCart, backImage, des, addWishlist, cartClass, productDetail, addCompare, title }) => {
   // eslint-disable-next-line
@@ -37,13 +38,7 @@ const ProductItem = ({ product, addCart, backImage, des, addWishlist, cartClass,
     router.push(`/product-details/${product.id}` + "-" + `${titleProps}`);
   };
 
-  const variantChangeByColor = (imgId, product_images) => {
-    product_images.map((data) => {
-      if (data.image_id == imgId) {
-        setImage(data.src);
-      }
-    });
-  };
+
   return (
     <div className="product-box product-wrap">
       <div className="img-wrapper">
@@ -52,14 +47,19 @@ const ProductItem = ({ product, addCart, backImage, des, addWishlist, cartClass,
           {product.sale === true ? <span className="lable4">on sale</span> : ""}
         </div>
         <div className="front" onClick={clickProductDetail}>
-          <Media src={`${image ? image : product.images[0].src}`} className="img-fluid" alt="" />
+          <Image sizes="100vw" style={{
+            width: '100%',
+            height: 'auto',
+          }} width={500}
+            height={300} src='/assets/images/pro3/8.jpg' className="img-fluid" alt="" />
+          {/* <Media src={product.images[0].original_image_url} className="img-fluid" alt="" /> */}
         </div>
         {backImage ? (
           product.images[1] === "undefined" ? (
             "false"
           ) : (
             <div className="back" onClick={clickProductDetail}>
-              <Media src={`${image ? image : product.images[1].src}`} className="img-fluid m-auto" alt="" />
+              <Image src={product.images[1].original_image_url} className="img-fluid m-auto" alt="" />
             </div>
           )
         ) : (
@@ -84,7 +84,10 @@ const ProductItem = ({ product, addCart, backImage, des, addWishlist, cartClass,
               <Row className="compare-modal">
                 <Col lg="12">
                   <div className="media">
-                    <Media src={`${product.variants && image ? image : product.images[0].src}`} alt="" className="img-fluid" />
+                    {product.images.length > 0 ?
+                      <Media src={product.images[0].original_image_url} alt="" className="img-fluid" />
+                      : ''
+                    }
                     <div className="media-body align-self-center text-center">
                       <h5>
                         <i className="fa fa-check"></i>Item <span>{product.title} </span>
@@ -109,7 +112,7 @@ const ProductItem = ({ product, addCart, backImage, des, addWishlist, cartClass,
             {product.images.map((img, i) => (
               <li className={`grid_thumb_img ${img.src === image ? "active" : ""}`} key={i}>
                 <a href={null} title="Add to Wishlist">
-                  <Media src={`${img.src}`} alt="wishlist" onClick={() => onClickHandle(img.src)} />
+                  <Media src='/assets/images/pro3/8.jpg' alt="wishlist" onClick={() => onClickHandle(img.src)} />
                 </a>
               </li>
             ))}
@@ -118,13 +121,16 @@ const ProductItem = ({ product, addCart, backImage, des, addWishlist, cartClass,
           ""
         )}
       </div>
-      <MasterProductDetail product={product} productDetail={productDetail} currency={currency} uniqueTags={uniqueTags} title={title} des={des} variantChangeByColor={variantChangeByColor} />
+      <MasterProductDetail product={product} productDetail={productDetail} currency={currency} uniqueTags={uniqueTags} title={title} des={des} />
       <Modal isOpen={modal} toggle={toggle} className="modal-lg quickview-modal" centered>
         <ModalBody>
           <Row>
             <Col lg="6" xs="12">
               <div className="quick-view-img">
-                <Media src={`${product.variants && image ? image : product.images[0].src}`} alt="" className="img-fluid" />
+                {product.images.length > 0 ?
+                  <Media src={product.images[0].original_image_url} alt="" className="img-fluid" />
+                  : ''
+                }
               </div>
             </Col>
             <Col lg="6" className="rtl-text">
@@ -132,33 +138,11 @@ const ProductItem = ({ product, addCart, backImage, des, addWishlist, cartClass,
                 <button type="button" data-dismiss="modal" className="btn-close btn btn-secondary" aria-label="Close" onClick={toggle}></button>
                 <h2> {product.title} </h2>
                 <h3>
-                  {currency.symbol}
                   {(product.price * currency.value).toFixed(2)}
                 </h3>
-                {product.variants ? (
-                  <ul className="color-variant">
-                    {uniqueTags ? (
-                      <ul className="color-variant">
-                        {product.type === "jewellery" || product.type === "nursery" || product.type === "beauty" || product.type === "electronics" || product.type === "goggles" || product.type === "watch" || product.type === "pets" ? (
-                          ""
-                        ) : (
-                          <>
-                            {uniqueTags.map((vari, i) => {
-                              return <li className={vari.color} key={i} title={vari.color} onClick={() => variantChangeByColor(vari.image_id, product.images)}></li>;
-                            })}
-                          </>
-                        )}
-                      </ul>
-                    ) : (
-                      ""
-                    )}
-                  </ul>
-                ) : (
-                  ""
-                )}
                 <div className="border-product">
                   <h6 className="product-title">product details</h6>
-                  <p>{product.description}</p>
+                  <p>{product.short_description}</p>
                 </div>
                 <div className="product-description border-product">
                   {product.size ? (

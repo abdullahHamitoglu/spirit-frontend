@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react";
 import { Collapse } from "reactstrap";
 import FilterContext from "../../../helpers/filter/FilterContext";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 const Category = () => {
   const context = useContext(FilterContext);
@@ -141,5 +142,17 @@ const Category = () => {
     </>
   );
 };
+
+export async function getStaticProps(context) {
+  // extract the locale identifier from the URL
+  const { locale } = context
+
+  return {
+    props: {
+      // pass the translation props to the page component
+      ...(await serverSideTranslations(locale)),
+    },
+  }
+}
 
 export default Category;

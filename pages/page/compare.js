@@ -3,6 +3,7 @@ import CommonLayout from '../../components/shop/common-layout';
 import { Container, Row, Table, Media, Col } from 'reactstrap';
 import { CompareContext } from '../../helpers/Compare/CompareContext';
 import { CurrencyContext } from '../../helpers/Currency/CurrencyContext';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 const Compare = () => {
     const contextCompare = useContext(CompareContext);
@@ -23,7 +24,7 @@ const Compare = () => {
                                             <thead>
                                                 <tr className="th-compare">
                                                     <td>Action</td>
-                                                    {compareItem.map((item,i) =>
+                                                    {compareItem.map((item, i) =>
                                                         <th className="item-row" key={i}>
                                                             <button type="button" className="remove-compare" onClick={() => contextCompare.removeFromComapre(item)}>Remove</button>
                                                         </th>
@@ -48,7 +49,7 @@ const Compare = () => {
                                                             <form className="variants clearfix">
                                                                 <input type="hidden" />
                                                                 <button title="Add to Cart" className="add-to-cart btn btn-solid">Add to
-                                                        Cart</button>
+                                                                    Cart</button>
                                                             </form>
                                                             <p className="grid-link__title hidden">{item.title}</p>
                                                         </td>
@@ -65,9 +66,9 @@ const Compare = () => {
                                                 <tr>
                                                     <th className="product-name">Availability</th>
                                                     {compareItem.map((item, i) =>
-                                                    <td className="available-stock" key={i}>
-                                                        <p>{item.stock >= 0 ? 'Not Available' : 'Available'}</p>
-                                                    </td>
+                                                        <td className="available-stock" key={i}>
+                                                            <p>{item.stock >= 0 ? 'Not Available' : 'Available'}</p>
+                                                        </td>
                                                     )}
                                                 </tr>
                                             </tbody>
@@ -99,6 +100,19 @@ const Compare = () => {
             </section>
         </CommonLayout>
     )
+}
+
+
+export async function getStaticProps(context) {
+    // extract the locale identifier from the URL
+    const { locale } = context
+
+    return {
+        props: {
+            // pass the translation props to the page component
+            ...(await serverSideTranslations(locale)),
+        },
+    }
 }
 
 export default Compare

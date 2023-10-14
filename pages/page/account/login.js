@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 import { useRouter } from 'next/router';
 import { getUserAgent } from '../../../helpers/user/getUserAgent';
 import { useUser } from '../../../helpers/user/userContext';
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 const Login = () => {
   const osDetails = getUserAgent();
   const { state, login } = useUser();

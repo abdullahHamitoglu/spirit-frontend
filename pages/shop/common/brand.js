@@ -3,6 +3,7 @@ import { useQuery } from "@apollo/client";
 import { gql } from "@apollo/client";
 import { Collapse, Input } from "reactstrap";
 import FilterContext from "../../../helpers/filter/FilterContext";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 const GET_BRAND = gql`
   query getBrands($type: String) {
@@ -61,5 +62,17 @@ const Brand = () => {
     </div>
   );
 };
+
+export async function getStaticProps(context) {
+  // extract the locale identifier from the URL
+  const { locale } = context
+
+  return {
+    props: {
+      // pass the translation props to the page component
+      ...(await serverSideTranslations(locale)),
+    },
+  }
+}
 
 export default Brand;

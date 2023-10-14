@@ -4,6 +4,7 @@ import two from "assets/images/2.jpg";
 import avtar from "assets/images/avtar.jpg";
 import twenty from "assets/images/20.jpg";
 import { Container, Row, Col, Media } from "reactstrap";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 const ReviewContent = [
   {
@@ -114,5 +115,18 @@ const Review = () => {
     </CommonLayout>
   );
 };
+
+
+export async function getStaticProps(context) {
+  // extract the locale identifier from the URL
+  const { locale } = context
+
+  return {
+    props: {
+      // pass the translation props to the page component
+      ...(await serverSideTranslations(locale)),
+    },
+  }
+}
 
 export default Review;

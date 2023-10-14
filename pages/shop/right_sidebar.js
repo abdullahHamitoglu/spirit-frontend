@@ -4,6 +4,7 @@ import CommonLayout from "../../components/shop/common-layout";
 import { Container, Row } from "reactstrap";
 import ProductList from "./common/productList";
 import FilterPage from "./common/filter";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 const RightSidebar = () => {
   const [sidebarView, setSidebarView] = useState(false);
@@ -36,5 +37,18 @@ const RightSidebar = () => {
     </CommonLayout>
   );
 };
+
+
+export async function getStaticProps(context) {
+  // extract the locale identifier from the URL
+  const { locale } = context
+
+  return {
+    props: {
+      // pass the translation props to the page component
+      ...(await serverSideTranslations(locale)),
+    },
+  }
+}
 
 export default RightSidebar;

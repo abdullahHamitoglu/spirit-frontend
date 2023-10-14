@@ -10,7 +10,7 @@ import FilterProvider from "../helpers/filter/FilterProvider";
 import SettingProvider from "../helpers/theme-setting/SettingProvider";
 import { CompareContextProvider } from "../helpers/Compare/CompareContext";
 import { UserProvider } from "../helpers/user/userContext";
-import { CurrencyContextProvider } from "../helpers/Currency/CurrencyContext";
+import { CurrencyProvider } from "../helpers/Currency/CurrencyContext";
 import { appWithTranslation } from 'next-i18next';
 
 // import Helmet from "react-helmet";
@@ -26,7 +26,7 @@ function MyApp({ Component, pageProps }) {
   const apolloClient = useApollo(pageProps);
   const { locale } = useRouter();
   useEffect(() => {
-    document.documentElement.style.setProperty("--theme-deafult", "#ff4c3b");
+    document.documentElement.style.setProperty("--theme-deafult", "#00c2b5");
     if (locale == 'ar-KW') {
       document.documentElement.dir = 'rtl';
       document.body.classList.add("rtl");
@@ -64,7 +64,7 @@ function MyApp({ Component, pageProps }) {
             </Head>
             <SettingProvider>
               <CompareContextProvider>
-                <CurrencyContextProvider>
+                <CurrencyProvider>
                   <CartContextProvider>
                     <WishlistContextProvider>
                       <FilterProvider>
@@ -74,7 +74,7 @@ function MyApp({ Component, pageProps }) {
                       </FilterProvider>
                     </WishlistContextProvider>
                   </CartContextProvider>
-                </CurrencyContextProvider>
+                </CurrencyProvider>
                 <ThemeSettings />
               </CompareContextProvider>
             </SettingProvider>

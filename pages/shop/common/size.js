@@ -3,6 +3,7 @@ import { useQuery } from "@apollo/client";
 import { gql } from "@apollo/client";
 import { Collapse, Input } from "reactstrap";
 import FilterContext from "../../../helpers/filter/FilterContext";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 const GET_SIZE = gql`
   query getSize($type: String) {
@@ -37,10 +38,7 @@ const Size = () => {
               ? "loading"
               : data &&
                 data.getSize.size.map((size, index) => (
-                  <div key={index}
-                    className="form-check custom-checkbox collection-filter-checkbox"
-                    key={index}
-                  >
+                  <div key={index} className="form-check custom-checkbox collection-filter-checkbox">
                     <Input
                       checked={context.selectedSize.includes(size)}
                       onChange={() => {
@@ -62,5 +60,18 @@ const Size = () => {
     </div>
   );
 };
+
+
+export async function getStaticProps(context) {
+  // extract the locale identifier from the URL
+  const { locale } = context
+
+  return {
+    props: {
+      // pass the translation props to the page component
+      ...(await serverSideTranslations(locale)),
+    },
+  }
+}
 
 export default Size;

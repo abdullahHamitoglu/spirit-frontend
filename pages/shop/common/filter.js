@@ -6,6 +6,7 @@ import Brand from './brand'
 import Color from './color'
 import Size from './size'
 import Price from './price';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 const FilterPage = ({sm,sidebarView,closeSidebar}) => {
     return (
@@ -37,4 +38,16 @@ const FilterPage = ({sm,sidebarView,closeSidebar}) => {
     )
 }
 
+export async function getStaticProps(context) {
+    // extract the locale identifier from the URL
+    const { locale } = context
+  
+    return {
+      props: {
+        // pass the translation props to the page component
+        ...(await serverSideTranslations(locale)),
+      },
+    }
+  }
+  
 export default FilterPage;

@@ -46,7 +46,10 @@ const HeaderOne = ({
         document.getElementById("sticky").classList.remove("fixed");
       else document.getElementById("sticky").classList.add("fixed");
     }
-    else document.getElementById("sticky").classList.remove("fixed");
+    else {
+      document.getElementById("sticky").classList.contains('fixed') ??
+      document.getElementById("sticky").classList.remove("fixed");
+    }
   };
 
   const openNav = () => {
@@ -98,7 +101,7 @@ const HeaderOne = ({
                 </div>
                 <div className="menu-right pull-right">
                   {/*Top Navigation Bar Component*/}
-                   <NavBar />
+                  <NavBar />
 
                   <div>
                     <div className="icon-nav">
@@ -123,7 +126,7 @@ const HeaderOne = ({
                           // <></>
                           <CartContainer layout={direction} icon="/assets/images/icon/cart.png" />
                         ) : (
-                          
+
                           <Cart layout={direction} icon="/assets/images/icon/cart.png" />
                         )}
                       </ul>

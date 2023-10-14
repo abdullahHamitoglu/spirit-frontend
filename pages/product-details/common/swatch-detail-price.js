@@ -1,6 +1,5 @@
 import React, { useState, useContext } from "react";
 import Link from "next/link";
-import sizeChart from "assets/images/size-chart.jpg";
 import { Modal, ModalBody, ModalHeader, Media, Input } from "reactstrap";
 import CountdownComponent from "../../../components/common/widgets/countdownComponent";
 import { CurrencyContext } from "../../../helpers/Currency/CurrencyContext";
@@ -113,7 +112,7 @@ const SwatchDetailsWithPrice = (params) => {
               <Modal isOpen={modal} toggle={toggle} centered>
                 <ModalHeader toggle={toggle}>Sheer Straight Kurta</ModalHeader>
                 <ModalBody>
-                  <Media src={sizeChart.src} alt="size" className="img-fluid" />
+                  <Media src="assets/images/size-chart.jpg"alt="size" className="img-fluid" />
                 </ModalBody>
               </Modal>
               <div className="size-box">

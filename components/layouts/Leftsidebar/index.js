@@ -12,7 +12,7 @@ import MasterFooter from "../../../components/footers/common/MasterFooter";
 
 const Leftsidebar = () => {
   useEffect(() => {
-    document.documentElement.style.setProperty("--theme-deafult", "#ff4c3b");
+    document.documentElement.style.setProperty("--theme-deafult", "#00c2b5");
   });
   return (
     <Fragment>

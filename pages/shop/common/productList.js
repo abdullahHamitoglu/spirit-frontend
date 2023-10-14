@@ -1,7 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Col, Row, Media, Button, Spinner } from "reactstrap";
-import { useQuery } from "@apollo/client";
-import { gql } from "@apollo/client";
 import FilterContext from "../../../helpers/filter/FilterContext";
 import ProductItem from "../../../components/common/product-box/ProductBox1";
 import { CurrencyContext } from "../../../helpers/Currency/CurrencyContext";
@@ -10,56 +8,8 @@ import PostLoader from "../../../components/common/PostLoader";
 import CartContext from "../../../helpers/cart";
 import { WishlistContext } from "../../../helpers/wishlist/WishlistContext";
 import { CompareContext } from "../../../helpers/Compare/CompareContext";
-
-const GET_PRODUCTS = gql`
-  query products(
-    $type: _CategoryType!
-    $indexFrom: Int!
-    $limit: Int!
-    $color: String!
-    $brand: [String!]!
-    $sortBy: _SortBy!
-    $priceMax: Int!
-    $priceMin: Int!
-  ) {
-    products(
-      type: $type
-      indexFrom: $indexFrom
-      limit: $limit
-      color: $color
-      brand: $brand
-      sortBy: $sortBy
-      priceMax: $priceMax
-      priceMin: $priceMin
-    ) {
-      data {
-        id
-        name
-        description
-        type
-        category
-        price
-        new
-        sale
-        stock
-        discount
-        variants {
-          id
-          sku
-          size
-          color
-          image_id
-        }
-        images {
-          image_id
-          id
-          alt
-          src
-        }
-      }
-    }
-  }
-`;
+import axios from "axios";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 const ProductList = ({ colClass, layoutList, openSidebar, noSidebar }) => {
   const cartContext = useContext(CartContext);
@@ -68,9 +18,9 @@ const ProductList = ({ colClass, layoutList, openSidebar, noSidebar }) => {
   const compareContext = useContext(CompareContext);
   const router = useRouter();
   const [limit, setLimit] = useState(8);
-  const curContext = useContext(CurrencyContext);
+  const { state, setCurrency } = useContext(CurrencyContext);
+  const { selectedCurrency, currencies } = state;
   const [grid, setGrid] = useState(colClass);
-  const symbol = curContext.state.symbol;
   const filterContext = useContext(FilterContext);
   const selectedBrands = filterContext.selectedBrands;
   const selectedColor = filterContext.selectedColor;
@@ -81,72 +31,58 @@ const ProductList = ({ colClass, layoutList, openSidebar, noSidebar }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [layout, setLayout] = useState(layoutList);
   const [url, setUrl] = useState();
-
+  const [products, setProducts] = useState([]); // Store the product data
+  const {locale } = useRouter();
   useEffect(() => {
     const pathname = window.location.pathname;
     setUrl(pathname);
     router.push(
-      `${pathname}?${filterContext.state}&brand=${selectedBrands}&color=${selectedColor}&size=${selectedSize}&minPrice=${selectedPrice.min}&maxPrice=${selectedPrice.max}`, undefined, { shallow: true }
+      `${pathname}?${filterContext.state}&brand=${selectedBrands}&color=${selectedColor}&size=${selectedSize}&minPrice=${selectedPrice.min}&maxPrice=${selectedPrice.max}`,
+      undefined,
+      { shallow: true }
     );
   }, [selectedBrands, selectedColor, selectedSize, selectedPrice]);
 
-  var { loading, data, fetchMore } = useQuery(GET_PRODUCTS, {
-    variables: {
-      type: selectedCategory,
-      priceMax: selectedPrice.max,
-      priceMin: selectedPrice.min,
-      color: selectedColor,
-      brand: selectedBrands,
-      sortBy: sortBy,
-      indexFrom: 0,
-      limit: limit,
-    },
-  });
+  const fetchProducts = async () => {
+    try {
+      // Replace with your REST API endpoint for fetching products
+      const response = await axios.get(
+        `${process.env.API_URL}api/v1/products?locale=${locale}&currency=${selectedCurrency}&page=1`
+      );
+      console.log(response.data);
+      setProducts(response.data.data); // Update the product data
+    } catch (error) {
+      console.error("Failed to fetch products:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchProducts();
+  }, [selectedCategory, selectedPrice, selectedColor, selectedBrands, sortBy, limit]);
 
   const handlePagination = () => {
     setIsLoading(true);
-    setTimeout(
-      () =>
-        fetchMore({
-          variables: {
-            indexFrom: data.products.items.length,
-          },
-          updateQuery: (prev, { fetchMoreResult }) => {
-            if (!fetchMoreResult) return prev;
-            setIsLoading(false);
-            return {
-              products: {
-                __typename: prev.products.__typename,
-                total: prev.products.total,
-                items: [
-                  ...prev.products.items,
-                  ...fetchMoreResult.products.items,
-                ],
-                hasMore: fetchMoreResult.products.hasMore,
-              },
-            };
-          },
-        }),
-      1000
-    );
+    setTimeout(() => {
+      // Make another API request to fetch more products and append to the existing list
+      const newIndexFrom = products.length;
+      axios
+        .get(
+          `${process.env.API_URL}api/v1/products?type=${selectedCategory}&page=1&priceMin=${selectedPrice.min}&priceMax=${selectedPrice.max}&color=${selectedColor}&brand=${selectedBrands}&sortBy=${sortBy}&page=${newIndexFrom}&limit=${limit}`
+        )
+        .then((response) => {
+          // setProducts((prevProducts) => [...prevProducts, ...response.data.data]);
+          setProducts(response);
+          setIsLoading(false);
+        })
+        .catch((error) => {
+          console.error("Failed to fetch more products:", error);
+          setIsLoading(false);
+        });
+    }, 1000);
   };
 
-  const removeBrand = (val) => {
-    const temp = [...selectedBrands];
-    temp.splice(selectedBrands.indexOf(val), 1);
-    filterContext.setSelectedBrands(temp);
-  };
-
-  const removeSize = (val) => {
-    const temp = [...selectedSize];
-    temp.splice(selectedSize.indexOf(val), 1);
-    filterContext.setSelectedSize(temp);
-  };
-
-  const removeColor = () => {
-    filterContext.setSelectedColor("");
-  };
-
+  // ... rest of your component
+  console.log(products);
   return (
     <Col className="collection-content">
       <div className="page-main-content">
@@ -249,8 +185,8 @@ const ProductList = ({ colClass, layoutList, openSidebar, noSidebar }) => {
                     <div className="product-filter-content">
                       <div className="search-count">
                         <h5>
-                          {data
-                            ? `Showing Products 1-${data.products.items.length}`
+                          {products
+                            ? `Showing Products 1-${products.length}`
                             : "loading"}{" "}
                           Result
                         </h5>
@@ -346,15 +282,12 @@ const ProductList = ({ colClass, layoutList, openSidebar, noSidebar }) => {
               <div className={`product-wrapper-grid ${layout}`}>
                 <Row>
                   {/* Product Box */}
-                  {!data ||
-                    !data.products ||
-                    !data.products.items ||
-                    data.products.items.length === 0 ||
-                    loading ? (
-                    data &&
-                      data.products &&
-                      data.products.items &&
-                      data.products.items.length === 0 ? (
+                  {!products ||
+                    !products ||
+                    products.length === 0 ||
+                    isLoading ? (
+                      products &&
+                      products.length === 0 ? (
                       <Col xs="12">
                         <div>
                           <div className="col-sm-12 empty-cart-cls text-center">
@@ -387,15 +320,14 @@ const ProductList = ({ colClass, layoutList, openSidebar, noSidebar }) => {
                       </div>
                     )
                   ) : (
-                    data &&
-                    data.products.items.map((product, i) => (
+                    products &&
+                    products.map((product, i) => (
                       <div className={grid} key={i}>
                         <div className="product">
                           <div>
                             <ProductItem
                               des={true}
                               product={product}
-                              symbol={symbol}
                               cartClass="cart-info cart-wrap"
                               addCompare={() =>
                                 compareContext.addToCompare(product)
@@ -418,7 +350,7 @@ const ProductList = ({ colClass, layoutList, openSidebar, noSidebar }) => {
                 <div className="text-center">
                   <Row>
                     <Col xl="12" md="12" sm="12">
-                      {data && data.products && (
+                      {products && products && (
                         <Button className="load-more" onClick={() => handlePagination()}>
                           {isLoading && (
                             <Spinner animation="border" variant="light" />
@@ -437,5 +369,19 @@ const ProductList = ({ colClass, layoutList, openSidebar, noSidebar }) => {
     </Col>
   );
 };
+
+
+export async function getStaticProps(context) {
+  // extract the locale identifier from the URL
+  const { locale } = context
+
+  return {
+    props: {
+      // pass the translation props to the page component
+      ...(await serverSideTranslations(locale)),
+    },
+  }
+}
+
 
 export default ProductList;

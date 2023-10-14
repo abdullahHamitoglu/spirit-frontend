@@ -4,7 +4,7 @@ import FooterNine from '../../../../components/footers/Footer-nine';
 
 const Video = () => {
     useEffect(() => {
-        document.documentElement.style.setProperty('--theme-deafult', '#ff4c3b');
+        document.documentElement.style.setProperty('--theme-deafult', '#00c2b5');
     })
     return (
         <Fragment>

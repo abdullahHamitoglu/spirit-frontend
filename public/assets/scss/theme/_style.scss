@@ -2032,11 +2032,7 @@ header {
     }
   }
 }
-del {
-  .money {
-    margin-left: 5px;
-  }
-}
+
 .blog-details {
   text-align: center;
   padding-left: 15px;
@@ -3247,11 +3243,9 @@ del {
       font-weight: 700;
       margin-bottom: 0;
       transition: all 0.5s ease;
-      del {
-        .money {
-          margin-left: 5px;
-        }
-      }
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
     }
     .color-variant {
       padding-top: 15px;
@@ -7746,7 +7740,7 @@ footer {
     22.theme setting box CSS start
 ==========================*/
 .color1 {
-  background: #ff4c3b;
+  background: #00c2b5;
 }
 .color2 {
   background: #3fdda7;
@@ -9289,13 +9283,13 @@ footer {
           border-right: 1px solid #dddddd;
           i {
             font-size: 20px;
-            color: #ff4c3b;
+            color: #00c2b5;
           }
           h6 {
             text-transform: uppercase;
             padding-top: 5px;
             font-weight: 600;
-            color: #ff4c3b;
+            color: #00c2b5;
           }
         }
         p {
@@ -12100,7 +12094,7 @@ header {
     }
     &.active {
       img {
-        border: 1px solid #ff4c3b;
+        border: 1px solid #00c2b5;
       }
     }
   }
@@ -12113,7 +12107,7 @@ header {
 // .portfolio-section {
 //   .filter-button {
 //     &.active {
-//       background-color: #ff4c3b;
+//       background-color: #00c2b5;
 //       color: #ffffff;
 //     }
 //   }

@@ -1,3 +1,4 @@
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import React from 'react';
 import { Container, Row, Form, Input, Label, Col } from 'reactstrap';
 
@@ -91,6 +92,19 @@ const ProfilePage = () => {
             </section>
         </>
     )
+}
+
+
+export async function getStaticProps(context) {
+    // extract the locale identifier from the URL
+    const { locale } = context
+
+    return {
+        props: {
+            // pass the translation props to the page component
+            ...(await serverSideTranslations(locale)),
+        },
+    }
 }
 
 export default ProfilePage;

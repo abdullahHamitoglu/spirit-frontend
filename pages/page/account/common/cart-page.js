@@ -3,7 +3,6 @@ import Link from "next/link";
 import CartContext from "../../../../helpers/cart";
 import { Container, Row, Col, Media, Input } from "reactstrap";
 import { CurrencyContext } from "../../../../helpers/Currency/CurrencyContext";
-import cart from "../../../../public/assets/images/icon-empty-cart.png";
 
 const CartPage = () => {
   const context = useContext(CartContext);
@@ -71,16 +70,16 @@ const CartPage = () => {
                               <Media
                                 src={
                                   item.images
-                                    ? item.images[0].src
-                                    : item.images[0].src
+                                    ? item.images[0].url
+                                    : item.images[0].url
                                 }
-                                alt=""
+                                alt={item.name}
                               />
                             </Link>
                           </td>
                           <td>
                             <Link href={`/left-sidebar/product/` + item.id}>
-                              {item.title}
+                              {item.name}
                             </Link>
                             <div className="mobile-cart-content row">
                               <div className="col-xs-3">
@@ -105,8 +104,7 @@ const CartPage = () => {
                               <div className="col-xs-3">
                                 <h2 className="td-color">
                                   {symbol}
-                                  {item.price -
-                                    (item.price * item.discount) / 100}
+                                  {item.price}
                                 </h2>
                               </div>
                               <div className="col-xs-3">
@@ -123,7 +121,7 @@ const CartPage = () => {
                           <td>
                             <h2>
                               {symbol}
-                              {item.price - (item.price * item.discount) / 100}
+                              {item.formatted_price}
                             </h2>
                           </td>
                           <td>
@@ -197,7 +195,7 @@ const CartPage = () => {
                 <div>
                   <div className="col-sm-12 empty-cart-cls text-center">
                     <Media
-                      src={cart}
+                      src="/images/icon-empty-cart.png"
                       className="img-fluid mb-4 mx-auto"
                       alt=""
                     />

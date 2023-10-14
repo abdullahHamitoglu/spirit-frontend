@@ -12,6 +12,7 @@ import CartContext from "../../../helpers/cart";
 import { WishlistContext } from "../../../helpers/wishlist/WishlistContext";
 import { CompareContext } from "../../../helpers/Compare/CompareContext";
 import FilterPage from "./filter";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 const GET_PRODUCTS = gql`
   query products(
@@ -434,5 +435,19 @@ const Popupsidebar = ({ colClass, layoutList }) => {
     </Col>
   );
 };
+
+
+
+export async function getStaticProps(context) {
+  // extract the locale identifier from the URL
+  const { locale } = context
+
+  return {
+    props: {
+      // pass the translation props to the page component
+      ...(await serverSideTranslations(locale)),
+    },
+  }
+}
 
 export default Popupsidebar;

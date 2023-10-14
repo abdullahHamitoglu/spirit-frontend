@@ -4,6 +4,7 @@ import { Container, Row, Col, Media } from 'reactstrap';
 import one from '../../public/assets/images/pro3/1.jpg';
 import CartContext from '../../helpers/cart';
 import { CurrencyContext } from '../../helpers/Currency/CurrencyContext';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 const OrderSuccess = () => {
     const cartContext = useContext(CartContext);
@@ -110,4 +111,16 @@ const OrderSuccess = () => {
     )
 }
 
+export async function getStaticProps(context) {
+    // extract the locale identifier from the URL
+    const { locale } = context
+  
+    return {
+      props: {
+        // pass the translation props to the page component
+        ...(await serverSideTranslations(locale)),
+      },
+    }
+  }
+  
 export default OrderSuccess;

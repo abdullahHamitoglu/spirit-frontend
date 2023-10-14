@@ -8,6 +8,7 @@ import { PayPalScriptProvider, BraintreePayPalButtons, PayPalButtons } from "@pa
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import { CurrencyContext } from "../../../../helpers/Currency/CurrencyContext";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 const CheckoutPage = () => {
   const cartContext = useContext(CartContext);
@@ -45,7 +46,7 @@ const CheckoutPage = () => {
     setObj(obj);
   };
 
-  
+
   return (
     <section className="section-b-space">
       <Container>
@@ -272,5 +273,17 @@ const CheckoutPage = () => {
     </section>
   );
 };
+
+export async function getStaticProps(context) {
+  // extract the locale identifier from the URL
+  const { locale } = context
+
+  return {
+    props: {
+      // pass the translation props to the page component
+      ...(await serverSideTranslations(locale)),
+    },
+  }
+}
 
 export default CheckoutPage;

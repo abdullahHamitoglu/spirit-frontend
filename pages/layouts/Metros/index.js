@@ -8,7 +8,7 @@ import Blog from "../../../components/common/Blog/blog1";
 import Instagram from "../../../components/common/instagram/instagram1";
 import LogoBlock from "../../../components/common/logo-block";
 import Helmet from "react-helmet";
-import favicon from "assets/images/favicon/18.png";
+import favicon from "assets/images/favicon/1.png";
 import ModalComponent from "../../../components/common/Modal";
 import MasterFooter from "../../../components/footers/common/MasterFooter";
 
@@ -20,7 +20,7 @@ const Metros = () => {
     <Fragment>
       <Helmet>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" type="image/x-icon" href={"/assets/images/favicon/9.png"} />
+        <link rel="icon" type="image/x-icon" href={"/assets/images/favicon/1.png"} />
       </Helmet>
       <ModalComponent />
       <HeaderTen logoName={"logo/16.png"} headerClass="header-metro" />

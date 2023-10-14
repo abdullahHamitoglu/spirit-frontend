@@ -3,6 +3,7 @@ import { useQuery } from "@apollo/client";
 import { gql } from '@apollo/client';
 import { Collapse } from 'reactstrap';
 import FilterContext from '../../../helpers/filter/FilterContext';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 const GET_COLOR = gql`
     query getColors($type:String)  {
@@ -46,4 +47,16 @@ const Color = () => {
     )
 }
 
+export async function getStaticProps(context) {
+    // extract the locale identifier from the URL
+    const { locale } = context
+  
+    return {
+      props: {
+        // pass the translation props to the page component
+        ...(await serverSideTranslations(locale)),
+      },
+    }
+  }
+  
 export default Color;

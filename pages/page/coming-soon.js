@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 const ComingSoon = () => {
     return (
@@ -17,7 +18,7 @@ const ComingSoon = () => {
                                     </div>
                                     <h2 className="mb-3">
                                         Will be Opening Soon!
-                            </h2>
+                                    </h2>
                                 </div>
                                 <div className="row">
                                     <div className="col-sm-12">
@@ -42,9 +43,9 @@ const ComingSoon = () => {
                                 </div>
                                 <div id="footer" className="mt-4">
                                     <div id="owner">
-                                        Are you the store owner? <Link href={`/page/account/login`}>Log in here</Link> or 
+                                        Are you the store owner? <Link href={`/page/account/login`}>Log in here</Link> or
                                         <a href="#">change your password
-                                    settings</a>
+                                            settings</a>
                                     </div>
                                 </div>
                             </div>
@@ -58,6 +59,19 @@ const ComingSoon = () => {
 
         </>
     )
+}
+
+
+export async function getStaticProps(context) {
+    // extract the locale identifier from the URL
+    const { locale } = context
+
+    return {
+        props: {
+            // pass the translation props to the page component
+            ...(await serverSideTranslations(locale)),
+        },
+    }
 }
 
 export default ComingSoon;

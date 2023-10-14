@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import CommonLayout from '../../../components/shop/common-layout';
-import { Container, Row ,Col} from 'reactstrap';
+import { Container, Row, Col } from 'reactstrap';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 const Dashboard = () => {
-    const [accountInfo,setAccountInfo] = useState(false)
+    const [accountInfo, setAccountInfo] = useState(false)
     return (
         <CommonLayout parent="home" title="dashboard">
             <section className="section-b-space">
@@ -11,9 +12,9 @@ const Dashboard = () => {
                     <Row>
                         <Col lg="3">
                             {window.innerWidth <= 991 ?
-                            <div className="account-sidebar" onClick={() => setAccountInfo(!accountInfo)}><a className="popup-btn">my account</a></div>
-                            :""}
-                            <div className="dashboard-left" style={accountInfo ? {left:"0px"} : {}}> 
+                                <div className="account-sidebar" onClick={() => setAccountInfo(!accountInfo)}><a className="popup-btn">my account</a></div>
+                                : ""}
+                            <div className="dashboard-left" style={accountInfo ? { left: "0px" } : {}}>
                                 <div className="collection-mobile-back" onClick={() => setAccountInfo(!accountInfo)}>
                                     <span className="filter-back">
                                         <i className="fa fa-angle-left" aria-hidden="true"></i> back
@@ -42,8 +43,8 @@ const Dashboard = () => {
                                     <div className="welcome-msg">
                                         <p>Hello, MARK JECNO !</p>
                                         <p>From your My Account Dashboard you have the ability to view a snapshot of your recent
-                                        account activity and update your account information. Select a link below to view or
-                                    edit information.</p>
+                                            account activity and update your account information. Select a link below to view or
+                                            edit information.</p>
                                     </div>
                                     <div className="box-account box-info">
                                         <div className="box-head">
@@ -82,7 +83,7 @@ const Dashboard = () => {
                                                     <Col sm="6">
                                                         <h6>Default Billing Address</h6>
                                                         <address>You have not set a default billing address.<br /><a href="#">Edit
-                                                        Address</a></address>
+                                                            Address</a></address>
                                                     </Col>
                                                     <Col sm="6">
                                                         <h6>Default Shipping Address</h6>
@@ -101,6 +102,19 @@ const Dashboard = () => {
             </section>
         </CommonLayout>
     )
+}
+
+
+export async function getStaticProps(context) {
+    // extract the locale identifier from the URL
+    const { locale } = context
+
+    return {
+        props: {
+            // pass the translation props to the page component
+            ...(await serverSideTranslations(locale)),
+        },
+    }
 }
 
 export default Dashboard

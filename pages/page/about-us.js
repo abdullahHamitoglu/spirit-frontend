@@ -5,6 +5,7 @@ import aboutus from "assets/images/about/about_us.jpg";
 import Slider from "react-slick";
 import { Slider2, Slider4 } from "../../services/script";
 import ServiceLayout from "../../components/common/Service/service1.js";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 const TeamData = [
   {
@@ -170,5 +171,17 @@ const AboutUs = () => {
     </>
   );
 };
+
+export async function getStaticProps(context) {
+  // extract the locale identifier from the URL
+  const { locale } = context
+
+  return {
+    props: {
+      // pass the translation props to the page component
+      ...(await serverSideTranslations(locale)),
+    },
+  }
+}
 
 export default AboutUs;

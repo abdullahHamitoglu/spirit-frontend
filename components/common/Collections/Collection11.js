@@ -42,7 +42,6 @@ const GET_PRODUCTS = gql`
 `;
 
 const ProductSection = ({ type }) => {
-
     const cartContext = useContext(CartContext);
     const wishlistContext = useContext(WishlistContext);
     const compareContext = useContext(CompareContext);
