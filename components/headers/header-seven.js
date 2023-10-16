@@ -10,7 +10,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 
 const HeaderSeven = ({ logoName }) => {
-  const { state, dispatch } = useUser();
+  const { state, logout } = useUser();
 
   const router = useRouter()
   useEffect(() => {
@@ -24,8 +24,7 @@ const HeaderSeven = ({ logoName }) => {
     router.reload()
   };
   const handelLogOut = () => {
-    dispatch({ type: 'LOGOUT' });
-    router.reload()
+    logout();
   }
   return (
     <>

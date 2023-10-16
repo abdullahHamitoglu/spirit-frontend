@@ -12,6 +12,12 @@ const nextConfig = {
   },
   images: {
     formats: ['image/webp' , 'image/avif'],
+    remotePatterns: [
+      {
+        protocol: 'http',
+        hostname: '96.30.193.192',
+      },
+    ],
   },
   
   webpack(config, options) {

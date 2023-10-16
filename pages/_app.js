@@ -19,6 +19,7 @@ import { ApolloProvider } from "@apollo/client";
 import { useApollo } from "../helpers/apollo";
 import Head from "next/head";
 import { useRouter } from "next/router";
+import { CatalogProvider } from "../helpers/catalog/catalogContext";
 
 function MyApp({ Component, pageProps }) {
   const [isLoading, setIsLoading] = useState(true);
@@ -62,22 +63,24 @@ function MyApp({ Component, pageProps }) {
               <link rel="icon" type="image/x-icon" href='assets/images/favicon.png' />
               <title>Multikart - Multi-purpopse E-commerce React Template</title>
             </Head>
-            <SettingProvider>
-              <CompareContextProvider>
-                <CurrencyProvider>
-                  <CartContextProvider>
-                    <WishlistContextProvider>
-                      <FilterProvider>
-                        <UserProvider>
-                          <Component {...pageProps} />
-                        </UserProvider>
-                      </FilterProvider>
-                    </WishlistContextProvider>
-                  </CartContextProvider>
-                </CurrencyProvider>
-                <ThemeSettings />
-              </CompareContextProvider>
-            </SettingProvider>
+            <CatalogProvider>
+              <SettingProvider>
+                <CompareContextProvider>
+                  <CurrencyProvider>
+                    <CartContextProvider>
+                      <WishlistContextProvider>
+                        <FilterProvider>
+                          <UserProvider>
+                            <Component {...pageProps} />
+                          </UserProvider>
+                        </FilterProvider>
+                      </WishlistContextProvider>
+                    </CartContextProvider>
+                  </CurrencyProvider>
+                  <ThemeSettings />
+                </CompareContextProvider>
+              </SettingProvider>
+            </CatalogProvider>
             <ToastContainer />
             <TapTop />
           </>

@@ -2,11 +2,13 @@ import React from 'react';
 import CommonLayout from '../../../components/shop/common-layout';
 import ProfilePage from './common/profile-page';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { useUser } from '@/helpers/user/userContext';
 
 const Profile = () => {
+    const {state} = useUser()
     return (
         <CommonLayout parent="home" title="profile">
-            <ProfilePage />
+            <ProfilePage user={state.user} />
         </CommonLayout>
     )
 }

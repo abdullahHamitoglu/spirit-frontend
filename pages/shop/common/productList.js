@@ -10,6 +10,7 @@ import { WishlistContext } from "../../../helpers/wishlist/WishlistContext";
 import { CompareContext } from "../../../helpers/Compare/CompareContext";
 import axios from "axios";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { CatalogContext } from "../../../helpers/catalog/catalogContext";
 
 const ProductList = ({ colClass, layoutList, openSidebar, noSidebar }) => {
   const cartContext = useContext(CartContext);
@@ -31,8 +32,9 @@ const ProductList = ({ colClass, layoutList, openSidebar, noSidebar }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [layout, setLayout] = useState(layoutList);
   const [url, setUrl] = useState();
-  const [products, setProducts] = useState([]); // Store the product data
-  const {locale } = useRouter();
+  const { products, getMoreProducts } = useContext(CatalogContext);
+
+  const { locale } = useRouter();
   useEffect(() => {
     const pathname = window.location.pathname;
     setUrl(pathname);
@@ -43,46 +45,16 @@ const ProductList = ({ colClass, layoutList, openSidebar, noSidebar }) => {
     );
   }, [selectedBrands, selectedColor, selectedSize, selectedPrice]);
 
-  const fetchProducts = async () => {
-    try {
-      // Replace with your REST API endpoint for fetching products
-      const response = await axios.get(
-        `${process.env.API_URL}api/v1/products?locale=${locale}&currency=${selectedCurrency}&page=1`
-      );
-      console.log(response.data);
-      setProducts(response.data.data); // Update the product data
-    } catch (error) {
-      console.error("Failed to fetch products:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchProducts();
-  }, [selectedCategory, selectedPrice, selectedColor, selectedBrands, sortBy, limit]);
+  // useEffect(() => {
+  //   fetchProducts();
+  // }, [selectedCategory, selectedPrice, selectedColor, selectedBrands, sortBy, limit]);
 
   const handlePagination = () => {
-    setIsLoading(true);
-    setTimeout(() => {
-      // Make another API request to fetch more products and append to the existing list
-      const newIndexFrom = products.length;
-      axios
-        .get(
-          `${process.env.API_URL}api/v1/products?type=${selectedCategory}&page=1&priceMin=${selectedPrice.min}&priceMax=${selectedPrice.max}&color=${selectedColor}&brand=${selectedBrands}&sortBy=${sortBy}&page=${newIndexFrom}&limit=${limit}`
-        )
-        .then((response) => {
-          // setProducts((prevProducts) => [...prevProducts, ...response.data.data]);
-          setProducts(response);
-          setIsLoading(false);
-        })
-        .catch((error) => {
-          console.error("Failed to fetch more products:", error);
-          setIsLoading(false);
-        });
-    }, 1000);
+    if(products.length > 8){
+      setIsLoading(true);
+      getMoreProducts();
+    }
   };
-
-  // ... rest of your component
-  console.log(products);
   return (
     <Col className="collection-content">
       <div className="page-main-content">
@@ -130,16 +102,6 @@ const ProductList = ({ colClass, layoutList, openSidebar, noSidebar }) => {
                       </a>
                     </li>
                   ))}
-                  {selectedColor ? (
-                    <li>
-                      <a href={null} className="filter_tag">
-                        {selectedColor}
-                        <i className="fa fa-close" onClick={removeColor}></i>
-                      </a>
-                    </li>
-                  ) : (
-                    ""
-                  )}
                   {selectedSize.map((size, i) => (
                     <li key={i}>
                       <a href={null} className="filter_tag">
@@ -286,20 +248,21 @@ const ProductList = ({ colClass, layoutList, openSidebar, noSidebar }) => {
                     !products ||
                     products.length === 0 ||
                     isLoading ? (
-                      products &&
+                    products &&
                       products.length === 0 ? (
                       <Col xs="12">
-                        <div>
-                          <div className="col-sm-12 empty-cart-cls text-center">
-                            <img
-                              src={`/assets/images/empty-search.jpg`}
-                              className="img-fluid mb-4 mx-auto"
-                              alt=""
-                            />
-                            <h3>
-                              <strong>Your Cart is Empty</strong>
-                            </h3>
-                            <h4>Explore more shortlist some items.</h4>
+                        <div className="row mx-0 margin-default mt-4">
+                          <div className="col-xl-3 col-lg-4 col-6">
+                            <PostLoader />
+                          </div>
+                          <div className="col-xl-3 col-lg-4 col-6">
+                            <PostLoader />
+                          </div>
+                          <div className="col-xl-3 col-lg-4 col-6">
+                            <PostLoader />
+                          </div>
+                          <div className="col-xl-3 col-lg-4 col-6">
+                            <PostLoader />
                           </div>
                         </div>
                       </Col>
@@ -350,14 +313,14 @@ const ProductList = ({ colClass, layoutList, openSidebar, noSidebar }) => {
                 <div className="text-center">
                   <Row>
                     <Col xl="12" md="12" sm="12">
-                      {products && products && (
+                      {products.length > 8 ? products && products && (
                         <Button className="load-more" onClick={() => handlePagination()}>
                           {isLoading && (
                             <Spinner animation="border" variant="light" />
                           )}
                           Load More
                         </Button>
-                      )}
+                      ): ''}
                     </Col>
                   </Row>
                 </div>

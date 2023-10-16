@@ -1,7 +1,7 @@
 {
     "topbar_title": "Welcome to Our store Spirit",
     "call_us": "Call Us",
-    "Home": "Home",
+    "home": "Home",
     "features": "features",
     "new": "new",
     "Blogs": "Blogs",
@@ -135,5 +135,7 @@
     "last_name": "Last Name",
     "first_name": "First Name",
     "enter_your_password": "Enter Your Password",
-    "create_account": "Create Account"
+    "create_account": "Create Account",
+    "new_customer": "New Customer",
+    "create_account_text": "Sign up for a free account at our store. Registration is quick and easy. It allows you to be able to order from our shop. To start shopping click register. "
 }

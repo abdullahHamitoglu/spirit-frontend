@@ -6,12 +6,10 @@ import { useUser } from "@/helpers/user/userContext";
 import { useTranslation } from "react-i18next";
 
 const TopBarDark = ({ topClass, fluid }) => {
-  const { state, dispatch } = useUser();
+  const { state, logout } = useUser();
   const { t } = useTranslation();
-  const router = useRouter();
   const Logout = () => {
-    dispatch({ type: 'LOGOUT' });
-    router.reload()
+    logout();
   };
 
   return (
@@ -41,18 +39,31 @@ const TopBarDark = ({ topClass, fluid }) => {
               <li className="onhover-dropdown mobile-account">
                 <i className="fa fa-user" aria-hidden="true"></i> {t("my_account")}
                 <ul className="onhover-show-div">
-                  <li>
-                    <Link href={`/page/account/login`}>
-                    {t('login')}
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href={`/page/account/register`}>
-                      {t('register')}
-                    </Link>
-                  </li><li onClick={() => Logout()}>
-                    <a>{t('logout')}</a>
-                  </li>
+                  {state.isAuthenticated ?
+                    <>
+                      <li>
+                        <Link href={`/page/account/profile`}>
+                          {t('profile')}
+                        </Link>
+                      </li>
+                      <li onClick={() => Logout()}>
+                        <a>{t('logout')}</a>
+                      </li>
+                    </>
+                    :
+                    <>
+                      <li>
+                        <Link href={`/page/account/login`}>
+                          {t('login')}
+                        </Link>
+                      </li>
+                      <li>
+                        <Link href={`/page/account/register`}>
+                          {t('register')}
+                        </Link>
+                      </li>
+                    </>
+                  }
                 </ul>
               </li>
             </ul>

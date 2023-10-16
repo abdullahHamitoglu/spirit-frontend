@@ -24,8 +24,8 @@ const IconTopbar = () => {
   const closeSearch = () => {
     document.getElementById("search-overlay").style.display = "none";
   };
-const handelLogOut = () => {
-    sessionStorage.removeItem('token');
+  const handelLogOut = () => {
+    sessionStorage.removeItem('user');
     router.reload()
   }
   const cartList = context.state;
@@ -88,7 +88,7 @@ const handelLogOut = () => {
                         </Link>
                       </li>
                       <li>
-                        <Link  onClick={()=>handelLogOut()} data-lng="es">
+                        <Link onClick={() => handelLogOut()} data-lng="es">
                           Logout
                         </Link>
                       </li>

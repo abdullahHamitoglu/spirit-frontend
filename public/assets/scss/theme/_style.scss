@@ -43,6 +43,8 @@
 /*=====================
     1.General CSS start
 ==========================*/
+@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@200;300;400;500;700;800;900&display=swap');
+
 body {
   font-family: $font_0, $font_1;
   position: relative;
@@ -50,6 +52,9 @@ body {
   font-size: 14px;
   overflow-x: hidden;
   letter-spacing: 0.8px;
+  &:lang(ar) {
+    font-family: 'Tajawal', sans-serif;
+  }
   &.christmas {
     font-family: $font_2, $font_1;
     .dark-light {
@@ -3060,6 +3065,7 @@ header {
       top: 0;
       left: 0;
       transition: all 0.5s ease;
+      max-height: 443px;
     }
     .back {
       opacity: 0;
@@ -9986,6 +9992,7 @@ footer {
       .input-group {
         justify-content: unset;
         width: unset;
+        direction: ltr !important;
         .form-control {
           border-right: none;
         }

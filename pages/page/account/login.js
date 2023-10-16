@@ -8,42 +8,30 @@ import { useRouter } from 'next/router';
 import { getUserAgent } from '../../../helpers/user/getUserAgent';
 import { useUser } from '../../../helpers/user/userContext';
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import * as Yup from 'yup';
+
 const Login = () => {
   const osDetails = getUserAgent();
   const { state, login } = useUser();
   const { locale } = useRouter();
   const { t } = useTranslation();
   const router = useRouter();
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-    device_name: '',
-    locale: ''
+  const validationSchema = Yup.object().shape({
+    email: Yup.string().email('Invalid email').required('Email is required'),
+    password: Yup.string()
+      .min(6, 'Password must be at least 6 characters')
+      .required('Password is required'),
   });
-  
-  const handleLogin = () => {
-    login(formData)
-  }
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-      device_name : osDetails.name
-    });
-  };
-
   if (state.isAuthenticated) {
     router.push('/')
   }
   return (
-    <CommonLayout parent="home" title="login">
+    <CommonLayout parent={t('home')} title={t('login')}>
       <section className="login-page section-b-space">
         <Container>
           <Row>
             <Col lg="6">
-              <h3>Login</h3>
+              <h3>{t('login')}</h3>
               <div className="theme-card">
                 <Formik
                   initialValues={{
@@ -51,23 +39,30 @@ const Login = () => {
                     password: '',
                     device_name: ''
                   }}
+                  validationSchema={validationSchema}
                   onSubmit={(values, { setSubmitting }) => {
-                    handleLogin(values);
+                    login(values)
                     setSubmitting(false);
                   }} >
                   {({
                     handleSubmit,
+                    errors,
+                    touched,
                     /* and other goodies */
                   }) => (
                     <Form className="theme-form" onSubmit={handleSubmit}>
                       <Row>
                         <Col md="12">
-                          <Label className="form-label" for="email">{t('email')}</Label>
-                          <Field type="email" className="form-control" id="email" name="email" placeholder={t('email')} required="" onChange={handleChange} value={formData.email} />
+                          <Label className="form-label" for="email">{t('email')}
+                            {errors.email && touched.email && <span className="error ms-1 text-danger">{errors.email}</span>}
+                          </Label>
+                          <Field type="email" className="form-control" id="email" name="email" placeholder={t('email')} required="" />
                         </Col>
                         <Col md="12">
-                          <Label className="form-label" for="password">{t('password')}</Label>
-                          <Field type="password" className="form-control" id="password" name="password" onChange={handleChange} value={formData.email}
+                          <Label className="form-label" for="password">{t('password')}
+                            {errors.password && touched.password && <span className="error ms-1 text-danger">{errors.password}</span>}
+                          </Label>
+                          <Field type="password" className="form-control" id="password" name="password"
                             placeholder={t('enter_your_password')} required="" />
                         </Col>
                         <Col md="12">
@@ -80,12 +75,12 @@ const Login = () => {
               </div>
             </Col>
             <Col lg="6" className="right-login">
-              <h3>New Customer</h3>
+              <h3>{t('new_customer')}</h3>
               <div className="theme-card authentication-right">
-                <h6 className="title-font">Create A Account</h6>
-                <p>Sign up for a free account at our store. Registration is quick and easy. It allows you to be able to order from our shop. To start shopping click register.</p>
+                <h6 className="title-font">{t("create_account")}</h6>
+                <p>{t('create_account_text')}</p>
                 <a href="#" className="btn btn-solid">
-                  Create an Account
+                  {t('create_account')}
                 </a>
               </div>
             </Col>

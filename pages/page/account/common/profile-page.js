@@ -2,7 +2,8 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import React from 'react';
 import { Container, Row, Form, Input, Label, Col } from 'reactstrap';
 
-const ProfilePage = () => {
+const ProfilePage = (user) => {
+    
     return (
         <>
             <section className="contact-page register-page">
@@ -14,21 +15,21 @@ const ProfilePage = () => {
                                 <Row>
                                     <Col md="6">
                                         <Label className="form-label" for="name">First Name</Label>
-                                        <Input type="text" className="form-control" id="name" placeholder="Enter Your name"
+                                        <Input type="text" className="form-control" id="first_name" name='first_name' placeholder="Enter Your name" value={user.first_name}
                                             required="" />
                                     </Col>
                                     <Col md="6">
                                         <Label className="form-label" for="email">Last Name</Label>
-                                        <Input type="text" className="form-control" id="last-name" placeholder="Enter your last name" required="" />
+                                        <Input type="text" className="form-control" id="last_name" name='last_name' placeholder="Enter your last name" required="" value={user.last_name} />
                                     </Col>
                                     <Col md="6">
                                         <Label className="form-label" for="review">Phone number</Label>
-                                        <Input type="number" className="form-control" id="review" placeholder="Enter your number"
+                                        <Input type="number" className="form-control" id="review" name='phone' placeholder="Enter your number" value={user.phone}
                                             required="" />
                                     </Col>
                                     <Col md="6">
                                         <Label className="form-label" for="email">Email</Label>
-                                        <Input type="email" className="form-control" id="email" placeholder="Email" required="" />
+                                        <Input type="email" className="form-control" id="email" placeholder="Email" required="" value={user.email} />
                                     </Col>
                                     <Col md="12">
                                         <Label className="form-label" for="review">Write Your Message</Label>

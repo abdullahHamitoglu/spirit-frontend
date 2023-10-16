@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { Row, Col, Media, Modal, ModalBody, ModalHeader } from "reactstrap";
@@ -30,15 +30,18 @@ const ProductItem = ({ product, addCart, backImage, des, addWishlist, cartClass,
   };
 
   const changeQty = (e) => {
-    setQuantity(parseInt(e.target.value));
+    const newQuantity = parseInt(e.target.value);
+    setQuantity(newQuantity);
   };
+  
 
   const clickProductDetail = () => {
     const titleProps = product.title.split(" ").join("");
     router.push(`/product-details/${product.id}` + "-" + `${titleProps}`);
   };
-
-
+  useEffect(() => {
+    setImage(image ? image:product.images.length > 0 ? product.images[0].original_image_url : "/assets/images/lazy.png")
+  }, [image])
   return (
     <div className="product-box product-wrap">
       <div className="img-wrapper">
@@ -47,12 +50,8 @@ const ProductItem = ({ product, addCart, backImage, des, addWishlist, cartClass,
           {product.sale === true ? <span className="lable4">on sale</span> : ""}
         </div>
         <div className="front" onClick={clickProductDetail}>
-          <Image sizes="100vw" style={{
-            width: '100%',
-            height: 'auto',
-          }} width={500}
-            height={300} src='/assets/images/pro3/8.jpg' className="img-fluid" alt="" />
-          {/* <Media src={product.images[0].original_image_url} className="img-fluid" alt="" /> */}
+          <Image width={500}
+            height={300} src={image} className="img-fluid" alt={product.name} />
         </div>
         {backImage ? (
           product.images[1] === "undefined" ? (
@@ -110,9 +109,9 @@ const ProductItem = ({ product, addCart, backImage, des, addWishlist, cartClass,
         {product.images ? (
           <ul className="product-thumb-list">
             {product.images.map((img, i) => (
-              <li className={`grid_thumb_img ${img.src === image ? "active" : ""}`} key={i}>
+              <li className={`grid_thumb_img ${img.large_image_url === image ? "active" : ""}`} key={i}>
                 <a href={null} title="Add to Wishlist">
-                  <Media src='/assets/images/pro3/8.jpg' alt="wishlist" onClick={() => onClickHandle(img.src)} />
+                  <Image width={37} height={50} src={img.small_image_url} alt="wishlist" onClick={() => onClickHandle(img.large_image_url)} />
                 </a>
               </li>
             ))}
@@ -138,7 +137,7 @@ const ProductItem = ({ product, addCart, backImage, des, addWishlist, cartClass,
                 <button type="button" data-dismiss="modal" className="btn-close btn btn-secondary" aria-label="Close" onClick={toggle}></button>
                 <h2> {product.title} </h2>
                 <h3>
-                  {(product.price * currency.value).toFixed(2)}
+                  {product.formatted_price}
                 </h3>
                 <div className="border-product">
                   <h6 className="product-title">product details</h6>

@@ -9,32 +9,26 @@ import { useRouter } from 'next/router';
 import axios from 'axios';
 import { useUser } from '@/helpers/user/userContext';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import * as Yup from 'yup';
 
 
 const Register = () => {
     const { locale, locales } = useRouter();
     const { t } = useTranslation();
     const { register, state } = useUser();
-    const [formData, setFormData] = useState({
-        first_name: '',
-        last_name: '',
-        email: '',
-        password: '',
-        // Add other registration fields here
+    const router = useRouter();
+    const validationSchema = Yup.object().shape({
+        first_name: Yup.string().required('First Name is required'),
+        last_name: Yup.string().required('Last Name is required'),
+        email: Yup.string().email('Invalid email').required('Email is required'),
+        password: Yup.string()
+            .min(6, 'Password must be at least 6 characters')
+            .required('Password is required'),
+        password_confirmation: Yup.string()
+            .oneOf([Yup.ref('password'), null], 'Passwords must match')
+            .required('Confirm Password is required'),
     });
 
-    const handleRegistration = async () => {
-        await register(formData);
-    };
-
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({
-            ...formData,
-            [name]: value,
-        });
-    };
-    
     if (state.isAuthenticated) {
         router.push('/')
     }
@@ -54,45 +48,48 @@ const Register = () => {
                                         password: '',
                                         password_confirmation: ''
                                     }}
+                                    validationSchema={validationSchema}
                                     onSubmit={(values, { setSubmitting }) => {
-                                        setFormData(values);
-                                        handleRegistration();
+                                        register(values);
                                         setSubmitting(false);
                                     }} >
-                                    {({
-                                        values,
-                                        errors,
-                                        touched,
-                                        handleSubmit,
-                                        isSubmitting,
-                                        /* and other goodies */
-                                    }) => (
+                                    {({ values, errors, touched, handleSubmit, isSubmitting, }) => (
                                         <Form className="theme-form" onSubmit={handleSubmit}>
                                             <Row>
                                                 <Col md="6">
-                                                    <Label className="form-label" htmlFor="first_name">{t('first_name')}</Label>
-                                                    <Field type="text" className="form-control" id="first_name" name="first_name" value={formData.first_name} onChange={handleChange} placeholder={t('first_name')}
+                                                    <Label className="form-label" htmlFor="first_name">{t('first_name')}
+                                                        {errors.first_name && touched.first_name && <span className="error ms-1 text-danger">{errors.first_name}</span>}
+                                                    </Label>
+                                                    <Field type="text" className="form-control" id="first_name" name="first_name" placeholder={t('first_name')}
                                                         required="" />
                                                 </Col>
                                                 <Col md="6">
-                                                    <Label className="form-label" for="last_name">{t('last_name')}</Label>
-                                                    <Field type="text" className="form-control" id="last_name" name="last_name" onChange={handleChange} value={formData.last_name} placeholder={t('last_name')}
+                                                    <Label className="form-label" for="last_name">{t('last_name')}
+                                                        {errors.last_name && touched.last_name && <span className="error ms-1 text-danger">{errors.last_name}</span>}
+                                                    </Label>
+                                                    <Field type="text" className="form-control" id="last_name" name="last_name" placeholder={t('last_name')}
                                                         required="" />
                                                 </Col>
                                             </Row>
                                             <Row>
                                                 <Col md="6">
-                                                    <Label className="form-label" for="email">{t('email')}</Label>
-                                                    <Field type="email" className="form-control" id="email" name="email" onChange={handleChange} value={formData.email} placeholder={t('email')} required="" />
+                                                    <Label className="form-label" for="email">{t('email')}
+                                                        {errors.email && touched.email && <span className="error ms-1 text-danger">{errors.email}</span>}
+                                                    </Label>
+                                                    <Field type="email" className="form-control" id="email" name="email" placeholder={t('email')} required="" />
                                                 </Col>
                                                 <Col md="6">
-                                                    <Label className="form-label" for="password" >{t('password')}</Label>
-                                                    <Field type="password" className="form-control" id="password" name="password" onChange={handleChange} value={formData.password}
+                                                    <Label className="form-label" for="password" >{t('password')}
+                                                        {errors.password && touched.password && <span className="error ms-1 text-danger">{errors.password}</span>}
+                                                    </Label>
+                                                    <Field type="password" className="form-control" id="password" name="password"
                                                         placeholder={t('enter_your_password')} required="" />
                                                 </Col>
                                                 <Col md="6">
-                                                    <Label className="form-label" for="password">{t('password')}</Label>
-                                                    <Field type="password" className="form-control" id="password_confirmation" onChange={handleChange} value={formData.password_confirmation} name="password_confirmation"
+                                                    <Label className="form-label" for="password">{t('password')}
+                                                        {errors.password_confirmation && touched.password_confirmation && <span className="error ms-1 text-danger">{errors.password_confirmation}</span>}
+                                                    </Label>
+                                                    <Field type="password" className="form-control" id="password_confirmation" name="password_confirmation"
                                                         placeholder={t('confirm_password')} required="" />
                                                 </Col>
                                                 <Col md="12">
@@ -114,12 +111,12 @@ const Register = () => {
 export async function getStaticProps(context) {
     // extract the locale identifier from the URL
     const { locale } = context
-  
+
     return {
-      props: {
-        // pass the translation props to the page component
-        ...(await serverSideTranslations(locale)),
-      },
+        props: {
+            // pass the translation props to the page component
+            ...(await serverSideTranslations(locale)),
+        },
     }
-  }
+}
 export default Register

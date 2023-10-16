@@ -4,8 +4,9 @@ import config from "../../components/customizer/config.json";
 const SettingProvider = (props) => {
   const [layoutState, setLayoutState] = useState("RTL");
   const [layoutColor, setLayoutColor] = useState("#00c2b5");
-  const layoutFun = (item) => {
-    if (item === "RTL") {
+  const layoutFun = () => {
+
+    if (document.body.classList.contains('rtl')) {
       document.body.classList.remove("ltr");
       document.body.classList.add("rtl");
       setLayoutState("LTR");

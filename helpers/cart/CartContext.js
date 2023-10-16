@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import Context from "./index";
 import { toast } from "react-toastify";
+import axios from "axios";
+import { useRouter } from "next/router";
 
 const getLocalCartItems = () => {
   try {
@@ -20,7 +22,7 @@ const CartProvider = (props) => {
   const [cartTotal, setCartTotal] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [stock, setStock] = useState("InStock");
-
+  const router = useRouter()
   useEffect(() => {
     const Total = cartItems.reduce((a, b) => a + b.total, 0);
     setCartTotal(Total);
@@ -32,7 +34,25 @@ const CartProvider = (props) => {
   const addToCart = (item, quantity) => {
     toast.success("Product Added Successfully !");
     const index = cartItems.findIndex((itm) => itm.id === item.id);
+    const response = axios({
+      url: `${process.env.API_URL}api/v1/customer/cart/add/${item.id}`,
+      method: 'POST',
+      auth:`Bearer ${localStorage.getItem('token')}`,
+      data: {
+        quantity,
+        product_id: item.id,
+      },
+    }).then(res => {
+      toast.error(res.message)
+      console.log(res);
+    }).catch((error, errors) => {
+      toast.error(error.message);
 
+      console.log(error);
+      if (error.response.status == 401) {
+        router.push('/page/account/login')
+      }
+    })
     if (index !== -1) {
       cartItems[index] = {
         ...item,
@@ -63,7 +83,7 @@ const CartProvider = (props) => {
   };
 
   const plusQty = (item) => {
-    if (item.stock >= quantity) {
+    if (item.in_stock) {
       setQuantity(quantity + 1);
     } else {
       setStock("Out of Stock !");
