@@ -111,7 +111,7 @@ export function UserProvider({ children }) {
         await axios({
             method: 'post',
             url: process.env.API_URL + `api/v1/customer/profile?locale=${locale.slice(0, 2)}`,
-            auth : `Bearer ${localStorage.get('token')}`,
+            auth: `Bearer ${localStorage.get('token')}`,
             data: profileData,
         }).then(res => {
             if (res.data) {
@@ -131,31 +131,26 @@ export function UserProvider({ children }) {
             console.log(errors, error);
         });
     }
-    const getUserDetails = async (profileData) => {
-        await axios({
-            method: 'post',
-            url: process.env.API_URL + `api/v1/customer/get?locale=${locale.slice(0, 2)}`,
-            auth : `Bearer ${localStorage.get('token')}`,
-        }).then(res => {
-            if (res.data) {
-                toast.success(res.data.message)
-                dispatch({ type: 'LOGIN', user: res.data.user });
-            }
-            if (res.status == 200) {
-                // Save user data to local storage
-                localStorage.setItem('user', JSON.stringify(res.data.data));
-                localStorage.setItem('token', res.data.token);
-                router.push('/page/account/login');
-            }
-        }).catch(function (error, errors) {
-            if (error.response) {
-                toast.error(error.response.data.message);
-            }
-            console.log(errors, error);
-        });
+    const getUserDetails = async () => {
+        try {
+            const response = await axios.get(
+                `${process.env.API_URL}api/v1/customer/get?locale=${locale.slice(0, 2)}`, 
+                {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('token')}`,
+                    },
+                }
+            );
+
+            dispatch({ user: JSON.parse(response.data.data) });
+        } catch (error) {
+            console.error('Get user details failed:', error);
+            return null;
+        }
     }
+    
     return (
-        <UserContext.Provider value={{ state, dispatch, register, login, logout , updateProfile}}>
+        <UserContext.Provider value={{ state, dispatch, register, login, logout, updateProfile, getUserDetails }}>
             {children}
         </UserContext.Provider>
     );

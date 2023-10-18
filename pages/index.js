@@ -11,12 +11,8 @@ import MainBanner from "./layouts/Beauty/components/MainBanner";
 import AboutSection from "./layouts/Beauty/components/About-Section";
 import VideoSection from "@/components/layouts/Beauty/components/Video-Section";
 import ThemeSettings from "@/components/customizer/theme-settings";
-import { useRouter } from "next/router";
-import { CatalogContext } from "../helpers/catalog/catalogContext";
 
 const Fashion = () => {
-  const {products } = useContext(CatalogContext);
-  console.log(products);
 
   return (
     <Fragment>
