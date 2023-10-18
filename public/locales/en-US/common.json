@@ -140,10 +140,12 @@
     "create_account_text": "Sign up for a free account at our store. Registration is quick and easy. It allows you to be able to order from our shop. To start shopping click register. ",
     "personal_details" : "PERSONAL DETAIL",
     "write_your_message": "Write Your Message",
+    "Date_of_birth" : "Date of birth",
     "inter" : {
         "phone"  : "please inter your number",
         "name" : "please inter your name",
         "email" :"please inter your Email",
-        "password" :"please inter your password"
+        "password" :"please inter your password",
+        "number" : "please inter your number"
     }
 }

@@ -93,7 +93,7 @@ const Register = () => {
                                                         placeholder={t('confirm_password')} required="" />
                                                 </Col>
                                                 <Col md="12">
-                                                    <button type="submit" className="btn btn-solid w-auto">{isSubmitting ? 'loading' : t('create_account')}</button>
+                                                    <button type="submit" className="btn btn-solid w-auto" disabled={isSubmitting}>{isSubmitting ? t('loading') : t('create_account')}</button>
                                                 </Col>
                                             </Row>
                                         </Form>

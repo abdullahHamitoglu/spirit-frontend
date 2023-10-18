@@ -47,7 +47,6 @@ const HeaderOne = ({
       else document.getElementById("sticky").classList.add("fixed");
     }
     else {
-      document.getElementById("sticky").classList.contains('fixed') ??
       document.getElementById("sticky").classList.remove("fixed");
     }
   };

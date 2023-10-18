@@ -1,14 +1,27 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import CommonLayout from '../../../components/shop/common-layout';
 import ProfilePage from './common/profile-page';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useUser } from '@/helpers/user/userContext';
+import { Router, useRouter } from 'next/router';
+import ContentLoader from 'react-content-loader';
 
 const Profile = () => {
-    const {state} = useUser()
+    const { state, fetchUserData } = useUser(); // Use the useUser hook to access user data and functions
+    const router = useRouter();
+    if (state.isAuthenticated && !state.user) {
+        fetchUserData();
+        router.reload();
+    }
+    if (!localStorage.getItem('token')) {
+        router.push('/');
+    }
     return (
         <CommonLayout parent="home" title="profile">
-            <ProfilePage user={state.user} />
+            {
+                state.isAuthenticated && state.user &&
+                <ProfilePage userDetails={state.user} />
+            }
         </CommonLayout>
     )
 }
