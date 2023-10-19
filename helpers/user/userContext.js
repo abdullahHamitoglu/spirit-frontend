@@ -134,11 +134,10 @@ export function UserProvider({ children }) {
                 // Save user data to local storage
                 localStorage.setItem('user', JSON.stringify(res.data.data));
                 setToken(res.data.token);
-                router.push('/page/account/login');
             }
         }).catch(function (error, errors) {
-            if (error.response) {
-                toast.error(error.response.data.message);
+            if (error.message) {
+                toast.error(error.message);
             }
             console.log(errors, error);
         });
