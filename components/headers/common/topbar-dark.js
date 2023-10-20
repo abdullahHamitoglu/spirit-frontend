@@ -1,12 +1,11 @@
 import React, { useTransition } from "react";
 import { Container, Row, Col } from "reactstrap";
 import Link from "next/link";
-import { useRouter } from "next/router";
-import { useUser } from "@/helpers/user/userContext";
 import { useTranslation } from "react-i18next";
+import useUserStore from "@/helpers/user/userZustand";
 
 const TopBarDark = ({ topClass, fluid }) => {
-  const { state, logout } = useUser();
+  const { isAuthenticated, logout } = useUserStore();
   const { t } = useTranslation();
   const Logout = () => {
     logout();
@@ -39,7 +38,7 @@ const TopBarDark = ({ topClass, fluid }) => {
               <li className="onhover-dropdown mobile-account">
                 <i className="fa fa-user" aria-hidden="true"></i> {t("my_account")}
                 <ul className="onhover-show-div">
-                  {state.isAuthenticated ?
+                  {isAuthenticated ?
                     <>
                       <li>
                         <Link href={`/page/account/profile`}>

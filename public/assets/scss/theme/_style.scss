@@ -9333,6 +9333,13 @@ footer {
     border-radius: 0;
   }
 }
+.select{
+  border: 0;
+  *{
+    max-height: 54px;
+    border-radius: 0;
+  }
+}
 // shopping products //
 .qty-box {
   .input-group {

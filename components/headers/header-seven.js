@@ -6,11 +6,11 @@ import { Media, Row, Col, Container } from "reactstrap";
 import Currency from "./common/currency";
 import CartContainer from "../containers/CartContainer";
 import SearchOverlay from "./common/search-overlay";
-import Image from "next/image";
 import { useRouter } from "next/router";
+import useUserStore from "@/helpers/user/userZustand";
 
 const HeaderSeven = ({ logoName }) => {
-  const { state, logout } = useUser();
+  const { logout } = useUserStore();
 
   const router = useRouter()
   useEffect(() => {

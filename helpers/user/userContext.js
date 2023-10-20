@@ -61,7 +61,6 @@ export function UserProvider({ children }) {
                 url: process.env.API_URL + `api/v1/customer/register?locale=${locale.slice(0, 2)}`,
                 data: userData,
             }).then(res => {
-                console.log(res);
                 if (res.data) {
                     toast.success(res.data.message)
                 }
@@ -123,17 +122,18 @@ export function UserProvider({ children }) {
         await axios({
             method: 'put',
             url: process.env.API_URL + `api/v1/customer/profile`,
-            auth: `Bearer ${localStorage.getItem('token')}`,
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            },
             data: profileData,
         }).then(res => {
             if (res.data) {
-                toast.success(res.data.message)
+                toast.success(res.data.message);
                 dispatch({ type: 'LOGIN', user: res.data.user });
             }
             if (res.status == 200) {
                 // Save user data to local storage
                 localStorage.setItem('user', JSON.stringify(res.data.data));
-                setToken(res.data.token);
             }
         }).catch(function (error, errors) {
             if (error.message) {
@@ -151,21 +151,43 @@ export function UserProvider({ children }) {
                     process.env.API_URL + 'api/v1/customer/get',
                     {
                         headers: {
-                            Authorization: `Bearer ${token}`,
+                            'Authorization': `Bearer ${localStorage.getItem('token')}`
                         },
                     }
                 );
-                const userData = response.data;
-                console.log(userData);
+                const userData = response.data.data;
                 dispatch({ type: 'LOGIN', user: userData });
             }
         } catch (error) {
             console.error('Failed to fetch user data:', error);
         }
     };
+    
+    const addNewAddress = (formData) => {
+        try{
+            axios({
+                method: 'post',
+                url: process.env.API_URL + 'api/v1/customer/addresses',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                },
+                data: formData,
+            }).then(res => {
+                if (res.data) {
+                    toast.success(res.data.message);
+                }
+                if (res.status == 200) {
+                }
+            }).catch(function (error, errors) {
+                if (error.message) {
+                    toast.error(error.message);
+                }
+                console.log(errors, error);
+            });
+        }catch{
 
-    // ... (rest of your code)
-
+        }
+    }
     return (
         <UserContext.Provider value={{ state, dispatch, register, login, logout, updateProfile, fetchUserData }}>
             {children}

@@ -9,10 +9,12 @@ import { getUserAgent } from '../../../helpers/user/getUserAgent';
 import { useUser } from '../../../helpers/user/userContext';
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import * as Yup from 'yup';
+import useUserStore from "@/helpers/user/userZustand";
 
 const Login = () => {
   const osDetails = getUserAgent();
-  const { state, login } = useUser();
+  const { state } = useUser();
+  const { isAuthenticated, login } = useUserStore();
   const { locale } = useRouter();
   const { t } = useTranslation();
   const router = useRouter();
@@ -22,8 +24,8 @@ const Login = () => {
       .min(6, 'Password must be at least 6 characters')
       .required('Password is required'),
   });
-  if (state.isAuthenticated) {
-    router.push('/')
+  if (isAuthenticated) {
+    router.push('/');
   }
   return (
     <CommonLayout parent={t('home')} title={t('login')}>
@@ -41,7 +43,7 @@ const Login = () => {
                   }}
                   validationSchema={validationSchema}
                   onSubmit={(values, { setSubmitting }) => {
-                    login(values)
+                    login(values , locale)
                     setSubmitting(false);
                   }} >
                   {({

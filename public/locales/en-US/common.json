@@ -138,14 +138,22 @@
     "create_account": "Create Account",
     "new_customer": "New Customer",
     "create_account_text": "Sign up for a free account at our store. Registration is quick and easy. It allows you to be able to order from our shop. To start shopping click register. ",
-    "personal_details" : "PERSONAL DETAIL",
+    "personal_details": "PERSONAL DETAIL",
     "write_your_message": "Write Your Message",
-    "Date_of_birth" : "Date of birth",
-    "inter" : {
-        "phone"  : "please inter your number",
-        "name" : "please inter your name",
-        "email" :"please inter your Email",
-        "password" :"please inter your password",
-        "number" : "please inter your number"
+    "Date_of_birth": "Date of birth",
+    "shipping_address": "SHIPPING ADDRESS",
+    "flat_plot_label": "Flat / Plot",
+    "address_label": "Address *",
+    "zip_code_label": "Zip Code *",
+    "country_label": "Country *",
+    "city_label": "City *",
+    "region_state_label": "Region/State *",
+    "button_text": "Save setting",
+    "inter": {
+        "phone": "please inter your number",
+        "name": "please inter your name",
+        "email": "please inter your Email",
+        "password": "please inter your password",
+        "number": "please inter your number"
     }
 }
