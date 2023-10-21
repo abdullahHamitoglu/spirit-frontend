@@ -12,19 +12,7 @@ function CatalogProvider({ children }) {
   const [page, setPage] = useState(1); // Initialize the page to 1
 
   const getMoreProducts = async () => {
-    try {
-      const response = await axios.get(
-        `${process.env.API_URL}api/v1/products?locale=${locale.slice(0, 2)}&currency=${localStorage.getItem('selectedCurrency')}&page=${page}`
-      );
-
-      if (response.data.data) {
-        // Append the new products to the existing products array
-        setProducts([...products, ...response.data.data]);
-        setPage(page + 1); // Increment the page for the next request
-      }
-    } catch (error) {
-      console.error('get more products failed:', error);
-    }
+    
   };
   // const getCountries = async () => {
   //   try {

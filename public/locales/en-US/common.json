@@ -130,8 +130,6 @@
     "sign_in": "Sign In",
     "sign_up": "Sign Up",
     "sign_out": "Sign Out",
-    "login": "Login",
-    "logout": "Logout",
     "last_name": "Last Name",
     "first_name": "First Name",
     "enter_your_password": "Enter Your Password",
@@ -149,11 +147,19 @@
     "city_label": "City *",
     "region_state_label": "Region/State *",
     "button_text": "Save setting",
+    "company_name": "Company Name",
+    "address1": "Address",
+    "country": "Country",
+    "state": "State",
+    "city": "City",
+    "postcode": "Postcode",
+    "vat_id": "VAT ID",
     "inter": {
         "phone": "please inter your number",
         "name": "please inter your name",
         "email": "please inter your Email",
         "password": "please inter your password",
+        "company_name": "please inter Company Name",
         "number": "please inter your number"
     }
 }

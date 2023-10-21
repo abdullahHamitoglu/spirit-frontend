@@ -10,12 +10,13 @@ import axios from 'axios';
 import { useUser } from '@/helpers/user/userContext';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import * as Yup from 'yup';
+import useUserStore from '@/helpers/user/userZustand';
 
 
 const Register = () => {
-    const { locale, locales } = useRouter();
+    const { locale } = useRouter();
     const { t } = useTranslation();
-    const { register, state } = useUser();
+    const { register, isAuthenticated } = useUserStore();
     const router = useRouter();
     const validationSchema = Yup.object().shape({
         first_name: Yup.string().required('First Name is required'),
@@ -29,7 +30,7 @@ const Register = () => {
             .required('Confirm Password is required'),
     });
 
-    if (state.isAuthenticated) {
+    if (isAuthenticated) {
         router.push('/')
     }
     return (
@@ -50,7 +51,7 @@ const Register = () => {
                                     }}
                                     validationSchema={validationSchema}
                                     onSubmit={(values, { setSubmitting }) => {
-                                        register(values);
+                                        register(values, locale);
                                         setSubmitting(false);
                                     }} >
                                     {({ values, errors, touched, handleSubmit, isSubmitting, }) => (
@@ -93,7 +94,7 @@ const Register = () => {
                                                         placeholder={t('confirm_password')} required="" />
                                                 </Col>
                                                 <Col md="12">
-                                                    <button type="submit" className="btn btn-solid w-auto" disabled={isSubmitting}>{isSubmitting ? t('loading') : t('create_account')}</button>
+                                                    <button type="submit" className="btn btn-solid w-auto" disabled={isSubmitting}>{isSubmitting ? `${t('loading')}....` : t('create_account')}</button>
                                                 </Col>
                                             </Row>
                                         </Form>

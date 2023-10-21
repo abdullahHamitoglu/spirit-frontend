@@ -176,8 +176,6 @@ export function UserProvider({ children }) {
                 if (res.data) {
                     toast.success(res.data.message);
                 }
-                if (res.status == 200) {
-                }
             }).catch(function (error, errors) {
                 if (error.message) {
                     toast.error(error.message);

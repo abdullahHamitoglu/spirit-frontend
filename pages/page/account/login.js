@@ -3,17 +3,12 @@ import CommonLayout from "../../../components/shop/common-layout";
 import { Container, Row, Form, Label, Input, Col } from "reactstrap";
 import { Formik, Field } from "formik";
 import { useTranslation } from "react-i18next";
-import { toast } from 'react-toastify';
 import { useRouter } from 'next/router';
-import { getUserAgent } from '../../../helpers/user/getUserAgent';
-import { useUser } from '../../../helpers/user/userContext';
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import * as Yup from 'yup';
 import useUserStore from "@/helpers/user/userZustand";
 
 const Login = () => {
-  const osDetails = getUserAgent();
-  const { state } = useUser();
   const { isAuthenticated, login } = useUserStore();
   const { locale } = useRouter();
   const { t } = useTranslation();

@@ -9,7 +9,6 @@ import { WishlistContextProvider } from "../helpers/wishlist/WishlistContext";
 import FilterProvider from "../helpers/filter/FilterProvider";
 import SettingProvider from "../helpers/theme-setting/SettingProvider";
 import { CompareContextProvider } from "../helpers/Compare/CompareContext";
-import { UserProvider } from "../helpers/user/userContext";
 import { CurrencyProvider } from "../helpers/Currency/CurrencyContext";
 import { appWithTranslation } from 'next-i18next';
 
@@ -70,9 +69,7 @@ function MyApp({ Component, pageProps }) {
                     <CartContextProvider>
                       <WishlistContextProvider>
                         <FilterProvider>
-                          <UserProvider>
                             <Component {...pageProps} />
-                          </UserProvider>
                         </FilterProvider>
                       </WishlistContextProvider>
                     </CartContextProvider>

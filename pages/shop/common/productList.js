@@ -336,12 +336,23 @@ const ProductList = ({ colClass, layoutList, openSidebar, noSidebar }) => {
 
 export async function getStaticProps(context) {
   // extract the locale identifier from the URL
-  const { locale } = context
+  const { locale } = context ;
+  
+  try {
+    const response = await axios.get(
+      `${process.env.API_URL}api/v1/products?locale=${locale.slice(0, 2)}&currency=${localStorage.getItem('selectedCurrency')}&page=${page}`
+    );
+
+  } catch (error) {
+    console.error('get more products failed:', error);
+  }
+  
 
   return {
     props: {
       // pass the translation props to the page component
       ...(await serverSideTranslations(locale)),
+      products : response.data.data ,
     },
   }
 }
