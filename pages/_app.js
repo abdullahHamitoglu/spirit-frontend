@@ -3,22 +3,16 @@ import ThemeSettings from "../components/customizer/theme-settings";
 import "../public/assets/scss/app.scss";
 import { ToastContainer } from "react-toastify";
 import TapTop from "../components/common/widgets/Tap-Top";
-// import MessengerCustomerChat from "react-messenger-customer-chat";
 import CartContextProvider from "../helpers/cart/CartContext";
 import { WishlistContextProvider } from "../helpers/wishlist/WishlistContext";
 import FilterProvider from "../helpers/filter/FilterProvider";
 import SettingProvider from "../helpers/theme-setting/SettingProvider";
 import { CompareContextProvider } from "../helpers/Compare/CompareContext";
-import { CurrencyProvider } from "../helpers/Currency/CurrencyContext";
 import { appWithTranslation } from 'next-i18next';
-
-// import Helmet from "react-helmet";
-
 import { ApolloProvider } from "@apollo/client";
 import { useApollo } from "../helpers/apollo";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { CatalogProvider } from "../helpers/catalog/catalogContext";
 
 function MyApp({ Component, pageProps }) {
   const [isLoading, setIsLoading] = useState(true);
@@ -62,10 +56,8 @@ function MyApp({ Component, pageProps }) {
               <link rel="icon" type="image/x-icon" href='assets/images/favicon.png' />
               <title>Multikart - Multi-purpopse E-commerce React Template</title>
             </Head>
-            <CatalogProvider>
               <SettingProvider>
                 <CompareContextProvider>
-                  <CurrencyProvider>
                     <CartContextProvider>
                       <WishlistContextProvider>
                         <FilterProvider>
@@ -73,11 +65,9 @@ function MyApp({ Component, pageProps }) {
                         </FilterProvider>
                       </WishlistContextProvider>
                     </CartContextProvider>
-                  </CurrencyProvider>
                   <ThemeSettings />
                 </CompareContextProvider>
               </SettingProvider>
-            </CatalogProvider>
             <ToastContainer />
             <TapTop />
           </>

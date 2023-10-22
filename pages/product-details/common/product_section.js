@@ -7,6 +7,7 @@ import CartContext from "../../../helpers/cart";
 import { WishlistContext } from "../../../helpers/wishlist/WishlistContext";
 import { CompareContext } from "../../../helpers/Compare/CompareContext";
 import { useRouter } from "next/router";
+import currencyStore from "@/helpers/Currency/CurrencyStore";
 
 const GET_PRODUCTS = gql`
   query products($type: _CategoryType!, $indexFrom: Int!, $limit: Int!) {
@@ -43,11 +44,10 @@ const GET_PRODUCTS = gql`
 
 const ProductSection = () => {
   const router = useRouter();
-  const curContext = useContext(CurrencyContext);
   const wishlistContext = useContext(WishlistContext);
   const compareContext = useContext(CompareContext);
-  const symbol = curContext.state.symbol;
-  const currency = curContext.state;
+  const {selectedCurrency } = currencyStore()
+  const symbol = selectedCurrency;
   const cartCtx = useContext(CartContext);
   const addToCart = cartCtx.addToCart;
   const quantity = cartCtx.quantity;
@@ -333,5 +333,6 @@ const ProductSection = () => {
     </section>
   );
 };
+
 
 export default ProductSection;

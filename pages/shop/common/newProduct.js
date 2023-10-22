@@ -4,6 +4,7 @@ import { gql } from "@apollo/client";
 import { Media } from "reactstrap";
 import Slider from "react-slick";
 import { CurrencyContext } from "../../../helpers/Currency/CurrencyContext";
+import currencyStore from "@/helpers/Currency/CurrencyStore";
 
 const GET_PRODUCTS = gql`
   query newProducts($type: String!) {
@@ -19,8 +20,8 @@ const GET_PRODUCTS = gql`
 `;
 
 const NewProduct = () => {
-  const CurContect = useContext(CurrencyContext);
-  const symbol = CurContect.state.symbol;
+  const {selectedCurrency } = currencyStore()
+  const symbol = selectedCurrency;
   var { loading, data } = useQuery(GET_PRODUCTS, {
     variables: {
       type: "fashion",

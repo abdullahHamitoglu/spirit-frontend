@@ -1,22 +1,24 @@
 import React, { useContext, useEffect } from "react";
 import { Media } from "reactstrap";
 import { useTranslation } from 'next-i18next';
-import { CurrencyContext } from '../../../helpers/Currency/CurrencyContext';
 import Link from "next/link";
 import { useRouter } from "next/router";
+import currencyStore from "@/helpers/Currency/CurrencyStore";
 
 
 
 const Currency = ({ icon }) => {
-  const { state, setCurrency } = useContext(CurrencyContext);
-  const { selectedCurrency, currencies } = state;
+  const { fetchCurrencies, currencies, setCurrency, selectedCurrency } = currencyStore();
   const { t } = useTranslation();
   const { locale, locales } = useRouter();
-  
-  
+
+  useEffect(() => {
+      fetchCurrencies(locale);
+  }, []);
+
   const handleCurrencyClick = (currencyCode) => {
-    console.log(currencyCode)
     setCurrency(currencyCode);
+    console.log(selectedCurrency);
   };
   return (
     <li className="onhover-div mobile-setting">
@@ -30,7 +32,7 @@ const Currency = ({ icon }) => {
           {locales.map((l, i) => (
             <li key={i}>
               <Link href='' locale={l}>
-                {t(l.toLowerCase().replace('-',''))}
+                {t(l.toLowerCase().replace('-', ''))}
               </Link>
             </li>
           ))}
@@ -38,12 +40,12 @@ const Currency = ({ icon }) => {
         <h6>currency</h6>
         <ul className="list-inline">
           {currencies.data && currencies.data.map((currency, i) => (
-              <li key={i} title={currency.name}>
-                <div onClick={() => handleCurrencyClick(currency.code)}>
-                  {currency.code} {currency.symbol}
-                </div>
-              </li>
-            ))}
+            <li key={i} title={currency.name}>
+              <div onClick={() => handleCurrencyClick(currency.code)}>
+                {currency.code} {currency.symbol}
+              </div>
+            </li>
+          ))}
         </ul>
       </div>
     </li>

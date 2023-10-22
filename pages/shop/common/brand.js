@@ -13,7 +13,7 @@ const GET_BRAND = gql`
   }
 `;
 
-const Brand = () => {
+const Brand = () => { 
   const context = useContext(FilterContext);
   const isChecked = context.isChecked;
   const filterChecked = context.filterChecked;

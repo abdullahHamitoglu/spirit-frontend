@@ -3,16 +3,16 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { Row, Col, Media, Modal, ModalBody, ModalHeader } from "reactstrap";
 import CartContext from "../../../helpers/cart";
-import { CurrencyContext } from "../../../helpers/Currency/CurrencyContext";
 import MasterProductDetail from "./MasterProductDetail";
 import Image from "next/image";
+import currencyStore from "@/helpers/Currency/CurrencyStore";
 
 const ProductItem = ({ product, addCart, backImage, des, addWishlist, cartClass, productDetail, addCompare, title }) => {
   // eslint-disable-next-line
   const router = useRouter();
   const cartContext = useContext(CartContext);
-  const curContext = useContext(CurrencyContext);
-  const currency = curContext.state;
+  const { selectedCurrency }  = currencyStore();
+  const currency = selectedCurrency ;
   const plusQty = cartContext.plusQty;
   const minusQty = cartContext.minusQty;
   const quantity = cartContext.quantity;
@@ -36,8 +36,8 @@ const ProductItem = ({ product, addCart, backImage, des, addWishlist, cartClass,
   
 
   const clickProductDetail = () => {
-    const titleProps = product.title.split(" ").join("");
-    router.push(`/product-details/${product.id}` + "-" + `${titleProps}`);
+    // const titleProps = product.name.split(" ").join("");
+    router.push(`/product-details/${product.url_key}`);
   };
   useEffect(() => {
     setImage(image ? image:product.images.length > 0 ? product.images[0].original_image_url : "/assets/images/lazy.png")

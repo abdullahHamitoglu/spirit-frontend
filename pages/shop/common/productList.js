@@ -12,15 +12,13 @@ import axios from "axios";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { CatalogContext } from "../../../helpers/catalog/catalogContext";
 
-const ProductList = ({ colClass, layoutList, openSidebar, noSidebar }) => {
+const ProductList = ({ colClass, layoutList, openSidebar, noSidebar, products }) => {
   const cartContext = useContext(CartContext);
   const quantity = cartContext.quantity;
   const wishlistContext = useContext(WishlistContext);
   const compareContext = useContext(CompareContext);
   const router = useRouter();
   const [limit, setLimit] = useState(8);
-  const { state, setCurrency } = useContext(CurrencyContext);
-  const { selectedCurrency, currencies } = state;
   const [grid, setGrid] = useState(colClass);
   const filterContext = useContext(FilterContext);
   const selectedBrands = filterContext.selectedBrands;
@@ -32,29 +30,28 @@ const ProductList = ({ colClass, layoutList, openSidebar, noSidebar }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [layout, setLayout] = useState(layoutList);
   const [url, setUrl] = useState();
-  const { products, getMoreProducts } = useContext(CatalogContext);
-
-  const { locale } = useRouter();
   useEffect(() => {
     const pathname = window.location.pathname;
     setUrl(pathname);
     router.push(
-      `${pathname}?${filterContext.state}&brand=${selectedBrands}&color=${selectedColor}&size=${selectedSize}&minPrice=${selectedPrice.min}&maxPrice=${selectedPrice.max}`,
-      undefined,
-      { shallow: true }
+      `${pathname}?${filterContext.state}&brand=${selectedBrands}&color=${selectedColor}&size=${selectedSize}&minPrice=${selectedPrice.min}&maxPrice=${selectedPrice.max}`, undefined, { shallow: true }
     );
   }, [selectedBrands, selectedColor, selectedSize, selectedPrice]);
+  // Call this function whenever you want to
+  // refresh props!
+  const refreshData = () => {
+    router.replace(router.asPath);
+  }
+  useEffect(() => {
+    refreshData();
+  }, [selectedCategory, selectedPrice, selectedColor, selectedBrands, sortBy, limit]);
 
-  // useEffect(() => {
-  //   fetchProducts();
-  // }, [selectedCategory, selectedPrice, selectedColor, selectedBrands, sortBy, limit]);
-
-  const handlePagination = () => {
-    if(products.length > 8){
-      setIsLoading(true);
-      getMoreProducts();
-    }
-  };
+  // const handlePagination = () => {
+  //   if(products.length > 8){
+  //     setIsLoading(true);
+  //     getMoreProducts();
+  //   }
+  // };
   return (
     <Col className="collection-content">
       <div className="page-main-content">
@@ -219,9 +216,7 @@ const ProductList = ({ colClass, layoutList, openSidebar, noSidebar }) => {
                         </ul>
                       </div>
                       <div className="product-page-per-view">
-                        <select
-                          onChange={(e) => setLimit(parseInt(e.target.value))}
-                        >
+                        <select onChange={(e) => setLimit(parseInt(e.target.value))} >
                           <option value="10">10 Products Per Page</option>
                           <option value="15">15 Products Per Page</option>
                           <option value="20">20 Products Per Page</option>
@@ -320,7 +315,7 @@ const ProductList = ({ colClass, layoutList, openSidebar, noSidebar }) => {
                           )}
                           Load More
                         </Button>
-                      ): ''}
+                      ) : ''}
                     </Col>
                   </Row>
                 </div>
@@ -335,24 +330,13 @@ const ProductList = ({ colClass, layoutList, openSidebar, noSidebar }) => {
 
 
 export async function getStaticProps(context) {
-  // extract the locale identifier from the URL
-  const { locale } = context ;
-  
-  try {
-    const response = await axios.get(
-      `${process.env.API_URL}api/v1/products?locale=${locale.slice(0, 2)}&currency=${localStorage.getItem('selectedCurrency')}&page=${page}`
-    );
 
-  } catch (error) {
-    console.error('get more products failed:', error);
-  }
-  
+  const { locale } = context
 
   return {
     props: {
       // pass the translation props to the page component
       ...(await serverSideTranslations(locale)),
-      products : response.data.data ,
     },
   }
 }
