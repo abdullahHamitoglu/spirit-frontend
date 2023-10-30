@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import { Modal, ModalHeader, Media, ModalBody, Row, Col } from "reactstrap";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { CurrencyContext } from "../../../helpers/Currency/CurrencyContext";
+
 import CartContext from "../../../helpers/cart";
 
 const ProductItem = ({ product, addCart, addWishlist, addCompare }) => {
@@ -11,8 +11,8 @@ const ProductItem = ({ product, addCart, addWishlist, addCompare }) => {
   const toggleCompare = () => setModalCompare(!modalCompare);
   const [modal, setModal] = useState(false);
   const toggle = () => setModal(!modal);
-  const curContext = useContext(CurrencyContext);
-  const currency = curContext.state;
+    const {selectedCurrency} = currencyStore()
+  const currency = selectedCurrency.symbol;
   const cartContext = useContext(CartContext);
   const plusQty = cartContext.plusQty;
   const minusQty = cartContext.minusQty;

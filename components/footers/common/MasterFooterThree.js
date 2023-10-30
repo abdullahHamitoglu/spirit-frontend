@@ -206,7 +206,7 @@ const MasterFooterThree = ({ layoutClass, footerSectionLayout, logoName, footerC
                       <div className="footer-contant">
                         <ul className="contact-list">
                           <li>
-                            <i className="fa fa-map-marker"></i>Multikart Demo Store, Demo store India 345-659
+                            <i className="fa fa-map-marker"></i>Spirit Demo Store, Demo store India 345-659
                           </li>
                           <li>
                             <i className="fa fa-phone"></i>Call Us: 123-456-7898

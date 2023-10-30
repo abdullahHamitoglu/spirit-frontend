@@ -8,17 +8,16 @@ import currencyStore from "@/helpers/Currency/CurrencyStore";
 
 
 const Currency = ({ icon }) => {
-  const { fetchCurrencies, currencies, setCurrency, selectedCurrency } = currencyStore();
+  const { fetchCurrencies, currencies, setCurrency , selectedCurrency } = currencyStore();
   const { t } = useTranslation();
   const { locale, locales } = useRouter();
-
+  const router = useRouter();
   useEffect(() => {
       fetchCurrencies(locale);
   }, []);
 
-  const handleCurrencyClick = (currencyCode) => {
-    setCurrency(currencyCode);
-    console.log(selectedCurrency);
+  const handleCurrencyClick = (currency) => {
+    setCurrency(currency);
   };
   return (
     <li className="onhover-div mobile-setting">
@@ -31,7 +30,7 @@ const Currency = ({ icon }) => {
         <ul>
           {locales.map((l, i) => (
             <li key={i}>
-              <Link href='' locale={l}>
+              <Link href={{ pathname: router.pathname, query: router.query, }} locale={l}>
                 {t(l.toLowerCase().replace('-', ''))}
               </Link>
             </li>
@@ -40,8 +39,8 @@ const Currency = ({ icon }) => {
         <h6>currency</h6>
         <ul className="list-inline">
           {currencies.data && currencies.data.map((currency, i) => (
-            <li key={i} title={currency.name}>
-              <div onClick={() => handleCurrencyClick(currency.code)}>
+            <li className={selectedCurrency == currency.code} key={i} title={currency.name}>
+              <div onClick={() => handleCurrencyClick(currency)} title={currency.name}>
                 {currency.code} {currency.symbol}
               </div>
             </li>

@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import { Row, Col, Media, Modal, ModalBody, ModalHeader } from "reactstrap";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import { CurrencyContext } from "../../../helpers/Currency/CurrencyContext";
+
 import CartContext from "../../../helpers/cart";
 import MasterProductDetail from "./MasterProductDetail";
 
@@ -20,8 +20,8 @@ const ProductItem = ({
   const minusQty = cartContext.minusQty;
   const quantity = cartContext.quantity;
 
-  const curContext = useContext(CurrencyContext);
-  const currency = curContext.state;
+    const {selectedCurrency} = currencyStore()
+  const currency = selectedCurrency.symbol;
 
   const router = useRouter();
   const [image, setImage] = useState("");

@@ -23,7 +23,7 @@ const Data = [
 const MainBanner = () => {
   return (
     <>
-      <title>MultiKart | Pets Store</title>
+      <title>Spirit | Pets Store</title>
       <section className="p-0 small-slider">
         <Slider className="slide-1 home-slider">
           {Data.map((data, i) => {

@@ -12,6 +12,7 @@ import {
 } from "reactstrap";
 import LogoImage from "../../headers/common/logo";
 import CopyRight from "./copyright";
+import { useTranslation } from "react-i18next";
 
 const MasterFooter = ({
   containerFluid,
@@ -28,6 +29,7 @@ const MasterFooter = ({
   const [isOpen, setIsOpen] = useState();
   const [collapse, setCollapse] = useState(0);
   const width = window.innerWidth <= 767;
+  const { t } = useTranslation();
   useEffect(() => {
     const changeCollapse = () => {
       if (window.innerWidth <= 767) {
@@ -53,11 +55,8 @@ const MasterFooter = ({
                   <Col lg="6">
                     <div className="subscribe">
                       <div>
-                        <h4>KNOW IT ALL FIRST!</h4>
-                        <p>
-                          Never Miss Anything From Multikart By Signing Up To
-                          Our Newsletter.
-                        </p>
+                        <h4>{t('footer.subscribeTitle')}</h4>
+                        <p>{t('footer.subscribeDescription')}</p>
                       </div>
                     </div>
                   </Col>
@@ -68,11 +67,11 @@ const MasterFooter = ({
                           type="text"
                           className="form-control"
                           id="exampleFormControlInput1"
-                          placeholder="Enter your email"
+                          placeholder={t('footer.enterEmailPlaceholder')}
                         />
                       </div>
                       <Button type="submit" className="btn btn-solid">
-                        subscribe
+                        {t('footer.subscribeButton')}
                       </Button>
                     </Form>
                   </Col>
@@ -89,15 +88,14 @@ const MasterFooter = ({
             <Row className="footer-theme partition-f">
               <Col lg="4" md="6">
                 <div
-                  className={`footer-title ${
-                    isOpen && collapse == 1 ? "active" : ""
-                  } footer-mobile-title`}>
+                  className={`footer-title ${isOpen && collapse == 1 ? "active" : ""
+                    } footer-mobile-title`}>
                   <h4
                     onClick={() => {
                       setCollapse(1);
                       setIsOpen(!isOpen);
                     }}>
-                    about
+                    {t('footer.aboutTitle')}
                     <span className="according-menu"></span>
                   </h4>
                 </div>
@@ -107,25 +105,17 @@ const MasterFooter = ({
                     <div className="footer-logo">
                       <LogoImage logo={logoName} />
                     </div>
-                    <p>
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                      sed do eiusmod tempor incididunt ut labore et dolore magna
-                      aliqua. Ut enim ad minim veniam,
-                    </p>
+                    <p>{t('footer.aboutContent')}</p>
                     <div className="footer-social">
                       <ul>
                         <li>
                           <a href="https://www.facebook.com" target="_blank">
-                            <i
-                              className="fa fa-facebook"
-                              aria-hidden="true"></i>
+                            <i className="fa fa-facebook" aria-hidden="true"></i>
                           </a>
                         </li>
                         <li>
                           <a href="https://plus.google.com" target="_blank">
-                            <i
-                              className="fa fa-google-plus"
-                              aria-hidden="true"></i>
+                            <i className="fa fa-google-plus" aria-hidden="true"></i>
                           </a>
                         </li>
                         <li>
@@ -135,9 +125,7 @@ const MasterFooter = ({
                         </li>
                         <li>
                           <a href="https://www.instagram.com" target="_blank">
-                            <i
-                              className="fa fa-instagram"
-                              aria-hidden="true"></i>
+                            <i className="fa fa-instagram" aria-hidden="true"></i>
                           </a>
                         </li>
                         <li>
@@ -153,9 +141,8 @@ const MasterFooter = ({
               <Col className="offset-xl-1">
                 <div className="sub-title">
                   <div
-                    className={`footer-title ${
-                      isOpen && collapse == 2 ? "active" : ""
-                    } `}>
+                    className={`footer-title ${isOpen && collapse == 2 ? "active" : ""
+                      } `}>
                     <h4
                       onClick={() => {
                         if (width) {
@@ -163,7 +150,7 @@ const MasterFooter = ({
                           setCollapse(2);
                         } else setIsOpen(true);
                       }}>
-                      my account
+                      {t('footer.myAccountTitle')}
                       <span className="according-menu"></span>
                     </h4>
                   </div>
@@ -173,30 +160,22 @@ const MasterFooter = ({
                       <ul>
                         <li>
                           <Link href={`/shop/left_sidebar`}>
-                            {/* <a> */}
-                            womens
-                            {/* </a> */}
+                            {t('footer.myAccountLink1')}
                           </Link>
                         </li>
                         <li>
                           <Link href={`/shop/left_sidebar`}>
-                            {/* <a>  */}
-                            clothing
-                            {/* </a> */}
+                            {t('footer.myAccountLink2')}
                           </Link>
                         </li>
                         <li>
                           <Link href={`/shop/left_sidebar`}>
-                            {/* <a> */}
-                            accessories
-                            {/* </a> */}
+                            {t('footer.myAccountLink3')}
                           </Link>
                         </li>
                         <li>
                           <Link href={`/shop/left_sidebar`}>
-                            {/* <a> */}
-                            featured
-                            {/* </a> */}
+                            {t('footer.myAccountLink4')}
                           </Link>
                         </li>
                       </ul>
@@ -207,9 +186,8 @@ const MasterFooter = ({
               <Col>
                 <div className="sub-title">
                   <div
-                    className={`footer-title ${
-                      isOpen && collapse == 3 ? "active" : ""
-                    } `}>
+                    className={`footer-title ${isOpen && collapse == 3 ? "active" : ""
+                      } `}>
                     <h4
                       onClick={() => {
                         if (width) {
@@ -217,7 +195,7 @@ const MasterFooter = ({
                           setCollapse(3);
                         } else setIsOpen(true);
                       }}>
-                      why we choose
+                      {t('footer.whyChooseTitle')}
                       <span className="according-menu"></span>
                     </h4>
                   </div>
@@ -226,19 +204,19 @@ const MasterFooter = ({
                     <div className="footer-contant">
                       <ul>
                         <li>
-                          <a href="#">shipping & return</a>
+                          <a href="#">{t('footer.whyChooseLink1')}</a>
                         </li>
                         <li>
-                          <a href="#">secure shopping</a>
+                          <a href="#">{t('footer.whyChooseLink2')}</a>
                         </li>
                         <li>
-                          <a href="#">gallary</a>
+                          <a href="#">{t('footer.whyChooseLink3')}</a>
                         </li>
                         <li>
-                          <a href="#">affiliates</a>
+                          <a href="#">{t('footer.whyChooseLink4')}</a>
                         </li>
                         <li>
-                          <a href="#">contacts</a>
+                          <a href="#">{t('footer.whyChooseLink5')}</a>
                         </li>
                       </ul>
                     </div>
@@ -248,9 +226,8 @@ const MasterFooter = ({
               <Col>
                 <div className="sub-title">
                   <div
-                    className={`footer-title ${
-                      isOpen && collapse == 4 ? "active" : ""
-                    } `}>
+                    className={`footer-title ${isOpen && collapse == 4 ? "active" : ""
+                      } `}>
                     <h4
                       onClick={() => {
                         if (width) {
@@ -258,7 +235,7 @@ const MasterFooter = ({
                           setCollapse(4);
                         } else setIsOpen(true);
                       }}>
-                      store information
+                      {t('footer.storeInformationTitle')}
                       <span className="according-menu"></span>
                     </h4>
                   </div>
@@ -267,18 +244,16 @@ const MasterFooter = ({
                     <div className="footer-contant">
                       <ul className="contact-list">
                         <li>
-                          <i className="fa fa-map-marker"></i>Multikart Demo
-                          Store, Demo store India 345-659
+                          <i className="fa fa-map-marker"></i>{t('footer.storeAddress')}
                         </li>
                         <li>
-                          <i className="fa fa-phone"></i>Call Us: 123-456-7898
+                          <i className="fa fa-phone"></i>{t('footer.storePhoneNumber')}
                         </li>
                         <li>
-                          <i className="fa fa-envelope-o"></i>Email Us:{" "}
-                          <a href="#">Support@Fiot.com</a>
+                          <i className="fa fa-envelope-o"></i>{t('footer.storeEmail')}
                         </li>
                         <li>
-                          <i className="fa fa-fax"></i>Fax: 123456
+                          <i className="fa fa-fax"></i>{t('footer.storeFax')}
                         </li>
                       </ul>
                     </div>

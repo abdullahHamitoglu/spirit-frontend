@@ -7,6 +7,7 @@ import CartContainer from "../../containers/CartContainer";
 import SearchOverlay from "./search-overlay";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import currencyStore from "@/helpers/Currency/CurrencyStore";
 const IconTopbar = () => {
   const router = useRouter()
   const context = useContext(CartContext);
@@ -30,7 +31,8 @@ const IconTopbar = () => {
   }
   const cartList = context.state;
   const total = context.cartTotal;
-  const symbol = "$";
+  const { selectedCurrency }  = currencyStore();
+  const symbol = selectedCurrency.symbol ;
   return (
     <Fragment>
       <div className="top-header">
@@ -39,7 +41,7 @@ const IconTopbar = () => {
             <Col sm="6">
               <div className="header-contact">
                 <ul>
-                  <li>Welcome to Our store Multikart</li>
+                  <li>Welcome to Our store Spirit</li>
                   <li>
                     <i className="fa fa-phone" aria-hidden="true"></i>Call Us:
                     123 - 456 - 7890
@@ -71,7 +73,7 @@ const IconTopbar = () => {
               <div className="menu-right pull-right">
                 <ul className="header-dropdown">
                   <li className="mobile-wishlist">
-                    <Link href="/page/account/wishlist">
+                    <Link href="//account/wishlist">
                       {/* <a> */}
                       <i className="fa fa-heart" aria-hidden="true"></i>
                       <Media src="/assets/images/icon/like.png" alt="" />
@@ -83,7 +85,7 @@ const IconTopbar = () => {
                     <i className="fa fa-user" aria-hidden="true"></i>
                     <ul className="onhover-show-div">
                       <li>
-                        <Link href="/page/account/login" data-lng="en">
+                        <Link href="/account/login" data-lng="en">
                           Login
                         </Link>
                       </li>

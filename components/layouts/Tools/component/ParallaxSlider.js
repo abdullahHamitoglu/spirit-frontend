@@ -5,7 +5,6 @@ import { useQuery } from "@apollo/client";
 import { gql } from '@apollo/client';
 import CartContext from "../../../../helpers/cart";
 import { CompareContext } from "../../../../helpers/Compare/CompareContext";
-import { CurrencyContext } from "../../../../helpers/Currency/CurrencyContext";
 import { WishlistContext } from "../../../../helpers/wishlist/WishlistContext";
 import { Container, Row, Col } from "reactstrap";
 import ProductItem from "../../../../components/common/product-box/ProductBox12";
@@ -45,7 +44,6 @@ const GET_PRODUCTS = gql`
 const ParallaxSlider = () => {
   const context = useContext(CartContext);
   const compareContext = useContext(CompareContext);
-  const curContext = useContext(CurrencyContext);
   const wishListContext = useContext(WishlistContext);
 
   var { data } = useQuery(GET_PRODUCTS, {

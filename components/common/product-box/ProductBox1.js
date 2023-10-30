@@ -1,23 +1,24 @@
 import React, { useContext, useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { Row, Col, Media, Modal, ModalBody, ModalHeader } from "reactstrap";
+import { Row, Col, Media, Modal, ModalBody, ModalHeader, Spinner } from "reactstrap";
 import CartContext from "../../../helpers/cart";
 import MasterProductDetail from "./MasterProductDetail";
 import Image from "next/image";
 import currencyStore from "@/helpers/Currency/CurrencyStore";
+import { useTranslation } from "react-i18next";
+import useCartStore from "@/helpers/cart/cartStore";
 
-const ProductItem = ({ product, addCart, backImage, des, addWishlist, cartClass, productDetail, addCompare, title }) => {
+const ProductItem = ({ wishListLoading, product, addCart, backImage, des, addWishlist, cartClass, productDetail, addCompare, title }) => {
   // eslint-disable-next-line
   const router = useRouter();
   const cartContext = useContext(CartContext);
-  const { selectedCurrency }  = currencyStore();
-  const currency = selectedCurrency ;
-  const plusQty = cartContext.plusQty;
-  const minusQty = cartContext.minusQty;
-  const quantity = cartContext.quantity;
+  const { selectedCurrency } = currencyStore();
+  const currency = selectedCurrency;
+  const { count, increment, decrement } = useCartStore();
   const setQuantity = cartContext.setQuantity;
 
+  const { t } = useTranslation();
   const [image, setImage] = useState("");
   const [modal, setModal] = useState(false);
   const [modalCompare, setModalCompare] = useState(false);
@@ -33,32 +34,42 @@ const ProductItem = ({ product, addCart, backImage, des, addWishlist, cartClass,
     const newQuantity = parseInt(e.target.value);
     setQuantity(newQuantity);
   };
-  
 
   const clickProductDetail = () => {
-    // const titleProps = product.name.split(" ").join("");
-    router.push(`/product-details/${product.url_key}`);
+    router.push('/products/[slug]', `/products/${product.url_key}`);
   };
+  const handelAddCart = () => {
+    if(product.type == 'simple'){
+      return addCart
+    }else{
+      clickProductDetail()
+    }
+  };
+
   useEffect(() => {
-    setImage(image ? image:product.images.length > 0 ? product.images[0].original_image_url : "/assets/images/lazy.png")
-  }, [image])
+    setImage(image ? image : product.images.length > 0 ? product.images[0].original_image_url : "/assets/images/lazy.jpg")
+  }, [image]);
+
   return (
     <div className="product-box product-wrap">
       <div className="img-wrapper">
         <div className="lable-block">
-          {product.new === true ? <span className="lable3">new</span> : ""}
-          {product.sale === true ? <span className="lable4">on sale</span> : ""}
+          {product.new === true ?
+            <>
+              <span className="lable3">{t('new')}</span>
+            </>
+            : ""}
+          {product.sale === true ? <span className="lable4">{t('on_sale')}</span> : ""}
         </div>
         <div className="front" onClick={clickProductDetail}>
-          <Image width={500}
-            height={300} src={image} className="img-fluid" alt={product.name} />
+          <Media src={image} className="img-fluid" alt={product.name} />
         </div>
         {backImage ? (
           product.images[1] === "undefined" ? (
             "false"
           ) : (
             <div className="back" onClick={clickProductDetail}>
-              <Image src={product.images[1].original_image_url} className="img-fluid m-auto" alt="" />
+              <Media src={product.images[1].original_image_url} className="img-fluid m-auto" alt={product.name} />
             </div>
           )
         ) : (
@@ -66,16 +77,16 @@ const ProductItem = ({ product, addCart, backImage, des, addWishlist, cartClass,
         )}
 
         <div className={cartClass}>
-          <button title="Add to cart" onClick={addCart}>
+          <button title={t('add_to_cart')} onClick={addCart}>
             <i className="fa fa-shopping-cart" aria-hidden="true"></i>
           </button>
-          <a href={null} title="Add to Wishlist" onClick={addWishlist}>
-            <i className="fa fa-heart" aria-hidden="true"></i>
+          <a href={null} title={t('add_to_wishlist')} onClick={addWishlist}>
+            <i className={`icon fa fa-heart${wishListLoading ? ' loading' : ''}${product.is_in_wishlist ? ' active' : ''}`} aria-hidden="true"></i>
           </a>
-          <a href={null} title="Quick View" onClick={toggle}>
+          <a href={null} title={t('quick_view')} onClick={toggle}>
             <i className="fa fa-search" aria-hidden="true"></i>
           </a>
-          <a href={null} title="Compare" onClick={toggleCompare}>
+          <a href={null} title={t('compare')} onClick={toggleCompare}>
             <i className="fa fa-refresh" aria-hidden="true"></i>
           </a>
           <Modal isOpen={modalCompare} toggle={toggleCompare} size="lg" centered>
@@ -89,13 +100,13 @@ const ProductItem = ({ product, addCart, backImage, des, addWishlist, cartClass,
                     }
                     <div className="media-body align-self-center text-center">
                       <h5>
-                        <i className="fa fa-check"></i>Item <span>{product.title} </span>
-                        <span> successfully added to your Compare list</span>
+                        <i className="fa fa-check"></i>{t('item')} <span>{product.name}</span>
+                        <span> {t('successfully_added_to_compare')}</span>
                       </h5>
                       <div className="buttons d-flex justify-content-center">
                         <Link href="/page/compare">
                           <button className="btn-sm btn-solid" onClick={addCompare}>
-                            View Compare list
+                            {t('view_compare_list')}
                           </button>
                         </Link>
                       </div>
@@ -110,8 +121,8 @@ const ProductItem = ({ product, addCart, backImage, des, addWishlist, cartClass,
           <ul className="product-thumb-list">
             {product.images.map((img, i) => (
               <li className={`grid_thumb_img ${img.large_image_url === image ? "active" : ""}`} key={i}>
-                <a href={null} title="Add to Wishlist">
-                  <Image width={37} height={50} src={img.small_image_url} alt="wishlist" onClick={() => onClickHandle(img.large_image_url)} />
+                <a href={null} title={t('add_to_wishlist')}>
+                  <Media src={img.small_image_url} alt={t('wishlist')} onClick={() => onClickHandle(img.large_image_url)} />
                 </a>
               </li>
             ))}
@@ -140,7 +151,7 @@ const ProductItem = ({ product, addCart, backImage, des, addWishlist, cartClass,
                   {product.formatted_price}
                 </h3>
                 <div className="border-product">
-                  <h6 className="product-title">product details</h6>
+                  <h6 className="product-title">{t('product_details')}</h6>
                   <p>{product.short_description}</p>
                 </div>
                 <div className="product-description border-product">
@@ -159,17 +170,17 @@ const ProductItem = ({ product, addCart, backImage, des, addWishlist, cartClass,
                   ) : (
                     ""
                   )}
-                  <h6 className="product-title">quantity</h6>
+                  <h6 className="product-title">{t('quantity')}</h6>
                   <div className="qty-box">
                     <div className="input-group">
                       <span className="input-group-prepend">
-                        <button type="button" className="btn quantity-left-minus" onClick={minusQty} data-type="minus" data-field="">
+                        <button type="button" className="btn quantity-left-minus" onClick={decrement} data-type="minus" data-field="">
                           <i className="fa fa-angle-left"></i>
                         </button>
                       </span>
-                      <input type="text" name="quantity" value={quantity} onChange={changeQty} className="form-control input-number" />
+                      <input type="text" name="quantity" value={count} className="form-control input-number" />
                       <span className="input-group-prepend">
-                        <button type="button" className="btn quantity-right-plus" onClick={() => plusQty(product)} data-type="plus" data-field="">
+                        <button type="button" className="btn quantity-right-plus" onClick={increment} data-type="plus" data-field="">
                           <i className="fa fa-angle-right"></i>
                         </button>
                       </span>
@@ -178,10 +189,10 @@ const ProductItem = ({ product, addCart, backImage, des, addWishlist, cartClass,
                 </div>
                 <div className="product-buttons">
                   <button className="btn btn-solid" onClick={() => addCart(product)}>
-                    add to cart
+                    {t('add_to_cart')}
                   </button>
                   <button className="btn btn-solid" onClick={clickProductDetail}>
-                    View detail
+                    {t('view_detail')}
                   </button>
                 </div>
               </div>
@@ -190,6 +201,7 @@ const ProductItem = ({ product, addCart, backImage, des, addWishlist, cartClass,
         </ModalBody>
       </Modal>
     </div>
+
   );
 };
 

@@ -7,7 +7,7 @@ import Currency from "./common/currency";
 import CartContainer from "../containers/CartContainer";
 import SearchOverlay from "./common/search-overlay";
 import { useRouter } from "next/router";
-import useUserStore from "@/helpers/user/userZustand";
+import useUserStore from "@/helpers/user/userStore";
 
 const HeaderSeven = ({ logoName }) => {
   const { logout } = useUserStore();
@@ -48,7 +48,7 @@ const HeaderSeven = ({ logoName }) => {
                   <div className="top-header">
                     <ul className="header-dropdown">
                       <li className="mobile-wishlist">
-                        <Link href="/page/account/wishlist">
+                        <Link href="//account/wishlist">
                           {/* <a> */}
                           <img src="/assets/images/icon/heart.png" alt="" />
                           {/* </a> */}
@@ -58,7 +58,7 @@ const HeaderSeven = ({ logoName }) => {
                         <img src="/assets/images/icon/avatar.png" alt="" />
                         <ul className="onhover-show-div">
                           <li>
-                            <Link href="/page/account/login" data-lng="en">
+                            <Link href="/account/login" data-lng="en">
                               Login
                             </Link>
                           </li>

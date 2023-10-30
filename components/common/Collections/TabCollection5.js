@@ -4,7 +4,7 @@ import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import { useQuery } from "@apollo/client";
 import { gql } from '@apollo/client';
 import PostLoader from "../PostLoader";
-import { CurrencyContext } from "../../../helpers/Currency/CurrencyContext";
+
 
 const GET_PRODUCTS = gql`
   query products($type: _CategoryType!, $indexFrom: Int!, $limit: Int!) {
@@ -40,8 +40,8 @@ const GET_PRODUCTS = gql`
 `;
 
 const TabContent = ({ data, loading, startIndex, endIndex }) => {
-  const curContext = useContext(CurrencyContext);
-  const currency = curContext.state;
+    const {selectedCurrency} = currencyStore()
+  const currency = selectedCurrency.symbol;
   return (
     <>
       {!data || !data.products || !data.products.items || loading ? (
@@ -115,8 +115,8 @@ const TabContent = ({ data, loading, startIndex, endIndex }) => {
 
 const TabProducts = ({ type }) => {
   const [activeTab, setActiveTab] = useState(type);
-  const curContext = useContext(CurrencyContext);
-  const currency = curContext.state;
+    const {selectedCurrency} = currencyStore()
+  const currency = selectedCurrency.symbol;
 
   var { loading, data } = useQuery(GET_PRODUCTS, {
     variables: {

@@ -1,8 +1,12 @@
 import React from "react";
 import { Container, Row, Col } from "reactstrap";
 import Link from "next/link";
+import { useTranslation } from "react-i18next";
+import { useRouter } from "next/router";
 
 const TopBar = ({ topClass }) => {
+  const router = useRouter();
+  const { t } = useTranslation();
   return (
     <div id="topHeader" className={`top-header ${topClass ? topClass : ""}`}>
       <Container>
@@ -10,10 +14,10 @@ const TopBar = ({ topClass }) => {
           <Col lg="6">
             <div className="header-contact">
               <ul>
-                <li>Welcome to Our store Multikart</li>
+                <li>{t('welcome_to_our_store_Spirit')}</li>
                 <li>
                   <i className="fa fa-phone" aria-hidden="true"></i>
-                  {"Call Us"}: 123 - 456 - 7890
+                  {t('call_us')}: 123 - 456 - 7890
                 </li>
               </ul>
             </div>
@@ -23,23 +27,23 @@ const TopBar = ({ topClass }) => {
               <li className="mobile-wishlist compare-mobile">
                 <Link href={`/page/compare`}>
                   <i className="fa fa-random" aria-hidden="true"></i>
-                  {"compare"}
+                  {t('compare')}
                 </Link>
               </li>
               <li className="mobile-wishlist">
-                <Link href={`/page/account/wishlist`}>
+                <Link href={`/account/wishlist`}>
                   <i className="fa fa-heart" aria-hidden="true"></i>
-                  {"wishlist"}
+                  {t('wishlist')}
                 </Link>
               </li>
               <li className="onhover-dropdown mobile-account">
-                <i className="fa fa-user" aria-hidden="true"></i> {"My account"}
+                <i className="fa fa-user" aria-hidden="true"></i> {t('my_account')}
                 <ul className="onhover-show-div">
                   <li>
-                    <Link href={`/page/account/login`}>Login</Link>
+                    <Link href={`/account/login?redirect_url=${router.asPath}`}>{t('login')}</Link>
                   </li>
                   <li>
-                    <Link href={`/page/account/register`}>Register</Link>
+                    <Link href={`/account/register`}>{t('register')}</Link>
                   </li>
                 </ul>
               </li>

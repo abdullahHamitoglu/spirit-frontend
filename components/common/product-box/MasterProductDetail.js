@@ -30,7 +30,7 @@ const MasterProductDetail = ({
           {product.formatted_price}
           <del>
             <span className="money">
-              {product.formatted_price}
+              {product.formatted_special_price}
             </span>
           </del>
         </h4>

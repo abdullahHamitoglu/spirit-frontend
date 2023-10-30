@@ -8,7 +8,7 @@ import { Container, Row, Col, Media } from "reactstrap";
 import { WishlistContext } from "../../../helpers/wishlist/WishlistContext";
 import PostLoader from "../PostLoader";
 import { CompareContext } from "../../../helpers/Compare/CompareContext";
-import { CurrencyContext } from "../../../helpers/Currency/CurrencyContext";
+
 import Link from "next/link";
 import Image from "next/image";
 
@@ -56,8 +56,8 @@ const TabContent = ({
   const context = useContext(CartContext);
   const wishListContext = useContext(WishlistContext);
   const compareContext = useContext(CompareContext);
-  const curContext = useContext(CurrencyContext);
-  const currency = curContext.state;
+    const {selectedCurrency} = currencyStore()
+  const currency = selectedCurrency.symbol;
   const quantity = context.quantity;
 
   return (
@@ -140,8 +140,8 @@ const SpecialProducts = ({
   const context = useContext(CartContext);
   const wishListContext = useContext(WishlistContext);
   const compareContext = useContext(CompareContext);
-  const curContext = useContext(CurrencyContext);
-  const currency = curContext.state;
+    const {selectedCurrency} = currencyStore()
+  const currency = selectedCurrency.symbol;
   const quantity = context.quantity;
 
   var { loading, data } = useQuery(GET_PRODUCTS, {

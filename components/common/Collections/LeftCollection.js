@@ -3,7 +3,7 @@ import { useQuery } from '@apollo/client';
 import { gql } from '@apollo/client';
 import Slider from 'react-slick';
 import { Media } from 'reactstrap';
-import { CurrencyContext } from '../../../helpers/Currency/CurrencyContext';
+import currencyStore from "@/helpers/Currency/CurrencyStore";
 
 const GET_PRODUCTS = gql`
     query  products($type:_CategoryType!,$indexFrom:Int! ,$limit:Int!) {
@@ -41,8 +41,8 @@ const GET_PRODUCTS = gql`
 
 const LeftCollection = ({type ,border,product}) => {
     
-    const curContext =  useContext(CurrencyContext);
-    const currency = curContext.state;
+    const {selectedCurrency} = currencyStore()
+  const currency = selectedCurrency.symbol;
     
 
     var { data } = useQuery(GET_PRODUCTS, {

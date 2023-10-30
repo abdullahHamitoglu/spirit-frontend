@@ -7,12 +7,16 @@ import ModalComponent from "../components/common/Modal";
 import Head from 'next/head';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import MasterFooter from "../components/footers/common/MasterFooter";
-import MainBanner from "./layouts/Beauty/components/MainBanner";
-import AboutSection from "./layouts/Beauty/components/About-Section";
 import VideoSection from "@/components/layouts/Beauty/components/Video-Section";
 import ThemeSettings from "@/components/customizer/theme-settings";
+import MainBanner from "@/components/layouts/Beauty/components/MainBanner";
+import AboutSection from "@/components/layouts/Beauty/components/About-Section";
+import axios from "axios";
+import { useTranslation } from "react-i18next";
 
-const Fashion = () => {
+const Fashion = ({ homData }) => {
+
+  const { t } = useTranslation()
   return (
     <Fragment>
       <Head>
@@ -20,7 +24,7 @@ const Fashion = () => {
         <link rel="icon" type="image/x-icon" href={"/assets/images/favicon/1.png"} />
       </Head>
       <ModalComponent />
-      <MainBanner />
+      <MainBanner sliders={homData.sliders} />
       <div className="section-b-space">
         <AboutSection />
       </div>
@@ -30,11 +34,12 @@ const Fashion = () => {
           innerClass="title1"
           inner="title-inner1"
           productSlider={Product5}
-          title="New Products"
-          subtitle="special offer"
+          title={t('topCollections.title')} // Add a text key for the title
+          subtitle={t('topCollections.subtitle')} // Add a text key for the subtitle
           designClass="p-t-0 ratio_asos"
           noSlider="true"
           cartClass="cart-info cart-wrap"
+          collection={homData.collections_products[1]}
         />
       </div>
       <div className="section-b-space">
@@ -45,11 +50,12 @@ const Fashion = () => {
         inner="title-inner1"
         type="beauty"
         productSlider={Product5}
-        title="Top Collections"
-        subtitle="special offer"
+        title={t('topCollections.title')} // Add a text key for the title
+        subtitle={t('topCollections.subtitle')} // Add a text key for the subtitle
         designClass="p-t-0 ratio_asos"
         noSlider="true"
         cartClass="cart-info cart-wrap"
+        collection={homData.collections_products[0]}
       />
       <Blog type="beauty" title="title1" inner="title-inner1" />
       <section className="instagram ratio_square section-b-space">
@@ -71,10 +77,12 @@ const Fashion = () => {
 export async function getStaticProps(context) {
   // extract the locale identifier from the URL
   const { locale } = context
-
+  const req = await axios(`${process.env.API_URL}api/v1/home-page?locale=${locale.slice(0, 2)}&currency=KWD`)
+  const homData = req.data.data
   return {
     props: {
       // pass the translation props to the page component
+      homData,
       ...(await serverSideTranslations(locale)),
     },
   }

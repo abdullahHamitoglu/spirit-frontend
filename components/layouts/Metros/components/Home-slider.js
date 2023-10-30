@@ -6,7 +6,7 @@ import MasterBanner from "../../Fashion/Components/MasterBanner";
 const Data = [
   {
     img: "home54",
-    title: "welcome to multikart",
+    title: "welcome to Spirit",
     desc: "flat 10% off",
     link: "#",
   },

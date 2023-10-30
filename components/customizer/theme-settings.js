@@ -443,36 +443,36 @@ const ThemeSettings = () => {
             </Collapse>
             <div className="buy_btn">
               <a
-                href="https://themeforest.net/item/multikart-responsive-react-ecommerce-template/23067773?s_rank=1"
+                href="https://themeforest.net/item/Spirit-responsive-react-ecommerce-template/23067773?s_rank=1"
                 className="btn purchase_btn">
                 <i className="fa fa-shopping-cart" aria-hidden="true"></i>{" "}
-                purchase Multikart now!
+                purchase Spirit now!
               </a>
               <a
-                href="https://themeforest.net/item/multikart-responsive-angular-ecommerce-template/22905358?s_rank=3"
+                href="https://themeforest.net/item/Spirit-responsive-angular-ecommerce-template/22905358?s_rank=3"
                 className="btn purchase_btn">
                 <Media
                   src={`/assets/images/icon/angular.png`}
                   alt=""
                   className="img-fluid"
                 />{" "}
-                Multikart Angular
+                Spirit Angular
               </a>
               <a
-                href="https://themeforest.net/item/multikart-responsive-ecommerce-htms-template/22809967"
+                href="https://themeforest.net/item/Spirit-responsive-ecommerce-htms-template/22809967"
                 className="btn purchase_btn">
-                <i className="fa fa-html5" aria-hidden="true"></i> Multikart
+                <i className="fa fa-html5" aria-hidden="true"></i> Spirit
                 HTML
               </a>
               <a
-                href="https://themeforest.net/item/multikart-multipurpose-shopify-sections-theme/23093831?s_rank=1"
+                href="https://themeforest.net/item/Spirit-multipurpose-shopify-sections-theme/23093831?s_rank=1"
                 className="btn purchase_btn">
                 <Media
                   src={`/assets/images/icon/shopify.png`}
                   alt=""
                   className="img-fluid"
                 />{" "}
-                Multikart Shopify
+                Spirit Shopify
               </a>
             </div>
           </div>

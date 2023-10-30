@@ -7,10 +7,10 @@ import ProductItem from "../product-box/ProductBox12";
 import CartContext from "../../../helpers/cart/index";
 import { Container, Media, Col, Row } from "reactstrap";
 import { WishlistContext } from "../../../helpers/wishlist/WishlistContext";
-import { CurrencyContext } from "../../../helpers/Currency/CurrencyContext";
 import { Product4 } from "../../../services/script";
 import { CompareContext } from "../../../helpers/Compare/CompareContext";
 import LeftCollection from "./LeftCollection";
+import currencyStore from "@/helpers/Currency/CurrencyStore";
 
 const GET_PRODUCTS = gql`
   query products($type: _CategoryType!, $indexFrom: Int!, $limit: Int!) {
@@ -48,8 +48,8 @@ const GET_PRODUCTS = gql`
 const TabContent = ({ data, cartClass, spanClass, startIndex, endIndex }) => {
   const context = useContext(CartContext);
   const compareContext = useContext(CompareContext);
-  const curContext = useContext(CurrencyContext);
-  const symbol = curContext.state.symbol;
+  const { selectedCurrency }  = currencyStore();
+  const symbol = selectedCurrency.symbol ;
   const wishListContext = useContext(WishlistContext);
   return (
     <>
@@ -77,8 +77,8 @@ const NewProduct = ({ type, designClass, cartClass, spanClass }) => {
   const [activeTab, setActiveTab] = useState(type);
   const context = useContext(CartContext);
   const compareContext = useContext(CompareContext);
-  const curContext = useContext(CurrencyContext);
-  const symbol = curContext.state.symbol;
+  const { selectedCurrency }  = currencyStore();
+  const symbol = selectedCurrency.symbol ;
   const wishListContext = useContext(WishlistContext);
 
   var { data } = useQuery(GET_PRODUCTS, {

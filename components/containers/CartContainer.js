@@ -3,7 +3,6 @@ import Link from "next/link";
 import CartHeader from "../headers/common/cart-header";
 import CartContext from "../../helpers/cart";
 import { Media } from "reactstrap";
-import { CurrencyContext } from "../../helpers/Currency/CurrencyContext";
 import currencyStore from "@/helpers/Currency/CurrencyStore";
 
 const CartContainer = ({ icon }) => {
@@ -17,7 +16,7 @@ const CartContainer = ({ icon }) => {
     <Fragment>
       <li className="onhover-div mobile-cart">
         <div className="cart-qty-cls">{cartList.length}</div>
-        <Link href={`/page/account/cart`}>
+        <Link href={`/account/cart`}>
           <div href={null}>
             <Media src={icon} className="img-fluid" alt="" />
             <i className="fa fa-shopping-cart"></i>
@@ -42,7 +41,7 @@ const CartContainer = ({ icon }) => {
               </li>
               <li>
                 <div className="buttons view-cart">
-                  <Link href={`/page/account/cart`}>
+                  <Link href={`/account/cart`}>
                     {/* <a> */}
                     view cart
                     {/* </a> */}

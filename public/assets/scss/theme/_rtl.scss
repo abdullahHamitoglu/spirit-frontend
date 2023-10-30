@@ -3,12 +3,14 @@
 ==========================*/
 body.rtl {
     direction: rtl;
+    font-family: 'Tajawal', sans-serif ;
 }
 // general css
 .rtl {
     .slick-slider {
         direction: ltr;
     }
+
     .slick-slide {
         float: left;
     }
@@ -111,8 +113,9 @@ body.rtl {
     }
     .onhover-dropdown {
         &:before {
-            left: 3px;
+            left: unset;
             right: unset;
+            inset-inline-start: 13px;
         }
     }
     .top-header {

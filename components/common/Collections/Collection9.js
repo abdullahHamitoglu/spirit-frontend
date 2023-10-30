@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { Media, Container, Col, Row } from "reactstrap";
 import { useQuery } from "@apollo/client";
 import { gql } from "@apollo/client";
-import { CurrencyContext } from "../../../helpers/Currency/CurrencyContext";
+
 
 const GET_PRODUCTS = gql`
   query products($type: _CategoryType!, $indexFrom: Int!, $limit: Int!) {
@@ -40,8 +40,8 @@ const GET_PRODUCTS = gql`
 `;
 
 const ProductSlider = ({ type }) => {
-  const curContext = useContext(CurrencyContext);
-  const currency = curContext.state;
+    const {selectedCurrency} = currencyStore()
+  const currency = selectedCurrency.symbol;
   const router = useRouter();
 
   var { data } = useQuery(GET_PRODUCTS, {

@@ -34,7 +34,7 @@ const CartProvider = (props) => {
   const addToCart = (item, quantity) => {
     toast.success("Product Added Successfully !");
     const index = cartItems.findIndex((itm) => itm.id === item.id);
-    const response = axios({
+    axios({
       url: `${process.env.API_URL}api/v1/customer/cart/add/${item.id}`,
       method: 'POST',
       auth:`Bearer ${localStorage.getItem('token')}`,
@@ -43,14 +43,13 @@ const CartProvider = (props) => {
         product_id: item.id,
       },
     }).then(res => {
-      toast.error(res.message)
+      toast.error('added cart')
       console.log(res);
     }).catch((error, errors) => {
-      toast.error(error.message);
-
+      toast.error("error cart");
       console.log(error);
       if (error.response.status == 401) {
-        router.push('/page/account/login')
+        router.push(`/account/login?redirect_url=${router.asPath}`);
       }
     })
     if (index !== -1) {

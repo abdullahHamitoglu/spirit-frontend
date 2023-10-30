@@ -8,7 +8,7 @@ import { WishlistContext } from '../../../helpers/wishlist/WishlistContext';
 import { CompareContext } from '../../../helpers/Compare/CompareContext';
 import PostLoader from '../PostLoader';
 import { useRouter } from 'next/router';
-import { CurrencyContext } from '../../../helpers/Currency/CurrencyContext';
+import currencyStore from "@/helpers/Currency/CurrencyStore";
 
 const GET_PRODUCTS = gql`
     query  products($type:_CategoryType!,$indexFrom:Int! ,$limit:Int!) {
@@ -49,8 +49,9 @@ const ProductSection = ({ type }) => {
     const [modalCompare, setModalCompare] = useState(false);
     const toggle = () => setModal(!modal);
     const toggleCompare = () => setModalCompare(!modalCompare)
-    const curContext = useContext(CurrencyContext);
-    const currency = curContext.state;
+    
+    const {selectedCurrency} = currencyStore()
+  const currency = selectedCurrency.symbol;
     const qty = cartContext.quantity;
     const router = useRouter();
     const [stock, setStock] = useState('InStock');
@@ -120,7 +121,7 @@ const ProductSection = ({ type }) => {
                                     <Col xl="3" md="6" sm="12" key={index}>
                                         <div className="theme-card">
                                             <div className="offer-slider">
-                                                <div className="">
+                                                <div >
                                                     <div className="product-box2 product-box">
                                                         <div className="media img-wrapper">
                                                             <div className="front">

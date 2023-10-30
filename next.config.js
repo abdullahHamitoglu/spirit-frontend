@@ -7,7 +7,7 @@ const nextConfig = {
   
   reactStrictMode: true,
   env: {
-    // API_URL: "https://multikart-graphql-reactpixelstrap.vercel.app/server.js",
+    // API_URL: "https://Spirit-graphql-reactpixelstrap.vercel.app/server.js",
     API_URL: "http://96.30.193.192/",
   },
   images: {
@@ -21,6 +21,7 @@ const nextConfig = {
   },
   
   webpack(config, options) {
+    
     config.module.rules.push({
       test: /\.(png|jpe?g|gif|mp4)$/i,
       use: [
@@ -32,8 +33,9 @@ const nextConfig = {
           },
         },
       ],
+      
     });
-
+    config.resolve.fallback = { fs: false };
     return config;
   },
 }

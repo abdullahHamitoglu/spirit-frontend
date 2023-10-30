@@ -4,7 +4,7 @@ import { Col, Container, Media, Row } from "reactstrap";
 import { useQuery } from "@apollo/client";
 import { gql } from '@apollo/client';
 import PostLoader from "../PostLoader";
-import { CurrencyContext } from "../../../helpers/Currency/CurrencyContext";
+
 import { useRouter } from "next/router";
 const GET_PRODUCTS = gql`
   query products($type: _CategoryType!, $indexFrom: Int!, $limit: Int!) {
@@ -40,8 +40,8 @@ const GET_PRODUCTS = gql`
 `;
 
 const TabContent = ({ data, loading, startIndex, endIndex,clickProductDetail}) => {
-  const curContext = useContext(CurrencyContext);
-  const currency = curContext.state;
+    const {selectedCurrency} = currencyStore()
+  const currency = selectedCurrency.symbol;
   return (
     <Row className="product-tab">
       {!data ||
@@ -97,8 +97,8 @@ const TabContent = ({ data, loading, startIndex, endIndex,clickProductDetail}) =
 const TabCollection = ({ type, bgClass }) => {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState(type);
-  const curContext = useContext(CurrencyContext);
-  const currency = curContext.state;
+    const {selectedCurrency} = currencyStore()
+  const currency = selectedCurrency.symbol;
   var { loading, data } = useQuery(GET_PRODUCTS, {
     variables: {
       type: activeTab,

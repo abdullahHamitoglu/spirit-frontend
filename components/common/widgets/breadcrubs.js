@@ -2,7 +2,7 @@ import React from "react";
 import { Container, Row, Col } from "reactstrap";
 import Link from 'next/link';
 
-const Breadcrubs = ({ title, parent, subTitle }) => {
+const Breadcrubs = ({ title, parent, subTitle  , parentLink}) => {
   return (
     <div className="breadcrumb-section">
       <Container>
@@ -16,7 +16,7 @@ const Breadcrubs = ({ title, parent, subTitle }) => {
             <nav aria-label="breadcrumb" className="theme-breadcrumb">
               <ol className="breadcrumb">
                 <li className="breadcrumb-item">
-                  <Link href="/">{parent}</Link>
+                  <Link href={parentLink ? parentLink : '/'}>{parent}</Link>
                 </li>
                 <li className="breadcrumb-item" aria-current="page">
                   {title}

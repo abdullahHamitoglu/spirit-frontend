@@ -4,7 +4,7 @@ import { gql } from '@apollo/client';
 import CartContext from '../../../../helpers/cart';
 import { WishlistContext } from '../../../../helpers/wishlist/WishlistContext';
 import { CompareContext } from '../../../../helpers/Compare/CompareContext';
-import { CurrencyContext } from '../../../../helpers/Currency/CurrencyContext';
+import currencyStore from "@/helpers/Currency/CurrencyStore";
 import { useQuery } from '@apollo/client';
 import { useRouter } from 'next/router';
 const GET_PRODUCTS = gql`
@@ -53,9 +53,9 @@ const MasonryProduct = ({ type, cartClass }) => {
     const [quantity, setQuantity] = useState(1);
     const [image, setImage] = useState('');
     const uniqueTags = [];
-    const toggle = () => setModal(!modal);
-    const curContext = useContext(CurrencyContext);
-    const currency = curContext.state;
+    const toggle = () => setModal(!modal);  
+    const {selectedCurrency} = currencyStore()
+  const currency = selectedCurrency.symbol;
     const qty = cartContext.quantity;
 
     const minusQty = () => {

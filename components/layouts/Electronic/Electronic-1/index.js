@@ -21,7 +21,7 @@ const Electronic = () => {
       </Helmet>
       <ModalComponent />
       <div className="container-fluid layout-8">
-        <title>MultiKart | Electronic Store</title>
+        <title>Spirit | Electronic Store</title>
 
         <HeaderFour
           fluid={true}

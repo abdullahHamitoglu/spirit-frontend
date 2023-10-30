@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useContext } from "react";
-import { CurrencyContext } from "../../../helpers/Currency/CurrencyContext";
+
 import { Media, Modal, ModalHeader, ModalBody, Row, Col } from "reactstrap";
 import Link from "next/link";
 import CartContext from "../../../helpers/cart";
@@ -7,8 +7,8 @@ import { useRouter } from "next/router";
 import MasterProductDetail from "./MasterProductDetail";
 
 const ProductSection = ({ product, addToComapre, addWishlist, addCart }) => {
-  const curContext = useContext(CurrencyContext);
-  const currency = curContext.state;
+    const {selectedCurrency} = currencyStore()
+  const currency = selectedCurrency.symbol;
   const cartContext = useContext(CartContext);
   const plusQty = cartContext.plusQty;
   const minusQty = cartContext.minusQty;

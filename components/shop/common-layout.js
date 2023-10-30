@@ -4,7 +4,7 @@ import Breadcrubs from "../common/widgets/breadcrubs";
 import MasterFooter from "../footers/common/MasterFooter";
 import Head from "next/head";
 
-const CommonLayout = ({ children, title, parent, subTitle }) => {
+const CommonLayout = ({ children, title, parent, subTitle , parentLink }) => {
   return (
     <>
       <Head>
@@ -12,7 +12,7 @@ const CommonLayout = ({ children, title, parent, subTitle }) => {
         <link rel="icon" type="image/x-icon" href="/assets/images/favicon/1.png" />
       </Head>
       <HeaderOne topClass="top-header" logoName="logo.png" />
-      <Breadcrubs title={title} parent={parent} subTitle={subTitle} />
+      <Breadcrubs title={title} parent={parent} subTitle={subTitle} parentLink={parentLink} />
       <>{children}</>
       <MasterFooter
         footerClass={`footer-light `}

@@ -2,7 +2,8 @@ import React, { useTransition } from "react";
 import { Container, Row, Col } from "reactstrap";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
-import useUserStore from "@/helpers/user/userZustand";
+import useUserStore from "@/helpers/user/userStore";
+import { useRouter } from "next/router";
 
 const TopBarDark = ({ topClass, fluid }) => {
   const { isAuthenticated, logout } = useUserStore();
@@ -10,7 +11,7 @@ const TopBarDark = ({ topClass, fluid }) => {
   const Logout = () => {
     logout();
   };
-
+  const router = useRouter();
   return (
     <div className={topClass}>
       <Container fluid={fluid}>
@@ -18,7 +19,7 @@ const TopBarDark = ({ topClass, fluid }) => {
           <Col lg="6">
             <div className="header-contact">
               <ul>
-                <li>Welcome to Our store Multikart</li>
+                <li>Welcome to Our store Spirit</li>
                 <li>
                   <i className="fa fa-phone text-white" aria-hidden="true"></i>
                   Call Us: 123 - 456 - 7890
@@ -29,7 +30,7 @@ const TopBarDark = ({ topClass, fluid }) => {
           <Col lg="6" className="text-end">
             <ul className="header-dropdown">
               <li className="mobile-wishlist">
-                <Link href="/page/account/wishlist">
+                <Link href="//account/wishlist">
                   {/* <a> */}
                   <i className="fa fa-heart" aria-hidden="true"></i> {t("wishlist")}
                   {/* </a> */}
@@ -41,7 +42,7 @@ const TopBarDark = ({ topClass, fluid }) => {
                   {isAuthenticated ?
                     <>
                       <li>
-                        <Link href={`/page/account/profile`}>
+                        <Link href={`/account/profile`}>
                           {t('profile')}
                         </Link>
                       </li>
@@ -52,12 +53,12 @@ const TopBarDark = ({ topClass, fluid }) => {
                     :
                     <>
                       <li>
-                        <Link href={`/page/account/login`}>
+                        <Link href={`/account/login?redirect_url=${router.asPath}`}>
                           {t('login')}
                         </Link>
                       </li>
                       <li>
-                        <Link href={`/page/account/register`}>
+                        <Link href={`/account/register`}>
                           {t('register')}
                         </Link>
                       </li>

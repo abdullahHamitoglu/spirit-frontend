@@ -7,7 +7,8 @@ import CartContext from "../../../helpers/cart/index";
 import Slider from "react-slick";
 import { CompareContext } from "../../../helpers/Compare/CompareContext";
 import { WishlistContext } from "../../../helpers/wishlist/WishlistContext";
-import { CurrencyContext } from "../../../helpers/Currency/CurrencyContext";
+import currencyStore from "@/helpers/Currency/CurrencyStore";
+
 
 const GET_PRODUCTS = gql`
   query products($type: _CategoryType!, $indexFrom: Int!, $limit: Int!) {
@@ -46,8 +47,8 @@ const ProductBox = ({ type, cartClass }) => {
   const context = useContext(CartContext);
   const wishlistContext = useContext(WishlistContext);
   const contextCompare = useContext(CompareContext);
-  const curContext = useContext(CurrencyContext);
-  const currency = curContext.state;
+  const {selectedCurrency} = currencyStore()
+  const currency = selectedCurrency.symbol;
   const quantity = context.quantity;
 
   var { data } = useQuery(GET_PRODUCTS, {

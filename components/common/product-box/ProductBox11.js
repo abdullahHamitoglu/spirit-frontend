@@ -1,13 +1,15 @@
 import React, { Fragment, useState, useContext } from "react";
 import { Col, Media, ModalHeader, Modal, ModalBody, Row } from "reactstrap";
-import { CurrencyContext } from "../../../helpers/Currency/CurrencyContext";
+
 import Link from "next/link";
 import CartContext from "../../../helpers/cart";
 import MasterProductDetail from "./MasterProductDetail";
+import currencyStore from "@/helpers/Currency/CurrencyStore";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 const ProductSection = ({ product, addToCompare, addWishlist, addCart }) => {
-  const curContext = useContext(CurrencyContext);
-  const currency = curContext.state;
+  const {selectedCurrency} = currencyStore();
+  const currency = selectedCurrency;
   const [modal, setModal] = useState(false);
   const [modalCompare, setModalCompare] = useState(false);
   const toggleCompare = () => setModalCompare(!modalCompare);
@@ -251,5 +253,18 @@ const ProductSection = ({ product, addToCompare, addWishlist, addCart }) => {
     </Fragment>
   );
 };
+
+export async function getStaticProps(context) {
+  // extract the locale identifier from the URL
+
+  const { locale } = context ;
+
+  return {
+      props: {
+          // pass the translation props to the page component
+          ...(await serverSideTranslations(locale)),
+      },
+  }
+}
 
 export default ProductSection;

@@ -8,7 +8,7 @@ import { Container, Row, Col, Media } from "reactstrap";
 import { WishlistContext } from "../../../helpers/wishlist/WishlistContext";
 import PostLoader from "../PostLoader";
 import { CompareContext } from "../../../helpers/Compare/CompareContext";
-import { CurrencyContext } from "../../../helpers/Currency/CurrencyContext";
+
 
 const GET_PRODUCTS = gql`
   query products($type: _CategoryType!, $indexFrom: Int!, $limit: Int!) {
@@ -54,8 +54,8 @@ const TabContent = ({
   const context = useContext(CartContext);
   const wishListContext = useContext(WishlistContext);
   const compareContext = useContext(CompareContext);
-  const curContext = useContext(CurrencyContext);
-  const currency = curContext.state;
+    const {selectedCurrency} = currencyStore()
+  const currency = selectedCurrency.symbol;
   const quantity = context.quantity;
 
   return (

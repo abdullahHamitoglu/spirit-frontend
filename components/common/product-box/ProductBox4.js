@@ -10,7 +10,7 @@ import {
   Row,
   Col,
 } from "reactstrap";
-import { CurrencyContext } from "../../../helpers/Currency/CurrencyContext";
+
 import CartContext from "../../../helpers/cart";
 import MasterProductDetail from "./MasterProductDetail";
 
@@ -28,8 +28,8 @@ const ProductBox4 = ({ product, addToCompare, addCart, addWishlist }) => {
   const toggle = () => setModal(!modal);
   const toggleCompare = () => setModalCompare(!modalCompare);
 
-  const curContext = useContext(CurrencyContext);
-  const currency = curContext.state;
+    const {selectedCurrency} = currencyStore()
+  const currency = selectedCurrency.symbol;
   const uniqueTags = [];
 
   const changeQty = (e) => {

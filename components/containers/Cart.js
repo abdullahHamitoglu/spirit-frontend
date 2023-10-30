@@ -2,12 +2,12 @@ import React, { useContext, Fragment, useState } from "react";
 import Link from "next/link";
 import CartContext from "../../helpers/cart";
 import { Media } from "reactstrap";
-import { CurrencyContext } from "../../helpers/Currency/CurrencyContext";
+import currencyStore from "@/helpers/Currency/CurrencyStore";
 
 const CartComponent = ({ icon, layout }) => {
   const context = useContext(CartContext);
-  const currContext = useContext(CurrencyContext);
-  const symbol = currContext.state.symbol;
+  const { selectedCurrency }  = currencyStore();
+  const symbol = selectedCurrency.symbol ;
   const cartList = context.state;
   const total = context.cartTotal;
   const removeFromCart = context.removeFromCart;
@@ -87,7 +87,7 @@ const CartComponent = ({ icon, layout }) => {
               <li>
                 <div className="buttons">
                   <Link
-                    href="/page/account/cart"
+                    href="/account/cart"
                     className="btn btn-solid btn-xs view-cart">
                     {/* <a > */}
                     view cart

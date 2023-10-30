@@ -7,7 +7,12 @@ import { createJSONStorage, persist } from 'zustand/middleware';
 const currencyStore = create(
     persist(
         (set, get) => ({
-            selectedCurrency: 'USD',
+            selectedCurrency: {
+                "id": 1,
+                "code": "KWD",
+                "name": "Kuwaiti Dinar",
+                "symbol": "KWD",
+            },
             currencies: [],
             fetchCurrencies: async (locale) => {
                 try {
@@ -24,7 +29,7 @@ const currencyStore = create(
         }),
         {
             name: 'currency-storage', // name of the item in the storage (must be unique)
-            storage: createJSONStorage(() => sessionStorage), // (optional) by default, 'localStorage' is used
+            storage: createJSONStorage(() => localStorage), // (optional) by default, 'localStorage' is used
         }
     )
 );

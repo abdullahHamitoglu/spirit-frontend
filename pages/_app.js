@@ -52,22 +52,29 @@ function MyApp({ Component, pageProps }) {
         ) : (
           <>
             <Head>
+              {locale == 'ar-KW' ?
+                <>
+                  <link rel="preconnect" href="https://fonts.googleapis.com" />
+                  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+                  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@200;300;400;500;700;800;900&display=swap" rel="stylesheet" />
+                </>
+                : ''}
               <meta name="viewport" content="width=device-width, initial-scale=1" />
               <link rel="icon" type="image/x-icon" href='assets/images/favicon.png' />
-              <title>Multikart - Multi-purpopse E-commerce React Template</title>
+              <title>Spirit - Multi-purpopse E-commerce React Template</title>
             </Head>
-              <SettingProvider>
-                <CompareContextProvider>
-                    <CartContextProvider>
-                      <WishlistContextProvider>
-                        <FilterProvider>
-                            <Component {...pageProps} />
-                        </FilterProvider>
-                      </WishlistContextProvider>
-                    </CartContextProvider>
-                  <ThemeSettings />
-                </CompareContextProvider>
-              </SettingProvider>
+            <SettingProvider>
+              <CompareContextProvider>
+                <CartContextProvider>
+                  <WishlistContextProvider>
+                    <FilterProvider>
+                      <Component {...pageProps} />
+                    </FilterProvider>
+                  </WishlistContextProvider>
+                </CartContextProvider>
+                <ThemeSettings />
+              </CompareContextProvider>
+            </SettingProvider>
             <ToastContainer />
             <TapTop />
           </>

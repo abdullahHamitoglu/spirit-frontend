@@ -8,7 +8,7 @@ import ProductItem from "../product-box/ProductBox6";
 import CartContext from "../../../helpers/cart";
 import { WishlistContext } from "../../../helpers/wishlist/WishlistContext";
 import { Tabs, Tab, TabList, TabPanel } from "react-tabs";
-import { CurrencyContext } from "../../../helpers/Currency/CurrencyContext";
+
 
 const GET_PRODUCTS = gql`
   query products($type: _CategoryType!, $indexFrom: Int!, $limit: Int!) {
@@ -45,8 +45,6 @@ const GET_PRODUCTS = gql`
 `;
 
 const TabContent = ({ data, startIndex, endIndex }) => {
-  // const curContext = useContext(CurrencyContext);
-  // const currency = curContext.state;
   const context = useContext(CartContext);
   const contextWishlist = useContext(WishlistContext);
 
@@ -74,8 +72,8 @@ const TabContent = ({ data, startIndex, endIndex }) => {
 };
 
 const ProductSlider = ({ type }) => {
-  const curContext = useContext(CurrencyContext);
-  const currency = curContext.state;
+  const { selectedCurrency } = currencyStore()
+  const currency = selectedCurrency.symbol;
   const context = useContext(CartContext);
   const contextWishlist = useContext(WishlistContext);
 
@@ -184,7 +182,7 @@ const ProductSlider = ({ type }) => {
                 <h5 className="title-border">RECOMMENDATIONS FOR YOU</h5>
                 <TabList className="tabs tab-title">
                   <Tab className="current">New Products</Tab>
-                  <Tab className="">Featured Products</Tab>
+                  <Tab >Featured Products</Tab>
                 </TabList>
               </div>
               <div className="tab-content-cls ratio_asos">

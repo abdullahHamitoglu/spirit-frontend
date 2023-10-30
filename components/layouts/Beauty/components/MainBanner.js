@@ -4,6 +4,12 @@ import Slider from "react-slick";
 import { Container, Row, Col } from "reactstrap";
 import MasterBanner from "../../Fashion/Components/MasterBanner";
 
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation } from 'swiper/modules';
+
+import "swiper/css";
+import "swiper/css/navigation";
+
 const Data = [
   {
     imgClass: "home34",
@@ -44,26 +50,37 @@ const Banner = ({ imgClass, title, about, btn }) => {
     </div>
   );
 };
-const MainBanner = () => {
+const MainBanner = (sliders) => {
+
+
   return (
     <Fragment>
-      <title>ultiKart | Beauty Store</title>
+      <title>Spirit | Beauty Store</title>
       <HeaderOne logoName={"layout3/logo.png"} topClass="top-header" />
       <section className="p-0">
-        <Slider className="slide-1 home-slider">
-          {Data.map((data, i) => {
+        <Swiper
+          spaceBetween={50}
+          slidesPerView={1}
+          loop={true}
+          navigation={true}
+          modules={[Navigation]}
+          className="slide-1 home-slider"
+        >
+          {sliders.sliders.length && sliders.sliders.map((data, i) => {
             return (
-              <MasterBanner
-                key={i}
-                img={data.imgClass}
-                desc={data.about}
-                title={data.title}
-                link={data.link}
-                classes={data.classes}
-              />
+              <SwiperSlide key={i}>
+                <MasterBanner
+                  key={i}
+                  image={data.image_url}
+                  desc={data.content}
+                  title={data.title}
+                  link={data.path}
+                  classes={data.classes}
+                />
+              </SwiperSlide>
             );
           })}
-        </Slider>
+        </Swiper>
       </section>
     </Fragment>
   );

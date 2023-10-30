@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { Row, Col, Media, Modal, ModalBody, ModalHeader } from "reactstrap";
-import { CurrencyContext } from "../../../helpers/Currency/CurrencyContext";
+
 import CartContext from "../../../helpers/cart";
 
 const ProductItem = ({
@@ -12,8 +12,8 @@ const ProductItem = ({
   addToCompare,
   spanClass,
 }) => {
-  const curContext = useContext(CurrencyContext);
-  const currency = curContext.state;
+    const {selectedCurrency} = currencyStore()
+  const currency = selectedCurrency.symbol;
 
   const router = useRouter();
   const cartContext = useContext(CartContext);
