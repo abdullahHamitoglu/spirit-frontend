@@ -48,23 +48,23 @@ const useCartStore = create(
                     toast.error(error.message);
                 });
             },
-            // removeFromCart: (id) => {
-            //     set({ cartLoading: true });
-            //     axios({
-            //         method: "DEL",
-            //         url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/customer/cart/remove/${id}`,
-            //         headers: {
-            //             'Authorization': `Bearer ${useUserStore.getState().token}`
-            //         },
-            //         data,
-            //     }).then((res) => {
-            //         set({ cartData: res.data.data, cartLoading: false });
-            //         toast.success(res.data.message);
-            //     }).catch((error) => {
-            //         set({ cartLoading: false })
-            //         console.log(error);
-            //     });
-            // },
+            removeFromCart: (id) => {
+                set({ cartLoading: true });
+                axios({
+                    method: "DEL",
+                    url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/customer/cart/remove/${id}`,
+                    headers: {
+                        'Authorization': `Bearer ${useUserStore.getState().token}`
+                    },
+                    data,
+                }).then((res) => {
+                    set({ cartData: res.data.data, cartLoading: false });
+                    toast.success(res.data.message);
+                }).catch((error) => {
+                    set({ cartLoading: false })
+                    console.log(error);
+                });
+            },
             emptyFromCart: () => {
                 set({ cartLoading: true });
                 axios({
