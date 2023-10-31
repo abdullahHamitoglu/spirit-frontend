@@ -21,7 +21,7 @@ const useUserStore = create(
                 // Send a POST request to your registration API endpoint
                 await axios({
                     method: 'post',
-                    url: process.env.API_URL + `api/v1/customer/register?locale=${locale.slice(0, 2)}`,
+                    url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/customer/register?locale=${locale.slice(0, 2)}`,
                     data: userData,
                 }).then(res => {
                     if (res.data) {
@@ -37,7 +37,7 @@ const useUserStore = create(
             login: async (userData, locale) => {
                 await axios({
                     method: 'post',
-                    url: process.env.API_URL + `api/v1/customer/login?locale=${locale.slice(0, 2)}`,
+                    url: process.env.NEXT_PUBLIC_API_URL + `api/v1/customer/login?locale=${locale.slice(0, 2)}`,
                     data: { ...userData, device_name: osDetails.name },
                 }).then(res => {
                     if (res.data && res.status == 200) {
@@ -70,7 +70,7 @@ const useUserStore = create(
             updateProfile: async (profileData) => {
                 await axios({
                     method: 'put',
-                    url: process.env.API_URL + `api/v1/customer/profile`,
+                    url: process.env.NEXT_PUBLIC_API_URL + `api/v1/customer/profile`,
                     headers: {
                         'Authorization': `Bearer ${get().token}`
                     },
@@ -99,7 +99,7 @@ const useUserStore = create(
             forgetPws: async (data) => {
                 await axios({
                     method: 'post',
-                    url: process.env.API_URL + `api/v1/customer/forget-password?locale=${locale.slice(0, 2)}`,
+                    url: process.env.NEXT_PUBLIC_API_URL + `api/v1/customer/forget-password?locale=${locale.slice(0, 2)}`,
                     data,
                 }).then(res => {
                     if (res.data && res.status == 200) {
@@ -119,7 +119,7 @@ const useUserStore = create(
                 });
             },
             Address: async (formData, method, id) => {
-                const url = process.env.API_URL + 'api/v1/customer/addresses' + (id ?? `/${id}`)
+                const url = process.env.NEXT_PUBLIC_API_URL + 'api/v1/customer/addresses' + (id ?? `/${id}`)
 
                 await axios({
                     method: method ?? 'get',

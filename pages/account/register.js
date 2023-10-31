@@ -26,8 +26,14 @@ const Register = () => {
             .required('Confirm Password is required'),
     });
 
+
     if (isAuthenticated) {
-        router.push('/')
+        const redirectUrl = router.query.redirect_url
+        if (redirectUrl) {
+            router.push(redirectUrl);
+        } else {
+            router.push('/');
+        }
     }
     return (
         <CommonLayout parent="home" title="register">

@@ -13,18 +13,20 @@ import MainBanner from "@/components/layouts/Beauty/components/MainBanner";
 import AboutSection from "@/components/layouts/Beauty/components/About-Section";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
+import { getPageData } from "@/controllers/homeController";
 
-const Fashion = ({ homData }) => {
-
+const Fashion = ({ page, homeData }) => {
   const { t } = useTranslation()
   return (
     <Fragment>
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" type="image/x-icon" href={"/assets/images/favicon/1.png"} />
+        <meta name="description" content={page.content} />
+        <title>{page.title}</title>
       </Head>
       <ModalComponent />
-      <MainBanner sliders={homData.sliders} />
+      <MainBanner sliders={homeData.sliders} />
       <div className="section-b-space">
         <AboutSection />
       </div>
@@ -39,7 +41,7 @@ const Fashion = ({ homData }) => {
           designClass="p-t-0 ratio_asos"
           noSlider="true"
           cartClass="cart-info cart-wrap"
-          collection={homData.collections_products[1]}
+          collection={homeData.collections_products[1]}
         />
       </div>
       <div className="section-b-space">
@@ -55,7 +57,7 @@ const Fashion = ({ homData }) => {
         designClass="p-t-0 ratio_asos"
         noSlider="true"
         cartClass="cart-info cart-wrap"
-        collection={homData.collections_products[0]}
+        collection={homeData.collections_products[0]}
       />
       <Blog type="beauty" title="title1" inner="title-inner1" />
       <section className="instagram ratio_square section-b-space">
@@ -77,12 +79,15 @@ const Fashion = ({ homData }) => {
 export async function getStaticProps(context) {
   // extract the locale identifier from the URL
   const { locale } = context
-  const req = await axios(`${process.env.API_URL}api/v1/home-page?locale=${locale.slice(0, 2)}&currency=KWD`)
-  const homData = req.data.data
+  const req = await axios(`${process.env.NEXT_PUBLIC_API_URL}api/v1/home-page?locale=${locale.slice(0, 2)}&currency=KWD`)
+  const homeData = req.data.data;
+  
+  const page = await getPageData(locale, 'home');
   return {
     props: {
       // pass the translation props to the page component
-      homData,
+      page,
+      homeData,
       ...(await serverSideTranslations(locale)),
     },
   }

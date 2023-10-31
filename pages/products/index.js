@@ -8,8 +8,11 @@ import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 import currencyStore from '@/helpers/Currency/CurrencyStore';
 import useUserStore from '@/helpers/user/userStore';
+import Head from 'next/head';
+import { getBrands, getCatagories, getProducts } from '@/controllers/productsController';
+import { getPageData } from '@/controllers/homeController';
 
-const index = ({ products, categories ,brands }) => {
+const index = ({ products, categories, brands, page }) => {
     const [sidebarView, setSidebarView] = useState(false);
     const { t } = useTranslation();
     const [data, setData] = useState({
@@ -26,53 +29,38 @@ const index = ({ products, categories ,brands }) => {
     useEffect(() => {
         setData({ ...data, loading: false })
     }, [products])
-
     return (
-        <CommonLayout title={t('products')} parent={t('home')} >
-            <section className="section-b-space ratio_asos">
-                <div className="collection-wrapper">
-                    <Container>
-                        <Row>
-                            <FilterPage categories={categories} brands={brands} sm="3" sidebarView={sidebarView} closeSidebar={() => openCloseSidebar(sidebarView)} />
-                            <ProductList colClass="col-xl-3 col-6 col-grid-box" layoutList='' openSidebar={() => openCloseSidebar(sidebarView)} data={data} />
-                        </Row>
-                    </Container>
-                </div>
-            </section>
-        </CommonLayout>
+        <>
+            <Head>
+                <meta name="keywords" content={page.meta_keywords} />
+                <meta name="description" content={page.meta_description} />
+                <title>{page.meta_title}</title>
+            </Head>
+            <CommonLayout title={page.title} parent={t('home')} >
+                <section className="section-b-space ratio_asos">
+                    <div className="collection-wrapper">
+                        <Container>
+                            <Row>
+                                <FilterPage categories={categories} brands={brands} sm="3" sidebarView={sidebarView} closeSidebar={() => openCloseSidebar(sidebarView)} />
+                                <ProductList page={page} colClass="col-xl-3 col-6 col-grid-box" layoutList='' openSidebar={() => openCloseSidebar(sidebarView)} data={data} />
+                            </Row>
+                        </Container>
+                    </div>
+                </section>
+            </CommonLayout>
+        </>
     )
 }
 export async function getStaticProps(context) {
-    // extract the locale identifier from the URL
-    const currency = currencyStore.getState().selectedCurrency.code
-    const { locale } = context
-    const response = await axios({
-        method: 'GET',
-        url: `${process.env.API_URL}api/v1/products`,
-        params: {
-            'locale': locale.slice(0, 2),
-            'currency': currency,
-            'brand': '',
-            'page': 1,
-            'price': '',
-        },
-        headers: {
-            'Authorization': `Bearer ${useUserStore.getState().token}`,
-        },
-    });
-    const products = response.data.data
-    const categoriesResponse = await axios({
-        url: `${process.env.API_URL}api/v1/categories?locale=${locale.slice(0, 2)}&currency=${currency}&parent_id=1`,
-    })
-    const categories = categoriesResponse.data.data
-    const brandsResponse = await axios({
-        url: `${process.env.API_URL}api/v1/brands?locale=${locale.slice(0, 2)}&currency=${currency}&parent_id=1`,
-    })
-    const brands = brandsResponse.data.data
-
+    const { locale } = context;
+    const products = await getProducts(locale);
+    const categories = await getCatagories(locale);
+    const brands = await getBrands(locale);
+    const page = await getPageData(locale, 'products');
     return {
         props: {
             // pass the translation props to the page component
+            page,
             products,
             categories,
             brands,

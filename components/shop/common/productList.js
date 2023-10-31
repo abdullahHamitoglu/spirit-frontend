@@ -13,7 +13,7 @@ import currencyStore from "@/helpers/Currency/CurrencyStore";
 import useWishListStore from "@/helpers/wishlist/wishlistStore";
 import useCartStore from "@/helpers/cart/cartStore";
 
-const ProductList = ({ colClass, layoutList, openSidebar, noSidebar, data }) => {
+const ProductList = ({ colClass, layoutList, openSidebar, noSidebar, data , page }) => {
   const cartContext = useContext(CartContext);
   const quantity = cartContext.quantity;
   const { wishList } = useWishListStore();
@@ -94,31 +94,9 @@ const ProductList = ({ colClass, layoutList, openSidebar, noSidebar, data }) => 
         <Row>
           <Col sm="12">
             <div className="top-banner-wrapper">
-              <a href={null}>
-                <Media
-                  src="/assets/images/mega-menu/2.jpg"
-                  className="img-fluid blur-up lazyload"
-                  alt=""
-                />
-              </a>
               <div className="top-banner-content small-section">
-                <h4>fashion</h4>
-                <h5>
-                  Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry.
-                </h5>
-                <p>
-                  Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry. Lorem Ipsum has been the industry's
-                  standard dummy text ever since the 1500s, when an unknown
-                  printer took a galley of type and scrambled it to make a type
-                  specimen book. It has survived not only five centuries, but
-                  also the leap into electronic typesetting, remaining
-                  essentially unchanged. It was popularised in the 1960s with
-                  the release of Letraset sheets containing Lorem Ipsum
-                  passages, and more recently with desktop publishing software
-                  like Aldus PageMaker including versions of Lorem Ipsum.
-                </p>
+                <h1 className="h4">{page.title}</h1>
+                <div dangerouslySetInnerHTML={{__html: page.content}} />
               </div>
             </div>
             <Row>

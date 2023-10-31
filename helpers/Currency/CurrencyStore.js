@@ -16,7 +16,7 @@ const currencyStore = create(
             currencies: [],
             fetchCurrencies: async (locale) => {
                 try {
-                    const response = await axios.get(`${process.env.API_URL}api/v1/currencies?locale=${locale.slice(0, 2)}`);
+                    const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}api/v1/currencies?locale=${locale.slice(0, 2)}`);
                     set({ currencies: response.data });
                 } catch (error) {
                     console.error('Failed to fetch currencies:', error);

@@ -21,7 +21,7 @@ function Post({ product }) {
 }
 export async function getStaticPaths({ locale, locales }) {
   
-  const response = await axios(`${process.env.API_URL}api/v1/products?locale=${String(locale).slice(0, 2)}&currency=KWD`);
+  const response = await axios(`${process.env.NEXT_PUBLIC_API_URL}api/v1/products?locale=${String(locale).slice(0, 2)}&currency=KWD`);
   const products = response.data.data;
 
   const paths = products.flatMap((product) => {
@@ -43,7 +43,7 @@ export async function getStaticProps(context) {
   const { locale } = context;
   const slug = context.params.slug;
   
-  const response = await axios.get(`${process.env.API_URL}api/v1/products-slug/${slug}?locale=${locale.slice(0, 2)}&currency=KWD`);
+  const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}api/v1/products-slug/${slug}?locale=${locale.slice(0, 2)}&currency=KWD`);
 
   const product = await response.data.data;
 

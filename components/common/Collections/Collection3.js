@@ -8,6 +8,7 @@ import "swiper/css/pagination";
 import ProductItem from "../product-box/ProductBox1";
 import currencyStore from "@/helpers/Currency/CurrencyStore";
 import useWishListStore from "@/helpers/wishlist/wishlistStore";
+import useCartStore from "@/helpers/cart/cartStore";
 
 
 const TopCollection = ({ type, title, subtitle, designClass, noSlider, cartClass, productSlider, titleClass, noTitle, innerClass, inner, backImage, collection }) => {
@@ -18,6 +19,7 @@ const TopCollection = ({ type, title, subtitle, designClass, noSlider, cartClass
 
   const symbol = selectedCurrency.symbol;
 
+  const {addToCart} = useCartStore()
   const quantity = context.quantity;
   const [delayProduct, setDelayProduct] = useState(true);
 
@@ -99,7 +101,11 @@ const TopCollection = ({ type, title, subtitle, designClass, noSlider, cartClass
                             }
                             wishListLoading={wishListLoading}
                             addCart={() =>
-                              CartContext.addToCart(product, quantity)
+                              // CartContext.addToCart(product, quantity)
+                              addToCart({
+                                product_id:product.id,
+                                quantity,
+                              })
                             }
                           />
                         </SwiperSlide>

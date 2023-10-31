@@ -4,12 +4,7 @@ const { i18n } = require('./next-i18next.config')
 const nextConfig = {
   reactStrictMode: true,
   i18n,
-  
   reactStrictMode: true,
-  env: {
-    // API_URL: "https://Spirit-graphql-reactpixelstrap.vercel.app/server.js",
-    API_URL: "http://96.30.193.192/",
-  },
   images: {
     formats: ['image/webp' , 'image/avif'],
     remotePatterns: [

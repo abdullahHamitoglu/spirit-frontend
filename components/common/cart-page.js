@@ -12,11 +12,10 @@ const CartPage = () => {
   const { selectedCurrency } = currencyStore()
   const symbol = selectedCurrency.symbol;
   const total = context.cartTotal;
-  const removeFromCart = context.removeFromCart;
   const [quantity, setQty] = useState(1);
   const [quantityError, setQuantityError] = useState(false);
   const updateQty = context.updateQty;
-  const {getCart ,cartItems} = useCartStore();
+  const {getCart ,cartData ,removeFromCart} = useCartStore();
   const { t } = useTranslation()
   const handleQtyUpdate = (item, quantity) => {
     if (quantity >= 1) {
@@ -48,10 +47,10 @@ const CartPage = () => {
   useEffect(()=>{
     getCart()
   },[])
-  console.log(cartItems);
+  console.log(cartData);
   return (
     <div>
-      {cartItems && cartItems.length > 0 ? (
+      {cartData && cartData.items.length > 0 ? (
         <section className="cart-section section-b-space">
           <Container>
             <Row>
@@ -67,25 +66,25 @@ const CartPage = () => {
                       <th scope="col">{t('total')}</th>
                     </tr>
                   </thead>
-                  {cartItems.map((item, index) => {
+                  {cartData.items.map((item, index) => {
                     return (
                       <tbody key={index}>
                         <tr>
                           <td>
-                            <Link href={`/products/` + item.url_key}>
+                            <Link href={`/products/` + item.product.url_key}>
                               <Media
                                 src={
-                                  item.images
-                                    ? item.images[0].small_image_url
-                                    : item.images[0].small_image_url
+                                  item.product.images
+                                    ? item.product.base_image.small_image_url
+                                    : item.product.base_image.small_image_url
                                 }
-                                alt={item.name}
+                                alt={item.product.name}
                               />
                             </Link>
                           </td>
                           <td>
-                            <Link href={`/left-sidebar/product/` + item.id}>
-                              {item.name}
+                            <Link href={`/left-sidebar/product/` + item.product.id}>
+                              {item.product.name}
                             </Link>
                             <div className="mobile-cart-content row">
                               <div className="col-xs-3">
@@ -98,19 +97,18 @@ const CartPage = () => {
                                         handleQtyUpdate(item, e.target.value)
                                       }
                                       className="form-control input-number"
-                                      defaultValue={item.qty}
+                                      defaultValue={item.quantity}
                                       style={{
                                         borderColor: quantityError && "red",
                                       }}
                                     />
                                   </div>
                                 </div>
-                                {item.qty >= item.stock ? t('out_of_stock') : ""}
+                                {item.product.quantity >= item.product.stock ? t('out_of_stock') : ""}
                               </div>
                               <div className="col-xs-3">
                                 <h2 className="td-color">
-                                  {symbol}
-                                  {item.price }
+                                  {item.product.price }
                                 </h2>
                               </div>
                               <div className="col-xs-3">
@@ -118,7 +116,7 @@ const CartPage = () => {
                                   <a href="#" className="icon">
                                     <i
                                       className="fa fa-times"
-                                      onClick={() => removeFromCart(item)}
+                                      onClick={() => removeFromCart(item.id)}
                                     ></i>
                                   </a>
                                 </h2>
@@ -127,8 +125,8 @@ const CartPage = () => {
                           </td>
                           <td>
                             <h2>
-                              {symbol}
-                              {item.formatted_price }
+                              
+                              {item.product.formatted_price }
                             </h2>
                           </td>
                           <td>
@@ -141,25 +139,25 @@ const CartPage = () => {
                                     handleQtyUpdate(item, e.target.value)
                                   }
                                   className="form-control input-number"
-                                  defaultValue={item.qty}
+                                  defaultValue={item.quantity}
                                   style={{
                                     borderColor: quantityError && "red",
                                   }}
                                 />
                               </div>
                             </div>
-                            {item.qty >= item.stock ? t('out_of_stock') : ""}
+                            {item.product.quantity >= item.product.stock ? t('out_of_stock') : ""}
                           </td>
                           <td>
                             <i
                               className="fa fa-times"
-                              onClick={() => removeFromCart(item)}
+                              onClick={() => removeFromCart(item.id)}
                             ></i>
                           </td>
                           <td>
                             <h2 className="td-color">
-                              {symbol}
-                              {item.total}
+                              
+                              {item.formatted_total}
                             </h2>
                           </td>
                         </tr>
@@ -173,7 +171,7 @@ const CartPage = () => {
                       <td>{t('total_price')} :</td>
                       <td>
                         <h2>
-                          {symbol} {total}{" "}
+                           {cartData.formatted_grand_total}{" "}
                         </h2>
                       </td>
                     </tr>

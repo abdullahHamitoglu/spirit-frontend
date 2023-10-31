@@ -8,7 +8,7 @@ import useUserStore from '../user/userStore';
 const useCartStore = create(
     persist(
         (set, get) => ({
-            carItems: [],
+            cartData: [],
             cartLoading: false,
             count: 0,
             increment: () => {
@@ -17,18 +17,16 @@ const useCartStore = create(
             decrement: () => set((state) => ({ count: state.count - 1 })),
             getCart: () => {
                 set({ cartLoading: true });
-                console.log(useUserStore.getState().token);
                 axios({
                     method: "GET",
-                    url: `${process.env.API_URL}api/v1/customer/cart`,
+                    url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/customer/cart`,
                     headers: {
                         'Authorization': `Bearer ${useUserStore.getState().token}`
                     },
                 }).then((res) => {
-                    console.log(res);
-                    set({ carItems: res.data.data, cartLoading: false });
+                    set({ cartData: res.data.data, cartLoading: false });
                 }).catch((error) => {
-                    set({ cartLoading: false })
+                    set({ cartLoading: false });
                     console.log(error);
                 });
             },
@@ -36,45 +34,49 @@ const useCartStore = create(
                 set({ cartLoading: true });
                 axios({
                     method: "post",
-                    url: `${process.env.API_URL}api/v1/customer/cart/add`,
+                    url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/customer/cart/add`,
                     headers: {
                         'Authorization': `Bearer ${useUserStore.getState().token}`
                     },
                     data,
                 }).then((res) => {
-                    set({ carItems: res.data.data, cartLoading: false });
+                    set({ cartData: res.data.data, cartLoading: false });
+                    toast.success(res.data.message);
                 }).catch((error) => {
                     set({ cartLoading: false })
                     console.log(error);
+                    toast.error(error.message);
                 });
             },
-            removeFromCart: (id) => {
-                set({ cartLoading: true });
-                axios({
-                    method: "DEL",
-                    url: `${process.env.API_URL}api/v1/customer/cart/remove/${id}`,
-                    headers: {
-                        'Authorization': `Bearer ${useUserStore.getState().token}`
-                    },
-                    data,
-                }).then((res) => {
-                    set({ carItems: res.data.data, cartLoading: false });
-                }).catch((error) => {
-                    set({ cartLoading: false })
-                    console.log(error);
-                });
-            },
+            // removeFromCart: (id) => {
+            //     set({ cartLoading: true });
+            //     axios({
+            //         method: "DEL",
+            //         url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/customer/cart/remove/${id}`,
+            //         headers: {
+            //             'Authorization': `Bearer ${useUserStore.getState().token}`
+            //         },
+            //         data,
+            //     }).then((res) => {
+            //         set({ cartData: res.data.data, cartLoading: false });
+            //         toast.success(res.data.message);
+            //     }).catch((error) => {
+            //         set({ cartLoading: false })
+            //         console.log(error);
+            //     });
+            // },
             emptyFromCart: () => {
                 set({ cartLoading: true });
                 axios({
                     method: "DEL",
-                    url: `${process.env.API_URL}api/v1/customer/cart/empty`,
+                    url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/customer/cart/empty`,
                     headers: {
                         'Authorization': `Bearer ${useUserStore.getState().token}`
                     },
                 }).then((res) => {
                     toast.success(res.data.message)
-                    set({ carItems: res.data.data, cartLoading: false });
+                    set({ cartData: res.data.data, cartLoading: false });
+                    toast.success(res.data.message);
                 }).catch((error) => {
                     set({ cartLoading: false })
                     console.log(error);
@@ -84,13 +86,14 @@ const useCartStore = create(
                 set({ cartLoading: true });
                 axios({
                     method: "POST",
-                    url: `${process.env.API_URL}api/v1/customer/cart/move-to-wishlist/${id}`,
+                    url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/customer/cart/move-to-wishlist/${id}`,
                     headers: {
                         'Authorization': `Bearer ${useUserStore.getState().token}`
                     },
                 }).then((res) => {
                     toast.success(res.data.message);
-                    set({ carItems: res.data.data, cartLoading: false });
+                    set({ cartData: res.data.data, cartLoading: false });
+                    toast.success(res.data.message);
                 }).catch((error) => {
                     set({ cartLoading: false });
                     console.log(error);
@@ -100,7 +103,7 @@ const useCartStore = create(
                 set({ cartLoading: true });
                 axios({
                     method: "POST",
-                    url: `${process.env.API_URL}api/v1/customer/cart/coupon`,
+                    url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/customer/cart/coupon`,
                     headers: {
                         'Authorization': `Bearer ${useUserStore.getState().token}`
                     },
@@ -118,7 +121,7 @@ const useCartStore = create(
                 set({ cartLoading: true });
                 axios({
                     method: "DEL",
-                    url: `${process.env.API_URL}api/v1/customer/cart/coupon`,
+                    url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/customer/cart/coupon`,
                     headers: {
                         'Authorization': `Bearer ${useUserStore.getState().token}`
                     },

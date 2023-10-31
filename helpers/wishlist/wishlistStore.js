@@ -16,7 +16,7 @@ const useWishListStore = create(
                 set({ wishListLoading: true });
                 axios({
                     method: method,
-                    url: `${process.env.API_URL}api/v1/customer/wishlist${id != undefined ? '/' + id : ''}${moveToCart ? '/move-to-cart' : ''}`,
+                    url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/customer/wishlist${id != undefined ? '/' + id : ''}${moveToCart ? '/move-to-cart' : ''}`,
                     headers: {
                         'Authorization': `Bearer ${useUserStore.getState().token}`
                     },

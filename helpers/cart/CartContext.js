@@ -35,7 +35,7 @@ const CartProvider = (props) => {
     toast.success("Product Added Successfully !");
     const index = cartItems.findIndex((itm) => itm.id === item.id);
     axios({
-      url: `${process.env.API_URL}api/v1/customer/cart/add/${item.id}`,
+      url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/customer/cart/add/${item.id}`,
       method: 'POST',
       auth:`Bearer ${localStorage.getItem('token')}`,
       data: {

@@ -58,7 +58,7 @@ const TopBarDark = ({ topClass, fluid }) => {
                         </Link>
                       </li>
                       <li>
-                        <Link href={`/account/register`}>
+                        <Link href={`/account/register?redirect_url=${router.asPath}`}>
                           {t('register')}
                         </Link>
                       </li>
