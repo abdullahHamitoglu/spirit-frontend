@@ -6,16 +6,12 @@ import ProductItem from "../../../components/common/product-box/ProductBox1";
 
 import { useRouter } from "next/router";
 import PostLoader from "../../../components/common/PostLoader";
-import CartContext from "../../../helpers/cart";
-import { WishlistContext } from "../../../helpers/wishlist/WishlistContext";
 import { CompareContext } from "../../../helpers/Compare/CompareContext";
 import currencyStore from "@/helpers/Currency/CurrencyStore";
 import useWishListStore from "@/helpers/wishlist/wishlistStore";
 import useCartStore from "@/helpers/cart/cartStore";
 
 const ProductList = ({ colClass, layoutList, openSidebar, noSidebar, data , page }) => {
-  const cartContext = useContext(CartContext);
-  const quantity = cartContext.quantity;
   const { wishList } = useWishListStore();
   const { addToCart } = useCartStore();
   const compareContext = useContext(CompareContext);
@@ -34,6 +30,8 @@ const ProductList = ({ colClass, layoutList, openSidebar, noSidebar, data , page
   const [isLoading, setIsLoading] = useState(false);
   const [layout, setLayout] = useState(layoutList);
   const [url, setUrl] = useState();
+  const [quantity, setQuantity] = useState('1');
+
   var productsData = data.products;
   useEffect(() => {
     const pathname = window.location.pathname;

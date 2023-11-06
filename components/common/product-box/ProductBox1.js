@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { Row, Col, Media, Modal, ModalBody, ModalHeader, Spinner } from "reactstrap";
-import CartContext from "../../../helpers/cart";
 import MasterProductDetail from "./MasterProductDetail";
 import Image from "next/image";
 import currencyStore from "@/helpers/Currency/CurrencyStore";
@@ -12,11 +11,9 @@ import useCartStore from "@/helpers/cart/cartStore";
 const ProductItem = ({ wishListLoading, product, addCart, backImage, des, addWishlist, cartClass, productDetail, addCompare, title }) => {
   // eslint-disable-next-line
   const router = useRouter();
-  const cartContext = useContext(CartContext);
   const { selectedCurrency } = currencyStore();
   const currency = selectedCurrency;
   const { count, increment, decrement } = useCartStore();
-  const setQuantity = cartContext.setQuantity;
 
   const { t } = useTranslation();
   const [image, setImage] = useState("");

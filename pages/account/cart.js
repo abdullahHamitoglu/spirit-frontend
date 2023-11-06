@@ -2,9 +2,11 @@ import React from 'react';
 import CommonLayout from '@/components/shop/common-layout';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import CartPage from '@/components/common/cart-page';
+import useCartStore from '@/helpers/cart/cartStore';
 
 
 const Wishliat = () => {
+    const { cartLoading } = useCartStore();
     return (
         <CommonLayout parent="home" title="cart">
             <CartPage />

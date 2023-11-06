@@ -22,9 +22,23 @@ export async function getProducts(locale) {
         throw error;
     }
 };
+export async function getProductBySlug(locale, slug) {
+    try {
+        const response = await axios.get({
+            url:`${process.env.NEXT_PUBLIC_API_URL}api/v1/products-slug/${slug}`,
+            params: {
+                'locale': locale.slice(0, 2),
+                'currency': currency,
+            },
+        });
+        return response.data.data;
+    } catch (error) {
+        throw error;
+    }
+};
 export async function getCatagories(locale) {
     try {
-        
+
         const response = await axios({
             method: 'GET',
             url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/categories`,
@@ -34,7 +48,7 @@ export async function getCatagories(locale) {
                 'parent_id': 1
             },
         });
-        
+
         return response.data.data;
     } catch (error) {
         throw error;

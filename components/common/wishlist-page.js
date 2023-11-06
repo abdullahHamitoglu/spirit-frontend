@@ -1,7 +1,6 @@
 import React, { useContext, useEffect } from "react";
 import { Container, Row, Col, Table } from "reactstrap";
 import { WishlistContext } from "@/helpers/wishlist/WishlistContext";
-import CartContext from "@/helpers/cart/index";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";

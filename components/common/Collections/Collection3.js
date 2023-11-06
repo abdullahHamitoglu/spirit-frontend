@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Row, Col, Container } from "reactstrap";
-import CartContext from "../../../helpers/cart";
 import PostLoader from "../PostLoader";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
@@ -12,15 +11,13 @@ import useCartStore from "@/helpers/cart/cartStore";
 
 
 const TopCollection = ({ type, title, subtitle, designClass, noSlider, cartClass, productSlider, titleClass, noTitle, innerClass, inner, backImage, collection }) => {
-  const context = useContext(CartContext);
   const { wishList, wishListLoading } = useWishListStore();
 
   const { selectedCurrency } = currencyStore()
 
   const symbol = selectedCurrency.symbol;
 
-  const {addToCart} = useCartStore()
-  const quantity = context.quantity;
+  const {addToCart} = useCartStore();
   const [delayProduct, setDelayProduct] = useState(true);
 
   var data = collection;
@@ -101,10 +98,9 @@ const TopCollection = ({ type, title, subtitle, designClass, noSlider, cartClass
                             }
                             wishListLoading={wishListLoading}
                             addCart={() =>
-                              // CartContext.addToCart(product, quantity)
                               addToCart({
                                 product_id:product.id,
-                                quantity,
+                                quantity : '1',
                               })
                             }
                           />

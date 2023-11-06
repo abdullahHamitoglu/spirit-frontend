@@ -70,7 +70,6 @@ const HeaderOne = ({
       setIsLoading(false);
     });
   };
-
   return (
     <div>
       <header id="sticky" className={`sticky ${headerClass}`}>
@@ -123,8 +122,9 @@ const HeaderOne = ({
                         <Currency icon="/assets/images/icon/setting.png" />
                         {/*Header Cart Component */}
                         {direction === undefined ? (
-                          // <></>
-                          <CartContainer layout={direction} icon="/assets/images/icon/cart.png" />
+                          <>
+                            <CartContainer layout={direction} icon="/assets/images/icon/cart.png" />
+                          </>
                         ) : (
 
                           <Cart layout={direction} icon="/assets/images/icon/cart.png" />

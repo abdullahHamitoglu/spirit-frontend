@@ -1,29 +1,29 @@
 import React, { Fragment, useContext } from "react";
 import Link from "next/link";
-import CartContext from "../../../helpers/cart";
 import { Media } from "reactstrap";
+import useCartStore from "@/helpers/cart/cartStore";
 
-const CartHeader = ({ item, symbol }) => {
-  const context = useContext(CartContext);
+const CartHeader = ({ item }) => {
+  const { removeFromCart } = useCartStore();
   return (
     <Fragment>
       <li>
         <div className="media">
-          <Link href={"/product-details/" + item.id}>
-            {item.images.length > 0 ??
-              <Media alt="" className="me-3" src={`${item.images[0].original_image_url}`} />
+          <Link href={"/products/" + item.product.url_key}>
+            {item.product.base_image.length ??
+              <Media alt="" className="me-3" src={`${item.product.base_image.small_image_url}`} />
             }
           </Link>
           <div className="media-body">
-            <Link href={"/product-details/" + item.id}>
+            <Link href={"/products/" + item.product.url_key}>
               {/* <a> */}
-              <h6>{item.title}</h6>
+              <h6>{item.product.name}</h6>
               {/* </a> */}
             </Link>
 
             <h4>
               <span>
-                {item.formatted_price}
+                {item.product.formatted_price}
               </span>
             </h4>
           </div>
@@ -32,7 +32,7 @@ const CartHeader = ({ item, symbol }) => {
           <i
             className="fa fa-times"
             aria-hidden="true"
-            onClick={() => context.removeFromCart(item)}></i>
+            onClick={() => removeFromCart(item.id)}></i>
         </div>
       </li>
     </Fragment>

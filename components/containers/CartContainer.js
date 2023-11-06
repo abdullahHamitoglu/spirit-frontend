@@ -1,21 +1,21 @@
-import React, { useContext, Fragment } from "react";
+import React, { useContext, Fragment, useEffect } from "react";
 import Link from "next/link";
 import CartHeader from "../headers/common/cart-header";
-import CartContext from "../../helpers/cart";
 import { Media } from "reactstrap";
 import currencyStore from "@/helpers/Currency/CurrencyStore";
+import useCartStore from "@/helpers/cart/cartStore";
 
 const CartContainer = ({ icon }) => {
-  const context = useContext(CartContext);
   const { selectedCurrency }  = currencyStore();
-  const symbol = selectedCurrency.symbol ;
-  const cartList = context.state;
-  const total = context.cartTotal;
+  const {getCart,cartData , cartLoading } = useCartStore();
 
+  useEffect(()=>{
+    getCart()
+  },[cartData])
   return (
     <Fragment>
       <li className="onhover-div mobile-cart">
-        <div className="cart-qty-cls">{cartList.length}</div>
+        <div className="cart-qty-cls">{cartData && cartData.items_count > 0 ? cartData.items_count : '0'}</div>
         <Link href={`/account/cart`}>
           <div href={null}>
             <Media src={icon} className="img-fluid" alt="" />
@@ -23,18 +23,17 @@ const CartContainer = ({ icon }) => {
           </div>
         </Link>
         <ul className="show-div shopping-cart">
-          {cartList.map((item, index) => (
-            <CartHeader key={index} item={item} total={total} symbol={symbol} />
+          {cartData && cartData.items && cartData.items.map((item, index) => (
+            <CartHeader key={index} item={item} total={item.formatted_total} />
           ))}
-          {cartList.length > 0 ? (
+          {cartData && cartData.items && cartData.items.length > 0 ? (
             <div>
               <li>
                 <div className="total">
                   <h5>
                     subtotal :{" "}
                     <span>
-                      {symbol}
-                      {total}
+                      {cartData.formatted_sub_total}
                     </span>
                   </h5>
                 </div>

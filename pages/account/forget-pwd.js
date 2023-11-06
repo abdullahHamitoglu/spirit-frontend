@@ -1,12 +1,16 @@
 import React from 'react';
 import CommonLayout from '@/components/shop/common-layout';
-import { Container, Row, Form, Input, Col } from 'reactstrap';
+import { Container, Row, Input, Col } from 'reactstrap';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
-import { Formik, Field } from "formik";
+import { Formik, Field, Form } from "formik";
+import useUserStore from '@/helpers/user/userStore';
+import { useRouter } from 'next/router';
 
 const ForgetPwd = () => {
+    const { forgetPwd } = useUserStore();
+    const { locale } = useRouter();
     const validationSchema = Yup.object().shape({
         email: Yup.string().email('Invalid email').required('Email is required'),
     });
@@ -17,29 +21,32 @@ const ForgetPwd = () => {
                 <Container>
                     <Row>
                         <Col lg="6" className="m-auto">
-                            <h2>{t('forget_your_password')}</h2> <Formik
+                            <h2>{t('forget_your_password')}</h2>
+                            <Formik
                                 initialValues={{
                                     email: '',
                                 }}
                                 validationSchema={validationSchema}
                                 onSubmit={(values, { setSubmitting }) => {
-                                    login(values, locale)
+                                    forgetPwd(values, locale);
                                     setSubmitting(false);
                                 }} >
                                 {({
                                     handleSubmit,
                                     errors,
                                     touched,
+                                    isSubmitting
                                     /* and other goodies */
                                 }) => (
                                     <Form className="theme-form" onSubmit={handleSubmit}>
                                         <Row>
                                             <Col md="12">
-                                                <Field type="email" className="form-control" id="email" name="email" placeholder={t('email')} required="" />
+                                                <Field type="email" className={`form-control ${errors.email ?? 'border-error'}`} id="email" name="email" placeholder={errors.password && touched.password ? errors.password : t('email')} required="" />
                                             </Col>
-                                            <a href="#" className="btn btn-solid w-auto">
-                                                {t('submit')}
-                                            </a>
+                                            {isSubmitting}
+                                            <button type='submit' className="btn btn-solid w-auto">
+                                                {isSubmitting ? 'loading' : t('submit')}
+                                            </button>
                                         </Row>
                                     </Form>
                                 )}

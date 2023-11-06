@@ -34,6 +34,13 @@ const index = ({ products, categories, brands, page }) => {
             <Head>
                 <meta name="keywords" content={page.meta_keywords} />
                 <meta name="description" content={page.meta_description} />
+                <meta property="og:type" content="product" />
+                <meta property="og:title" content={page.meta_title} />
+                <meta property="og:url" content={page.url} />
+                {/* <meta property="og:site_name" content={ getSetting('site_name') } /> */}
+                <meta property="og:image" content={page.image} />
+                <meta property="og:image:alt" content={page.meta_title} />
+                <meta property="og:description" content={page.meta_description} />
                 <title>{page.meta_title}</title>
             </Head>
             <CommonLayout title={page.title} parent={t('home')} >

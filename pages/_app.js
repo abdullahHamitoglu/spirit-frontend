@@ -3,8 +3,6 @@ import ThemeSettings from "../components/customizer/theme-settings";
 import "../public/assets/scss/app.scss";
 import { ToastContainer } from "react-toastify";
 import TapTop from "../components/common/widgets/Tap-Top";
-import CartContextProvider from "../helpers/cart/CartContext";
-import { WishlistContextProvider } from "../helpers/wishlist/WishlistContext";
 import FilterProvider from "../helpers/filter/FilterProvider";
 import SettingProvider from "../helpers/theme-setting/SettingProvider";
 import { CompareContextProvider } from "../helpers/Compare/CompareContext";
@@ -13,12 +11,18 @@ import { ApolloProvider } from "@apollo/client";
 import { useApollo } from "../helpers/apollo";
 import Head from "next/head";
 import { useRouter } from "next/router";
+import useUserStore from "@/helpers/user/userStore";
 
 function MyApp({ Component, pageProps }) {
   const [isLoading, setIsLoading] = useState(true);
   const [url, setUrl] = useState();
   const apolloClient = useApollo(pageProps);
   const { locale } = useRouter();
+  const { registerDevice, fcmToken } = useUserStore();
+  useEffect(() => {
+    registerDevice();
+    console.log(fcmToken);
+  },[])
   useEffect(() => {
     document.documentElement.style.setProperty("--theme-deafult", "#00c2b5");
     if (locale == 'ar-KW') {
@@ -65,13 +69,9 @@ function MyApp({ Component, pageProps }) {
             </Head>
             <SettingProvider>
               <CompareContextProvider>
-                <CartContextProvider>
-                  <WishlistContextProvider>
-                    <FilterProvider>
-                      <Component {...pageProps} />
-                    </FilterProvider>
-                  </WishlistContextProvider>
-                </CartContextProvider>
+                <FilterProvider>
+                  <Component {...pageProps} />
+                </FilterProvider>
                 <ThemeSettings />
               </CompareContextProvider>
             </SettingProvider>

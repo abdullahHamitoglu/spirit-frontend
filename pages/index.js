@@ -13,7 +13,7 @@ import MainBanner from "@/components/layouts/Beauty/components/MainBanner";
 import AboutSection from "@/components/layouts/Beauty/components/About-Section";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
-import { getPageData } from "@/controllers/homeController";
+import { getHomePageData, getPageData } from "@/controllers/homeController";
 
 const Fashion = ({ page, homeData }) => {
   const { t } = useTranslation()
@@ -78,11 +78,12 @@ const Fashion = ({ page, homeData }) => {
 
 export async function getStaticProps(context) {
   // extract the locale identifier from the URL
-  const { locale } = context
-  const req = await axios(`${process.env.NEXT_PUBLIC_API_URL}api/v1/home-page?locale=${locale.slice(0, 2)}&currency=KWD`)
-  const homeData = req.data.data;
-  
+  const { locale } = context;
+
+  const homeData = await getHomePageData(locale);
+
   const page = await getPageData(locale, 'home');
+  
   return {
     props: {
       // pass the translation props to the page component

@@ -4,7 +4,7 @@ import { getUserAgent } from './getUserAgent';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import { persist, createJSONStorage } from 'zustand/middleware'
-
+import uuid from 'react-uuid';
 
 const osDetails = getUserAgent();
 
@@ -16,7 +16,7 @@ const useUserStore = create(
             token: null,
             expirationTime: null,
             address: [],
-
+            fcmToken: 0,
             register: async (userData, locale) => {
                 // Send a POST request to your registration API endpoint
                 await axios({
@@ -96,10 +96,10 @@ const useUserStore = create(
                     expirationTime: null,
                 });
             },
-            forgetPws: async (data) => {
+            forgetPwd: async (data, locale) => {
                 await axios({
                     method: 'post',
-                    url: process.env.NEXT_PUBLIC_API_URL + `api/v1/customer/forget-password?locale=${locale.slice(0, 2)}`,
+                    url: process.env.NEXT_PUBLIC_API_URL + `api/v1/customer/forgot-password?locale=${locale.slice(0, 2)}`,
                     data,
                 }).then(res => {
                     if (res.data && res.status == 200) {
@@ -142,10 +142,31 @@ const useUserStore = create(
                     console.log(errors, error);
                 });
             },
+
+            registerDevice: async () => {
+                // if(fcmToken == undefined){
+                await axios({
+                    method: 'post',
+                    url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/register_device`,
+                    data: {
+                        "fcmToken": 0,
+                        "os": "web"
+                    },
+                }).then(res => {
+                    console.log(res);
+                    set({ fcmToken: res.data.data.deviceDetails.fcmToken });
+                }).catch(function (error, errors) {
+                    if (error.response) {
+                        toast.error(error.response.data.message);
+                    }
+                    console.log(errors, error);
+                });
+                // }
+            }
         }),
         {
             name: 'user-storage', // name of the item in the storage (must be unique)
-            storage: createJSONStorage(() => sessionStorage), // (optional) by default, 'localStorage' is used
+            storage: createJSONStorage(() => localStorage), // (optional) by default, 'localStorage' is used
         }
     )
 );

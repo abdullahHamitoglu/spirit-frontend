@@ -89,16 +89,18 @@ const Dashboard = () => {
                                         <div>
                                             <div className="box">
                                                 <div className="box-title">
-                                                    <h3>{t('address_book')}</h3><a href="">{t('manage_addresses')}</a>
+                                                    <h3>{t('address_book')}</h3><Link href="/account/profile">{t('manage_addresses')}</Link>
                                                 </div>
                                                 <Row>
                                                     <Col sm="6">
                                                         <h6>{t('default_billing_address')}</h6>
-                                                        <address>{t('not_set_default_billing_address')}<br /><a href="#">{t('edit_address')}</a></address>
+                                                        <address>{t('not_set_default_billing_address')}<br />
+                                                        <Link href="/account/profile" >{t('edit_address')}</Link></address>
                                                     </Col>
                                                     <Col sm="6">
                                                         <h6>{t('default_shipping_address')}</h6>
-                                                        <address>{t('not_set_default_shipping_address')}<br /><a href="#">{t('edit_address')}</a></address>
+                                                        <address>{t('not_set_default_shipping_address')} <br />
+                                                        <Link href="/account/profile">{t('edit_address')}</Link></address>
                                                     </Col>
                                                 </Row>
                                             </div>
