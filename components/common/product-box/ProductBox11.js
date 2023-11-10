@@ -4,7 +4,7 @@ import { Col, Media, ModalHeader, Modal, ModalBody, Row } from "reactstrap";
 import Link from "next/link";
 import CartContext from "../../../helpers/cart";
 import MasterProductDetail from "./MasterProductDetail";
-import currencyStore from "@/helpers/Currency/CurrencyStore";
+import currencyStore from "../../../helpers/Currency/CurrencyStore";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 const ProductSection = ({ product, addToCompare, addWishlist, addCart }) => {

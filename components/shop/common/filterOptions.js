@@ -1,7 +1,6 @@
 import React, { useState, useContext } from "react";
 import { Collapse, Input } from "reactstrap";
 import { useTranslation } from "react-i18next";
-import useFilterStore from "@/helpers/filter/filterStore";
 import { useRouter } from "next/router";
 import { MultiSelect } from 'primereact/multiselect';
 

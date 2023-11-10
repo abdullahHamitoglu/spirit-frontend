@@ -45,7 +45,6 @@ const useCartStore = create(
             }).catch((error) => {
                 set({ cartLoading: false })
                 console.log(error);
-                toast.error(error.message);
             });
         },
         removeFromCart: (id ) => {
@@ -62,7 +61,6 @@ const useCartStore = create(
                 get().getCart();
             }).catch((error) => {
                 set({ cartLoading: false })
-                toast.error(error.message);
                 console.log(error);
             });
         },

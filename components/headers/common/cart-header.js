@@ -1,7 +1,7 @@
 import React, { Fragment, useContext } from "react";
 import Link from "next/link";
 import { Media } from "reactstrap";
-import useCartStore from "@/helpers/cart/cartStore";
+import useCartStore from "../../../helpers/cart/cartStore";
 
 const CartHeader = ({ item }) => {
   const { removeFromCart } = useCartStore();

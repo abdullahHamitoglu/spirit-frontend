@@ -10,7 +10,7 @@ import CartContext from "../../../helpers/cart";
 import { WishlistContext } from "../../../helpers/wishlist/WishlistContext";
 import { CompareContext } from "../../../helpers/Compare/CompareContext";
 import FilterPage from "./filter";
-import currencyStore from "@/helpers/Currency/CurrencyStore";
+import currencyStore from "../../../helpers/Currency/CurrencyStore";
 
 const GET_PRODUCTS = gql`
   query products(

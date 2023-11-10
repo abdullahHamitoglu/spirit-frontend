@@ -7,12 +7,12 @@ import ModalComponent from "../components/common/Modal";
 import Head from 'next/head';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import MasterFooter from "../components/footers/common/MasterFooter";
-import VideoSection from "@/components/layouts/Beauty/components/Video-Section";
-import ThemeSettings from "@/components/customizer/theme-settings";
-import MainBanner from "@/components/layouts/Beauty/components/MainBanner";
-import AboutSection from "@/components/layouts/Beauty/components/About-Section";
+import VideoSection from "../components/layouts/Beauty/components/Video-Section";
+import ThemeSettings from "../components/customizer/theme-settings";
+import MainBanner from "../components/layouts/Beauty/components/MainBanner";
+import AboutSection from "../components/layouts/Beauty/components/About-Section";
 import { useTranslation } from "react-i18next";
-import { getHomePageData, getPageData } from "@/controllers/homeController";
+import { getHomePageData, getPageData } from "../controllers/homeController";
 
 const Fashion = ({ page, homeData }) => {
   const { t } = useTranslation()

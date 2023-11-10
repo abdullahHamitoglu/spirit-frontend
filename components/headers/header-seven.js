@@ -7,7 +7,7 @@ import Currency from "./common/currency";
 import CartContainer from "../containers/CartContainer";
 import SearchOverlay from "./common/search-overlay";
 import { useRouter } from "next/router";
-import useUserStore from "@/helpers/user/userStore";
+import useUserStore from "../../helpers/user/userStore";
 
 const HeaderSeven = ({ logoName }) => {
   const { logout } = useUserStore();

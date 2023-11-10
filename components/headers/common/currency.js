@@ -3,7 +3,7 @@ import { Media } from "reactstrap";
 import { useTranslation } from 'next-i18next';
 import Link from "next/link";
 import { useRouter } from "next/router";
-import currencyStore from "@/helpers/Currency/CurrencyStore";
+import currencyStore from "../../../helpers/Currency/CurrencyStore";
 
 
 

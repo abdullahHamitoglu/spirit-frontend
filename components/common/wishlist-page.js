@@ -1,12 +1,10 @@
 import React, { useContext, useEffect } from "react";
 import { Container, Row, Col, Table } from "reactstrap";
-import { WishlistContext } from "@/helpers/wishlist/WishlistContext";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
-import useWishListStore from "@/helpers/wishlist/wishlistStore";
 import { toast } from "react-toastify";
-import useUserStore from "@/helpers/user/userStore";
+import useWishListStore from "../../helpers/wishlist/wishlistStore";
 
 const WishlistPage = () => {
   const router = useRouter();

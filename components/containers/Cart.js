@@ -2,7 +2,7 @@ import React, { useContext, Fragment, useState } from "react";
 import Link from "next/link";
 import CartContext from "../../helpers/cart";
 import { Media } from "reactstrap";
-import currencyStore from "@/helpers/Currency/CurrencyStore";
+import currencyStore from "../../helpers/Currency/CurrencyStore";
 
 const CartComponent = ({ icon, layout }) => {
   const context = useContext(CartContext);

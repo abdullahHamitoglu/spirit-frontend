@@ -3,8 +3,8 @@ import { useQuery } from "@apollo/client";
 
 import { Media } from "reactstrap";
 import Slider from "react-slick";
+import currencyStore from "../../../helpers/Currency/CurrencyStore";
 
-import currencyStore from "@/helpers/Currency/CurrencyStore";
 
 const GET_PRODUCTS = gql`
   query newProducts($type: String!) {

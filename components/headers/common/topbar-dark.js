@@ -2,8 +2,8 @@ import React, { useTransition } from "react";
 import { Container, Row, Col } from "reactstrap";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
-import useUserStore from "@/helpers/user/userStore";
 import { useRouter } from "next/router";
+import useUserStore from "../../../helpers/user/userStore";
 
 const TopBarDark = ({ topClass, fluid }) => {
   const { isAuthenticated, logout } = useUserStore();

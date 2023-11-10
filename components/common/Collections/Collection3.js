@@ -5,9 +5,9 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
 import ProductItem from "../product-box/ProductBox1";
-import currencyStore from "@/helpers/Currency/CurrencyStore";
-import useWishListStore from "@/helpers/wishlist/wishlistStore";
-import useCartStore from "@/helpers/cart/cartStore";
+import useCartStore from "../../../helpers/cart/cartStore";
+import currencyStore from "../../../helpers/Currency/CurrencyStore";
+import useWishListStore from "../../../helpers/wishlist/wishlistStore";
 
 
 const TopCollection = ({ type, title, subtitle, designClass, noSlider, cartClass, productSlider, titleClass, noTitle, innerClass, inner, backImage, collection }) => {

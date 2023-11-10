@@ -4,7 +4,7 @@ import FilterContext from "../../../helpers/filter/FilterContext";
 import { Router, useRouter } from "next/router";
 import { Collapse } from "reactstrap";
 import { useTranslation } from "react-i18next";
-import useFilterStore from "@/helpers/filter/filterStore";
+import useFilterStore from "../../../helpers/filter/filterStore";
 
 const Price = () => {
   const [isOpen, setIsOpen] = useState(false);

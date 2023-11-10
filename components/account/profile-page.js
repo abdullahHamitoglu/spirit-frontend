@@ -4,9 +4,9 @@ import { useTranslation } from 'react-i18next';
 import { Container, Row, Form, Input, Label, Col } from 'reactstrap';
 import { Field, Formik } from 'formik';
 import * as Yup from 'yup';
-import useUserStore from '@/helpers/user/userStore';
 import isEqual from "lodash/isEqual";
 import { method } from 'lodash';
+import useUserStore from '../../helpers/user/userStore';
 
 const formatDate = (date) => {
     const formattedDate = new Date(date);

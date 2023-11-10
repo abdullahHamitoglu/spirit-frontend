@@ -7,7 +7,7 @@ import CartContainer from "../../containers/CartContainer";
 import SearchOverlay from "./search-overlay";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import currencyStore from "@/helpers/Currency/CurrencyStore";
+import currencyStore from "../../../helpers/Currency/CurrencyStore";
 const IconTopbar = () => {
   const router = useRouter()
   const context = useContext(CartContext);

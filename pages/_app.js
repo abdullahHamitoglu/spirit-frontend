@@ -11,9 +11,9 @@ import { ApolloProvider } from "@apollo/client";
 import { useApollo } from "../helpers/apollo";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import useUserStore from "@/helpers/user/userStore";
 import algoliasearch from 'algoliasearch/lite';
 import { InstantSearch } from 'react-instantsearch';
+import useUserStore from "../helpers/user/userStore";
 
 const searchClient = algoliasearch('YourApplicationID', 'YourSearchOnlyAPIKey');
 

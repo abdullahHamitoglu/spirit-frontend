@@ -1,11 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Media, Container, Form, Row, Col } from "reactstrap";
 import { useRouter } from "next/router";
-import useCartStore from "@/helpers/cart/cartStore";
-import useUserStore from "@/helpers/user/userStore";
 import { Formik } from "formik";
 import * as Yup from 'yup';
 import { useTranslation } from "react-i18next";
+import useCartStore from "../../helpers/cart/cartStore";
+import useUserStore from "../../helpers/user/userStore";
 
 const CheckoutPage = () => {
   const { getCart, cartData, removeFromCart, cartLoading } = useCartStore();

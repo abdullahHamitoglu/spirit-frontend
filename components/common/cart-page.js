@@ -1,11 +1,9 @@
 import React, { useState, useContext, useEffect } from "react";
 import Link from "next/link";
 import { Container, Row, Col, Media, Input } from "reactstrap";
-import currencyStore from "@/helpers/Currency/CurrencyStore";
 import { useTranslation } from "react-i18next";
-import useCartStore from "@/helpers/cart/cartStore";
-import ProfileLoader from "../account/profileLoader";
 import CartLoader from "../layouts/Bags/common/cartLoader";
+import useCartStore from "../../helpers/cart/cartStore";
 
 const CartPage = () => {
   const { getCart, cartData, removeFromCart, cartLoading, updateQty } = useCartStore();

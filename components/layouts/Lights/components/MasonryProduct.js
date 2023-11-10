@@ -4,7 +4,7 @@ import { Container, Row, Col, Media, Modal, ModalBody } from "reactstrap";
 import CartContext from '../../../../helpers/cart';
 import { WishlistContext } from '../../../../helpers/wishlist/WishlistContext';
 import { CompareContext } from '../../../../helpers/Compare/CompareContext';
-import currencyStore from "@/helpers/Currency/CurrencyStore";
+import currencyStore from "../../../../helpers/Currency/CurrencyStore";
 import { useQuery } from '@apollo/client';
 import { useRouter } from 'next/router';
 const GET_PRODUCTS = gql`

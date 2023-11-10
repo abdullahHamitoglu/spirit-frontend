@@ -15,7 +15,8 @@ const useWishListStore = create(
             wishList: async (method, id, moveToCart) => {
                 set({ wishListLoading: true });
                 axios({
-                    method: method,
+                validateStatus: false,
+                method: method,
                     url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/customer/wishlist${id != undefined ? '/' + id : ''}${moveToCart ? '/move-to-cart' : ''}`,
                     headers: {
                         'Authorization': `Bearer ${useUserStore.getState().token}`

@@ -2,8 +2,8 @@ import React, { useContext, Fragment, useEffect } from "react";
 import Link from "next/link";
 import CartHeader from "../headers/common/cart-header";
 import { Media } from "reactstrap";
-import currencyStore from "@/helpers/Currency/CurrencyStore";
-import useCartStore from "@/helpers/cart/cartStore";
+import currencyStore from "../../helpers/Currency/CurrencyStore";
+import useCartStore from "../../helpers/cart/cartStore";
 
 const CartContainer = ({ icon }) => {
   const { selectedCurrency }  = currencyStore();

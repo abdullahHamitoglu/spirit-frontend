@@ -5,7 +5,6 @@ import { Modal, ModalBody, ModalHeader, Media, Input } from "reactstrap";
 import CartContext from "../../../helpers/cart";
 import CountdownComponent from "../../../components/common/widgets/countdownComponent";
 import MasterSocial from "./master_social";
-import currencyStore from "@/helpers/Currency/CurrencyStore";
 
 const DetailsWithPrice = ({ item, stickyClass, changeColorVar }) => {
   const [modal, setModal] = useState(false);

@@ -82,8 +82,7 @@ const useUserStore = create(
                     }
                 }).catch(function (error, errors) {
                     if (error.message) {
-                        toast.error(error.message);
-                    }
+                            }
                     console.log(errors, error);
                 });
             },
@@ -137,8 +136,7 @@ const useUserStore = create(
                     }
                 }).catch(function (error, errors) {
                     if (error.message) {
-                        toast.error(error.message);
-                    }
+                            }
                     console.log(errors, error);
                 });
             },
