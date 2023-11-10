@@ -5,9 +5,10 @@ import Category from './category';
 import Brand from './brand';
 import Price from './price';
 import { useTranslation } from 'react-i18next';
+import FilterOptions from './filterOptions';
 
-const FilterPage = ({ sm, sidebarView, closeSidebar, categories, brands }) => {
-    const { t } = useTranslation()
+const FilterPage = ({ sm, sidebarView, closeSidebar, attributes  }) => {
+    const { t } = useTranslation();
     return (
         <>
             <Col sm={sm} className="collection-filter" style={sidebarView ? { left: "0px" } : {}}>
@@ -19,11 +20,12 @@ const FilterPage = ({ sm, sidebarView, closeSidebar, categories, brands }) => {
                             <i className="fa fa-angle-left" aria-hidden="true"></i> {t('back')}
                         </span>
                     </div>
-                    <Category categories={categories} />
-                    <Brand brands={brands} />
-                    {/* <Color/>
-                    <Size/> */}
-                    <Price />
+                    {/* <Category categories={categories} /> */}
+                    {attributes.map((attribute) => (
+                        attribute.type != 'price' ?
+                        <FilterOptions attr={attribute} /> :
+                        <Price />
+                    ))}
                 </div>
                 {/* <!-- slide-bar collops block end here -->*/}
                 <NewProduct />

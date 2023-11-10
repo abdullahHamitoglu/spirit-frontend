@@ -2,15 +2,9 @@ import React from "react";
 import Slider from "react-slick";
 import { Row, Col, Media, Container } from "reactstrap";
 import { useQuery } from "@apollo/client";
-import { gql } from "@apollo/client";
 
-const GET_PRODUCTS = gql`
-  query instagram($type: String!) {
-    instagram(type: $type) {
-      img
-    }
-  }
-`;
+
+
 
 var settings = {
   dots: false,

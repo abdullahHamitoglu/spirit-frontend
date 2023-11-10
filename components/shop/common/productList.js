@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Col, Row, Media, Button, Spinner } from "reactstrap";
-import { gql } from "@apollo/client";
+
 import FilterContext from "../../../helpers/filter/FilterContext";
 import ProductItem from "../../../components/common/product-box/ProductBox1";
 
@@ -36,9 +36,6 @@ const ProductList = ({ colClass, layoutList, openSidebar, noSidebar, data , page
   useEffect(() => {
     const pathname = window.location.pathname;
     setUrl(pathname);
-    router.push(
-      `${pathname}?${filterContext.state}&brand=${selectedBrands}&color=${selectedColor}&size=${selectedSize}&minPrice=${selectedPrice.min}&maxPrice=${selectedPrice.max}`, undefined, { shallow: true }
-    );
   }, [selectedBrands, selectedColor, selectedSize, selectedPrice]);
 
 

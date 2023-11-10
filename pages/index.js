@@ -11,7 +11,6 @@ import VideoSection from "@/components/layouts/Beauty/components/Video-Section";
 import ThemeSettings from "@/components/customizer/theme-settings";
 import MainBanner from "@/components/layouts/Beauty/components/MainBanner";
 import AboutSection from "@/components/layouts/Beauty/components/About-Section";
-import axios from "axios";
 import { useTranslation } from "react-i18next";
 import { getHomePageData, getPageData } from "@/controllers/homeController";
 

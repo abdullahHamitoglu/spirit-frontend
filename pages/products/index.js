@@ -4,17 +4,21 @@ import { Container, Row } from 'reactstrap';
 import FilterPage from '@/components/shop/common/filter';
 import ProductList from '@/components/shop/common/productList';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 import currencyStore from '@/helpers/Currency/CurrencyStore';
 import useUserStore from '@/helpers/user/userStore';
 import Head from 'next/head';
-import { getBrands, getCatagories, getProducts } from '@/controllers/productsController';
+import { getBrands, getCatagories, getFilterAttr, getMaxPrice, getProducts } from '@/controllers/productsController';
 import { getPageData } from '@/controllers/homeController';
+import useFilterStore from '@/helpers/filter/filterStore';
+import { useRouter } from 'next/router';
 
-const index = ({ products, categories, brands, page }) => {
+const index = ({ products, page, attributes }) => {
     const [sidebarView, setSidebarView] = useState(false);
+    const { locale } = useRouter();
+    const router = useRouter();
     const { t } = useTranslation();
+    const { filterProducts, filteredProducts } = useFilterStore();
     const [data, setData] = useState({
         products: products,
         loading: true,
@@ -27,8 +31,14 @@ const index = ({ products, categories, brands, page }) => {
         }
     }
     useEffect(() => {
-        setData({ ...data, loading: false })
-    }, [products])
+        setData({ ...data, loading: false });
+    }, [products]);
+    useEffect(() => {
+        filterProducts(locale, router.query);
+        if (filteredProducts.length > 0) {
+            setData({ products: filteredProducts, loading: false });
+        }
+    }, []);
     return (
         <>
             <Head>
@@ -48,7 +58,7 @@ const index = ({ products, categories, brands, page }) => {
                     <div className="collection-wrapper">
                         <Container>
                             <Row>
-                                <FilterPage categories={categories} brands={brands} sm="3" sidebarView={sidebarView} closeSidebar={() => openCloseSidebar(sidebarView)} />
+                                <FilterPage attributes={attributes} sm="3" sidebarView={sidebarView} closeSidebar={() => openCloseSidebar(sidebarView)} />
                                 <ProductList page={page} colClass="col-xl-3 col-6 col-grid-box" layoutList='' openSidebar={() => openCloseSidebar(sidebarView)} data={data} />
                             </Row>
                         </Container>
@@ -58,19 +68,16 @@ const index = ({ products, categories, brands, page }) => {
         </>
     )
 }
-export async function getStaticProps(context) {
+export async function getServerSideProps(context) {
     const { locale } = context;
-    const products = await getProducts(locale);
-    const categories = await getCatagories(locale);
-    const brands = await getBrands(locale);
+    const products = await getProducts(locale, context.params);
+    const attributes = await getFilterAttr(locale);
     const page = await getPageData(locale, 'products');
     return {
         props: {
-            // pass the translation props to the page component
             page,
             products,
-            categories,
-            brands,
+            attributes,
             ...(await serverSideTranslations(locale)),
         },
     }

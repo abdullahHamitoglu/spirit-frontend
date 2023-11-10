@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { useQuery } from "@apollo/client";
-import { gql } from "@apollo/client";
+
 import { Media } from "reactstrap";
 import Slider from "react-slick";
 

@@ -2,7 +2,7 @@ import React from "react";
 import Slider from "react-slick";
 import { Col, Container, Media, Row } from "reactstrap";
 import { Slider3 } from "../../../../services/script";
-import { gql } from '@apollo/client';
+
 import { useQuery } from "@apollo/client";
 import Link from "next/link";
 import Image from "next/image";

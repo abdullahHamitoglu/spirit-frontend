@@ -31,6 +31,7 @@ const nextConfig = {
       
     });
     config.resolve.fallback = { fs: false };
+    config.infrastructureLogging = { debug: /PackFileCache/ }; 
     return config;
   },
 }

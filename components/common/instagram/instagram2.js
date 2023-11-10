@@ -2,7 +2,7 @@ import React from "react";
 import Slider from "react-slick";
 import { Row, Col, Container } from "reactstrap";
 import { useQuery } from "@apollo/client";
-import { gql } from '@apollo/client';
+
 import { Slider5 } from "../../../services/script";
 
 const GET_PRODUCTS = gql`

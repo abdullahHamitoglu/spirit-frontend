@@ -2,7 +2,7 @@ import React, { Fragment, useContext } from "react";
 import Slider from "react-slick";
 import { tools_product_4 } from "../../../../services/script";
 import { useQuery } from "@apollo/client";
-import { gql } from '@apollo/client';
+
 import CartContext from "../../../../helpers/cart";
 import { CompareContext } from "../../../../helpers/Compare/CompareContext";
 import { WishlistContext } from "../../../../helpers/wishlist/WishlistContext";

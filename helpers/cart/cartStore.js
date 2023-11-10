@@ -141,7 +141,7 @@ const useCartStore = create(
         removeCoupon: () => {
             set({ cartLoading: true });
             axios({
-                method: "DEL",
+                method: "DELETE",
                 url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/customer/cart/coupon`,
                 headers: {
                     'Authorization': `Bearer ${useUserStore.getState().token}`

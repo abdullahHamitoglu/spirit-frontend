@@ -12,6 +12,10 @@ import { useApollo } from "../helpers/apollo";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import useUserStore from "@/helpers/user/userStore";
+import algoliasearch from 'algoliasearch/lite';
+import { InstantSearch } from 'react-instantsearch';
+
+const searchClient = algoliasearch('YourApplicationID', 'YourSearchOnlyAPIKey');
 
 function MyApp({ Component, pageProps }) {
   const [isLoading, setIsLoading] = useState(true);
@@ -19,10 +23,10 @@ function MyApp({ Component, pageProps }) {
   const apolloClient = useApollo(pageProps);
   const { locale } = useRouter();
   const { registerDevice, fcmToken } = useUserStore();
-  useEffect(() => {
-    registerDevice();
-    console.log(fcmToken);
-  },[])
+  // useEffect(() => {
+  //   registerDevice();
+  //   console.log(fcmToken);
+  // },[])
   useEffect(() => {
     document.documentElement.style.setProperty("--theme-deafult", "#00c2b5");
     if (locale == 'ar-KW') {
@@ -50,7 +54,6 @@ function MyApp({ Component, pageProps }) {
   }, []);
   return (
     <>
-      <ApolloProvider client={apolloClient}>
         {isLoading ? (
           <div className="loader-wrapper">{url === "Christmas" ? <div id="preloader"></div> : <div className="loader"></div>}</div>
         ) : (
@@ -79,7 +82,6 @@ function MyApp({ Component, pageProps }) {
             <TapTop />
           </>
         )}
-      </ApolloProvider>
     </>
   );
 }

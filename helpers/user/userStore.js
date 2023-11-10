@@ -153,7 +153,6 @@ const useUserStore = create(
                         "os": "web"
                     },
                 }).then(res => {
-                    console.log(res);
                     set({ fcmToken: res.data.data.deviceDetails.fcmToken });
                 }).catch(function (error, errors) {
                     if (error.response) {

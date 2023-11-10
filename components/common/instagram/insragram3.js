@@ -1,6 +1,6 @@
 import React from "react";
 import { useQuery } from "@apollo/client";
-import { gql } from '@apollo/client';
+
 import Slider from "react-slick";
 import { Product5 } from "../../../services/script";
 import { Container, Row, Col } from "reactstrap";

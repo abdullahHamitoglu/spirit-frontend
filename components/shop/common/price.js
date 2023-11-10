@@ -1,31 +1,32 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Range, getTrackBackground } from "react-range";
 import FilterContext from "../../../helpers/filter/FilterContext";
-import { useRouter } from "next/router";
+import { Router, useRouter } from "next/router";
 import { Collapse } from "reactstrap";
 import { useTranslation } from "react-i18next";
+import useFilterStore from "@/helpers/filter/filterStore";
 
 const Price = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const context = useContext(FilterContext);
-  const [values, setValues] = useState([0, 500]);
-  const price = context.selectedPrice;
-  const router = useRouter();
-  const setSelectedPrice = context.setSelectedPrice;
+  const { maxPrice, getMaxPrice, setPrice } = useFilterStore();
+  const [values, setValues] = useState([0, Math.floor(maxPrice)]);
   const toggle = () => setIsOpen(!isOpen);
-  const [url, setUrl] = useState();
   const { t } = useTranslation();
+  const { locale } = useRouter();
+  const router = useRouter();
   useEffect(() => {
-    const pathname = window.location.pathname;
-    setUrl(pathname);
+    getMaxPrice(locale, {...router.query , price: ''});
   }, []);
+
   const priceHandle = (value) => {
     if (value) {
-      setSelectedPrice({ min: value[0], max: value[1] });
+      router.query.price = value[0] + ',' + value[1];
+      router.push(router);
+      setPrice(value)
       setValues(value);
-      router.push(`${url}?category=${context.state}&brand=${context.selectedBrands}&color=${context.selectedColor}&size=${context.selectedSize}&minPrice=${context.selectedPrice?.min}&maxPrice=${context.selectedPrice?.max}`, undefined, { shallow: true });
     }
   };
+
   return (
     <div className="collection-collapse-block border-0 open">
       <h3 className="collapse-block-title" onClick={toggle}>
@@ -39,7 +40,7 @@ const Price = () => {
                 values={values}
                 step={10}
                 min={0}
-                max={500}
+                max={Math.floor(maxPrice)}
                 onChange={(price) => {
                   priceHandle(price);
                 }}
@@ -63,8 +64,8 @@ const Price = () => {
                         background: getTrackBackground({
                           values,
                           colors: ["#ccc", "#f84c3c", "#ccc"],
-                          min: price.min,
-                          max: price.max,
+                          min: 0,
+                          max: Math.floor(maxPrice),
                         }),
                         alignSelf: "center",
                       }}>

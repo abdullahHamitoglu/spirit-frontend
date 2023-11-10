@@ -3,7 +3,7 @@ import { Container, Row, Col } from 'reactstrap';
 import LeftCollection from '../../../../components/common/Collections/LeftCollection';
 import ProductItem from '../../../../components/common/product-box/ProductBox1';
 import { useQuery } from '@apollo/client';
-import { gql } from '@apollo/client';
+
 import { CompareContext } from '../../../../helpers/Compare/CompareContext';
 import { WishlistContext } from '../../../../helpers/wishlist/WishlistContext';
 import CartContext from '../../../../helpers/cart';
