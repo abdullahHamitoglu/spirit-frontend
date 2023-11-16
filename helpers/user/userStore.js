@@ -15,7 +15,7 @@ const useUserStore = create(
             isAuthenticated: false,
             token: null,
             expirationTime: null,
-            address: [],
+            addresses: [],
             fcmToken: 0,
             register: async (userData, locale) => {
                 // Send a POST request to your registration API endpoint
@@ -48,6 +48,7 @@ const useUserStore = create(
                             token: res.data.token,
                             expirationTime: new Date().getTime() + 24 * 60 * 60 * 1000,
                         });
+                        document.querySelector('meta[name=token]').setAttribute("content", res.data.token);
                     }
                 }).catch(function (error, errors) {
                     if (error.response) {
@@ -67,14 +68,14 @@ const useUserStore = create(
                 }
             },
 
-            updateProfile: async (profileData) => {
+            updateProfile: async (data) => {
                 await axios({
                     method: 'put',
                     url: process.env.NEXT_PUBLIC_API_URL + `api/v1/customer/profile`,
                     headers: {
                         'Authorization': `Bearer ${get().token}`
                     },
-                    data: profileData,
+                    data,
                 }).then(res => {
                     if (res.data) {
                         toast.success(res.data.message);
@@ -82,7 +83,7 @@ const useUserStore = create(
                     }
                 }).catch(function (error, errors) {
                     if (error.message) {
-                            }
+                    }
                     console.log(errors, error);
                 });
             },
@@ -117,27 +118,86 @@ const useUserStore = create(
                     console.log(errors, error);
                 });
             },
-            Address: async (formData, method, id) => {
-                const url = process.env.NEXT_PUBLIC_API_URL + 'api/v1/customer/addresses' + (id ?? `/${id}`)
-
+            addAddress: async (data, locale) => {
                 await axios({
-                    method: method ?? 'get',
-                    url,
+                    method: 'POST',
+                    url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/customer/addresses`,
+                    params: {
+                        locale: locale.slice(0, 2)
+                    },
                     headers: {
                         'Authorization': `Bearer ${get().token}`
                     },
-                    data: method == 'post' && method == 'put' ? formData : null,
+                    data
                 }).then(res => {
                     if (res.data && res.status == 200) {
                         toast.success(res.data.message);
-                        set({
-                            address: res.data.data
-                        })
                     }
-                }).catch(function (error, errors) {
-                    if (error.message) {
-                            }
-                    console.log(errors, error);
+                }).catch((error) => {
+                    if (error.response.data) {
+                        toast.error(error.response.data.message);
+                    }
+                    console.log(error);
+                });
+            },
+            getAddresses: async (locale) => {
+                await axios({
+                    method: 'get',
+                    url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/customer/addresses`,
+                    params: {
+                        locale: locale.slice(0, 2)
+                    },
+                    headers: {
+                        'Authorization': `Bearer ${get().token}`
+                    },
+                }).then(res => {
+                    set({
+                        addresses: res.data.data
+                    })
+                }).catch((error) => {
+                    if (error.response.data) {
+                        toast.error(error.response.data.message);
+                    }
+                    console.log(error);
+                });
+            },
+            updateAddress: async (data, locale, id) => {
+                await axios({
+                    method: 'put',
+                    url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/customer/addresses/${id}`,
+                    params: {
+                        locale: locale.slice(0, 2)
+                    },
+                    headers: {
+                        'Authorization': `Bearer ${get().token}`
+                    },
+                    data
+                }).then(res => {
+                    toast(res.data.message);
+                }).catch((error) => {
+                    if (error.response.data) {
+                        toast.error(error.response.data.message);
+                    }
+                    console.log(error);
+                });
+            },
+            deleteAddress: async (locale, id) => {
+                await axios({
+                    method: 'DELETE',
+                    url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/customer/addresses/${id}`,
+                    params: {
+                        locale: locale.slice(0, 2)
+                    },
+                    headers: {
+                        'Authorization': `Bearer ${get().token}`
+                    },
+                }).then(res => {
+                    toast(res.data.message);
+                }).catch((error) => {
+                    if (error.response.data) {
+                        toast.error(error.response.data.message);
+                    }
+                    console.log(error);
                 });
             },
 
@@ -152,18 +212,18 @@ const useUserStore = create(
                     },
                 }).then(res => {
                     set({ fcmToken: res.data.data.deviceDetails.fcmToken });
-                }).catch(function (error, errors) {
+                }).catch(function (error) {
                     if (error.response) {
                         toast.error(error.response.data.message);
                     }
-                    console.log(errors, error);
+                    console.log(error);
                 });
                 // }
             }
         }),
         {
-            name: 'user-storage', // name of the item in the storage (must be unique)
-            storage: createJSONStorage(() => localStorage), // (optional) by default, 'localStorage' is used
+            name: 'userStorage', // name of the item in the storage (must be unique)
+            storage: createJSONStorage(() => sessionStorage), // (optional) by default, 'localStorage' is used
         }
     )
 );

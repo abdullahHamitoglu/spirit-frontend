@@ -15,18 +15,12 @@ import algoliasearch from 'algoliasearch/lite';
 import { InstantSearch } from 'react-instantsearch';
 import useUserStore from "../helpers/user/userStore";
 
-const searchClient = algoliasearch('YourApplicationID', 'YourSearchOnlyAPIKey');
 
 function MyApp({ Component, pageProps }) {
   const [isLoading, setIsLoading] = useState(true);
   const [url, setUrl] = useState();
-  const apolloClient = useApollo(pageProps);
   const { locale } = useRouter();
-  const { registerDevice, fcmToken } = useUserStore();
-  // useEffect(() => {
-  //   registerDevice();
-  //   console.log(fcmToken);
-  // },[])
+  const { registerDevice, fcmToken , token } = useUserStore();
   useEffect(() => {
     document.documentElement.style.setProperty("--theme-deafult", "#00c2b5");
     if (locale == 'ar-KW') {
@@ -36,52 +30,41 @@ function MyApp({ Component, pageProps }) {
       document.documentElement.dir = 'ltr';
       document.body.classList.remove("rtl");
     }
-    return () => {
-      document.documentElement.style.removeProperty("--theme-deafult");
-    };
-  });
-  useEffect(() => {
-    const path = window.location.pathname.split("/");
-    const url = path[path.length - 1];
-    document.body.classList.add("dark");
-
-    let timer = setTimeout(function () {
-      setIsLoading(false);
-    }, 1000);
-    return () => {
-      clearTimeout(timer);
-    };
+    setIsLoading(false);
+  //   registerDevice();
+  //   console.log(fcmToken);
   }, []);
   return (
     <>
-        {isLoading ? (
-          <div className="loader-wrapper">{url === "Christmas" ? <div id="preloader"></div> : <div className="loader"></div>}</div>
-        ) : (
-          <>
-            <Head>
-              {locale == 'ar-KW' ?
-                <>
-                  <link rel="preconnect" href="https://fonts.googleapis.com" />
-                  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-                  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@200;300;400;500;700;800;900&display=swap" rel="stylesheet" />
-                </>
-                : ''}
-              <meta name="viewport" content="width=device-width, initial-scale=1" />
-              <link rel="icon" type="image/x-icon" href='assets/images/favicon.png' />
-              <title>Spirit - Multi-purpopse E-commerce React Template</title>
-            </Head>
-            <SettingProvider>
-              <CompareContextProvider>
-                <FilterProvider>
-                  <Component {...pageProps} />
-                </FilterProvider>
-                <ThemeSettings />
-              </CompareContextProvider>
-            </SettingProvider>
-            <ToastContainer />
-            <TapTop />
-          </>
-        )}
+      {isLoading ? (
+        <div className="loader-wrapper">{url === "Christmas" ? <div id="preloader"></div> : <div className="loader"></div>}</div>
+      ) : (
+        <>
+          <Head>
+            {locale == 'ar-KW' ?
+              <>
+                <link rel="preconnect" href="https://fonts.googleapis.com" />
+                <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+                <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@200;300;400;500;700;800;900&display=swap" rel="stylesheet" />
+              </>
+              : ''}
+            <meta name="viewport" content="width=device-width, initial-scale=1" />
+            <meta name="token" content='' />
+            <link rel="icon" type="image/x-icon" href='assets/images/favicon.png' />
+            <title>Spirit</title>
+          </Head>
+          <SettingProvider>
+            <CompareContextProvider>
+              <FilterProvider>
+                <Component {...pageProps} />
+              </FilterProvider>
+              <ThemeSettings />
+            </CompareContextProvider>
+          </SettingProvider>
+          <ToastContainer />
+          <TapTop />
+        </>
+      )}
     </>
   );
 }

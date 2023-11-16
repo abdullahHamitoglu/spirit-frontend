@@ -135,7 +135,7 @@
     "create_account_text": "قم بالتسجيل للحصول على حساب مجاني في متجرنا. عملية التسجيل سريعة وسهلة. ستتيح لك الفرصة لطلب منتجاتنا من المتجر. لبدء التسوق، انقر فوق 'التسجيل'.",
     "personal_details": "المعلومات الشخصية",
     "write_your_message": "اكتب رسالتك",
-    "Date_of_birth": "تاريخ الميلاد",
+    "date_of_birth": "تاريخ الميلاد",
     "shipping_address": "عنوان الشحن",
     "flat_plot_label": "شقة / قطعة أرض",
     "address_label": "العنوان *",
@@ -276,5 +276,14 @@
     "phone_required": "الرجاء إدخال رقم هاتف صحيح.",
     "address_required": "الرجاء إدخال العنوان الصحيح.",
     "select_city": "اختر مدينة واحدة",
-    "select_state": "اختر ولاية واحدة"
+    "select_state": "اختر ولاية واحدة",
+    "password_min_length": "يجب أن تكون كلمة المرور على الأقل 6 أحرف",
+    "passwords_must_match": "يجب أن تتطابق كلمات المرور",
+    "company_name_required": "اسم الشركة مطلوب",
+    "invalid_email": "بريد إلكتروني غير صالح",
+    "address1_required": "العنوان1 مطلوب",
+    "state_required": "الولاية مطلوبة",
+    "city_required": "المدينة مطلوبة",
+    "postcode_required": "الرمز البريدي مطلوب",
+    "vat_id_required": "معرف الضريبة على القيمة المضافة (VAT ID) مطلوب"
 }

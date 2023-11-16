@@ -10,12 +10,12 @@ const WishlistPage = () => {
   const router = useRouter();
   const { wishList, wishListItems } = useWishListStore();
   const { t } = useTranslation();
-  if (wishListItems.length <= 0) {
+  if (wishListItems.length < 0) {
     router.push('/');
     toast.warn(t('wishlist_is_empty'))
   }
   const checkOut = () => {
-    router.push("/page/account/checkout");
+    router.push("/account/checkout");
   };
   useEffect(() => {
     wishList('get');
@@ -97,12 +97,12 @@ const WishlistPage = () => {
             </Row>
             <Row className="wishlist-buttons">
               <Col sm="12">
-                <Link href={"/"} className="btn btn-solid">
+                <Link href={"/products"} className="btn btn-solid">
                   {t('continue_shopping')}
                 </Link>
-                <a href={null} className="btn btn-solid" onClick={checkOut}>
+                <Link href={'/account/checkout'} className="btn btn-solid" onClick={checkOut}>
                   {t('check_out')}
-                </a>
+                </Link>
               </Col>
             </Row>
           </Container>

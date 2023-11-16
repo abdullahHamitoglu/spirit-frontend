@@ -68,9 +68,8 @@ const index = ({ products, page, attributes }) => {
         </>
     )
 }
-export async function getServerSideProps(context) {
-    const { locale } = context;
-    const products = await getProducts(locale, context.params);
+export async function getServerSideProps({locale ,params}) {
+    const products = await getProducts(locale, params);
     const attributes = await getFilterAttr(locale);
     const page = await getPageData(locale, 'products');
     return {

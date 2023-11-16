@@ -1,33 +1,13 @@
 import React, { useContext } from "react";
 import { useQuery } from "@apollo/client";
 
-import { Media } from "reactstrap";
 import Slider from "react-slick";
 import currencyStore from "../../../helpers/Currency/CurrencyStore";
-
-
-const GET_PRODUCTS = gql`
-  query newProducts($type: String!) {
-    newProducts(type: $type) {
-      title
-      price
-      images {
-        alt
-        src
-      }
-    }
-  }
-`;
 
 const NewProduct = () => {
   
   const {selectedCurrency } = currencyStore()
   const symbol = selectedCurrency.symbol;
-  var { loading, data } = useQuery(GET_PRODUCTS, {
-    variables: {
-      type: "fashion",
-    },
-  });
 
   return (
     // <!-- side-bar single product slider start -->
@@ -35,7 +15,7 @@ const NewProduct = () => {
       <h5 className="title-border">new product</h5>
       <Slider className="offer-slider slide-1">
         <div>
-          {!data ||
+          {/* {!data ||
           !data.newProducts ||
           data.newProducts.length === 0 ||
           loading ? (
@@ -71,10 +51,10 @@ const NewProduct = () => {
                   </div>
                 ))}
             </>
-          )}
+          )} */}
         </div>
         <div>
-          {!data ||
+          {/* {!data ||
           !data.newProducts ||
           data.newProducts.length === 0 ||
           loading ? (
@@ -110,7 +90,7 @@ const NewProduct = () => {
                   </div>
                 ))}
             </>
-          )}
+          )} */}
         </div>
       </Slider>
     </div>

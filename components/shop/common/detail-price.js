@@ -5,21 +5,34 @@ import { Modal, ModalBody, ModalHeader, Media, Input } from "reactstrap";
 import CartContext from "../../../helpers/cart";
 import CountdownComponent from "../../../components/common/widgets/countdownComponent";
 import MasterSocial from "./master_social";
+import { useTranslation } from "react-i18next";
 
 const DetailsWithPrice = ({ item, stickyClass, changeColorVar }) => {
   const [modal, setModal] = useState(false);
   const toggle = () => setModal(!modal);
   const product = item;
   const context = useContext(CartContext);
-  const stock = context.stock;
-  const plusQty = context.plusQty;
-  const minusQty = context.minusQty;
-  const quantity = context.quantity;
   const uniqueColor = [];
   const uniqueSize = [];
+  // Add the following useState hook
+  const [quantity, setQuantity] = useState(1); // Set the initial quantity to 1
+  const { t } = useTranslation();
+  // Define the changeQty function
+  const changeQty = (event) => {
+    const newQuantity = parseInt(event.target.value, 10) || 1;
+    setQuantity(newQuantity);
+  };
 
-  const changeQty = (e) => {
-    setQuantity(parseInt(e.target.value));
+  // Define the plusQty function
+  const plusQty = () => {
+    setQuantity(quantity + 1);
+  };
+
+  // Define the minusQty function
+  const minusQty = () => {
+    if (quantity > 1) {
+      setQuantity(quantity - 1);
+    }
   };
 
   return (
@@ -104,8 +117,8 @@ const DetailsWithPrice = ({ item, stickyClass, changeColorVar }) => {
           ) : (
             ""
           )}
-          <span className="instock-cls">{stock}</span>
-          <h6 className="product-title">quantity</h6>
+          <span className="instock-cls">{product.in_stock ? t('in_stock') : t('out_of_stock')}</span>
+          <h6 className="product-title">{t('quantity')}</h6>
           <div className="qty-box">
             <div className="input-group">
               <span className="input-group-prepend">

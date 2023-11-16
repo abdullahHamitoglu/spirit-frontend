@@ -74,7 +74,7 @@ const MainBanner = (sliders) => {
                   image={data.image_url}
                   desc={data.content}
                   title={data.title}
-                  link={data.path}
+                  link={data.slider_path}
                   classes={data.classes}
                 />
               </SwiperSlide>

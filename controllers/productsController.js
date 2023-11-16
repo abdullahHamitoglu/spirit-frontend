@@ -3,57 +3,52 @@ import useUserStore from "@/helpers/user/userStore";
 import axios from "axios";
 
 const currency = currencyStore.getState().selectedCurrency.code;
-export async function getProducts(locale , params) {
-    try {
-        const response = await axios({
-            method: 'GET',
-            url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/products`,
-            params: {
-                'locale': locale.slice(0, 2),
-                'currency': currency,
-                ...params
-            },
-            headers: {
-                'Authorization': `Bearer ${useUserStore.getState().token}`,
-            },
-        });
+export async function getProducts(locale, params) {
+    const response = await axios({
+        method: 'GET',
+        url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/products`,
+        params: {
+            locale: locale.slice(0, 2),
+            currency: currency,
+            ...params
+        },
+        headers: {
+            'Authorization': `Bearer ${useUserStore.getState().token}`,
+        },
+    }).catch((error) => {
+        console.log(error);
+    });
 
-        return response.data.data;
-    } catch (error) {
-        throw error;
-    }
+    return response.data.data;
 };
 export async function getProductBySlug(locale, slug) {
-    try {
-        const response = await axios.get({
-            url:`${process.env.NEXT_PUBLIC_API_URL}api/v1/products-slug/${slug}`,
-            params: {
-                'locale': locale.slice(0, 2),
-                'currency': currency,
-            },
-        });
-        return response.data.data;
-    } catch (error) {
-        throw error;
-    }
+
+    const response = await axios({
+        url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/products-slug/${slug}`,
+        params: {
+            'locale': locale.slice(0, 2),
+            'currency': currency,
+        },
+    }).catch((error) => {
+        console.log(error);
+    });
+
+    return response.data.data;
 };
 export async function getCatagories(locale) {
-    try {
+    const response = await axios({
+        method: 'GET',
+        url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/categories`,
+        params: {
+            'locale': locale.slice(0, 2),
+            'currency': currency,
+            'parent_id': 1
+        },
+    }).catch((error) => {
+        console.log(error);
+    });
 
-        const response = await axios({
-            method: 'GET',
-            url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/categories`,
-            params: {
-                'locale': locale.slice(0, 2),
-                'currency': currency,
-                'parent_id': 1
-            },
-        });
-
-        return response.data.data;
-    } catch (error) {
-        throw error;
-    }
+    return response.data.data;
 };
 
 export async function getBrands(locale) {
@@ -75,12 +70,12 @@ export async function getBrands(locale) {
 
 export async function getFilterAttr(locale, params) {
     try {
-        const response = await axios({ 
-            method : 'GET',
+        const response = await axios({
+            method: 'GET',
             url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/filterable-attributes`,
             params: {
                 locale: locale.slice(0, 2),
-                currency:currency,
+                currency: currency,
                 ...params
             }
         })
@@ -92,12 +87,12 @@ export async function getFilterAttr(locale, params) {
 }
 export async function getMaxPrice(locale, params) {
     try {
-        const response = await axios({ 
+        const response = await axios({
             method: 'GET',
             url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/maximum-price`,
             params: {
                 locale: locale.slice(0, 2),
-                currency:currency,
+                currency: currency,
                 ...params
             }
         });

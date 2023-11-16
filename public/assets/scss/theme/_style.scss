@@ -43,6 +43,10 @@
 /*=====================
     1.General CSS start
 ==========================*/
+.form-check-input:checked {
+  background-color: #54c3bd;
+  border-color: #54c3bd;
+}
 body {
   font-family: $font_0, $font_1;
   position: relative;
@@ -1146,6 +1150,27 @@ header {
   top: 0;
   left: 0;
   background-color: lighten($white, 5%);
+  .ais-SearchBox-form {
+    position: relative;
+    .ais-SearchBox-reset {
+      right: unset;
+      left: unset;
+      inset-inline-end: 36px;
+      svg {
+        width: 15px !important;
+        height: 15px !important;
+      }
+    }
+    .ais-SearchBox-reset,
+    .ais-SearchBox-submit {
+      top: 50% !important;
+      transform: translateY(-50%);
+      svg {
+        width: 20px;
+        height: 20px;
+      }
+    }
+  }
   > div {
     height: 100%;
     width: 100%;
@@ -1154,6 +1179,7 @@ header {
     justify-content: center;
     .overlay-content {
       width: 100%;
+      height: 100vh;
       .form-control {
         &:focus {
           box-shadow: none;
@@ -1186,6 +1212,13 @@ header {
           font-size: 18px;
         }
       }
+      
+      input[type="search"]::-webkit-search-decoration,
+      input[type="search"]::-webkit-search-cancel-button,
+      input[type="search"]::-webkit-search-results-button,
+      input[type="search"]::-webkit-search-results-decoration {
+        -webkit-appearance: none;
+      }
       button {
         position: absolute;
         top: 0;
@@ -1194,6 +1227,31 @@ header {
         font-size: 24px;
         color: lighten($black, 46.5%);
         right: 10px;
+      }
+    }
+    .ais-Hits-list {
+      display: flex;
+      margin-block: 7.5px;
+      gap: 7.5px;
+      padding: 0;
+      max-height: 100%;
+      overflow: auto;
+      max-height: 85vh;
+      .search-result {
+        display: flex;
+        justify-content: space-between;
+        border-bottom: #01effc 1px solid;
+        padding-bottom: 5px;
+        .name {
+          color: #000;
+          .desc {
+            color: #818181 !important;
+            font-size: 14px;
+          }
+        }
+        .price {
+          color: #00ced1;
+        }
       }
     }
     .closebtn {
@@ -13889,6 +13947,22 @@ table {
       background-image: url("/assets/images/bg-image.jpg");
     }
   }
+}
+.range-slider{
+  height: 6px !important;
+  .range-slider__range{
+    background: #54c2bd !important;
+  }
+  .range-slider__thumb {
+    width: 19px !important;
+    height: 19px !important;
+    background: #54c2bd !important;
+  }
+}
+.priceText{
+  display: flex;
+  margin-block: 10px;
+  justify-content: space-between;
 }
 video#background-video {
   position: absolute;

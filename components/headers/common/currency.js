@@ -39,7 +39,7 @@ const Currency = ({ icon }) => {
         <h6>currency</h6>
         <ul className="list-inline">
           {currencies.data && currencies.data.map((currency, i) => (
-            <li className={selectedCurrency == currency.code} key={i} title={currency.name}>
+            <li className={selectedCurrency == currency.code ? 'true' : 'false'} key={i} title={currency.name}>
               <div onClick={() => handleCurrencyClick(currency)} title={currency.name}>
                 {currency.code} {currency.symbol}
               </div>

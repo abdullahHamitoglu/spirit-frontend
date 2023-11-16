@@ -1,4 +1,4 @@
-import React, { use, useState } from 'react';
+import React, { use, useEffect, useState } from 'react';
 import CommonLayout from '@/components/shop/common-layout';
 import { Container, Row, Col } from 'reactstrap';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
@@ -6,15 +6,24 @@ import { useTranslation } from 'react-i18next';
 import useUserStore from '@/helpers/user/userStore';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { getPageData } from '@/controllers/homeController';
 
-const Dashboard = () => {
+const Dashboard = (page) => {
     const [accountInfo, setAccountInfo] = useState(false);
-    const { user, logout, isAuthenticated } = useUserStore();
+    const { user, logout, isAuthenticated, getAddresses, addresses, deleteAddress } = useUserStore();
     const { t } = useTranslation();
+    const { locale } = useRouter();
     const router = useRouter();
     if (!isAuthenticated && user) {
         router.push(`/account/login?redirect_url=${router.asPath}`);
     }
+    const hanleDeleteAddress = (id)=>{
+        deleteAddress(locale , id);
+        getAddresses(locale);
+    }
+    useEffect(() => {
+        getAddresses(locale)
+    }, []);
     return (
         <CommonLayout parent={t('home')} title={t('dashboard')}>
             <section className="section-b-space">
@@ -39,8 +48,8 @@ const Dashboard = () => {
                                         <li><a href="/account/orders">{t('my_orders')}</a></li>
                                         <li><a href="/account/wishlist">{t('my_wishlist')}</a></li>
                                         <li><a href="/account/newsletter">{t('newsletter')}</a></li>
-                                        <li><a href="#">{t('my_account')}</a></li>
-                                        <li><a href="#">{t('change_password')}</a></li>
+                                        <li><a href="/account/profile">{t('my_account')}</a></li>
+                                        <li><a href="/account/profile#change_password">{t('change_password')}</a></li>
                                         <li className="last"><a onClick={() => logout()} >{t('log_out')}</a></li>
                                     </ul>
                                 </div>
@@ -50,13 +59,11 @@ const Dashboard = () => {
                             <div className="dashboard-right">
                                 <div className="dashboard">
                                     <div className="page-title">
-                                        <h2>{t('my_dashboard')}</h2>
+                                        <h2>{page.title}</h2>
                                     </div>
                                     <div className="welcome-msg">
-                                        <p>{t('hello_mark_jecno')}</p>
-                                        <p>
-                                            {t('from_your_my_account_dashboard')}
-                                        </p>
+                                        <p>{page.title}</p>
+                                        <p dangerouslySetInnerHTML={{ __html: page.content }} />
                                     </div>
                                     <div className="box-account box-info">
                                         <div className="box-head">
@@ -92,16 +99,20 @@ const Dashboard = () => {
                                                     <h3>{t('address_book')}</h3><Link href="/account/profile">{t('manage_addresses')}</Link>
                                                 </div>
                                                 <Row>
-                                                    <Col sm="6">
-                                                        <h6>{t('default_billing_address')}</h6>
-                                                        <address>{t('not_set_default_billing_address')}<br />
-                                                        <Link href="/account/profile" >{t('edit_address')}</Link></address>
-                                                    </Col>
-                                                    <Col sm="6">
-                                                        <h6>{t('default_shipping_address')}</h6>
-                                                        <address>{t('not_set_default_shipping_address')} <br />
-                                                        <Link href="/account/profile">{t('edit_address')}</Link></address>
-                                                    </Col>
+                                                    {addresses ? addresses.map((address) => (
+                                                        <Col sm="6">
+                                                            <h6> {address.company_name}</h6>
+                                                            <address>
+                                                                <h6 className='text-black'>{t('address_label')}: {address.company_name}</h6>
+                                                                {t('name')}: {address.first_name} {address.last_name} <br />
+                                                                {t('phone')}: {address.phone} <br />{t('email')}: {address.email} <br />
+                                                                {t('address')}: {address.country} / {address.city} / {address.state} {address.postcode} <br />
+                                                                {t('address1')}: {address.address1[0]}  <br />
+                                                                <Link href={`/addresses/${address.id}`}>{t('edit')}</Link>
+                                                                <a  className='text-danger ms-2 btn' onClick={() => { hanleDeleteAddress(address.id) }}>{t('delete')}</a>
+                                                            </address>
+                                                        </Col>
+                                                    )) : ''}
                                                 </Row>
                                             </div>
                                         </div>
@@ -120,10 +131,11 @@ const Dashboard = () => {
 export async function getStaticProps(context) {
     // extract the locale identifier from the URL
     const { locale } = context
-
+    const page = await getPageData(locale, 'dashboard');
     return {
         props: {
             // pass the translation props to the page component
+            page,
             ...(await serverSideTranslations(locale)),
         },
     }

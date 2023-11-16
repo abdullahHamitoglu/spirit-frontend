@@ -31,7 +31,7 @@ const useWishListStore = create(
                     if(error.response.status == 401){
                         router.push(`/account/login?redirect_url=${router.asPath}`);
                     }
-                    console.log(error);
+                    console.error(error);
                 });
             },
         }),

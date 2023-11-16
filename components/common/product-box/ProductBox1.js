@@ -8,7 +8,7 @@ import { useTranslation } from "react-i18next";
 import useCartStore from "../../../helpers/cart/cartStore";
 import currencyStore from "../../../helpers/Currency/CurrencyStore";
 
-const ProductItem = ({ wishListLoading, product, addCart, backImage, des, addWishlist, cartClass, productDetail, addCompare, title }) => {
+const ProductItem = ({  wishListLoading, product, addCart, backImage, des, addWishlist, cartClass, productDetail, addCompare, title }) => {
   // eslint-disable-next-line
   const router = useRouter();
   const { selectedCurrency } = currencyStore();

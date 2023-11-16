@@ -22,7 +22,7 @@ const currencyStore = create(
                 }).then((response)=>{
                     set({ currencies: response.data });
                 }).catch((error)=>{
-                    console.log(error);
+                    console.error(error);
                 })
             },
 

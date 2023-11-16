@@ -18,7 +18,7 @@ const useFilterStore = create(
             option: '',
             brand: '',
             price: 0,
-            maxPrice: 1,
+            maxPrice: 1000,
             page: 1,
             category: '',
             brand_id: '',
@@ -41,9 +41,9 @@ const useFilterStore = create(
                         ...params
                     }
                 }).then((response) => {
-                    set({ maxPrice: response.data.data.max_price });
+                    // set({ maxPrice: response.data.data.max_price });
                 }).catch((error)=> {
-                    console.log(error);
+                    console.error(error);
                 });
             },
             filterProducts: async (locale , params) => {
@@ -62,7 +62,7 @@ const useFilterStore = create(
                 }).then((response)=>{
                     set({productsIsFetching: false , filteredProducts : response.data.data});
                 }).catch((error)=> {
-                    console.log(error);
+                    console.error(error);
                 });
             }
         }

@@ -7,6 +7,7 @@ import { useRouter } from 'next/router';
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import * as Yup from 'yup';
 import useUserStore from "@/helpers/user/userStore";
+import Link from "next/link";
 
 const Login = () => {
   const { isAuthenticated, login } = useUserStore();
@@ -81,9 +82,9 @@ const Login = () => {
               <div className="theme-card authentication-right">
                 <h6 className="title-font">{t("create_account")}</h6>
                 <p>{t('create_account_text')}</p>
-                <a href="#" className="btn btn-solid">
+                <Link href="/account/register" className="btn btn-solid">
                   {t('create_account')}
-                </a>
+                </Link>
               </div>
             </Col>
           </Row>

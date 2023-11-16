@@ -26,7 +26,7 @@ const useCartStore = create(
                 set({ cartData: res.data.data, cartLoading: false });
             }).catch((error) => {
                 set({ cartLoading: false });
-                console.log(error);
+                console.error(error);
             });
         },
         addToCart: (data) => {
@@ -44,7 +44,7 @@ const useCartStore = create(
                 get().getCart();
             }).catch((error) => {
                 set({ cartLoading: false })
-                console.log(error);
+                console.error(error);
             });
         },
         removeFromCart: (id ) => {
@@ -61,7 +61,7 @@ const useCartStore = create(
                 get().getCart();
             }).catch((error) => {
                 set({ cartLoading: false })
-                console.log(error);
+                console.error(error);
             });
         },
         emptyFromCart: () => {
@@ -78,7 +78,7 @@ const useCartStore = create(
                 toast.success(res.data.message);
             }).catch((error) => {
                 set({ cartLoading: false })
-                console.log(error);
+                console.error(error);
             });
         },
         updateQty: (id, qyt) => {
@@ -98,7 +98,7 @@ const useCartStore = create(
                 toast.success(res.data.message);
             }).catch((error) => {
                 set({ cartLoading: false });
-                console.log(error);
+                console.error(error);
             });
         },
         moveToWhishList: (id) => {
@@ -115,7 +115,7 @@ const useCartStore = create(
                 toast.success(res.data.message);
             }).catch((error) => {
                 set({ cartLoading: false });
-                console.log(error);
+                console.error(error);
             });
         },
         applyCoupon: (code) => {
@@ -133,7 +133,7 @@ const useCartStore = create(
                 toast.success(res.data.message);
             }).catch((error) => {
                 set({ cartLoading: false });
-                console.log(error);
+                console.error(error);
             });
         },
         removeCoupon: () => {
@@ -148,7 +148,7 @@ const useCartStore = create(
                 toast.success(res.data.message);
             }).catch((error) => {
                 set({ cartLoading: false });
-                console.log(error);
+                console.error(error);
             });
         },
     })

@@ -14,6 +14,7 @@ import AboutSection from "../components/layouts/Beauty/components/About-Section"
 import { useTranslation } from "react-i18next";
 import { getHomePageData, getPageData } from "../controllers/homeController";
 
+
 const Fashion = ({ page, homeData }) => {
   const { t } = useTranslation()
   return (

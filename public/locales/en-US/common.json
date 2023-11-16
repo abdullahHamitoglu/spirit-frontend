@@ -138,7 +138,7 @@
     "create_account_text": "Sign up for a free account at our store. Registration is quick and easy. It allows you to be able to order from our shop. To start shopping click register. ",
     "personal_details": "PERSONAL DETAIL",
     "write_your_message": "Write Your Message",
-    "Date_of_birth": "Date of birth",
+    "date_of_birth": "Date of birth",
     "shipping_address": "SHIPPING ADDRESS",
     "flat_plot_label": "Flat / Plot",
     "address_label": "Address *",
@@ -278,5 +278,14 @@
     "phone_required": "Please enter a number for the phone.",
     "address_required": "Please enter the right address.",
     "select_city": "Select one city",
-    "select_state": "Select one state"
+    "select_state": "Select one state",
+    "password_min_length": "Password must be at least 6 characters",
+    "passwords_must_match": "Passwords must match",
+    "company_name_required": "Company name is required",
+    "invalid_email": "Invalid email",
+    "address1_required": "Address1 is required",
+    "state_required": "State is required",
+    "city_required": "City is required",
+    "postcode_required": "Postcode is required",
+    "vat_id_required": "VAT ID is required"
 }

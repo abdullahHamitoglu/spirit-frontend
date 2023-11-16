@@ -1,8 +1,7 @@
 import React, { Fragment, useState, useContext } from "react";
 import { Col, Media, ModalHeader, Modal, ModalBody, Row } from "reactstrap";
 
-import Link from "next/link";
-import CartContext from "../../../helpers/cart";
+import Link from "next/link"; 
 import MasterProductDetail from "./MasterProductDetail";
 import currencyStore from "../../../helpers/Currency/CurrencyStore";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
@@ -14,11 +13,6 @@ const ProductSection = ({ product, addToCompare, addWishlist, addCart }) => {
   const [modalCompare, setModalCompare] = useState(false);
   const toggleCompare = () => setModalCompare(!modalCompare);
   const toggle = () => setModal(!modal);
-  const cartContext = useContext(CartContext);
-  const plusQty = cartContext.plusQty;
-  const minusQty = cartContext.minusQty;
-  const quantity = cartContext.quantity;
-  const setQuantity = cartContext.setQuantity;
   const uniqueTags = [];
 
   const clickProductDetail = () => {

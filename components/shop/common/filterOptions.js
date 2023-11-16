@@ -14,28 +14,19 @@ const FilterOptions = (attr) => {
   const router = useRouter();
 
   const toggleBrand = () => setIsOpen(!isOpen);
-  const { pathname, asPath, query } = router;
-
+  const { pathname, query } = router;
+  
   const handleChange = (event, option, type) => {
-    if (event.target.checked) {
-      var q = `${option.label}`
-      router.push({
-        pathname,
-        query: {
-          ...query,
-          [type]: q
-        },
-      });
-    } else {
-      var q = `${query.options && query.options}`
-      router.push({
-        pathname,
-        query: {
-          ...query,
-          [type]: q.replace(option.label, '')
-        },
-      });
-    }
+    const checkedInputs = document.querySelectorAll(`input[name=${attr.attr.code}]:checked`);
+    const values = Array.from(checkedInputs).map((element) => element.value);
+    
+    router.push({
+      pathname,
+      query: {
+        ...query,
+        [type]:  values.join(',')
+      },
+    });
   };
 
   return (
@@ -46,25 +37,23 @@ const FilterOptions = (attr) => {
       <Collapse isOpen={isOpen}>
         <div className="collection-collapse-block-content">
           <div className="collection-brand-filter">
-            <MultiSelect onChange={(event) => handleChange(event, event.target, attr.attr.code)} options={attr.attr.options} optionLabel="label"
-              placeholder="Select Cities" maxSelectedLabels={3} className="w-full md:w-20rem" />
-            {/* {attr && attr.attr && attr.attr.options &&
+            {attr && attr.attr && attr.attr.options &&
               attr.attr.options.map((option, index) => (
                 <div className="form-check custom-checkbox collection-filter-checkbox ms-1" key={index}>
-
                   <Input
-                    checked={router.query.options && router.query.options.includes(option.label)}
+                    checked={router.query[attr.attr.code] && router.query[attr.attr.code].includes(option.label)}
                     type="checkbox"
                     className="custom-control-input"
-                    name={option.label}
-                    id={option.id}
+                    name={attr.attr.code}
+                    id={option.label.toLowerCase()}
+                    value={option.label}
                     onChange={(event) => handleChange(event, option, attr.attr.code)}
                   />
-                  <label className="custom-control-label" htmlFor={option.id}>
+                  <label className="custom-control-label" htmlFor={option.label.toLowerCase()}>
                     {option.label}
                   </label>
                 </div>
-              ))} */}
+              ))}
           </div>
         </div>
       </Collapse>

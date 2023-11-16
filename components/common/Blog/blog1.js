@@ -6,11 +6,14 @@ import { Slider3 } from "../../../services/script";
 import { Media, Container, Row, Col } from "reactstrap";
 
 const BlogSection = ({ type, sectionClass, title, inner, hrClass }) => {
-  var { data } = useQuery(GET_PRODUCTS, {
-    variables: {
-      type: type,
-    },
-  });
+  // var { data } = useQuery(GET_PRODUCTS, {
+  //   variables: {
+  //     type: type,
+  //   },
+  // });
+  const data = {
+    blog:[]}
+  
   return (
     <Fragment>
       <section className={sectionClass}>

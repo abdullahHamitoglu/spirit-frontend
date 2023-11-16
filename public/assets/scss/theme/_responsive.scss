@@ -4,11 +4,6 @@
 
 body {
   &.christmas {
-    @media (min-width: 1630px) {
-      .container {
-        max-width: 1600px;
-      }
-    }
 
     @media (max-width: 1630px) {
       .home-slider {
@@ -18,12 +13,6 @@ body {
         }
       }
     }
-  }
-}
-
-@media (min-width: 1430px) {
-  .container {
-    max-width: 1400px;
   }
 }
 

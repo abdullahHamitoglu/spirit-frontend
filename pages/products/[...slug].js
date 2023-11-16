@@ -16,17 +16,17 @@ function Post({ product }) {
     </CommonLayout>
   );
 }
-export async function getStaticPaths({ locale, locales }) {
-  
+export async function getStaticPaths(context) {
+  const {locale , locales} = context
 
-  const products = await getProducts(locale);
+  const products = await getProducts('');
 
   const paths = products.flatMap((product) => {
-    return locales.map((loc) => ({
+    return locales.map((locale) => ({
       params: {
         slug: [product.url_key],
       },
-      loc,
+      locale,
     }));
   });
 

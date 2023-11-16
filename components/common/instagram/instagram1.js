@@ -46,11 +46,7 @@ var settings = {
 };
 
 const Instagram = ({ type }) => {
-  var { data } = useQuery(GET_PRODUCTS, {
-    variables: {
-      type: type,
-    },
-  });
+  var { data } = {}
 
   return (
     <section className="instagram ratio_square">
