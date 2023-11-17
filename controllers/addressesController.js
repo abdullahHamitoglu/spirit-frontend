@@ -29,3 +29,10 @@ export async function getAddressById(locale, id) {
 
     return response.data.data;
 }
+export async function teatToken(locale, id) {
+    
+
+    return response.data.data;
+}
+
+
