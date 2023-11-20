@@ -7,20 +7,16 @@ import FilterProvider from "../helpers/filter/FilterProvider";
 import SettingProvider from "../helpers/theme-setting/SettingProvider";
 import { CompareContextProvider } from "../helpers/Compare/CompareContext";
 import { appWithTranslation } from "next-i18next";
-import { ApolloProvider } from "@apollo/client";
-import { useApollo } from "../helpers/apollo";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import algoliasearch from "algoliasearch/lite";
-import { InstantSearch } from "react-instantsearch";
 import useUserStore from "../helpers/user/userStore";
-import { setCookie } from "nookies";
+import nookies, { parseCookies, setCookie } from 'nookies'
 
 function MyApp({ Component, pageProps }) {
   const [isLoading, setIsLoading] = useState(true);
   const [url, setUrl] = useState();
   const { locale } = useRouter();
-  const { registerDevice, fcmToken, token } = useUserStore();
+  const { token ,registerDevice ,fcmToken} = useUserStore();
   useEffect(() => {
     document.documentElement.style.setProperty("--theme-deafult", "#00c2b5");
     if (locale == "ar-KW") {
@@ -29,14 +25,14 @@ function MyApp({ Component, pageProps }) {
     } else {
       document.documentElement.dir = "ltr";
       document.body.classList.remove("rtl");
-    }
     setIsLoading(false);
     setCookie(null, "token", token, {
       maxAge: 7 * 24 * 60 * 60,
       path: "/",
     });
-    //   registerDevice();
-    //   console.log(fcmToken);
+    }
+    registerDevice();
+    console.log(fcmToken);
   }, []);
   return (
     <>

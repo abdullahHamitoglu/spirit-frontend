@@ -17,7 +17,7 @@ const TopCollection = ({ type, title, subtitle, designClass, noSlider, cartClass
 
   const symbol = selectedCurrency.symbol;
 
-  const {addToCart} = useCartStore();
+  const {addToCart,getCart} = useCartStore();
   const [delayProduct, setDelayProduct] = useState(true);
 
   var data = collection;
@@ -97,11 +97,13 @@ const TopCollection = ({ type, title, subtitle, designClass, noSlider, cartClass
                               wishList('post', product.id)
                             }
                             wishListLoading={wishListLoading}
-                            addCart={() =>
+                            addCart={() =>{
                               addToCart({
                                 product_id:product.id,
                                 quantity : '1',
                               })
+                              getCart()
+                              }
                             }
                           />
                         </SwiperSlide>

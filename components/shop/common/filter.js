@@ -21,10 +21,10 @@ const FilterPage = ({ sm, sidebarView, closeSidebar, attributes  }) => {
                         </span>
                     </div>
                     {/* <Category categories={categories} /> */}
-                    {attributes.map((attribute) => (
+                    {attributes.map((attribute,i) => (
                         attribute.type != 'price' ?
-                        <FilterOptions attr={attribute} /> :
-                        <Price />
+                        <FilterOptions key={i} attr={attribute} /> :
+                        <Price key={i} />
                     ))}
                 </div>
                 {/* <!-- slide-bar collops block end here -->*/}

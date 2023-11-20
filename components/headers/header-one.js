@@ -53,9 +53,9 @@ const HeaderOne = ({
   };
 
   const openNav = () => {
-    var openmyslide = document.getElementById("mySidenav");
-    if (openmyslide) {
-      openmyslide.classList.add("open-side");
+    var openMySlide = document.getElementById("mySidenav");
+    if (openMySlide) {
+      openMySlide.classList.add("open-side");
     }
   };
   const openSearch = () => {

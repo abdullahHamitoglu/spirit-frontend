@@ -17,7 +17,7 @@ const ProductSection = ({ product, addToCompare, addWishlist, addCart }) => {
 
   const clickProductDetail = () => {
     const titleProps = product.title.split(" ").join("");
-    router.push(`/product-details/${product.id}` + "-" + `${titleProps}`);
+    router.push(`/products/${product.url_key}`);
   };
 
   const changeQty = (e) => {

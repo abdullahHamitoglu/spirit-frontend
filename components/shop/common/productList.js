@@ -13,7 +13,7 @@ import useCartStore from "@/helpers/cart/cartStore";
 
 const ProductList = ({ colClass, layoutList, openSidebar, noSidebar, data , page }) => {
   const { wishList } = useWishListStore();
-  const { addToCart } = useCartStore();
+  const { addToCart ,getCart} = useCartStore();
   const compareContext = useContext(CompareContext);
   const router = useRouter();
   const [limit, setLimit] = useState(8);
@@ -312,11 +312,13 @@ const ProductList = ({ colClass, layoutList, openSidebar, noSidebar, data , page
                                 // wishlistContext.addToWish(product)
                                 wishList('post', product.id)
                               }
-                              addCart={() =>
+                              addCart={() =>{
                                 addToCart({
                                   product_id: product.id,
                                   quantity,
                                 })
+                                getCart();
+                                }
                               }
                             />
                           </div>

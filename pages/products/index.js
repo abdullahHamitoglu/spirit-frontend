@@ -80,7 +80,7 @@ const index = ({ products, page, attributes }) => {
 };
 export async function getServerSideProps(context) {
   const { locale, params } = context;
-  const { token } = parseCookies(context);
+  const {token} = parseCookies(context);
   const products = await getProducts(locale, params, token);
   const attributes = await getFilterAttr(locale);
   const page = await getPageData(locale, "products");

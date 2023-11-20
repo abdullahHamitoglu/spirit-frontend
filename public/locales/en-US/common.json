@@ -287,5 +287,8 @@
     "state_required": "State is required",
     "city_required": "City is required",
     "postcode_required": "Postcode is required",
-    "vat_id_required": "VAT ID is required"
+    "vat_id_required": "VAT ID is required",
+    "add_new_address":"Add  new address",
+    "this_field_is_required":"This Filled is required"
+
 }

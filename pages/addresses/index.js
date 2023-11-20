@@ -8,30 +8,33 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { Field, Form, Formik } from 'formik';
 import * as Yup from 'yup';
+import { parseCookies } from 'nookies';
+import { getAddresses } from '@/controllers/addressesController';
+import { getPageData } from '@/controllers/homeController';
 
-const index = () => {
+const Addresses = () => {
     const { locale } = useRouter();
     const router = useRouter();
-    const { addresses, addAddress, getAddresses, user ,deleteAddress } = useUserStore()
+    const { addresses, addAddress, getAddresses, user, deleteAddress } = useUserStore()
     const { t } = useTranslation();
     const addressValidationSchema = Yup.object().shape({
-        company_name: Yup.string(),
-        first_name: Yup.string(),
-        last_name: Yup.string(),
-        email: Yup.string().email(t('invalid_email')),
-        address1: Yup.array(),
-        state: Yup.string(),
-        city: Yup.string(),
-        postcode: Yup.string(),
-        phone: Yup.string(),
-        vat_id: Yup.string()
+        company_name: Yup.string().required(t('first_name_required')),
+        first_name: Yup.string().required(t('first_name_required')),
+        last_name: Yup.string().required(t('first_name_required')),
+        email: Yup.string().email(t('invalid_email')).required(t('first_name_required')),
+        address1: Yup.array().required(t('first_name_required')),
+        state: Yup.string().required(t('first_name_required')),
+        city: Yup.string().required(t('first_name_required')),
+        postcode: Yup.string().required(t('first_name_required')),
+        phone: Yup.string().required(t('first_name_required')),
+        vat_id: Yup.string().required(t('first_name_required')),
     });
 
     useEffect(() => {
         getAddresses(locale);
     }, []);
-    const hanleDeleteAddress = (id)=>{
-        deleteAddress(locale , id);
+    const handleDeleteAddress = (id) => {
+        deleteAddress(locale, id);
         getAddresses(locale);
     }
     return (
@@ -51,7 +54,7 @@ const index = () => {
                                             {t('address')}: {address.country} / {address.city} / {address.state} {address.postcode} <br />
                                             {t('address1')}: {address.address1[0]}  <br />
                                             <Link className='text-primary' href={`/addresses/${address.id}`}>{t('edit')}</Link>
-                                            <a  className='text-danger ms-2' onClick={() => { hanleDeleteAddress(address.id) }}>{t('delete')}</a>
+                                            <a className='text-danger ms-2' onClick={() => { handleDeleteAddress(address.id) }}>{t('delete')}</a>
                                         </address>
                                     </Col>
                                 )) : ''}
@@ -86,7 +89,7 @@ const index = () => {
                                     }}
                                 >
                                     {({ values, errors, touched, handleSubmit, isSubmitting, setFieldValue, setFieldValues }) => (
-                                        <Form className="theme-form" onSubmit={handleSubmit}>
+                                        <Form className="theme-form" onSubmit={handleSubmit} id='form'>
                                             <Row>
                                                 <Col md="6">
                                                     <Label className="form-label" for="company_name">
@@ -263,4 +266,4 @@ export async function getServerSideProps({ locale, params }) {
     }
 }
 
-export default index;
+export default Addresses;

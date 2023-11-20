@@ -7,22 +7,31 @@ import useUserStore from '@/helpers/user/userStore';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { getPageData } from '@/controllers/homeController';
+import { getAddresses } from '@/controllers/addressesController';
+import nookies, { parseCookies } from 'nookies'
 
-const Dashboard = (page) => {
+const Dashboard = ({page , addresses }) => {
     const [accountInfo, setAccountInfo] = useState(false);
-    const { user, logout, isAuthenticated, getAddresses, addresses, deleteAddress } = useUserStore();
+    const { user, logout, isAuthenticated, deleteAddress } = useUserStore();
     const { t } = useTranslation();
     const { locale } = useRouter();
     const router = useRouter();
-    if (!isAuthenticated && user) {
-        router.push(`/account/login?redirect_url=${router.asPath}`);
+    if (!isAuthenticated && !user) {
+        router.push({
+            pathname: '/account/login',
+            locale,
+            query: {
+                'redirectUrl': router.pathname
+            }
+        });
     }
-    const hanleDeleteAddress = (id)=>{
-        deleteAddress(locale , id);
-        getAddresses(locale);
+    const handleDeleteAddress = (id) => {
+        deleteAddress(locale, id);
+        // getAddresses(locale);
     }
     useEffect(() => {
-        getAddresses(locale)
+        // getAddresses(locale)
+        console.log(addresses);
     }, []);
     return (
         <CommonLayout parent={t('home')} title={t('dashboard')}>
@@ -96,7 +105,7 @@ const Dashboard = (page) => {
                                         <div>
                                             <div className="box">
                                                 <div className="box-title">
-                                                    <h3>{t('address_book')}</h3><Link href="/account/profile">{t('manage_addresses')}</Link>
+                                                    <h3>{t('address_book')}</h3><Link href="/addresses">{t('manage_addresses')}</Link>
                                                 </div>
                                                 <Row>
                                                     {addresses ? addresses.map((address) => (
@@ -109,7 +118,7 @@ const Dashboard = (page) => {
                                                                 {t('address')}: {address.country} / {address.city} / {address.state} {address.postcode} <br />
                                                                 {t('address1')}: {address.address1[0]}  <br />
                                                                 <Link href={`/addresses/${address.id}`}>{t('edit')}</Link>
-                                                                <a  className='text-danger ms-2 btn' onClick={() => { hanleDeleteAddress(address.id) }}>{t('delete')}</a>
+                                                                <a className='text-danger ms-2 btn' onClick={() => { handleDeleteAddress(address.id) }}>{t('delete')}</a>
                                                             </address>
                                                         </Col>
                                                     )) : ''}
@@ -127,14 +136,15 @@ const Dashboard = (page) => {
     )
 }
 
+export async function getServerSideProps(context) {
+    const { locale } = context;
+    const cookies = parseCookies(context);
 
-export async function getStaticProps(context) {
-    // extract the locale identifier from the URL
-    const { locale } = context
+        const addresses = await getAddresses(locale, cookies.token);
     const page = await getPageData(locale, 'dashboard');
     return {
         props: {
-            // pass the translation props to the page component
+            addresses,
             page,
             ...(await serverSideTranslations(locale)),
         },

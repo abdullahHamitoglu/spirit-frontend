@@ -11,7 +11,7 @@ const CartContainer = ({ icon }) => {
 
   useEffect(()=>{
     getCart()
-  },[cartData])
+  },[]);
   return (
     <Fragment>
       <li className="onhover-div mobile-cart">
@@ -45,7 +45,7 @@ const CartContainer = ({ icon }) => {
                     view cart
                     {/* </a> */}
                   </Link>
-                  <Link href={`/page/account/checkout`} className="checkout">
+                  <Link href={`/account/checkout`} className="checkout">
                     {/* <a > */}
                     checkout
                     {/* </a> */}

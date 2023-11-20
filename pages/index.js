@@ -13,9 +13,11 @@ import MainBanner from "../components/layouts/Beauty/components/MainBanner";
 import AboutSection from "../components/layouts/Beauty/components/About-Section";
 import { useTranslation } from "react-i18next";
 import { getHomePageData, getPageData } from "../controllers/homeController";
+import { parseCookies } from "nookies";
 
 
-const Fashion = ({ page, homeData }) => {
+const Fashion = ({ page, homeData, token }) => {
+
   const { t } = useTranslation()
   return (
     <Fragment>
@@ -76,14 +78,15 @@ const Fashion = ({ page, homeData }) => {
   );
 };
 
-export async function getStaticProps(context) {
+export async function getServerSideProps(context) {
   // extract the locale identifier from the URL
   const { locale } = context;
+  const { token } = parseCookies(context);
 
   const homeData = await getHomePageData(locale);
 
-  const page = await getPageData(locale, 'home');
-  
+  const page = await getPageData(locale, 'home', token);
+
   return {
     props: {
       // pass the translation props to the page component

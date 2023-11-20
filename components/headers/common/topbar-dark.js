@@ -30,7 +30,7 @@ const TopBarDark = ({ topClass, fluid }) => {
           <Col lg="6" className="text-end">
             <ul className="header-dropdown">
               <li className="mobile-wishlist">
-                <Link href="//account/wishlist">
+                <Link href="/account/wishlist">
                   {/* <a> */}
                   <i className="fa fa-heart" aria-hidden="true"></i> {t("wishlist")}
                   {/* </a> */}
@@ -48,6 +48,9 @@ const TopBarDark = ({ topClass, fluid }) => {
                       </li>
                       <li onClick={() => Logout()}>
                         <a>{t('logout')}</a>
+                      </li>
+                      <li>
+                        <Link href={'/account/dashboard'}>{t('dashboard')}</Link>
                       </li>
                     </>
                     :

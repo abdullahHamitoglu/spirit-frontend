@@ -48,7 +48,7 @@ const HeaderSeven = ({ logoName }) => {
                   <div className="top-header">
                     <ul className="header-dropdown">
                       <li className="mobile-wishlist">
-                        <Link href="//account/wishlist">
+                        <Link href="/account/wishlist">
                           {/* <a> */}
                           <img src="/assets/images/icon/heart.png" alt="" />
                           {/* </a> */}

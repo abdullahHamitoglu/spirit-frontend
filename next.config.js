@@ -30,6 +30,10 @@ const nextConfig = {
       ],
       
     });
+    config.module = {
+      ...config.module,
+      exprContextCritical: false,
+    };
     config.resolve.fallback = { fs: false };
     config.infrastructureLogging = { debug: /PackFileCache/ }; 
     return config;

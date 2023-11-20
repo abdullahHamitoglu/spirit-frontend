@@ -9,6 +9,9 @@ import { Field, Formik } from 'formik';
 import CartLoader from "@/components/layouts/Bags/common/cartLoader";
 import { isEqual } from "lodash";
 import useUserStore from "@/helpers/user/userStore";
+import { getAddressById, getAddresses } from "@/controllers/addressesController";
+import { parseCookies } from "nookies";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 const UniqueAddress = () => {
   const [address, setAddress] = React.useState({});
@@ -24,16 +27,16 @@ const UniqueAddress = () => {
 
 
   const addressValidationSchema = Yup.object().shape({
-    company_name: Yup.string(),
-    first_name: Yup.string(),
-    last_name: Yup.string(),
-    email: Yup.string().email(t('invalid_email')),
-    address1: Yup.array(),
-    state: Yup.string(),
-    city: Yup.string(),
-    postcode: Yup.string(),
-    phone: Yup.string(),
-    vat_id: Yup.string()
+    company_name: Yup.string().required(t('first_name_required')),
+    first_name: Yup.string().required(t('first_name_required')),
+    last_name: Yup.string().required(t('first_name_required')),
+    email: Yup.string().email(t('invalid_email')).required(t('first_name_required')),
+    address1: Yup.array().required(t('first_name_required')),
+    state: Yup.string().required(t('first_name_required')),
+    city: Yup.string().required(t('first_name_required')),
+    postcode: Yup.string().required(t('first_name_required')),
+    phone: Yup.string().required(t('first_name_required')),
+    vat_id: Yup.string().required(t('first_name_required')),
   });
 
   const getUniqueAddress = async () => {
@@ -72,7 +75,8 @@ const UniqueAddress = () => {
           <Container>
             <Row>
               <Col sm="12">
-                <h3>{t("shipping_address")}</h3><Formik
+                <h3>{t("shipping_address")}</h3>
+                <Formik
                   initialValues={{
                     company_name: address.company_name,
                     first_name: address.first_name,
@@ -86,6 +90,7 @@ const UniqueAddress = () => {
                     phone: address.phone,
                     vat_id: address.vat_id
                   }}
+                  validationSchema={addressValidationSchema}
                   onSubmit={(values, { setSubmitting }) => {
                     updateAddress(values, locale, currentAddressId);
                     setSubmitting(false);
@@ -262,16 +267,22 @@ const UniqueAddress = () => {
     </CommonLayout>
   );
 };
+export async function getStaticPaths() {
+  return {
+    paths: [
+      // String variant:
+      // Object variant:
+      { params: { id: '9' } },
+    ],
+    fallback: true,
+  }
+}
+export async function getStaticProps({ locale }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale)),
+    }
+  } 
+}
 
-// export async function getStaticProps(context) {
-//   // extract the locale identifier from the URL
-//   const { locale } = context
-
-//   return {
-//       props: {
-//           // pass the translation props to the page component
-//           ...(await serverSideTranslations(locale)),
-//       },
-//   }
-// }
 export default UniqueAddress;

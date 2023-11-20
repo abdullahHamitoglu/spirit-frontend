@@ -27,17 +27,12 @@ const ProductItem = ({  wishListLoading, product, addCart, backImage, des, addWi
     setImage(img);
   };
 
-  const changeQty = (e) => {
-    const newQuantity = parseInt(e.target.value);
-    setQuantity(newQuantity);
-  };
-
   const clickProductDetail = () => {
     router.push('/products/[slug]', `/products/${product.url_key}`);
   };
   const handelAddCart = () => {
     if(product.type == 'simple'){
-      return addCart
+      addCart()
     }else{
       clickProductDetail()
     }
@@ -74,7 +69,7 @@ const ProductItem = ({  wishListLoading, product, addCart, backImage, des, addWi
         )}
 
         <div className={cartClass}>
-          <button title={t('add_to_cart')} onClick={addCart}>
+          <button className={product.is_item_in_cart ? ' active' : ''} title={t('add_to_cart')} onClick={()=>{handelAddCart()}}>
             <i className="fa fa-shopping-cart" aria-hidden="true"></i>
           </button>
           <a href={null} title={t('add_to_wishlist')} onClick={addWishlist}>

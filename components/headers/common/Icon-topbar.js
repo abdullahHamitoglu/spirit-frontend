@@ -73,7 +73,7 @@ const IconTopbar = () => {
               <div className="menu-right pull-right">
                 <ul className="header-dropdown">
                   <li className="mobile-wishlist">
-                    <Link href="//account/wishlist">
+                    <Link href="/account/wishlist">
                       {/* <a> */}
                       <i className="fa fa-heart" aria-hidden="true"></i>
                       <Media src="/assets/images/icon/like.png" alt="" />

@@ -3,6 +3,7 @@ import Link from "next/link";
 import CartContext from "../../helpers/cart";
 import { Media } from "reactstrap";
 import currencyStore from "../../helpers/Currency/CurrencyStore";
+import useCartStore from "@/helpers/cart/cartStore";
 
 const CartComponent = ({ icon, layout }) => {
   const context = useContext(CartContext);
@@ -10,7 +11,7 @@ const CartComponent = ({ icon, layout }) => {
   const symbol = selectedCurrency.symbol ;
   const cartList = context.state;
   const total = context.cartTotal;
-  const removeFromCart = context.removeFromCart;
+  const { removeFromCart } = useCartStore();
   const [openSide, setOpenSide] = useState(false);
 
   return (
@@ -93,10 +94,8 @@ const CartComponent = ({ icon, layout }) => {
                     view cart
                     {/* </a> */}
                   </Link>
-                  <Link href="/page/account/checkout" className="btn btn-solid btn-xs checkout">
-                    {/* <a > */}
+                  <Link href="/account/checkout" className="btn btn-solid btn-xs checkout">
                       checkout
-                      {/* </a> */}
                   </Link>
                 </div>
               </li>

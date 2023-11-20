@@ -285,5 +285,7 @@
     "state_required": "الولاية مطلوبة",
     "city_required": "المدينة مطلوبة",
     "postcode_required": "الرمز البريدي مطلوب",
-    "vat_id_required": "معرف الضريبة على القيمة المضافة (VAT ID) مطلوب"
+    "vat_id_required": "معرف الضريبة على القيمة المضافة (VAT ID) مطلوب",
+    "add_new_address": "إضافة عنوان جديد",
+    "this_field_is_required": "هذا الحقل مطلوب"
 }

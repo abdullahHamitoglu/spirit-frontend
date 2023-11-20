@@ -9,12 +9,12 @@ function AddressForm() {
     const { t } = useTranslation();
     const { address } = useUserStore();
     const validationSchema = Yup.object().shape({
-        first_name: Yup.string().required('First Name is required'),
-        last_name: Yup.string().required('Last Name is required'),
+        first_name: Yup.string().required(t('first_name_required')),
+        last_name: Yup.string().required(t('last_name_required')),
         password: Yup.string()
-            .min(6, 'Password must be at least 6 characters'),
+            .min(6, t('password_min_length')),
         password_confirmation: Yup.string()
-            .oneOf([Yup.ref('password'), null], 'Passwords must match'),
+            .oneOf([Yup.ref(' '), null], t('passwords_must_match')),
     });
 
     

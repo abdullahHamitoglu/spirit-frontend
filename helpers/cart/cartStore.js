@@ -37,7 +37,10 @@ const useCartStore = create(
                 headers: {
                     'Authorization': `Bearer ${useUserStore.getState().token}`
                 },
-                data,
+                data: {
+                    ...data,
+                    register_device_id: useUserStore.getState().fcmToken
+                },
             }).then((res) => {
                 set({ cartData: res.data.data, cartLoading: false });
                 toast.success(res.data.message);
@@ -47,7 +50,7 @@ const useCartStore = create(
                 console.error(error);
             });
         },
-        removeFromCart: (id ) => {
+        removeFromCart: (id) => {
             set({ cartLoading: true });
             axios({
                 method: "DELETE",
@@ -55,7 +58,7 @@ const useCartStore = create(
                 headers: {
                     'Authorization': `Bearer ${useUserStore.getState().token}`
                 },
-                
+
             }).then((res) => {
                 toast.success(res.data.message);
                 get().getCart();
@@ -118,9 +121,9 @@ const useCartStore = create(
                 console.error(error);
             });
         },
-        applyCoupon: (code) => {
+        applyCoupon: async (code) => {
             set({ cartLoading: true });
-            axios({
+            await axios({
                 method: "POST",
                 url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/customer/cart/coupon`,
                 headers: {
@@ -136,9 +139,9 @@ const useCartStore = create(
                 console.error(error);
             });
         },
-        removeCoupon: () => {
+        removeCoupon: async () => {
             set({ cartLoading: true });
-            axios({
+            await axios({
                 method: "DELETE",
                 url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/customer/cart/coupon`,
                 headers: {
@@ -151,6 +154,58 @@ const useCartStore = create(
                 console.error(error);
             });
         },
+        sendOrder: async (data) => {
+            set({ cartLoading: true });
+            await axios({
+                method: "POST",
+                url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/customer/checkout/save-address`,
+                headers: {
+                    'Authorization': `Bearer ${useUserStore.getState().token}`
+                },
+                data: {
+                    billing: data.address,
+                    shipping: data.address,
+                    register_device_id: useUserStore.getState().fcmToken
+                },
+            }).then((res) => {
+                toast.success(res.data.message);
+            }).catch((error) => {
+                set({ cartLoading: false });
+                console.error(error);
+            });
+            await axios({
+                method: "POST",
+                url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/customer/checkout/save-shipping`,
+                headers: {
+                    'Authorization': `Bearer ${useUserStore.getState().token}`
+                },
+                data: {
+                    shipping_method: data.shipping_method
+                },
+            }).then((res) => {
+                toast.success(res.data.message);
+            }).catch((error) => {
+                set({ cartLoading: false });
+                console.error(error);
+            });
+            await axios({
+                method: "POST",
+                url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/customer/checkout/save-payment`,
+                headers: {
+                    'Authorization': `Bearer ${useUserStore.getState().token}`
+                },
+                data: {
+                    payment: {
+                        method: data.payment_method
+                    }
+                },
+            }).then((res) => {
+                toast.success(res.data.message);
+            }).catch((error) => {
+                set({ cartLoading: false });
+                console.error(error);
+            });
+        }
     })
 );
 

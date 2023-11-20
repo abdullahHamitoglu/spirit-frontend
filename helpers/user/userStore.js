@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import axios from 'axios';
 import { persist, createJSONStorage } from 'zustand/middleware'
 import uuid from 'react-uuid';
+import { setCookie } from 'nookies';
 
 const osDetails = getUserAgent();
 
@@ -15,8 +16,10 @@ const useUserStore = create(
             isAuthenticated: false,
             token: null,
             expirationTime: null,
+            fcmToken: null,
             addresses: [],
-            fcmToken: 0,
+            address: [],
+
             register: async (userData, locale) => {
                 // Send a POST request to your registration API endpoint
                 await axios({
@@ -94,6 +97,7 @@ const useUserStore = create(
                     isAuthenticated: false,
                     token: null,
                     expirationTime: null,
+                    fcmToken:null
                 });
             },
             forgetPwd: async (data, locale) => {
@@ -161,6 +165,22 @@ const useUserStore = create(
                     console.log(error);
                 });
             },
+            getAddressById: async (locale, id) => {
+                await axios({
+                    method: 'get',
+                    url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/customer/addresses/${id}`,
+                    params: {
+                        locale: locale.slice(0, 2),
+                    },
+                    headers: {
+                        Authorization: `Bearer ${get().token}`,
+                    },
+                }).then((response) => {
+                    set({ address: response.data.data })
+                }).catch((error) => {
+                    console.log(error);
+                });
+            },
             updateAddress: async (data, locale, id) => {
                 await axios({
                     method: 'put',
@@ -202,23 +222,24 @@ const useUserStore = create(
             },
 
             registerDevice: async () => {
-                // if(fcmToken == undefined){
-                await axios({
-                    method: 'post',
-                    url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/register_device`,
-                    data: {
-                        "fcmToken": 0,
-                        "os": "web"
-                    },
-                }).then(res => {
-                    set({ fcmToken: res.data.data.deviceDetails.fcmToken });
-                }).catch(function (error) {
-                    if (error.response) {
-                        toast.error(error.response.data.message);
-                    }
-                    console.log(error);
-                });
-                // }
+                if (!get().fcmToken) {
+                    // await axios({
+                    //     method: 'post',
+                    //     url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/register_device`,
+                    //     data: {
+                    //         "fcmToken": 0,
+                    //         "os": "web"
+                    //     },
+                    // }).then(res => {
+                    //     set({ fcmToken: res.data.data.deviceDetails.fcmToken });
+                    // }).catch(function (error) {
+                    //     if (error.response) {
+                    //         toast.error(error.response.data.message);
+                    //     }
+                    //     console.log(error);
+                    // });
+                    set({ fcmToken: uuid().replaceAll('-','') });
+                }
             }
         }),
         {

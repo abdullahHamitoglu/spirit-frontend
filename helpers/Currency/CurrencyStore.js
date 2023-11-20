@@ -9,10 +9,10 @@ const currencyStore = create(
     persist(
         (set, get) => ({
             selectedCurrency: {
-                "id": 1,
-                "code": "KWD",
-                "name": "Kuwaiti Dinar",
-                "symbol": "KWD",
+                id: 1,
+                code: "KWD",
+                name: "Kuwaiti Dinar",
+                symbol: "KWD",
             },
             currencies: [],
             fetchCurrencies: async (locale) => {
