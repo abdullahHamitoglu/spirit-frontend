@@ -8,10 +8,10 @@ import useCartStore from "@/helpers/cart/cartStore";
 import { Swiper, SwiperSlide } from "swiper/react";
 import currencyStore from "@/helpers/Currency/CurrencyStore";
 
-import 'swiper/css';
-import 'swiper/css/free-mode';
-import 'swiper/css/navigation';
-import 'swiper/css/thumbs';
+import "swiper/css";
+import "swiper/css/free-mode";
+import "swiper/css/navigation";
+import "swiper/css/thumbs";
 import { toast } from "react-toastify";
 const DetailsWithPrice = ({ item, stickyClass }) => {
   const [modal, setModal] = useState(false);
@@ -42,33 +42,38 @@ const DetailsWithPrice = ({ item, stickyClass }) => {
   };
   const handleAddToCart = () => {
     if (product.variants) {
-      if (document.querySelector('input[name=variant]:checked')) {
+      if (document.querySelector("input[name=variant]:checked")) {
         addToCart({
           quantity,
           product_id: product.id,
-          selected_configurable_option: parseInt(document.querySelector('input[name=variant]:checked').value),
-        })
+          selected_configurable_option: parseInt(
+            document.querySelector("input[name=variant]:checked").value,
+          ),
+        });
         getCart();
-        document.querySelectorAll('.variants .variant').forEach((e) => {
+        document.querySelectorAll(".variants .variant").forEach((e) => {
           e.classList.remove("invalid");
-        })
+        });
       } else {
-        toast.warn(t('pleas select variant'))
-        document.querySelectorAll('.variants .variant').forEach((e) => {
+        toast.warn(t("pleas select variant"));
+        document.querySelectorAll(".variants .variant").forEach((e) => {
           e.classList.add("invalid");
-        })
+        });
       }
     } else {
-      alert('2');
+      addToCart({
+        quantity,
+        product_id: product.id,
+      });
       getCart();
     }
-  }
+  };
   const handelChangePrice = (price) => {
     setPrice(price);
-    document.querySelectorAll('.variants .variant').forEach((e) => {
+    document.querySelectorAll(".variants .variant").forEach((e) => {
       e.classList.remove("invalid");
-    })
-  }
+    });
+  };
   return (
     <>
       <div className={`product-right ${stickyClass}`}>
@@ -83,23 +88,43 @@ const DetailsWithPrice = ({ item, stickyClass }) => {
           {price * quantity} {selectedCurrency.symbol}
         </h3>
         <div className="product-description border-product">
-          <span className="instock-cls">{product.in_stock ? t('in_stock') : t('out_of_stock')}</span>
-          <h6 className="product-title">{t('quantity')}</h6>
+          <span className="instock-cls">
+            {product.in_stock ? t("in_stock") : t("out_of_stock")}
+          </span>
+          <h6 className="product-title">{t("quantity")}</h6>
           <div className="qty-box">
             <div className="input-group">
               <span className="input-group-prepend">
-                <button type="button" className="btn quantity-left-minus" onClick={minusQty} data-type="minus" data-field="">
+                <button
+                  type="button"
+                  className="btn quantity-left-minus"
+                  onClick={minusQty}
+                  data-type="minus"
+                  data-field=""
+                >
                   <i className="fa fa-angle-left"></i>
                 </button>
               </span>
-              <Input type="text" name="quantity" value={quantity} onChange={changeQty} className="form-control input-number" />
+              <Input
+                type="text"
+                name="quantity"
+                value={quantity}
+                onChange={changeQty}
+                className="form-control input-number"
+              />
               <span className="input-group-prepend">
-                <button type="button" className="btn quantity-right-plus" onClick={() => plusQty(product)} data-type="plus" data-field="">
+                <button
+                  type="button"
+                  className="btn quantity-right-plus"
+                  onClick={() => plusQty(product)}
+                  data-type="plus"
+                  data-field=""
+                >
                   <i className="fa fa-angle-right"></i>
                 </button>
               </span>
             </div>
-            {product.variants &&
+            {product.variants && (
               <Swiper
                 className="variants"
                 spaceBetween={15}
@@ -109,16 +134,27 @@ const DetailsWithPrice = ({ item, stickyClass }) => {
                   <SwiperSlide key={i} className="variant-slide">
                     <label className="variant" htmlFor={variant.sku}>
                       {variant.attribute_option_label}
-                      <input hidden id={variant.sku} type="radio" name="variant" value={variant.variant_id} onChange={() => handelChangePrice(variant.price)} />
+                      <input
+                        hidden
+                        id={variant.sku}
+                        type="radio"
+                        name="variant"
+                        value={variant.variant_id}
+                        onChange={() => handelChangePrice(variant.price)}
+                      />
                     </label>
                   </SwiperSlide>
                 ))}
               </Swiper>
-            }
+            )}
           </div>
         </div>
         <div className="product-buttons">
-          <a href={null} className="btn btn-solid" onClick={() => handleAddToCart()}>
+          <a
+            href={null}
+            className="btn btn-solid"
+            onClick={() => handleAddToCart()}
+          >
             add to cart
           </a>
           <Link href={`/account/checkout`} className="btn btn-solid">
