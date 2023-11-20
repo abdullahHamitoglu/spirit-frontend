@@ -10,13 +10,13 @@ import { appWithTranslation } from "next-i18next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import useUserStore from "../helpers/user/userStore";
-import nookies, { parseCookies, setCookie } from 'nookies'
+import nookies, { parseCookies, setCookie } from "nookies";
 
 function MyApp({ Component, pageProps }) {
   const [isLoading, setIsLoading] = useState(true);
   const [url, setUrl] = useState();
   const { locale } = useRouter();
-  const { token ,registerDevice ,fcmToken} = useUserStore();
+  const { token, registerDevice, fcmToken } = useUserStore();
   useEffect(() => {
     document.documentElement.style.setProperty("--theme-deafult", "#00c2b5");
     if (locale == "ar-KW") {
@@ -25,14 +25,13 @@ function MyApp({ Component, pageProps }) {
     } else {
       document.documentElement.dir = "ltr";
       document.body.classList.remove("rtl");
-    setIsLoading(false);
-    setCookie(null, "token", token, {
-      maxAge: 7 * 24 * 60 * 60,
-      path: "/",
-    });
+      setIsLoading(false);
+      setCookie(null, "token", token, {
+        maxAge: 7 * 24 * 60 * 60,
+        path: "/",
+      });
     }
     registerDevice();
-    console.log(fcmToken);
   }, []);
   return (
     <>
