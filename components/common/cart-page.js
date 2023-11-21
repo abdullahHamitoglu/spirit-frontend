@@ -10,10 +10,7 @@ const CartPage = () => {
   const { t } = useTranslation();
   const handleQtyUpdate = (item, quantity) => {
     if (quantity >= 1) {
-      setQuantityError(false);
       updateQty(item, quantity);
-    } else {
-      setQuantityError(true);
     }
   };
 
@@ -67,14 +64,12 @@ const CartPage = () => {
                                       <input
                                         type="number"
                                         name="quantity"
+                                        min={'1'}
                                         onChange={(e) =>
                                           handleQtyUpdate(item.id, e.target.value)
                                         }
                                         className="form-control input-number"
                                         defaultValue={item.quantity}
-                                        style={{
-                                          borderColor: quantityError && "red",
-                                        }}
                                       />
                                     </div>
                                   </div>
@@ -108,14 +103,12 @@ const CartPage = () => {
                                   <input
                                     type="number"
                                     name="quantity"
+                                    min={'1'}
                                     onChange={(e) =>
                                       handleQtyUpdate(item, e.target.value)
                                     }
                                     className="form-control input-number"
                                     defaultValue={item.quantity}
-                                    style={{
-                                      borderColor: quantityError && "red",
-                                    }}
                                   />
                                 </div>
                               </div>

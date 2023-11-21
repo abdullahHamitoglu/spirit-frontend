@@ -287,5 +287,10 @@
     "postcode_required": "الرمز البريدي مطلوب",
     "vat_id_required": "معرف الضريبة على القيمة المضافة (VAT ID) مطلوب",
     "add_new_address": "إضافة عنوان جديد",
-    "this_field_is_required": "هذا الحقل مطلوب"
+    "this_field_is_required": "هذا الحقل مطلوب",
+    "next":"التالي",
+    "previous":"السابق",
+    "tasks":"الضريبة",
+    "payment_type": "طريقة الدفع",
+    "payment": "طريقة الدفع"
 }

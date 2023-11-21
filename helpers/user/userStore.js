@@ -249,24 +249,24 @@ const useUserStore = create(
 
       registerDevice: async () => {
         if (!get().fcmToken) {
-          await axios({
-            method: "post",
-            url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/register_device`,
-            data: {
-              fcmToken,
-              os: "web",
-            },
-          })
-            .then((res) => {
-              //   set({ fcmToken: res.data.data.deviceDetails.fcmToken });
-              set({ fcmToken: uuid().replaceAll("-", "") });
-            })
-            .catch(function (error) {
-              if (error.response) {
-                toast.error(error.response.data.message);
-              }
-              console.log(error);
-            });
+          // await axios({
+          //   method: "post",
+          //   url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/register_device`,
+          //   data: {
+          //     fcmToken,
+          //     os: "web",
+          //   },
+          // })
+          //   .then((res) => {
+          //     //   set({ fcmToken: res.data.data.deviceDetails.fcmToken });
+          //     set({ fcmToken: uuid().replaceAll("-", "") });
+          //   })
+          //   .catch(function (error) {
+          //     if (error.response) {
+          //       toast.error(error.response.data.message);
+          //     }
+          //     console.log(error);
+          //   });
         }
       },
     }),

@@ -10,6 +10,9 @@ const useCartStore = create(
         cartData: [],
         cartLoading: false,
         count: 0,
+        savedAddress: {},
+        paymentMethods: {},
+        orderDetails: {},
         increment: () => {
             set((state) => ({ count: state.count > -1 ? state.count + 1 : state.count }))
         },
@@ -39,7 +42,7 @@ const useCartStore = create(
                 },
                 data: {
                     ...data,
-                    register_device_id: useUserStore.getState().fcmToken
+                    // register_device_id: useUserStore.getState().fcmToken
                 },
             }).then((res) => {
                 set({ cartData: res.data.data, cartLoading: false });
@@ -93,7 +96,7 @@ const useCartStore = create(
                     'Authorization': `Bearer ${useUserStore.getState().token}`
                 },
                 data: {
-                    qyt: JSON.parse(`{ ${id} : ${qyt} }`)
+                    qyt: { [id]: qyt }
                 },
             }).then((res) => {
                 toast.success(res.data.message);
@@ -154,40 +157,51 @@ const useCartStore = create(
                 console.error(error);
             });
         },
-        sendOrder: async (data) => {
+        saveCheckoutAddress: async (data, locale) => {
             set({ cartLoading: true });
             await axios({
-                method: "POST",
+                method: "post",
                 url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/customer/checkout/save-address`,
                 headers: {
                     'Authorization': `Bearer ${useUserStore.getState().token}`
                 },
+                params: {
+                    locale: locale.slice(0, 2)
+                },
                 data: {
-                    billing: data.address,
-                    shipping: data.address,
-                    register_device_id: useUserStore.getState().fcmToken
+                    billing: data,
+                    shipping: data,
+                    // register_device_id: useUserStore.getState().fcmToken
                 },
             }).then((res) => {
                 toast.success(res.data.message);
+                console.log(res);
+                set({ savedAddress: res.data.data });
             }).catch((error) => {
                 set({ cartLoading: false });
                 console.error(error);
             });
+        },
+        saveCheckoutShipping: async (data, locale) => {
             await axios({
                 method: "POST",
                 url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/customer/checkout/save-shipping`,
+                params: {
+                    locale: locale.slice(0, 2)
+                },
                 headers: {
                     'Authorization': `Bearer ${useUserStore.getState().token}`
                 },
-                data: {
-                    shipping_method: data.shipping_method
-                },
+                data,
             }).then((res) => {
                 toast.success(res.data.message);
+                set({ paymentMethods: res.data.data });
             }).catch((error) => {
                 set({ cartLoading: false });
                 console.error(error);
             });
+        },
+        saveCheckoutPayment: async (data) => {
             await axios({
                 method: "POST",
                 url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/customer/checkout/save-payment`,
@@ -201,6 +215,7 @@ const useCartStore = create(
                 },
             }).then((res) => {
                 toast.success(res.data.message);
+                set({ orderDetails: res.data.data });
             }).catch((error) => {
                 set({ cartLoading: false });
                 console.error(error);

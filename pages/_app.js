@@ -15,33 +15,37 @@ import nookies, { parseCookies, setCookie } from "nookies";
 function MyApp({ Component, pageProps }) {
   const [isLoading, setIsLoading] = useState(true);
   const [url, setUrl] = useState();
+  const router = useRouter();
   const { locale } = useRouter();
   const { token, registerDevice, fcmToken } = useUserStore();
   useEffect(() => {
+    setIsLoading(true);
     document.documentElement.style.setProperty("--theme-deafult", "#00c2b5");
     if (locale == "ar-KW") {
+      setIsLoading(false);
       document.documentElement.dir = "rtl";
       document.body.classList.add("rtl");
     } else {
+      setIsLoading(false);
+      document.body.classList.remove("ltr");
       document.documentElement.dir = "ltr";
       document.body.classList.remove("rtl");
-      setIsLoading(false);
       setCookie(null, "token", token, {
         maxAge: 7 * 24 * 60 * 60,
         path: "/",
       });
     }
+  }, [router.locale])
+  
+  useEffect(() => {
+    setIsLoading(false);
     registerDevice();
   }, []);
   return (
     <>
       {isLoading ? (
         <div className="loader-wrapper">
-          {url === "Christmas" ? (
-            <div id="preloader"></div>
-          ) : (
             <div className="loader"></div>
-          )}
         </div>
       ) : (
         <>
