@@ -2,15 +2,21 @@ import React, { useEffect, useState } from 'react';
 import CommonLayout from '@/components/shop/common-layout';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import CheckoutPage from '@/components/common/checkout-page';
+import { useTranslation } from 'react-i18next';
+import Head from 'next/head';
 
 const Checkout = () => {
     const [currentUser, setCurrentUser] = useState(localStorage.getItem('user'));
+    const { t } = useTranslation();
     useEffect(() => {
         setCurrentUser(localStorage.getItem('user'))
     }, [localStorage.getItem('user')])
     return (
         <>
-            <CommonLayout parent="home" title="checkout">
+            <Head>
+                <title>{t("checkout")}</title>
+            </Head>
+            <CommonLayout parent={t("home")} title={t("checkout")}>
                 <CheckoutPage />
             </CommonLayout>
         </>

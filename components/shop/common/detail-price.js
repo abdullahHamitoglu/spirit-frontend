@@ -165,12 +165,12 @@ const DetailsWithPrice = ({ item, stickyClass }) => {
           <h6 className="product-title">product details</h6>
           <p>{product.short_description}</p>
         </div>
-        <div className="border-product">
+        {/* <div className="border-product">
           <h6 className="product-title">share it</h6>
           <div className="product-icon">
             <MasterSocial />
           </div>
-        </div>
+        </div> */}
         <div className="border-product">
           <h6 className="product-title">Time Reminder</h6>
           <CountdownComponent />

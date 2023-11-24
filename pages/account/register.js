@@ -27,7 +27,7 @@ const Register = () => {
     });
 
 
-    if (!isAuthenticated) {
+    if (isAuthenticated) {
         const redirectUrl = router.query.redirect_url
         if (redirectUrl) {
             router.push(redirectUrl);

@@ -4,7 +4,6 @@ import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 import useUserStore from '../user/userStore';
 
-
 const useCartStore = create(
     (set, get) => ({
         cartData: [],
@@ -13,6 +12,7 @@ const useCartStore = create(
         savedAddress: {},
         paymentMethods: {},
         orderDetails: {},
+        redirect_url: '',
         increment: () => {
             set((state) => ({ count: state.count > -1 ? state.count + 1 : state.count }))
         },
@@ -216,6 +216,24 @@ const useCartStore = create(
             }).then((res) => {
                 toast.success(res.data.message);
                 set({ orderDetails: res.data.data });
+            }).catch((error) => {
+                set({ cartLoading: false });
+                console.error(error);
+            });
+        },
+        saveCheckoutOrder: async (locale) => {
+            await axios({
+                method: "POST",
+                url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/customer/checkout/save-order`,
+                params: {
+                    locale: locale.slice(0, 2)
+                },
+                headers: {
+                    'Authorization': `Bearer ${useUserStore.getState().token}`
+                },
+            }).then((res) => {
+                toast.success(res.data.message);
+                set({ redirect_url: res.data.redirect_url });
             }).catch((error) => {
                 set({ cartLoading: false });
                 console.error(error);

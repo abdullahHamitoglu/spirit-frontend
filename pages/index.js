@@ -14,10 +14,12 @@ import AboutSection from "../components/layouts/Beauty/components/About-Section"
 import { useTranslation } from "react-i18next";
 import { getHomePageData, getPageData } from "../controllers/homeController";
 import { parseCookies } from "nookies";
+import cheerio from 'cheerio';
+import axios from "axios";
 
 
-const Fashion = ({ page, homeData, token }) => {
-
+const Fashion = ({ page, homeData ,videoInfo }) => {
+  console.log(videoInfo);
   const { t } = useTranslation()
   return (
     <Fragment>
@@ -47,7 +49,7 @@ const Fashion = ({ page, homeData, token }) => {
         />
       </div>
       <div className="section-b-space">
-        <VideoSection />
+        <VideoSection video={videoInfo} />
       </div>
       <TopCollection
         innerClass="title1"
@@ -87,13 +89,44 @@ export async function getServerSideProps(context) {
 
   const page = await getPageData(locale, 'home', token);
 
-  return {
-    props: {
-      // pass the translation props to the page component
-      page,
-      homeData,
-      ...(await serverSideTranslations(locale)),
-    },
+
+  try {
+    const videoId = 'UAVC8XfYLWw'; // Replace with the actual YouTube video ID
+    const response = await axios.get(`https://www.youtube.com/watch?v=${videoId}`);
+
+    const $ = cheerio.load(response.data);
+
+    const title = $('meta[name="title"]').attr('content');
+    const description = $('meta[name="description"]').attr('content');
+    const image = $('link[rel="image_src"]').attr('href');
+    const url = $('meta[property="og:video:url"]').attr('content');
+
+    if (title && description && image) {
+      const videoInfo = {
+        title,
+        description,
+        image,
+        url
+      };
+
+      return {
+        props: {
+          // pass the translation props to the page component
+          videoInfo,
+          page,
+          homeData,
+          ...(await serverSideTranslations(locale)),
+        },
+      };
+    } else {
+      return {
+        notFound: true,
+      };
+    }
+  } catch (error) {
+    return {
+      notFound: true,
+    };
   }
 }
 

@@ -61,7 +61,6 @@ const MainBanner = (sliders) => {
         <Swiper
           spaceBetween={50}
           slidesPerView={1}
-          loop={true}
           navigation={true}
           modules={[Navigation]}
           className="slide-1 home-slider"

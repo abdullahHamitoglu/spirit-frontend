@@ -19,19 +19,20 @@ const useUserStore = create(
       fcmToken: null,
       addresses: [],
       address: [],
-
+      api_session: '',
       register: async (userData, locale) => {
         // Send a POST request to your registration API endpoint
         await axios({
           method: "post",
-          url: `${
-            process.env.NEXT_PUBLIC_API_URL
-          }api/v1/customer/register?locale=${locale.slice(0, 2)}`,
+          url: `${process.env.NEXT_PUBLIC_API_URL
+            }api/v1/customer/register?locale=${locale.slice(0, 2)}`,
           data: userData,
         })
           .then((res) => {
             if (res.data) {
               toast.success(res.data.message);
+              // set({ api_session: res.headers['set-cookie'].toString().split(';')[0] });
+              // console.log(res.headers['set-cookie'], res.headers['set-cookie'].toString().split(';')[0]);
             }
           })
           .catch(function (error, errors) {
@@ -56,6 +57,7 @@ const useUserStore = create(
                 user: res.data.data,
                 isAuthenticated: true,
                 token: res.data.token,
+                // api_session: res.headers['set-cookie'],
                 expirationTime: new Date().getTime() + 24 * 60 * 60 * 1000,
               });
               document
@@ -249,25 +251,25 @@ const useUserStore = create(
 
       registerDevice: async () => {
         if (!get().fcmToken) {
-          // await axios({
-          //   method: "post",
-          //   url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/register_device`,
-          //   data: {
-          //     fcmToken,
-          //     os: "web",
-          //   },
-          // })
-          //   .then((res) => {
-          //     //   set({ fcmToken: res.data.data.deviceDetails.fcmToken });
-          //     set({ fcmToken: uuid().replaceAll("-", "") });
-          //   })
-          //   .catch(function (error) {
-          //     if (error.response) {
-          //       toast.error(error.response.data.message);
-          //     }
-          //     console.log(error);
-          //   });
+          set({ fcmToken: uuid().replaceAll("-", "") });
         }
+        // await axios({
+        //   method: "post",
+        //   url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/register_device`,
+        //   data: {
+        //     fcmToken: get().token,
+        //     os: "web",
+        //   },
+        // }).then((res) => {
+        //     set({ fcmToken: res.data.data.deviceDetails.fcmToken });
+        //     console.log(res);
+        //   })
+        //   .catch(function (error) {
+        //     if (error.response) {
+        //       toast.error(error.response.data.message);
+        //     }
+        //     console.log(error);
+        //   });
       },
     }),
     {

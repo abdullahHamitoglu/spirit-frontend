@@ -1,10 +1,15 @@
-import React, { Fragment, useState } from 'react';
-import { Container, Row, Col, Media,Modal } from 'reactstrap';
+import React, { Fragment, useEffect, useState } from 'react';
+import { Container, Row, Col, Media, Modal } from 'reactstrap';
 import Image from 'next/image';
+import axios from 'axios';
+import cheerio from 'cheerio';
+import Head from 'next/head';
 
-const VideoSection = () => {
+const VideoSection = ({ video }) => {
 
     const [open, setOpen] = useState(false);
+
+    const [videoId, setVideoId] = useState('UAVC8XfYLWw');
 
     const onOpenModal = () => {
         setOpen(!open)
@@ -17,16 +22,18 @@ const VideoSection = () => {
     return (
         <Fragment>
             <section className="video-section pt-0">
-                <div className="title1">
-                    <h4>special offer</h4>
-                    <h2 className="title-inner1">product tutorial</h2>
-                </div>
+                {video &&
+                    <div className="title1">
+                        <h4>{video.title}</h4>
+                        <h2 className="title-inner1">{video.description}</h2>
+                    </div>
+                }
                 <Container>
                     <Row>
                         <Col md='8' className="offset-md-2">
-                            <a href="#" onClick={onOpenModal}>
+                            <a onClick={onOpenModal}>
                                 <div className="video-img">
-                                    <img src='assets/images/beauty/video_1.jpg' alt="" className="img-fluid blur-up lazyload" />
+                                    <img src={video.image} alt="" className="img-fluid blur-up lazyload w-100" />
                                     <div className="play-btn">
                                         <span><i className="fa fa-play" aria-hidden="true"></i></span>
                                     </div>
@@ -37,7 +44,7 @@ const VideoSection = () => {
                                 toggle={onOpenModal}
                                 id="video"
                                 className="video-modal" centered size="lg">
-                                <iframe title="video" src="https://www.youtube.com/embed/FRIDLxM8Roc"
+                                <iframe title="video" src={video.url}
                                     allowFullScreen></iframe>
                             </Modal>
                         </Col>

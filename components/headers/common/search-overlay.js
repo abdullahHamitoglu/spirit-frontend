@@ -1,6 +1,6 @@
 import algoliasearch from "algoliasearch";
 import React from "react";
-import { Hits, InstantSearch, SearchBox } from "react-instantsearch";
+// import { Hits, InstantSearch, SearchBox } from "react-instantsearch";
 import {
   Button,
   Col,
@@ -14,7 +14,7 @@ import {
 const closeSearch = () => {
   document.getElementById("search-overlay").style.display = "none";
 };
-const searchClient = algoliasearch(process.env.NEXT_PUBLIC_ALGOLIA_APP_ID, process.env.NEXT_PUBLIC_ALGOLIA_SECRET);
+// const searchClient = algoliasearch(process.env.NEXT_PUBLIC_ALGOLIA_APP_ID, process.env.NEXT_PUBLIC_ALGOLIA_SECRET);
 
 function Hit({ hit }) {
   return (
@@ -36,7 +36,7 @@ const SearchOverlay = () => {
           <Container>
             <Row>
               <Col xl="12">
-                <InstantSearch indexName="products_index" searchClient={searchClient}>
+                {/* <InstantSearch indexName="products_index" searchClient={searchClient}>
                   <SearchBox placeholder="Search a Product" typeof="text" classNames={{
                     root: 'border-0',
                     form: 'border-0',
@@ -46,7 +46,7 @@ const SearchOverlay = () => {
                     root: 'd-flex',
                     list: 'd-flex flex-column w-100',
                   }} />
-                </InstantSearch>
+                </InstantSearch> */}
               </Col>
             </Row>
           </Container>

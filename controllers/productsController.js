@@ -10,6 +10,7 @@ export async function getProducts(locale, params, token) {
     params: {
       locale: locale.slice(0, 2),
       currency: currency,
+      page:1,
       ...params,
     },
     headers: {

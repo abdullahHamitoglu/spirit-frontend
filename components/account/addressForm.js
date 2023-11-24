@@ -1,116 +1,258 @@
 import { Field, Form, Formik } from 'formik';
 import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next';
-import { Col, Container, Label, Row } from 'reactstrap';
+import { Col, Label } from 'reactstrap';
 import * as Yup from 'yup';
 import useUserStore from '../../helpers/user/userStore';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import useCartStore from '@/helpers/cart/cartStore';
 
-function AddressForm() {
+function AddressForm({ ctx, col ,isDetails , address }) {
     const { t } = useTranslation();
-    const { address } = useUserStore();
-    const validationSchema = Yup.object().shape({
-        first_name: Yup.string().required(t('first_name_required')),
-        last_name: Yup.string().required(t('last_name_required')),
-        password: Yup.string()
-            .min(6, t('password_min_length')),
-        password_confirmation: Yup.string()
-            .oneOf([Yup.ref(' '), null], t('passwords_must_match')),
+    const { locale } = useRouter();
+    const addressValidationSchema = Yup.object().shape({
+        company_name: Yup.string().required(t('this_field_is_required')),
+        first_name: Yup.string().required(t('this_field_is_required')),
+        last_name: Yup.string().required(t('this_field_is_required')),
+        email: Yup.string().email(t('invalid_email')).required(t('this_field_is_required')),
+        address1: Yup.array().required(t('this_field_is_required')),
+        state: Yup.string().required(t('this_field_is_required')),
+        city: Yup.string().required(t('this_field_is_required')),
+        postcode: Yup.string().required(t('this_field_is_required')),
+        phone: Yup.string().required(t('this_field_is_required')),
     });
+    const { saveCheckoutAddress } = useCartStore();
+    const { getAddresses, addresses, getAddressById } = useUserStore();
 
-    
+    const handleAddress = (id) => {
+        getAddressById(locale, id);
+    }
+    if(isDetails){
+        
+    }
+    useEffect(() => {
+        getAddresses(locale);
+    }, [])
     return (
 
-        <section className="contact-page register-page section-b-space">
-            <Container>
-                <Row>
-                    <Col sm="12">
-                        <h3>{t("shipping_address")}</h3>
-
-                        <Formik
-                            initialValues={{
-                                company_name: "",
-                                first_name: "",
-                                last_name: "",
-                                email: "",
-                                address1: [],
-                                country: "",
-                                state: "",
-                                city: "",
-                                postcode: "",
-                                phone: "",
-                                vat_id: ""
-                            }}
-                            validationSchema={validationSchema}
-                            onSubmit={(values, { setSubmitting }) => {
-                                address(values);
-                                setSubmitting(false);
-                            }}
-                            on >
-                            {({ values, errors, touched, handleSubmit, isSubmitting, setFieldValue, setFieldValues }) => (
-                                <Form className="theme-form">
-                                    <Row>
-                                        <Col md="6">
-                                            <Label className="form-label" for="first_name">{t('first_name')}
-                                                {errors.first_name && touched.first_name && <span className="error ms-1 text-danger">{errors.first_name}</span>}
-                                            </Label>
-                                            <Field type="text" className="form-control" id="first_name" name='first_name' placeholder={t('inter.name')} value={values.first_name} onChange={(e) => setFieldValue('first_name', e.target.value)}
-                                                required="" />
-                                        </Col>
-                                        <Col md="6">
-                                            <Label className="form-label" for="last_name">{t('last_name')}
-                                                {errors.last_name && touched.last_name && <span className="error ms-1 text-danger">{errors.last_name}</span>}
-                                            </Label>
-                                            <Field type="text" className="form-control" id="last_name" name='last_name' placeholder={t('inter.name')} required="" value={values.last_name} onChange={(e) => setFieldValue('last_name', e.target.value)} />
-                                        </Col>
-                                        <Col md="6">
-                                            <Label className="form-label" for="email">{t('email')}</Label>
-                                            <Field type="email" className="form-control" id="email" placeholder={t('inter.email')} disabled value={user.email} />
-                                        </Col>
-                                        <Col md="6">
-                                            <Label className="form-label" for="phone">{t('phone')}</Label>
-                                            <Field type="number" className="form-control" id="phone" name='phone' placeholder={t('inter.number')} value={values.phone} onChange={(e) => setFieldValue('phone', e.target.value)}
-                                                required="" />
-                                        </Col>
-                                        <Col md="6">
-                                            <Label className="form-label" for="home-ploat">{t("flat_plot_label")}</Label>
-                                            <Input type="text" className="form-control" id="home-ploat" placeholder={t("flat_plot_label")} required="" />
-                                        </Col>
-                                        <Col md="6">
-                                            <Label className="form-label" for="address-two">{t("address_label")}</Label>
-                                            <Input type="text" className="form-control" id="address-two" placeholder={t("address_label")} required="" />
-                                        </Col>
-                                        <Col md="6">
-                                            <Label className="form-label" for="zip-code">{t("zip_code_label")}</Label>
-                                            <Input type="number" className="form-control" id="zip-code" placeholder={t("zip_code_label")} required="" />
-                                        </Col>
-                                        <Col md="6" className="select_input">
-                                            <Label className="form-label" for="country">{t("country_label")}</Label>
-                                            <select className="form-select py-2" size="1">
-                                                {/* {countries && countries.map((country) => (
-                                            <option value={country.code}>{country.name}</option>
-                                        ))} */}
-                                            </select>
-                                        </Col>
-                                        <Col md="6">
-                                            <Label className="form-label" for="city">{t("city_label")}</Label>
-                                            <Input type="text" className="form-control" id="city" placeholder={t("city_label")} required="" />
-                                        </Col>
-                                        <Col md="6">
-                                            <Label className="form-label" for="region-state">{t("region_state_label")}</Label>
-                                            <Input type="text" className="form-control" id="region-state" placeholder={t("region_state_label")} required="" />
-                                        </Col>
-                                        <div className="col-md-12">
-                                            <button className="btn btn-sm btn-solid" type="submit">{t("button_text")}</button>
-                                        </div>
-                                    </Row>
-                                </Form>
-                            )}
-                        </Formik>
+        <Formik
+            enableReinitialize
+            initialValues={{
+                company_name: address.company_name ,
+                first_name: address.first_name,
+                last_name: address.last_name,
+                email: address.email,
+                address1: address.address1,
+                country: address.country,
+                state: address.state,
+                city: address.city,
+                postcode: address.postcode,
+                phone: address.phone,
+                vat_id: address.vat_id
+            }}
+            validationSchema={addressValidationSchema}
+            onSubmit={(values, { setSubmitting }) => {
+                ctx.next()
+                saveCheckoutAddress(values, locale);
+                setSubmitting(false);
+            }}
+            errors={(errors) => {
+                console.log(errors)
+            }}
+        >
+            {({ values, errors, touched, handleSubmit, isSubmitting, setFieldValue }) => (
+                <Form onSubmit={handleSubmit} className="d-flex flex-wrap justify-content-center">
+                    <Col lg={col ? '12' : col} sm="12" xs="12">
+                        <div className="checkout-title">
+                            <h3>{t('billing_details')}</h3>
+                        </div>
+                        <div className="row check-out">
+                            {addresses && !isDetails &&
+                                <div className="form-group col-md-12 col-sm-12 col-xs-12">
+                                    <div className="field-label d-flex justify-content-between">
+                                        <label>{t("shipping_address")}</label>
+                                        <Link style={{ color: '#54c3bd' }} href={'/addresses#form'}>{t('add_new_address')}</Link>
+                                    </div>
+                                    <select name="address" onChange={() => handleAddress(event.target.value)}>
+                                        {addresses.map((address, i) => (
+                                            <option key={i} value={address.id}>{address.company_name}</option>
+                                        ))}
+                                    </select>
+                                </div>
+                            }
+                            <Col md="6" sm="12" xs="12" className="form-group">
+                                <Label className="form-label" for="company_name">
+                                    {t('company_name')}
+                                    {errors.company_name && touched.company_name && <span className="error ms-1 text-danger">{errors.company_name}</span>}
+                                </Label>
+                                <Field
+                                    disabled={isDetails}
+                                    type="text"
+                                    className="form-control"
+                                    id="company_name"
+                                    name='company_name'
+                                    placeholder={t('inter.company_name')}
+                                    onChange={(e) => setFieldValue('company_name', e.target.value)}
+                                    value={values.company_name}
+                                    required=""
+                                />
+                            </Col>
+                            <Col md="6" sm="12" xs="12" className="form-group">
+                                <Label className="form-label" for="first_name">
+                                    {t('first_name')}
+                                    {errors.first_name && touched.first_name && <span className="error ms-1 text-danger">{errors.first_name}</span>}
+                                </Label>
+                                <Field
+                                    disabled={isDetails}
+                                    type="text"
+                                    className="form-control"
+                                    id="first_name"
+                                    name='first_name'
+                                    placeholder={t('inter.name')}
+                                    value={values.first_name}
+                                    onChange={(e) => setFieldValue('first_name', e.target.value)}
+                                    required=""
+                                />
+                            </Col>
+                            <Col md="6" sm="12" xs="12" className="form-group">
+                                <Label className="form-label" for="last_name">
+                                    {t('last_name')}
+                                    {errors.last_name && touched.last_name && <span className="error ms-1 text-danger">{errors.last_name}</span>}
+                                </Label>
+                                <Field
+                                    disabled={isDetails}
+                                    type="text"
+                                    className="form-control"
+                                    id="last_name"
+                                    name='last_name'
+                                    placeholder={t('inter.name')}
+                                    required=""
+                                    value={values.last_name}
+                                    onChange={(e) => setFieldValue('last_name', e.target.value)}
+                                />
+                            </Col>
+                            <Col md="6" sm="12" xs="12" className="form-group">
+                                <Label className="form-label" for="email">
+                                    {t('email')}
+                                </Label>
+                                <Field
+                                    disabled={isDetails}
+                                    type="email"
+                                    className="form-control"
+                                    id="email"
+                                    placeholder={t('inter.email')}
+                                    name="email"
+                                />
+                            </Col>
+                            <Col md="6" sm="12" xs="12" className="form-group">
+                                <Label className="form-label" for="phone">
+                                    {t('phone')}
+                                </Label>
+                                <Field
+                                    disabled={isDetails}
+                                    type="number"
+                                    className="form-control"
+                                    id="phone"
+                                    name='phone'
+                                    placeholder={t('inter.number')}
+                                    value={values.phone}
+                                    onChange={(e) => setFieldValue('phone', e.target.value)}
+                                    required=""
+                                />
+                            </Col>
+                            <Col md="6" sm="12" xs="12" className="form-group">
+                                <Label className="form-label" for="state">
+                                    {t('state')}
+                                    {errors.state && touched.state && <span className="error ms-1 text-danger">{errors.state}</span>}
+                                </Label>
+                                <Field
+                                    disabled={isDetails}
+                                    type="text"
+                                    className="form-control"
+                                    id="state"
+                                    name='state'
+                                    placeholder={t('inter.state')}
+                                    value={values.state}
+                                    onChange={(e) => setFieldValue('state', e.target.value)}
+                                    required=""
+                                />
+                            </Col>
+                            <Col md="6" sm="12" xs="12" className="form-group">
+                                <Label className="form-label" for="address1">
+                                    {t("address_label")}
+                                </Label>
+                                <Field
+                                    disabled={isDetails}
+                                    type="text"
+                                    className="form-control"
+                                    id="address1"
+                                    name="address1"
+                                    placeholder={t("address_label")}
+                                    value={values.address1 && values.address1[0]}
+                                    onChange={(e) => setFieldValue('address1', [e.target.value])}
+                                    required=""
+                                />
+                            </Col>
+                            <Col md="6" sm="12" xs="12" className="form-group">
+                                <Label className="form-label" for="zip-code">
+                                    {t("postcode")}
+                                </Label>
+                                <Field
+                                    disabled={isDetails}
+                                    type="number"
+                                    className="form-control"
+                                    id="zip-code"
+                                    name="postcode"
+                                    placeholder={t("postcode")}
+                                    required=""
+                                    value={values.postcode}
+                                    onChange={(e) => setFieldValue('postcode', e.target.value)}
+                                />
+                            </Col>
+                            <Col md="6" sm="12" xs="12" className="form-group">
+                                <Label className="form-label" for="country">
+                                    {t("country_label")}
+                                </Label>
+                                <Field
+                                    disabled={isDetails}
+                                    type="text"
+                                    className="form-control"
+                                    id="country"
+                                    name="country"
+                                    placeholder={t("country_label")}
+                                    value={values.country}
+                                    onChange={(e) => setFieldValue('country', e.target.value)}
+                                    required=""
+                                />
+                            </Col>
+                            <Col md="6" sm="12" xs="12" className="form-group">
+                                <Label className="form-label" for="city">
+                                    {t("city_label")}
+                                </Label>
+                                <Field
+                                    disabled={isDetails}
+                                    type="text"
+                                    className="form-control"
+                                    id="city"
+                                    name="city"
+                                    placeholder={t("city_label")}
+                                    required=""
+                                    value={values.city}
+                                    onChange={(e) => setFieldValue('city', e.target.value)}
+                                />
+                            </Col>
+                            {!isDetails ?
+                                <div className="col-md-12">
+                                    <button className="btn btn-sm btn-solid" type="submit">{t('next')}</button>
+                                </div> : ''
+                            }
+                        </div>
                     </Col>
-                </Row>
-            </Container>
-        </section>
+                </Form>
+            )}
+        </Formik>
     )
 }
 
-export default AddressForm ;
+export default AddressForm;
