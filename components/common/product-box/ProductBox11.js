@@ -168,11 +168,11 @@ const ProductSection = ({ product, addToCompare, addWishlist, addCart }) => {
                             onClick={() => addCart(product, quantity)}>
                             add to cart
                           </button>
-                          <button
+                          <Link
                             className="btn btn-solid"
-                            onClick={clickProductDetail}>
+                            href={`/products/${product.url_key}`}>
                             View detail
-                          </button>
+                          </Link>
                         </div>
                       </div>
                     </Col>

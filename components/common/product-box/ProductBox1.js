@@ -8,7 +8,7 @@ import { useTranslation } from "react-i18next";
 import useCartStore from "../../../helpers/cart/cartStore";
 import currencyStore from "../../../helpers/Currency/CurrencyStore";
 
-const ProductItem = ({  wishListLoading, product, addCart, backImage, des, addWishlist, cartClass, productDetail, addCompare, title }) => {
+const ProductItem = ({ wishListLoading, product, addCart, backImage, des, addWishlist, cartClass, productDetail, addCompare, title }) => {
   // eslint-disable-next-line
   const router = useRouter();
   const { selectedCurrency } = currencyStore();
@@ -31,9 +31,9 @@ const ProductItem = ({  wishListLoading, product, addCart, backImage, des, addWi
     router.push('/products/[slug]', `/products/${product.url_key}`);
   };
   const handelAddCart = () => {
-    if(product.type == 'simple'){
+    if (product.type == 'simple') {
       addCart()
-    }else{
+    } else {
       clickProductDetail()
     }
   };
@@ -53,23 +53,23 @@ const ProductItem = ({  wishListLoading, product, addCart, backImage, des, addWi
             : ""}
           {product.sale === true ? <span className="lable4">{t('on_sale')}</span> : ""}
         </div>
-        <div className="front" onClick={clickProductDetail}>
+        <Link className="front" href={`/products/${product.url_key}`}>
           <Media src={image} className="img-fluid" alt={product.name} />
-        </div>
+        </Link>
         {backImage ? (
           product.images[1] === "undefined" ? (
             "false"
           ) : (
-            <div className="back" onClick={clickProductDetail}>
+            <Link className="back" href={`/products/${product.url_key}`}>
               <Media src={product.images[1].original_image_url} className="img-fluid m-auto" alt={product.name} />
-            </div>
+            </Link>
           )
         ) : (
           ""
         )}
 
         <div className={cartClass}>
-          <button className={product.is_item_in_cart ? ' active' : ''} title={t('add_to_cart')} onClick={()=>{handelAddCart()}}>
+          <button className={product.is_item_in_cart ? ' active' : ''} title={t('add_to_cart')} onClick={() => { handelAddCart() }}>
             <i className="fa fa-shopping-cart" aria-hidden="true"></i>
           </button>
           <a href={null} title={t('add_to_wishlist')} onClick={addWishlist}>

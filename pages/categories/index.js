@@ -13,10 +13,14 @@ import { parseCookies } from "nookies";
 import { Container, Media, Row, Col } from "reactstrap";
 import Link from "next/link";
 
+import Slider from "react-slick";
+
+import { Product5 } from "@/services/script";
 
 const MasterCollection = ({ img, totalProducts, type, about, link, btn }) => {
+
   return (
-    <Col lg="3" md="6">
+    <Col lg="2" md="6">
       <Link href={link}>
         <div className="collection-block">
           <div>
@@ -28,21 +32,50 @@ const MasterCollection = ({ img, totalProducts, type, about, link, btn }) => {
           </div>
           <div className="collection-content">
             <h4>{totalProducts}</h4>
-            <h3>{type}</h3>
-            <p>{about}</p>
+            <h4>{type}</h4>
+            {/* <p>{about}</p> */}
           </div>
         </div>
       </Link>
     </Col>
   );
 };
-
+const MasterCategory = ({ img, title, link }) => {
+  return (
+    <div className="category-block">
+      <a href={`/categories/${link}`}>
+        <div className="category-image">
+          <Media src={img} alt="" />
+        </div>
+      </a>
+      <div className="category-details">
+        <Link href={`/categories/${link}`}>
+          <h5>{title}</h5>
+        </Link>
+      </div>
+    </div>
+  );
+};
 const Collection = ({ categories }) => {
   return (
     <CommonLayout parent="home" title="collection">
       <section className="collection section-b-space ratio_square ">
         <Container>
           <Row className="partition-collection">
+            {/* <Col>
+              <Slider {...Product5} className="slide-6 no-arrow">
+                {categories.map((data, i) => {
+                  return (
+                    <MasterCategory
+                      key={i}
+                      img={data.category_icon_path}
+                      link={data.slug}
+                      title={data.name}
+                    />
+                  );
+                })}
+              </Slider>
+            </Col> */}
             {categories && categories.map((data, i) => {
               return (
                 <MasterCollection

@@ -22,6 +22,7 @@ const index = ({ products, page, attributes }) => {
     products: products,
     loading: true,
   });
+
   const openCloseSidebar = () => {
     if (sidebarView) {
       setSidebarView(!sidebarView);

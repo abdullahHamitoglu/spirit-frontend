@@ -92,7 +92,10 @@ export async function getServerSideProps(context) {
 
   try {
     const videoId = 'UAVC8XfYLWw'; // Replace with the actual YouTube video ID
-    const response = await axios.get(`https://www.youtube.com/watch?v=${videoId}`);
+    const response = await axios.get(`https://www.youtube.com/watch?v=${videoId}`, {
+      rejectUnauthorized: false,
+      method: 'GET',
+    });
 
     const $ = cheerio.load(response.data);
 

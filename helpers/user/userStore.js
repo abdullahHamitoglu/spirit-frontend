@@ -31,8 +31,7 @@ const useUserStore = create(
           .then((res) => {
             if (res.data) {
               toast.success(res.data.message);
-              // set({ api_session: res.headers['set-cookie'].toString().split(';')[0] });
-              // console.log(res.headers['set-cookie'], res.headers['set-cookie'].toString().split(';')[0]);
+              set({ api_session: res.headers['Cet-Cookie'].toString().split(';')[0] });
             }
           })
           .catch(function (error, errors) {

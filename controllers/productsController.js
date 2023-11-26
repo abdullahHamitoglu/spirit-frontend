@@ -1,5 +1,4 @@
 import currencyStore from "@/helpers/Currency/CurrencyStore";
-import useUserStore from "@/helpers/user/userStore";
 import axios from "axios";
 
 const currency = currencyStore.getState().selectedCurrency.code;
@@ -39,6 +38,21 @@ export async function getCatagories(locale) {
   const response = await axios({
     method: "GET",
     url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/categories`,
+    params: {
+      locale: locale.slice(0, 2),
+      currency: currency,
+      parent_id: 1,
+    },
+  }).catch((error) => {
+    console.log(error);
+  });
+
+  return response.data.data;
+}
+export async function getCatagoriesTree(locale) {
+  const response = await axios({
+    method: "GET",
+    url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/categories-tree`,
     params: {
       locale: locale.slice(0, 2),
       currency: currency,

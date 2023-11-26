@@ -118,7 +118,7 @@ export const Product5 = {
     {
       breakpoint: 1367,
       settings: {
-        slidesToShow: 4,
+        slidesToShow: 5,
         slidesToScroll: 4,
       },
     },
