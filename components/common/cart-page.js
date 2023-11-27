@@ -147,7 +147,7 @@ const CartPage = () => {
               </Row>
               <Row className="cart-buttons">
                 <Col xs="6">
-                  <Link href={`/shop/left_sidebar`} className="btn btn-solid">
+                  <Link href="/" className="btn btn-solid">
                     {t('continue_shopping')}
                   </Link>
                 </Col>
@@ -171,7 +171,7 @@ const CartPage = () => {
                         <div className="col-sm-12 empty-cart-cls text-center">
                           <Media
                             src="/assets/images/icon-empty-cart.png"
-                            className="img-fluid mb-4 mx-auto"
+                            className="img-fluid mb-4 m-auto"
                             alt=""
                           />
                           <h3>

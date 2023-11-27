@@ -15,18 +15,20 @@ const FilterOptions = (attr) => {
 
   const toggleBrand = () => setIsOpen(!isOpen);
   const { pathname, query } = router;
-  
+
   const handleChange = (event, option, type) => {
     const checkedInputs = document.querySelectorAll(`input[name=${attr.attr.code}]:checked`);
     const values = Array.from(checkedInputs).map((element) => element.value);
-    
+
     router.push({
       pathname,
       query: {
         ...query,
-        [type]:  values.join(',')
+        [type]: values.join(',')
       },
-    });
+    },
+      undefined, { shallow: true }
+    );
   };
 
   return (

@@ -155,14 +155,14 @@ const DetailsWithPrice = ({ item, stickyClass }) => {
             className="btn btn-solid"
             onClick={() => handleAddToCart()}
           >
-            add to cart
+            {t('add_to_cart')}
           </a>
           <Link href={`/account/checkout`} className="btn btn-solid">
-            buy now
+            {t('buy_now')}
           </Link>
         </div>
         <div className="border-product">
-          <h6 className="product-title">product details</h6>
+          <h6 className="product-title">{t('product_details')}</h6>
           <p>{product.short_description}</p>
         </div>
         {/* <div className="border-product">
@@ -171,10 +171,12 @@ const DetailsWithPrice = ({ item, stickyClass }) => {
             <MasterSocial />
           </div>
         </div> */}
-        <div className="border-product">
-          <h6 className="product-title">Time Reminder</h6>
-          <CountdownComponent />
-        </div>
+        {product.reminder &&
+          <div className="border-product">
+            <h6 className="product-title">{t('time_reminder')}</h6>
+            <CountdownComponent time={product.reminder} />
+          </div>
+        }
       </div>
     </>
   );

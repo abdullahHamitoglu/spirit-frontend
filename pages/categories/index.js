@@ -7,7 +7,6 @@ import { useTranslation } from "react-i18next";
 import Head from "next/head";
 import { getCatagories, getFilterAttr, getProducts } from "@/controllers/productsController";
 import { getPageData } from "@/controllers/homeController";
-import useFilterStore from "@/helpers/filter/filterStore";
 import { useRouter } from "next/router";
 import { parseCookies } from "nookies";
 import { Container, Media, Row, Col } from "reactstrap";

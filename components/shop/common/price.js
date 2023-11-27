@@ -8,7 +8,7 @@ import 'react-range-slider-input/dist/style.css';
 
 const Price = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { maxPrice, getMaxPrice, setPrice } = useFilterStore();
+  const { maxPrice, getMaxPrice } = useFilterStore();
   const toggle = () => setIsOpen(!isOpen);
   const { t } = useTranslation();
   const { locale } = useRouter();
@@ -28,7 +28,9 @@ const Price = () => {
           ...router.query,
           price: event[0] + ',' + event[1]
         },
-      });
+      },
+        undefined, { shallow: true }
+      );
     }
     router.push(router)
   };

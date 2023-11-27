@@ -13,15 +13,15 @@ import { useRouter } from "next/router";
 import { parseCookies } from "nookies";
 
 const index = ({ products, page, attributes }) => {
+  if(!products){
+    return (
+      <div className="loader-wrapper">
+        <div className="loader"></div>
+      </div>
+    );
+  }
   const [sidebarView, setSidebarView] = useState(false);
-  const { locale } = useRouter();
-  const router = useRouter();
   const { t } = useTranslation();
-  const { filterProducts, filteredProducts } = useFilterStore();
-  const [data, setData] = useState({
-    products: products,
-    loading: true,
-  });
 
   const openCloseSidebar = () => {
     if (sidebarView) {
@@ -30,15 +30,6 @@ const index = ({ products, page, attributes }) => {
       setSidebarView(!sidebarView);
     }
   };
-  useEffect(() => {
-    setData({ ...data, loading: false });
-  }, [products]);
-  useEffect(() => {
-    filterProducts(locale, router.query);
-    if (filteredProducts.length > 0) {
-      setData({ products: filteredProducts, loading: false });
-    }
-  }, []);
   return (
     <>
       <Head>
@@ -47,7 +38,6 @@ const index = ({ products, page, attributes }) => {
         <meta property="og:type" content="product" />
         <meta property="og:title" content={page.meta_title} />
         <meta property="og:url" content={page.url} />
-        {/* <meta property="og:site_name" content={ getSetting('site_name') } /> */}
         <meta property="og:image" content={page.image} />
         <meta property="og:image:alt" content={page.meta_title} />
         <meta property="og:description" content={page.meta_description} />
@@ -69,7 +59,8 @@ const index = ({ products, page, attributes }) => {
                   colClass="col-xl-3 col-6 col-grid-box"
                   layoutList=""
                   openSidebar={() => openCloseSidebar(sidebarView)}
-                  data={data}
+                  products={products}
+                  attributes={attributes}
                 />
               </Row>
             </Container>
@@ -79,10 +70,10 @@ const index = ({ products, page, attributes }) => {
     </>
   );
 };
-export async function getServerSideProps(context) {
-  const { locale, params } = context;
+export async function getStaticProps(context) {
+  const { locale, query } = context;
   const {token} = parseCookies(context);
-  const products = await getProducts(locale, params, token);
+  const products = await getProducts(locale, query , token);
   const attributes = await getFilterAttr(locale);
   const page = await getPageData(locale, "products");
   return {

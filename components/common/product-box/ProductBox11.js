@@ -1,20 +1,21 @@
 import React, { Fragment, useState, useContext } from "react";
 import { Col, Media, ModalHeader, Modal, ModalBody, Row } from "reactstrap";
 
-import Link from "next/link"; 
+import Link from "next/link";
 import MasterProductDetail from "./MasterProductDetail";
 import currencyStore from "../../../helpers/Currency/CurrencyStore";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { useTranslation } from "react-i18next";
 
 const ProductSection = ({ product, addToCompare, addWishlist, addCart }) => {
-  const {selectedCurrency} = currencyStore();
+  const { selectedCurrency } = currencyStore();
   const currency = selectedCurrency;
   const [modal, setModal] = useState(false);
   const [modalCompare, setModalCompare] = useState(false);
   const toggleCompare = () => setModalCompare(!modalCompare);
   const toggle = () => setModal(!modal);
   const uniqueTags = [];
-
+  const { t } = useTranslation();
   const clickProductDetail = () => {
     const titleProps = product.title.split(" ").join("");
     router.push(`/products/${product.url_key}`);
@@ -110,7 +111,7 @@ const ProductSection = ({ product, addToCompare, addWishlist, addCart }) => {
                           ""
                         )}
                         <div className="border-product">
-                          <h6 className="product-title">product details</h6>
+                          <h6 className="product-title">{t('product_details')}</h6>
                           <p>{product.description}</p>
                         </div>
                         <div className="product-description border-product">
@@ -166,11 +167,11 @@ const ProductSection = ({ product, addToCompare, addWishlist, addCart }) => {
                           <button
                             className="btn btn-solid"
                             onClick={() => addCart(product, quantity)}>
-                            add to cart
+                            {t('add_to_cart')}
                           </button>
                           <Link
                             className="btn btn-solid"
-                            href={`/products/${product.url_key}`}>
+                            href={clickProductDetail}>
                             View detail
                           </Link>
                         </div>
@@ -231,7 +232,7 @@ const ProductSection = ({ product, addToCompare, addWishlist, addCart }) => {
               data-toggle="modal"
               data-target="#addtocart"
               onClick={addCart}>
-              add to cart
+              {t('add_to_cart')}
             </div>
           </div>
 
@@ -251,13 +252,13 @@ const ProductSection = ({ product, addToCompare, addWishlist, addCart }) => {
 export async function getStaticProps(context) {
   // extract the locale identifier from the URL
 
-  const { locale } = context ;
+  const { locale } = context;
 
   return {
-      props: {
-          // pass the translation props to the page component
-          ...(await serverSideTranslations(locale)),
-      },
+    props: {
+      // pass the translation props to the page component
+      ...(await serverSideTranslations(locale)),
+    },
   }
 }
 

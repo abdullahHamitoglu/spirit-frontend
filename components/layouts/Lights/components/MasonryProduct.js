@@ -55,7 +55,7 @@ const MasonryProduct = ({ type, cartClass }) => {
     const uniqueTags = [];
     const toggle = () => setModal(!modal);  
     const {selectedCurrency} = currencyStore()
-  const currency = selectedCurrency.symbol;
+    const currency = selectedCurrency.symbol;
     const qty = cartContext.quantity;
 
     const minusQty = () => {

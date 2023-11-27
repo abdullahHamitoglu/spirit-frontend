@@ -1,8 +1,11 @@
 import React, { Fragment } from "react";
 import Countdown from "react-countdown";
+import { useTranslation } from 'react-i18next';
 
-const CountdownComponent = () => {
-  const Completionist = () => <span>You are good to go!</span>;
+const CountdownComponent = ({ time }) => {
+  const { t } = useTranslation();
+
+  const Completionist = () => <span>{t('completion_message')}</span>;
 
   const renderer = ({ days, hours, minutes, seconds, completed }) => {
     if (completed) {
@@ -12,43 +15,43 @@ const CountdownComponent = () => {
       // Render a countdown
       return (
         <div className="timer-box">
-            <div className="timer">
-              <div className="timer-p" id="demo">
-                <span>
-                  {days}
-                  <span className="padding-l">:</span>
-                  <span className="timer-cal">Days</span>
-                </span>
-                <span>
-                  {hours}
-                  <span className="padding-l">:</span>
-                  <span className="timer-cal">Hrs</span>
-                </span>
-                <span>
-                  {minutes}
-                  <span className="padding-l">:</span>
-                  <span className="timer-cal">Min</span>
-                </span>
-                <span>
-                  {seconds}
-                  <span className="timer-cal">Sec</span>
-                </span>
-              </div>
+          <div className="timer">
+            <div className="timer-p" id="demo">
+              <span>
+                {days}
+                <span className="padding-l">:</span>
+                <span className="timer-cal">{t('days')}</span>
+              </span>
+              <span>
+                {hours}
+                <span className="padding-l">:</span>
+                <span className="timer-cal">{t('hours')}</span>
+              </span>
+              <span>
+                {minutes}
+                <span className="padding-l">:</span>
+                <span className="timer-cal">{t('minutes')}</span>
+              </span>
+              <span>
+                {seconds}
+                <span className="timer-cal">{t('seconds')}</span>
+              </span>
             </div>
+          </div>
         </div>
       );
     }
   };
 
-  var d = new Date();
+  var d = new Date(time);
   var year = d.getFullYear();
   var month = d.getMonth();
   var day = d.getDate();
-  var coundown = new Date(year, month, day + 10).getTime();
+  var countdown = new Date(year, month, day).getTime();
 
   return (
     <Fragment>
-      <Countdown date={coundown} renderer={renderer} />
+      <Countdown date={countdown} renderer={renderer} />
     </Fragment>
   );
 };

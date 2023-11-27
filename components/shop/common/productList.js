@@ -10,79 +10,55 @@ import { CompareContext } from "../../../helpers/Compare/CompareContext";
 import currencyStore from "@/helpers/Currency/CurrencyStore";
 import useWishListStore from "@/helpers/wishlist/wishlistStore";
 import useCartStore from "@/helpers/cart/cartStore";
+import { useTranslation } from "react-i18next";
+import useFilterStore from "@/helpers/filter/filterStore";
+import axios from "axios";
+import { getProducts } from "@/controllers/productsController";
+import useUserStore from "@/helpers/user/userStore";
 
-const ProductList = ({ colClass, layoutList, openSidebar, noSidebar, data , page }) => {
+const ProductList = ({ colClass, layoutList, openSidebar, noSidebar, products, page }) => {
   const { wishList } = useWishListStore();
-  const { addToCart ,getCart} = useCartStore();
+  const { addToCart, getCart } = useCartStore();
+  const { token } = useUserStore();
   const compareContext = useContext(CompareContext);
   const router = useRouter();
+  const { locale } = useRouter();
   const [limit, setLimit] = useState(8);
   const { selectedCurrency } = currencyStore()
   const symbol = selectedCurrency.symbol;
   const [grid, setGrid] = useState(colClass);
-  const filterContext = useContext(FilterContext);
-  const selectedBrands = filterContext.selectedBrands;
-  const selectedColor = filterContext.selectedColor;
-  const selectedPrice = filterContext.selectedPrice;
-  const selectedCategory = filterContext.state;
-  const selectedSize = filterContext.selectedSize;
   const [sortBy, setSortBy] = useState("AscOrder");
   const [isLoading, setIsLoading] = useState(false);
   const [layout, setLayout] = useState(layoutList);
   const [url, setUrl] = useState();
   const [quantity, setQuantity] = useState('1');
-
-  var productsData = data.products;
-  useEffect(() => {
-    const pathname = window.location.pathname;
-    setUrl(pathname);
-  }, [selectedBrands, selectedColor, selectedSize, selectedPrice]);
-
-
-  const handlePagination = () => {
+  const { t } = useTranslation();
+  const [productsData, setProductsData] = useState(products.data);
+  const [pageCount, setPageCount] = useState(1);
+  const handlePagination = async () => {
     setIsLoading(true);
-    setTimeout(
-      () =>
-        fetchMore({
-          variables: {
-            indexFrom: productsData.products.items.length,
-          },
-          updateQuery: (prev, { fetchMoreResult }) => {
-            if (!fetchMoreResult) return prev;
-            setIsLoading(false);
-            return {
-              products: {
-                __typename: prev.products.__typename,
-                total: prev.products.total,
-                items: [
-                  ...prev.products.items,
-                  ...fetchMoreResult.products.items,
-                ],
-                hasMore: fetchMoreResult.products.hasMore,
-              },
-            };
-          },
-        }),
-      1000
-    );
+    const response = await getProducts(locale, { ...router.query, page: pageCount ? pageCount + 1 : 1 }, token);
+    setPageCount(pageCount + 1);
+    console.log(response, pageCount);
+    setProductsData([...productsData, ...response.data]);
+    setIsLoading(false);
   };
-
-  const removeBrand = (val) => {
-    const temp = [...selectedBrands];
-    temp.splice(selectedBrands.indexOf(val), 1);
-    filterContext.setSelectedBrands(temp);
+  const handleScroll = () => {
+    const windowHeight = "innerHeight" in window ? window.innerHeight : document.documentElement.offsetHeight;
+    const body = document.body;
+    const html = document.documentElement;
+    const docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight);
+    const windowBottom = windowHeight + window.pageYOffset;
+    if (windowBottom >= docHeight - 100 && !isLoading) {
+      handlePagination();
+    }
   };
-
-  const removeSize = (val) => {
-    const temp = [...selectedSize];
-    temp.splice(selectedSize.indexOf(val), 1);
-    filterContext.setSelectedSize(temp);
+  const handelSortBy = (event) => {
+    router.push({
+      query: event.target.value + router.query
+    },
+      undefined, { shallow: true })
   };
-
-  const removeColor = () => {
-    filterContext.setSelectedColor("");
-  };
-
   return (
     <Col className="collection-content">
       <div className="page-main-content">
@@ -91,12 +67,12 @@ const ProductList = ({ colClass, layoutList, openSidebar, noSidebar, data , page
             <div className="top-banner-wrapper">
               <div className="top-banner-content small-section">
                 <h1 className="h4">{page.title}</h1>
-                <div dangerouslySetInnerHTML={{__html: page.content}} />
+                <div dangerouslySetInnerHTML={{ __html: page.content }} />
               </div>
             </div>
             <Row>
               <Col xs="12">
-                <ul className="product-filter-tags">
+                {/* <ul className="product-filter-tags">
                   {selectedBrands.map((brand, i) => (
                     <li key={i}>
                       <a href={null} className="filter_tag">
@@ -136,7 +112,7 @@ const ProductList = ({ colClass, layoutList, openSidebar, noSidebar, data , page
                       </a>
                     </li>
                   }
-                </ul>
+                </ul> */}
               </Col>
             </Row>
             <div className="collection-product-wrapper">
@@ -161,14 +137,6 @@ const ProductList = ({ colClass, layoutList, openSidebar, noSidebar, data , page
                 <Row>
                   <Col>
                     <div className="product-filter-content">
-                      <div className="search-count">
-                        <h5>
-                          {productsData
-                            ? `Showing Products 1-${productsData.length} of ${productsData.total}`
-                            : "loading"}{" "}
-                          Result
-                        </h5>
-                      </div>
                       <div className="collection-view">
                         <ul>
                           <li>
@@ -234,23 +202,20 @@ const ProductList = ({ colClass, layoutList, openSidebar, noSidebar, data , page
                           </li>
                         </ul>
                       </div>
-                      <div className="product-page-per-view">
-                        <select
-                          onChange={(e) => setLimit(parseInt(e.target.value))}
-                        >
-                          <option value="10">10 Products Per Page</option>
-                          <option value="15">15 Products Per Page</option>
-                          <option value="20">20 Products Per Page</option>
-                        </select>
-                      </div>
                       <div className="product-page-filter">
-                        <select onChange={(e) => setSortBy(e.target.value)}>
-                          <option value="AscOrder">Sorting items</option>
-                          <option value="HighToLow">High To Low</option>
-                          <option value="LowToHigh">Low To High</option>
-                          <option value="Newest">Newest</option>
-                          <option value="AscOrder">Asc Order</option>
-                          <option value="DescOrder">Desc Order</option>
+                        <select
+                          onChange={(e) => handelSortBy(e)}
+                          aria-label="Sort By"
+                          className="selective-div border-normal styled-select"
+                        >
+                          <option value="sort=name&order=asc" selected="selected">
+                            {t('from_a_to_z')}
+                          </option>
+                          <option value="sort=name&order=desc">{t('from_z_to_a')}</option>
+                          <option value="sort=created_at&order=desc">{t('newest_first')}</option>
+                          <option value="sort=created_at&order=asc">{t('oldest_first')}</option>
+                          <option value="sort=price&order=asc">{t('cheapest_first')}</option>
+                          <option value="sort=price&order=desc">{t('expensive_first')}</option>
                         </select>
                       </div>
                     </div>
@@ -261,8 +226,7 @@ const ProductList = ({ colClass, layoutList, openSidebar, noSidebar, data , page
                 <Row>
                   {/* Product Box */}
                   {!productsData ||
-                    productsData.length === 0 ||
-                    data.loading ? (
+                    productsData.length === 0 ? (
                     productsData &&
                       productsData &&
                       productsData.length === 0 ? (
@@ -312,13 +276,13 @@ const ProductList = ({ colClass, layoutList, openSidebar, noSidebar, data , page
                                 // wishlistContext.addToWish(product)
                                 wishList('post', product.id)
                               }
-                              addCart={() =>{
+                              addCart={() => {
                                 addToCart({
                                   product_id: product.id,
                                   quantity,
                                 })
                                 getCart();
-                                }
+                              }
                               }
                             />
                           </div>
@@ -332,7 +296,7 @@ const ProductList = ({ colClass, layoutList, openSidebar, noSidebar, data , page
                 <div className="text-center">
                   <Row>
                     <Col xl="12" md="12" sm="12">
-                      {productsData && productsData.products && productsData.products.hasMore && (
+                      {productsData && (
                         <Button className="load-more" onClick={() => handlePagination()}>
                           {isLoading && (
                             <Spinner animation="border" variant="light" />

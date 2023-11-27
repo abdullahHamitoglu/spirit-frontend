@@ -5,32 +5,19 @@ import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware'
 import currencyStore from '../Currency/CurrencyStore';
 import useUserStore from '../user/userStore';
+import { getProducts } from '@/controllers/productsController';
 const currency = currencyStore.getState().selectedCurrency.code;
 
 
 const useFilterStore = create(
     (set, get) => (
         {
-            productsIsFetching:false,
-            filteredProducts:'',
-            currency: '',
-            search: '',
-            option: '',
-            brand: '',
+            productsIsFetching: false,
+            filteredProducts: '',
+            moreProducts: '',
             price: 0,
             maxPrice: 1000,
             page: 1,
-            category: '',
-            brand_id: '',
-            setCurrency: (val) => set({ valency: val }),
-            setSearch: (val) => set({ search: val }),
-            setOption: (val) => set({ option: val }),
-            setBrand: (val) => set({ brand: val }),
-            setMaxPrice: (val) => set({ maxPrice: val }),
-            setPrice: (val) => set({ price: val }),
-            setPage: (val) => set({ page: val }),
-            setCategory: (val) => set({ category: val }),
-            setBrand_id: (val) => set({ brand_id: val }),
             getMaxPrice: async (locale, params) => {
                 await axios({
                     method: 'get',
@@ -42,12 +29,12 @@ const useFilterStore = create(
                     }
                 }).then((response) => {
                     // set({ maxPrice: response.data.data.max_price });
-                }).catch((error)=> {
+                }).catch((error) => {
                     console.error(error);
                 });
             },
-            filterProducts: async (locale , params) => {
-                set({productsIsFetching: true})
+            filterProducts: async (locale, params) => {
+                set({ productsIsFetching: true })
                 await axios({
                     method: 'GET',
                     url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/products`,
@@ -59,11 +46,22 @@ const useFilterStore = create(
                     headers: {
                         'Authorization': `Bearer ${useUserStore.getState().token}`,
                     },
-                }).then((response)=>{
-                    set({productsIsFetching: false , filteredProducts : response.data.data});
-                }).catch((error)=> {
+                }).then((response) => {
+                    set({ productsIsFetching: false, filteredProducts: response.data.data });
+                }).catch((error) => {
                     console.error(error);
                 });
+            },
+            getMoreProducts: async (pageUrl, params) => {
+                try {
+                    await axios({
+                        url: nextUrl,
+                    }).then((res) => {
+                        set({ moreProducts: res.data.data ,nextUrl: res.data.data });
+                    });
+                } catch (error) {
+                    set({ filteredProducts: [] });
+                }
             }
         }
     )

@@ -11,11 +11,10 @@ const MasterProductDetail = ({
   variantChangeByColor,
 }) => {
   let RatingStars = [];
-  let rating = product.reviews.total_rating + 1;
+  let rating = product.reviews.average_rating;
   for (var i = 0; i < rating; i++) {
     RatingStars.push(<i className="fa fa-star" key={i}></i>);
   }
-
   return (
     <div className={`product-detail ${productDetail} ${detailClass}`}>
       <div>
@@ -41,12 +40,12 @@ const MasterProductDetail = ({
         })} */}
 
         {product.type === "jewellery" ||
-        product.type === "nursery" ||
-        product.type === "beauty" ||
-        product.type === "electronics" ||
-        product.type === "goggles" ||
-        product.type === "watch" ||
-        product.type === "pets" ? (
+          product.type === "nursery" ||
+          product.type === "beauty" ||
+          product.type === "electronics" ||
+          product.type === "goggles" ||
+          product.type === "watch" ||
+          product.type === "pets" ? (
           ""
         ) : (
           <>

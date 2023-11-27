@@ -166,7 +166,8 @@
         "writeReview": "كتابة تقييم",
         "detailsContent": "محتوى التفاصيل المترجم الخاص بك",
         "videoContent": "محتوى الفيديو المترجم الخاص بك",
-        "writeReviewContent": "محتوى كتابة تقييمك المترجم الخاص بك"
+        "writeReviewContent": "محتوى كتابة تقييمك المترجم الخاص بك",
+        "ingredients": "المكونات"
     },
     "footer": {
         "subscribeTitle": "اعرف كل شيء أولاً!",
@@ -288,9 +289,23 @@
     "vat_id_required": "معرف الضريبة على القيمة المضافة (VAT ID) مطلوب",
     "add_new_address": "إضافة عنوان جديد",
     "this_field_is_required": "هذا الحقل مطلوب",
-    "next":"التالي",
-    "previous":"السابق",
-    "tasks":"الضريبة",
+    "next": "التالي",
+    "previous": "السابق",
+    "tasks": "الضريبة",
     "payment_type": "طريقة الدفع",
-    "payment": "طريقة الدفع"
+    "payment": "طريقة الدفع",
+    "days": "أيام",
+    "hours": "ساعات",
+    "minutes": "دقائق",
+    "seconds": "ثواني",
+    "completion_message": "أنت جاهز للانطلاق!",
+    "time_reminder": "تذكير بالوقت",
+    "buy_now": "اشتر الآن",
+    "load_more": "تحميل المزيد",
+    "from_a_to_z": "من أ-ي",
+    "from_z_to_a": "من ي-أ",
+    "newest_first": "الأحدث أولاً",
+    "oldest_first": "الأقدم أولاً",
+    "cheapest_first": "الأرخص أولاً",
+    "expensive_first": "الأغلى أولاً"
 }

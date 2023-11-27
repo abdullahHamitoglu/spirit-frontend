@@ -8,10 +8,9 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Thumbs } from 'swiper/modules';
 
 
-const NoSidebarPage = ({ pathId, product }) => {
+const NoSidebarPage = ({ reviews, product }) => {
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
   var data = product;
-
   return (
     <section>
       <div className="collection-wrapper">
@@ -63,7 +62,7 @@ const NoSidebarPage = ({ pathId, product }) => {
                   </Row>
                 )}
               </div>
-              <ProductTab item={data} />
+              <ProductTab item={data} reviews={reviews} />
             </Col>
           </Row>
         </Container>

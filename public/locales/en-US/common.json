@@ -169,7 +169,8 @@
         "writeReview": "Write Review",
         "detailsContent": "Your translated details content",
         "videoContent": "Your translated video content",
-        "writeReviewContent": "Your translated write review content"
+        "writeReviewContent": "Your translated write review content",
+        "ingredients": "Ingredients"
     },
     "footer": {
         "subscribeTitle": "KNOW IT ALL FIRST!",
@@ -288,12 +289,25 @@
     "city_required": "City is required",
     "postcode_required": "Postcode is required",
     "vat_id_required": "VAT ID is required",
-    "add_new_address":"Add  new address",
-    "this_field_is_required":"This Filled is required",
-    "next":"next",
-    "previous":"previous",
-    "tasks":"tasks",
+    "add_new_address": "Add  new address",
+    "this_field_is_required": "This Filled is required",
+    "next": "next",
+    "previous": "previous",
+    "tasks": "tasks",
     "payment_type": "Payment Type",
-    "payment": "Payment"
-
+    "payment": "Payment",
+    "days": "Days",
+    "hours": "Hrs",
+    "minutes": "Min",
+    "seconds": "Sec",
+    "completion_message": "You are good to go!",
+    "time_reminder": "Time Reminder",
+    "buy_now": "Buy Now",
+    "load_more": "Load more",
+    "from_a_to_z": "From A-Z",
+    "from_z_to_a": "From Z-A",
+    "newest_first": "Newest First",
+    "oldest_first": "Oldest First",
+    "cheapest_first": "Cheapest First",
+    "expensive_first": "Expensive First"
 }

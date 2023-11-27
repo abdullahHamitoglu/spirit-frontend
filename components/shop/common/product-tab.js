@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Container, Row, Col, TabContent, TabPane, Nav, NavItem, NavLink } from "reactstrap";
+import { Container, Row, Col, TabContent, TabPane, Nav, NavItem, NavLink, Media } from "reactstrap";
+import Review from "./review";
 
-const ProductTab = (item) => {
-  const [activeTab, setActiveTab] = useState("1");
+const ProductTab = ({ item ,reviews}) => {
+  const [activeTab, setActiveTab] = useState("description");
   const { t } = useTranslation();
   return (
     <section className="tab-product m-0">
@@ -13,39 +14,41 @@ const ProductTab = (item) => {
             <Row className="product-page-main m-0">
               <Nav tabs className="nav-material">
                 <NavItem className="nav nav-tabs" id="myTab" role="tablist">
-                  <NavLink className={activeTab === "1" ? "active" : ""} onClick={() => setActiveTab("1")}>
+                  <NavLink className={activeTab === "description" ? "active" : ""} onClick={() => setActiveTab("description")}>
                     {t('tabText.description')}
                   </NavLink>
                 </NavItem>
+                {item && item.active_ingredient &&
+                  <NavItem className="nav nav-tabs" id="myTab" role="tablist">
+                    <NavLink className={activeTab === "ingredient" ? "active" : ""} onClick={() => setActiveTab("ingredient")}>
+                      {t('tabText.ingredients')}
+                    </NavLink>
+                  </NavItem>
+                }
                 <NavItem className="nav nav-tabs" id="myTab" role="tablist">
-                  <NavLink className={activeTab === "2" ? "active" : ""} onClick={() => setActiveTab("2")}>
-                    {t('tabText.details')}
-                  </NavLink>
-                </NavItem>
-                <NavItem className="nav nav-tabs" id="myTab" role="tablist">
-                  <NavLink className={activeTab === "3" ? "active" : ""} onClick={() => setActiveTab("3")}>
-                    {t('tabText.video')}
-                  </NavLink>
-                </NavItem>
-                <NavItem className="nav nav-tabs" id="myTab" role="tablist">
-                  <NavLink className={activeTab === "4" ? "active" : ""} onClick={() => setActiveTab("4")}>
-                    {t('tabText.writeReview')}
-                  </NavLink>
+                  {item.reviews && item.reviews.total > 0 &&
+                    <NavLink className={activeTab === "reviews" ? "active" : ""} onClick={() => setActiveTab("reviews")}>
+                      {t('tabText.writeReview')}
+                    </NavLink>
+                  }
                 </NavItem>
               </Nav>
               <TabContent activeTab={activeTab} className="nav-material">
-                <TabPane tabId="1">
-                  <p className="mb-0 pb-0" dangerouslySetInnerHTML={{ __html: item.item.description }} />
-                </TabPane>
-                <TabPane tabId="2">
-                  <p className="mb-0 pb-0">{t('tabText.detailsContent')}</p>
-                </TabPane>
-                <TabPane tabId="3">
-                  <p className="mb-0 pb-0">{t('tabText.videoContent')}</p>
-                </TabPane>
-                <TabPane tabId="4">
-                  <p className="mb-0 pb-0">{t('tabText.writeReviewContent')}</p>
-                </TabPane>
+                {item && item.description &&
+                  <TabPane tabId="description">
+                    <p dangerouslySetInnerHTML={{ __html: item.description }} />
+                  </TabPane>
+                }
+                {item && item.active_ingredient &&
+                  <TabPane tabId="ingredient">
+                    <p dangerouslySetInnerHTML={{ __html: item.active_ingredient }} />
+                  </TabPane>
+                }
+                {item.reviews && item.reviews.total > 0 &&
+                  <TabPane tabId="reviews">
+                    <Review reviews={reviews} />
+                  </TabPane>
+                }
               </TabContent>
             </Row>
           </Col>

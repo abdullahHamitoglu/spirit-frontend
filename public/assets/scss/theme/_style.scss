@@ -378,7 +378,7 @@ del {
     }
     .cart-qty-cls {
       top: 13%;
-      right: -11px;
+      inset-inline-start: 11px;
     }
   }
 }
@@ -7717,7 +7717,7 @@ footer {
   line-height: 14px;
   font-weight: 600;
   top: 20%;
-  right: -8px;
+  inset-inline-end: 11px;
   padding: 3px;
 }
 /*=====================

@@ -19,7 +19,7 @@ export async function getProducts(locale, params, token) {
     console.log(error);
   });
 
-  return response.data.data;
+  return response.data;
 }
 export async function getProductBySlug(locale, slug) {
   const response = await axios({
@@ -34,6 +34,21 @@ export async function getProductBySlug(locale, slug) {
 
   return response.data.data;
 }
+export async function getProductReviews(locale, id) {
+  const response = await axios({
+    url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/products/${id}/reviews`,
+    params: {
+      locale: locale.slice(0, 2),
+      currency: currency,
+    },
+  }).catch((error) => {
+    console.log(error);
+  });
+
+  return response.data.data;
+}
+
+
 export async function getCatagories(locale) {
   const response = await axios({
     method: "GET",

@@ -3,12 +3,14 @@ import CommonLayout from '@/components/shop/common-layout';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import CartPage from '@/components/common/cart-page';
 import useCartStore from '@/helpers/cart/cartStore';
+import { useTranslation } from 'react-i18next';
 
 
 const Wishliat = () => {
     const { cartLoading } = useCartStore();
+    const {t} = useTranslation();
     return (
-        <CommonLayout parent="home" title="cart">
+        <CommonLayout parent={t("home")} title={t("cart")}>
             <CartPage />
         </CommonLayout>
     )
