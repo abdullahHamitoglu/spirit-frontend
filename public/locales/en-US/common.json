@@ -309,5 +309,6 @@
     "newest_first": "Newest First",
     "oldest_first": "Oldest First",
     "cheapest_first": "Cheapest First",
-    "expensive_first": "Expensive First"
+    "expensive_first": "Expensive First",
+    "show_results":"Show results"
 }

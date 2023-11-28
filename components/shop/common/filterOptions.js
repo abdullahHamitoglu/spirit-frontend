@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Collapse, Input } from "reactstrap";
 import { useTranslation } from "react-i18next";
 import { useRouter } from "next/router";
@@ -30,7 +30,9 @@ const FilterOptions = (attr) => {
       undefined, { shallow: true }
     );
   };
-
+  useEffect(()=>{
+    
+  },[])
   return (
     <div className="collection-collapse-block open">
       <h3 className="collapse-block-title" onClick={toggleBrand}>

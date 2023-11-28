@@ -21,6 +21,9 @@ const index = ({ products, page, attributes }) => {
     );
   }
   const [sidebarView, setSidebarView] = useState(false);
+
+  const [productsData, setProductsData] = useState(products.data);
+
   const { t } = useTranslation();
 
   const openCloseSidebar = () => {
@@ -50,6 +53,7 @@ const index = ({ products, page, attributes }) => {
               <Row>
                 <FilterPage
                   attributes={attributes}
+                  setProductsData={setProductsData}
                   sm="3"
                   sidebarView={sidebarView}
                   closeSidebar={() => openCloseSidebar(sidebarView)}
@@ -60,6 +64,8 @@ const index = ({ products, page, attributes }) => {
                   layoutList=""
                   openSidebar={() => openCloseSidebar(sidebarView)}
                   products={products}
+                  productsData={productsData}
+                  setProductsData={setProductsData}
                   attributes={attributes}
                 />
               </Row>

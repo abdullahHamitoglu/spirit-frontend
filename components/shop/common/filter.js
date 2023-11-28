@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Col, Media } from 'reactstrap';
 import NewProduct from './newProduct';
 import Category from './category';
@@ -6,9 +6,22 @@ import Brand from './brand';
 import Price from './price';
 import { useTranslation } from 'react-i18next';
 import FilterOptions from './filterOptions';
+import { useRouter } from 'next/router';
+import useFilterStore from '@/helpers/filter/filterStore';
+import { getProducts } from '@/controllers/productsController';
+import useUserStore from '@/helpers/user/userStore';
 
-const FilterPage = ({ sm, sidebarView, closeSidebar, attributes  }) => {
+const FilterPage = ({ sm, sidebarView, closeSidebar, attributes, setProductsData }) => {
     const { t } = useTranslation();
+    const router = useRouter();
+    const { locale } = useRouter();
+    const [loading, setLoading] = useState(false);
+    const { filteredProducts } = useFilterStore();
+    const { token } = useUserStore();
+    const showFilterResults = async () => {
+        const response = await getProducts(locale, router.query);
+        setProductsData(response.data);
+    }
     return (
         <>
             <Col sm={sm} className="collection-filter" style={sidebarView ? { left: "0px" } : {}}>
@@ -21,11 +34,14 @@ const FilterPage = ({ sm, sidebarView, closeSidebar, attributes  }) => {
                         </span>
                     </div>
                     {/* <Category categories={categories} /> */}
-                    {attributes.map((attribute,i) => (
+                    {attributes.map((attribute, i) => (
                         attribute.type != 'price' ?
-                        <FilterOptions key={i} attr={attribute} /> :
-                        <Price key={i} />
+                            <FilterOptions key={i} attr={attribute} /> :
+                            <Price key={i} />
                     ))}
+                    <Col md="12">
+                        <button type="submit" className="btn btn-solid w-100 ms-auto mb-4" onClick={() => showFilterResults()}>{t('show_results')}</button>
+                    </Col>
                 </div>
                 {/* <!-- slide-bar collops block end here -->*/}
                 <NewProduct />

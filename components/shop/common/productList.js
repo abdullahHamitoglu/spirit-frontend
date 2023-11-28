@@ -13,7 +13,7 @@ import { useTranslation } from "react-i18next";
 import { getProducts } from "@/controllers/productsController";
 import useUserStore from "@/helpers/user/userStore";
 
-const ProductList = ({ colClass, layoutList, openSidebar, noSidebar, products, page }) => {
+const ProductList = ({ colClass, layoutList, openSidebar, noSidebar, products, page, productsData, setProductsData }) => {
   const { wishList } = useWishListStore();
   const { addToCart, getCart } = useCartStore();
   const { token } = useUserStore();
@@ -30,22 +30,17 @@ const ProductList = ({ colClass, layoutList, openSidebar, noSidebar, products, p
   const [url, setUrl] = useState();
   const [quantity, setQuantity] = useState('1');
   const { t } = useTranslation();
-  const [productsData, setProductsData] = useState(products.data);
   const [pageCount, setPageCount] = useState(1); // Initialize pageCount to 1
   const handlePagination = async () => {
     setIsLoading(true);
-
     // Increment pageCount before making the API call
     let nextPageCount = pageCount + 1;
-
     try {
       const response = await getProducts(locale, { ...router.query, page: nextPageCount }, token);
-      console.log(pageCount , nextPageCount);
       // Update state only if the API call is successful
       setPageCount(nextPageCount);
       setProductsData((prevData) => [...prevData, ...response.data]);
     } catch (error) {
-      // Handle error (e.g., log it or show a message to the user)
       console.error("Error fetching products:", error);
     } finally {
       setIsLoading(false);
@@ -63,7 +58,10 @@ const ProductList = ({ colClass, layoutList, openSidebar, noSidebar, products, p
   };
   const handelSortBy = (event) => {
     router.push({
-      query: event.target.value + router.query
+      query: {
+        name: event.target.value.split(',')[0],
+        sort: event.target.value.split(',')[1]
+      }
     },
       undefined, { shallow: true })
   };
@@ -224,14 +222,14 @@ const ProductList = ({ colClass, layoutList, openSidebar, noSidebar, products, p
                           aria-label="Sort By"
                           className="selective-div border-normal styled-select"
                         >
-                          <option value="sort=name&order=asc" selected="selected">
+                          <option value="name,asc" selected="selected">
                             {t('from_a_to_z')}
                           </option>
-                          <option value="sort=name&order=desc">{t('from_z_to_a')}</option>
-                          <option value="sort=created_at&order=desc">{t('newest_first')}</option>
-                          <option value="sort=created_at&order=asc">{t('oldest_first')}</option>
-                          <option value="sort=price&order=asc">{t('cheapest_first')}</option>
-                          <option value="sort=price&order=desc">{t('expensive_first')}</option>
+                          <option value="name,desc">{t('from_z_to_a')}</option>
+                          <option value="created_at,desc">{t('newest_first')}</option>
+                          <option value="created_at,asc">{t('oldest_first')}</option>
+                          <option value="price,asc">{t('cheapest_first')}</option>
+                          <option value="price,desc">{t('expensive_first')}</option>
                         </select>
                       </div>
                     </div>
