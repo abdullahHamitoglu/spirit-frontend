@@ -34,12 +34,13 @@ export async function getProductBySlug(locale, slug) {
 
   return response.data.data;
 }
-export async function getProductReviews(locale, id) {
+export async function getProductReviews(locale, id , params) {
   const response = await axios({
     url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/products/${id}/reviews`,
     params: {
       locale: locale.slice(0, 2),
       currency: currency,
+      page:1,
     },
   }).catch((error) => {
     console.log(error);
