@@ -78,12 +78,14 @@ const DetailsWithPrice = ({ item, stickyClass }) => {
     <>
       <div className={`product-right ${stickyClass}`}>
         <h2> {product.title} </h2>
-        <h4>
-          <del>
-            {product.special_price * quantity} {selectedCurrency.symbol}
-          </del>
-          <span>{product.percentage} off</span>
-        </h4>
+        {parseFloat(product.special_price) < 0 ?
+          <h4>
+            <del>
+              {product.special_price * quantity} {selectedCurrency.symbol}
+            </del>
+            <span>{product.percentage} {t('off')}</span>
+          </h4> :
+          ''}
         <h3 className="price">
           {price * quantity} {selectedCurrency.symbol}
         </h3>

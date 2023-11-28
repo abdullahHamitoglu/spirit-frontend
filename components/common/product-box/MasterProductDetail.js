@@ -27,11 +27,13 @@ const MasterProductDetail = ({
         <p>{product.short_description}</p>
         <h4>
           {product.formatted_price}
-          <del>
-            <span className="money">
-              {product.formatted_special_price}
-            </span>
-          </del>
+          {parseFloat(product.special_price) < 0 ?
+            <del>
+              <span className="money">
+                {product.formatted_special_price}
+              </span>
+            </del>
+            : ''}
         </h4>
 
         {/* {product.variants.map((vari) => {
