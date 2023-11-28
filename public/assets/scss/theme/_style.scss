@@ -3304,6 +3304,11 @@ header {
       padding-bottom: 5px;
       transition: all 0.5s ease;
       font-size: 16px;
+      max-height: 2.1rem;
+      overflow: hidden;
+      color: #000;
+      margin-bottom: 7px;
+      text-overflow: ellipsis;
     }
     h4 {
       font-size: 18px;

@@ -56,7 +56,7 @@ const useUserStore = create(
                 user: res.data.data,
                 isAuthenticated: true,
                 token: res.data.token,
-                // api_session: res.headers['set-cookie'],
+                api_session: res.headers['set-cookie'].split(';')[0],
                 expirationTime: new Date().getTime() + 24 * 60 * 60 * 1000,
               });
               document

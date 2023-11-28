@@ -1,7 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Col, Row, Media, Button, Spinner } from "reactstrap";
 
-import FilterContext from "../../../helpers/filter/FilterContext";
 import ProductItem from "../../../components/common/product-box/ProductBox1";
 
 import { useRouter } from "next/router";
@@ -11,8 +10,6 @@ import currencyStore from "@/helpers/Currency/CurrencyStore";
 import useWishListStore from "@/helpers/wishlist/wishlistStore";
 import useCartStore from "@/helpers/cart/cartStore";
 import { useTranslation } from "react-i18next";
-import useFilterStore from "@/helpers/filter/filterStore";
-import axios from "axios";
 import { getProducts } from "@/controllers/productsController";
 import useUserStore from "@/helpers/user/userStore";
 
@@ -34,14 +31,25 @@ const ProductList = ({ colClass, layoutList, openSidebar, noSidebar, products, p
   const [quantity, setQuantity] = useState('1');
   const { t } = useTranslation();
   const [productsData, setProductsData] = useState(products.data);
-  const [pageCount, setPageCount] = useState(1);
+  const [pageCount, setPageCount] = useState(1); // Initialize pageCount to 1
   const handlePagination = async () => {
     setIsLoading(true);
-    const response = await getProducts(locale, { ...router.query, page: pageCount ? pageCount + 1 : 1 }, token);
-    setPageCount(pageCount + 1);
-    console.log(response, pageCount);
-    setProductsData([...productsData, ...response.data]);
-    setIsLoading(false);
+
+    // Increment pageCount before making the API call
+    let nextPageCount = pageCount + 1;
+
+    try {
+      const response = await getProducts(locale, { ...router.query, page: nextPageCount }, token);
+      console.log(pageCount , nextPageCount);
+      // Update state only if the API call is successful
+      setPageCount(nextPageCount);
+      setProductsData((prevData) => [...prevData, ...response.data]);
+    } catch (error) {
+      // Handle error (e.g., log it or show a message to the user)
+      console.error("Error fetching products:", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
   const handleScroll = () => {
     const windowHeight = "innerHeight" in window ? window.innerHeight : document.documentElement.offsetHeight;
@@ -49,7 +57,7 @@ const ProductList = ({ colClass, layoutList, openSidebar, noSidebar, products, p
     const html = document.documentElement;
     const docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight);
     const windowBottom = windowHeight + window.pageYOffset;
-    if (windowBottom >= docHeight - 100 && !isLoading) {
+    if (windowBottom >= docHeight - 400 && !isLoading) {
       handlePagination();
     }
   };
@@ -59,6 +67,14 @@ const ProductList = ({ colClass, layoutList, openSidebar, noSidebar, products, p
     },
       undefined, { shallow: true })
   };
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+
+    // Remove the event listener when the component is unmounted
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [handleScroll])
   return (
     <Col className="collection-content">
       <div className="page-main-content">
@@ -290,23 +306,23 @@ const ProductList = ({ colClass, layoutList, openSidebar, noSidebar, products, p
                       </div>
                     ))
                   )}
+                  {isLoading && (
+                    <div className="row mx-0 margin-default mt-4">
+                      <div className="col-xl-3 col-lg-4 col-6">
+                        <PostLoader />
+                      </div>
+                      <div className="col-xl-3 col-lg-4 col-6">
+                        <PostLoader />
+                      </div>
+                      <div className="col-xl-3 col-lg-4 col-6">
+                        <PostLoader />
+                      </div>
+                      <div className="col-xl-3 col-lg-4 col-6">
+                        <PostLoader />
+                      </div>
+                    </div>
+                  )}
                 </Row>
-              </div>
-              <div className="section-t-space">
-                <div className="text-center">
-                  <Row>
-                    <Col xl="12" md="12" sm="12">
-                      {productsData && (
-                        <Button className="load-more" onClick={() => handlePagination()}>
-                          {isLoading && (
-                            <Spinner animation="border" variant="light" />
-                          )}
-                          {t('load_more')}
-                        </Button>
-                      )}
-                    </Col>
-                  </Row>
-                </div>
               </div>
             </div>
           </Col>
