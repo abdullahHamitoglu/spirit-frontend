@@ -19,7 +19,6 @@ import axios from "axios";
 
 
 const Fashion = ({ page, homeData ,videoInfo }) => {
-  console.log(videoInfo);
   const { t } = useTranslation()
   return (
     <Fragment>
