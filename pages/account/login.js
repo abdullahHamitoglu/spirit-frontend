@@ -8,6 +8,7 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import * as Yup from 'yup';
 import useUserStore from "@/helpers/user/userStore";
 import Link from "next/link";
+import Cookies from "js-cookie";
 
 const Login = () => {
   const { isAuthenticated, login } = useUserStore();
@@ -20,14 +21,14 @@ const Login = () => {
       .min(6, 'Password must be at least 6 characters')
       .required('Password is required'),
   });
-  // if (isAuthenticated) {
-  //   const redirectUrl = router.query.redirect_url
-  //   if(redirectUrl){
-  //     router.push(redirectUrl);
-  //   }else{
-  //     router.push('/');
-  //   }
-  // }
+  if (isAuthenticated) {
+    const redirectUrl = router.query.redirect_url
+    if(redirectUrl){
+      router.push(redirectUrl);
+    }else{
+      router.push('/');
+    }
+  }
   return (
     <CommonLayout parent={t('home')} title={t('login')}>
       <section className="login-page section-b-space">

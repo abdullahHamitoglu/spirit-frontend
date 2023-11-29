@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import { persist, createJSONStorage } from "zustand/middleware";
 import uuid from "react-uuid";
-import { setCookie } from "nookies";
+import Cookies from "js-cookie";
 
 const osDetails = getUserAgent();
 
@@ -51,12 +51,11 @@ const useUserStore = create(
           .then((res) => {
             if (res.data && res.status == 200) {
               toast.success(res.data.message);
-              console.log(res.headers)
               set({
                 user: res.data.data,
                 isAuthenticated: true,
                 token: res.data.token,
-                api_session: res.headers['set-cookie'].split(';')[0],
+                api_session: Cookies.get('spirit_session'),
                 expirationTime: new Date().getTime() + 24 * 60 * 60 * 1000,
               });
               document
