@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Container, Row, Col, TabContent, TabPane, Nav, NavItem, NavLink, Media } from "reactstrap";
+import { Container, Row, Col, TabContent, TabPane, Nav, NavItem, NavLink, Media, Button, Spinner } from "reactstrap";
 import Review from "./review";
 import { getProductReviews } from "@/controllers/productsController";
 import { useRouter } from "next/router";
@@ -12,10 +12,13 @@ const ProductTab = ({ item, reviews }) => {
   const [reviewsData, setReviewsData] = useState(reviews);
   const [isLoading, setIsLoading] = useState(false);
   const [page, setPage] = useState(1);
-  const loadMoreReviews = () => {
-    const response = getProductReviews(locale, item.id, { page: page });
-    setReviewsData((prevData)=> [...prevData , response ]);
+  const loadMoreReviews = async() => {
+    setIsLoading(true)
+    const response = await getProductReviews(locale, item.id, { page: page });
+    console.log(response);
+    setReviewsData((prevData) => [...prevData, ...response]);
     setPage((prevData) => prevData + 1);
+    setIsLoading(false)
   }
   const { t } = useTranslation();
   return (
@@ -56,24 +59,22 @@ const ProductTab = ({ item, reviews }) => {
                     <p dangerouslySetInnerHTML={{ __html: item.active_ingredient }} />
                   </TabPane>
                 }
-                {reviewsData && reviewsData > 0 &&
+                {reviewsData && reviewsData.length > 0 &&
                   <TabPane tabId="reviews">
                     <Review reviews={reviewsData} />
                     {
-                      reviewsData.total > 0 ?
+                      reviewsData.length >= 8 && page ?
                         <>
                           <div className="section-t-space">
                             <div className="text-center">
                               <Row>
-                                <Col xl="12" md="12" sm="12">
-                                  {data && data.products && data.products.hasMore && (
-                                    <Button className="load-more" onClick={() => handlePagination()}>
-                                      {isLoading && (
-                                        <Spinner animation="border" variant="light" />
-                                      )}
-                                      Load More
-                                    </Button>
-                                  )}
+                                <Col xl="12" md="12" sm="12" className="mb-5">
+                                  <Button className="load-more" onClick={() => loadMoreReviews()}>
+                                    {isLoading && (
+                                      <Spinner animation="border" variant="light" />
+                                    )}
+                                    Load More
+                                  </Button>
                                 </Col>
                               </Row>
                             </div>

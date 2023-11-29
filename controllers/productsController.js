@@ -41,6 +41,7 @@ export async function getProductReviews(locale, id , params) {
       locale: locale.slice(0, 2),
       currency: currency,
       page:1,
+      ...params
     },
   }).catch((error) => {
     console.log(error);
