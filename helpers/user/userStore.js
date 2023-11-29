@@ -35,6 +35,11 @@ const useUserStore = create(
       register: async (userData, locale) => {
         await axios({
           method: "post",
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+            'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+          },
           url: `${process.env.NEXT_PUBLIC_API_URL
             }api/v1/customer/register?locale=${locale.slice(0, 2)}`,
           data: userData,
@@ -56,12 +61,12 @@ const useUserStore = create(
         await axios({
           method: "post",
           url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/customer/login?locale=${locale.slice(0, 2)}`,
-          withCredentials: true,
           data: { ...userData, device_name: osDetails.name },
         })
           .then((res) => {
             if (res.data && res.status == 200) {
               toast.success(res.data.message);
+              console.log(res.data.headers);
               set({
                 user: res.data.data,
                 isAuthenticated: true,

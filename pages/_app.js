@@ -11,6 +11,7 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import useUserStore from "../helpers/user/userStore";
 import { setCookie } from "nookies";
+import { getServerSideProps } from "./account/dashboard";
 
 function MyApp({ Component, pageProps }) {
   const [isLoading, setIsLoading] = useState(true);
