@@ -8,7 +8,18 @@ import uuid from "react-uuid";
 import Cookies from "js-cookie";
 
 const osDetails = getUserAgent();
+function getCookie(name) {
+  const cookies = document.cookie.split(';');
 
+  for (let i = 0; i < cookies.length; i++) {
+    const cookie = cookies[i].trim();
+    if (cookie.startsWith(name + '=')) {
+      return cookie.substring(name.length + 1);
+    }
+  }
+
+  return null;
+}
 const useUserStore = create(
   persist(
     (set, get) => ({
@@ -20,7 +31,7 @@ const useUserStore = create(
       addresses: [],
       address: [],
       api_session: '',
-      registeredDeviceID : '',
+      registeredDeviceID: '',
       register: async (userData, locale) => {
         await axios({
           method: "post",
@@ -248,18 +259,18 @@ const useUserStore = create(
       },
 
       registerDevice: async () => {
-        if (Cookies.get('spirit_session')) {
+        if (getCookie('spirit_session')) {
           await axios({
             method: "post",
             url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/register_device`,
             data: {
-              fcmToken: Cookies.get('spirit_session'),
+              fcmToken: getCookie('spirit_session'),
               os: "web",
             },
           }).then((res) => {
-              set({ registeredDeviceID: res.data.registered_device_id });
-              console.log(res);
-            })
+            set({ registeredDeviceID: res.deviceDetails.id });
+            console.log(res);
+          })
             .catch(function (error) {
               if (error.response) {
                 toast.error(error.response.data.message);
