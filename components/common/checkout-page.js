@@ -310,7 +310,7 @@ const CheckoutPage = () => {
                                         </div>
                                         <div className="col-md-12">
                                           <button className="btn btn-sm btn-solid" type="button" onClick={ctx.previous}>{t('previous')}</button>
-                                          <Link href={redirect_url} target="_blank" className="btn btn-sm btn-solid mx-4" type="button">{t('pay')}</Link>
+                                          <Link href={redirect_url} className="btn btn-sm btn-solid mx-4" type="button">{t('pay')}</Link>
                                         </div>
                                       </div>
                                     </div>

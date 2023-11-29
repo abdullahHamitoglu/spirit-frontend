@@ -2344,6 +2344,7 @@ header {
     }
   }
 }
+
 .category-border {
   background-color: $border-grey;
   padding: 20px 10px;
@@ -9144,6 +9145,16 @@ footer {
       .btn-solid,
       .btn-outline {
         padding: 10px 25px;
+      }
+    }
+  }
+  .nav-pills{
+    .nav-link{
+      &.active{
+        background-color: #00ced1;
+      }
+      &:not(.active){
+        color: #00ced1;
       }
     }
   }

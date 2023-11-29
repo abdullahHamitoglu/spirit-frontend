@@ -12,6 +12,7 @@ import { useRouter } from "next/router";
 import useUserStore from "../helpers/user/userStore";
 import { setCookie } from "nookies";
 import { getServerSideProps } from "./account/dashboard";
+import { getProducts } from "@/controllers/productsController";
 
 function MyApp({ Component, pageProps }) {
   const [isLoading, setIsLoading] = useState(true);

@@ -9,7 +9,7 @@ export async function getProducts(locale, params, token) {
     params: {
       locale: locale.slice(0, 2),
       currency: currency,
-      page:1,
+      page: 1,
       ...params,
     },
     headers: {
@@ -34,13 +34,13 @@ export async function getProductBySlug(locale, slug) {
 
   return response.data.data;
 }
-export async function getProductReviews(locale, id , params) {
+export async function getProductReviews(locale, id, params) {
   const response = await axios({
     url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/products/${id}/reviews`,
     params: {
       locale: locale.slice(0, 2),
       currency: currency,
-      page:1,
+      page: 1,
       ...params
     },
   }).catch((error) => {
@@ -51,14 +51,14 @@ export async function getProductReviews(locale, id , params) {
 }
 
 
-export async function getCatagories(locale) {
+export async function getCatagories(locale, id) {
   const response = await axios({
     method: "GET",
     url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/categories`,
     params: {
       locale: locale.slice(0, 2),
       currency: currency,
-      parent_id: 1,
+      parent_id: id ?? 1,
     },
   }).catch((error) => {
     console.log(error);

@@ -266,15 +266,14 @@ const useUserStore = create(
       registerDevice: async () => {
         if (getCookie('spirit_session')) {
           await axios({
-            method: "post",
-            url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/register_device`,
-            data: {
-              fcmToken: getCookie('spirit_session'),
-              os: "web",
-            },
+            method: "get",
+            url: `${process.env.NEXT_PUBLIC_API_URL}sanctum/csrf-cookie`,
+            // data: {
+            //   fcmToken: getCookie('spirit_session'),
+            //   os: "web",
+            // },
           }).then((res) => {
             set({ registeredDeviceID: res.deviceDetails.id });
-            console.log(res);
           })
             .catch(function (error) {
               if (error.response) {

@@ -6,14 +6,19 @@ import ProductList from "@/components/shop/common/productList";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "react-i18next";
 import Head from "next/head";
-import { getFilterAttr, getProducts } from "@/controllers/productsController";
+import { getCatagories, getFilterAttr, getProducts } from "@/controllers/productsController";
 import { getPageData } from "@/controllers/homeController";
 import useFilterStore from "@/helpers/filter/filterStore";
 import { useRouter } from "next/router";
 import { parseCookies } from "nookies";
+import MasterCategory from "@/components/common/Collections/categoryCard";
+import { Swiper, SwiperSlide } from 'swiper/react';
 
-const index = ({ products, page, attributes }) => {
-  if(!products){
+// Import Swiper styles
+import 'swiper/css';
+import useUserStore from "@/helpers/user/userStore";
+const index = ({ products, page, attributes, categories }) => {
+  if (!products) {
     return (
       <div className="loader-wrapper">
         <div className="loader"></div>
@@ -22,9 +27,13 @@ const index = ({ products, page, attributes }) => {
   }
   const [sidebarView, setSidebarView] = useState(false);
 
+  const router = useRouter();
+  const { locale } = useRouter();
+
   const [productsData, setProductsData] = useState(products.data);
 
   const { t } = useTranslation();
+  const { token } = useUserStore();
 
   const openCloseSidebar = () => {
     if (sidebarView) {
@@ -33,6 +42,12 @@ const index = ({ products, page, attributes }) => {
       setSidebarView(!sidebarView);
     }
   };
+  const handelCategory = async (id) => {
+    const response = await getProducts(locale, { ...router.query, category_id: id }, token);
+    if (response.length > 0) {
+      setProductsData((prevData) => [...prevData, ...response]);
+    }
+  }
   return (
     <>
       <Head>
@@ -49,6 +64,25 @@ const index = ({ products, page, attributes }) => {
       <CommonLayout title={page.title} parent={t("home")}>
         <section className="section-b-space ratio_asos">
           <div className="collection-wrapper">
+            {router.query.category_id && categories &&
+              <Container>
+                <Swiper
+                  className="mb-5"
+                  spaceBetween={50}
+                  slidesPerView={8}
+                  centeredSlides={true}
+                  loop={true}
+                  onSlideChange={() => console.log('slide change')}
+                  onSwiper={(swiper) => console.log(swiper)}
+                >
+                  {categories.map((category) => (
+                    <SwiperSlide onClick={() => handelCategory(category.id)}>
+                      <MasterCategory title={category.name} img={category.image_url} />
+                    </SwiperSlide>
+                  ))}
+                </Swiper>
+              </Container>
+            }
             <Container>
               <Row>
                 <FilterPage
@@ -77,16 +111,23 @@ const index = ({ products, page, attributes }) => {
   );
 };
 export async function getStaticProps(context) {
-  const { locale, query } = context;
-  const {token} = parseCookies(context);
-  const products = await getProducts(locale, query , token);
+  const { locale, query = {} } = context;
+  const { token } = parseCookies(context);
+  const products = await getProducts(locale, query, token);
   const attributes = await getFilterAttr(locale);
   const page = await getPageData(locale, "products");
+  let categories = [];
+  try {
+    categories = await getCatagories(locale, query.category_id);
+  } catch (error) {
+    console.log(error);
+  }
   return {
     props: {
       page,
       products,
       attributes,
+      categories,
       ...(await serverSideTranslations(locale)),
     },
   };

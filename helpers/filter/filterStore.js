@@ -33,36 +33,6 @@ const useFilterStore = create(
                     console.error(error);
                 });
             },
-            filterProducts: async (locale, params) => {
-                set({ productsIsFetching: true })
-                await axios({
-                    method: 'GET',
-                    url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/products`,
-                    params: {
-                        'locale': locale.slice(0, 2),
-                        'currency': currency,
-                        ...params
-                    },
-                    headers: {
-                        'Authorization': `Bearer ${useUserStore.getState().token}`,
-                    },
-                }).then((response) => {
-                    set({ productsIsFetching: false, filteredProducts: response.data.data });
-                }).catch((error) => {
-                    console.error(error);
-                });
-            },
-            getMoreProducts: async (pageUrl, params) => {
-                try {
-                    await axios({
-                        url: nextUrl,
-                    }).then((res) => {
-                        set({ moreProducts: res.data.data ,nextUrl: res.data.data });
-                    });
-                } catch (error) {
-                    set({ filteredProducts: [] });
-                }
-            }
         }
     )
 );

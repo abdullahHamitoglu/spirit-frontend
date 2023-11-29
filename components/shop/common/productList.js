@@ -78,12 +78,14 @@ const ProductList = ({ colClass, layoutList, openSidebar, noSidebar, products, p
       <div className="page-main-content">
         <Row>
           <Col sm="12">
-            <div className="top-banner-wrapper">
-              <div className="top-banner-content small-section">
-                <h1 className="h4">{page.title}</h1>
-                <div dangerouslySetInnerHTML={{ __html: page.content }} />
+            {page.length > 0 &&
+              <div className="top-banner-wrapper">
+                <div className="top-banner-content small-section">
+                  <h1 className="h4">{page.title}</h1>
+                  <div dangerouslySetInnerHTML={{ __html: page.content }} />
+                </div>
               </div>
-            </div>
+            }
             <Row>
               <Col xs="12">
                 {/* <ul className="product-filter-tags">
