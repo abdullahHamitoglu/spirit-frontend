@@ -44,19 +44,19 @@ const useUserStore = create(
       login: async (userData, locale) => {
         await axios({
           method: "post",
-          url:
-            process.env.NEXT_PUBLIC_API_URL +
-            `api/v1/customer/login?locale=${locale.slice(0, 2)}`,
+          url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/customer/login?locale=${locale.slice(0, 2)}`,
+          withCredentials: true,
           data: { ...userData, device_name: osDetails.name },
         })
           .then((res) => {
             if (res.data && res.status == 200) {
               toast.success(res.data.message);
+              console.log(res.headers)
               set({
                 user: res.data.data,
                 isAuthenticated: true,
                 token: res.data.token,
-                // api_session: res.headers['set-cookie'].split(';')[0],
+                api_session: res.headers['set-cookie'].split(';')[0],
                 expirationTime: new Date().getTime() + 24 * 60 * 60 * 1000,
               });
               document

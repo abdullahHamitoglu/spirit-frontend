@@ -308,5 +308,10 @@
     "oldest_first": "الأقدم أولاً",
     "cheapest_first": "الأرخص أولاً",
     "expensive_first": "الأغلى أولاً",
-    "show_results":"اضهر النتائج"
+    "show_results": "اضهر النتائج",
+    "select": {
+        "country": "اختر البلد",
+        "city": "اختر المدينة",
+        "state": "اختر الولاية"
+    }
 }
