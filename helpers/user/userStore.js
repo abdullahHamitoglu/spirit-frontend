@@ -66,7 +66,7 @@ const useUserStore = create(
           .then((res) => {
             if (res.data && res.status == 200) {
               toast.success(res.data.message);
-              console.log(res.data.headers);
+              console.log(res.headers);
               set({
                 user: res.data.data,
                 isAuthenticated: true,
