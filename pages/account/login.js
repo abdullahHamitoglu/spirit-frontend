@@ -8,6 +8,7 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import * as Yup from 'yup';
 import useUserStore from "@/helpers/user/userStore";
 import Link from "next/link";
+import Cookies from "js-cookie";
 
 const Login = () => {
   const { isAuthenticated, login } = useUserStore();

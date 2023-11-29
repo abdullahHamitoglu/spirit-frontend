@@ -54,14 +54,14 @@ const ProductItem = ({ wishListLoading, product, addCart, backImage, des, addWis
           {product.sale === true ? <span className="lable4">{t('on_sale')}</span> : ""}
         </div>
         <Link className="front" href={`/products/${product.url_key}`}>
-          <Media srcset={image} src="/assets/images/lazy.jpg" className="img-fluid m-auto lazyload blur-up" alt={product.name} />
+          <Media srcSet={image} src="/assets/images/lazy.jpg" className="img-fluid m-auto lazyload blur-up" alt={product.name} />
         </Link>
         {backImage ? (
           product.images[1] === "undefined" ? (
             "false"
           ) : (
             <Link className="back" href={`/products/${product.url_key}`}>
-              <Media srcset={product.images[1].original_image_url} src="/assets/images/lazy.jpg" className="img-fluid m-auto lazyload blur-up" alt={product.name} />
+              <Media srcSet={product.images[1].original_image_url} src="/assets/images/lazy.jpg" className="img-fluid m-auto lazyload blur-up" alt={product.name} />
             </Link>
           )
         ) : (

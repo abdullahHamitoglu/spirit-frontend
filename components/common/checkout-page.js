@@ -161,8 +161,9 @@ const CheckoutPage = () => {
                           validationSchema={paymentValidationSchema}
                           onSubmit={(values, { setSubmitting }) => {
                             saveCheckoutPayment(values, locale);
-                            ctx.next()
+                            saveCheckoutOrder(locale);
                             setSubmitting(false);
+                            ctx.next()
                           }} >
                           {({ values, errors, touched, handleSubmit, isSubmitting, setFieldValue }) => (
                             <Form onSubmit={handleSubmit} className="d-flex flex-wrap justify-content-center">
@@ -309,15 +310,13 @@ const CheckoutPage = () => {
                                         </div>
                                         <div className="col-md-12">
                                           <button className="btn btn-sm btn-solid" type="button" onClick={ctx.previous}>{t('previous')}</button>
-                                          <button className="btn btn-sm btn-solid mx-4" type="button" onClick={() => router.push(redirect_url, '_blank')}>{t('pay')}</button>
+                                          <Link href={redirect_url} target="_blank" className="btn btn-sm btn-solid mx-4" type="button">{t('pay')}</Link>
                                         </div>
                                       </div>
                                     </div>
-
                                   </div>
                                 </Col>
                                 <Col lg="6" sm="12" xs="12" className="last-step-address">
-                                  {console.log(orderDetails)}
                                   <AddressForm address={orderDetails.cart.billing_address} col='12' isDetails />
                                 </Col>
                               </>

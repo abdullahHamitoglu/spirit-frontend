@@ -10,7 +10,7 @@ import { appWithTranslation } from "next-i18next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import useUserStore from "../helpers/user/userStore";
-import nookies, { parseCookies, setCookie } from "nookies";
+import { setCookie } from "nookies";
 
 function MyApp({ Component, pageProps }) {
   const [isLoading, setIsLoading] = useState(true);

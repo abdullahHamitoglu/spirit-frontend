@@ -15,13 +15,14 @@ const currencyStore = create(
                 symbol: "KWD",
             },
             currencies: [],
+            countries: [],
             fetchCurrencies: async (locale) => {
                 await axios({
-                    method:'GET',
+                    method: 'GET',
                     url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/currencies?locale=${locale.slice(0, 2)}`
-                }).then((response)=>{
+                }).then((response) => {
                     set({ currencies: response.data });
-                }).catch((error)=>{
+                }).catch((error) => {
                     console.error(error);
                 })
             },
@@ -29,6 +30,18 @@ const currencyStore = create(
             setCurrency: (currency) => {
                 set({ selectedCurrency: currency });
             },
+            getCountries: async (locale) => {
+                await axios({
+                    url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/countries`,
+                    params: {
+                        locale: locale.slice(0, 2)
+                    },
+                }).then((response) => {
+                    set({ countries: response.data.data })
+                }).catch((error) => {
+                    console.error(error);
+                })
+            }
         }),
         {
             name: 'currency-storage', // name of the item in the storage (must be unique)

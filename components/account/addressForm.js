@@ -7,8 +7,9 @@ import useUserStore from '../../helpers/user/userStore';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import useCartStore from '@/helpers/cart/cartStore';
+import currencyStore from '@/helpers/Currency/CurrencyStore';
 
-function AddressForm({ ctx, col ,isDetails , address }) {
+function AddressForm({ ctx, col, isDetails, address }) {
     const { t } = useTranslation();
     const { locale } = useRouter();
     const addressValidationSchema = Yup.object().shape({
@@ -18,44 +19,53 @@ function AddressForm({ ctx, col ,isDetails , address }) {
         email: Yup.string().email(t('invalid_email')).required(t('this_field_is_required')),
         address1: Yup.array().required(t('this_field_is_required')),
         state: Yup.string().required(t('this_field_is_required')),
+        country: Yup.string().required(t('this_field_is_required')),
         city: Yup.string().required(t('this_field_is_required')),
         postcode: Yup.string().required(t('this_field_is_required')),
         phone: Yup.string().required(t('this_field_is_required')),
     });
     const { saveCheckoutAddress } = useCartStore();
     const { getAddresses, addresses, getAddressById } = useUserStore();
-
+    const { getCountries, countries } = currencyStore();
     const handleAddress = (id) => {
         getAddressById(locale, id);
     }
-    if(isDetails){
-        
+    function convertToEnglish(inputString) {
+        const charMap = {
+            'á': 'a', 'é': 'e', 'í': 'i', 'ó': 'o', 'ú': 'u', 'ü': 'u',
+            'ş': 's', 'ğ': 'g', 'ç': 'c', 'ı': 'i', 'ö': 'o', // Turkish characters
+            // Add more characters as needed
+        };
+
+        return inputString.replace(/[áéíóúüşğçıö]/g, match => charMap[match] || match);
     }
     useEffect(() => {
         getAddresses(locale);
-    }, [])
+        getCountries(locale);
+    }, []);
     return (
 
         <Formik
             enableReinitialize
             initialValues={{
-                company_name: address.company_name ,
-                first_name: address.first_name,
-                last_name: address.last_name,
-                email: address.email,
-                address1: address.address1,
-                country: address.country,
-                state: address.state,
-                city: address.city,
-                postcode: address.postcode,
-                phone: address.phone,
-                vat_id: address.vat_id
+                company_name: address.company_name || '',
+                first_name: address.first_name || '',
+                last_name: address.last_name || '',
+                email: address.email || '',
+                address1: address.address1 || [''],
+                country: address.country || '',
+                state: address.state || '',
+                city: address.city || '',
+                postcode: address.postcode || '',
+                phone: address.phone || '',
+                vat_id: address.vat_i || ''
             }}
             validationSchema={addressValidationSchema}
             onSubmit={(values, { setSubmitting }) => {
-                ctx.next()
-                saveCheckoutAddress(values, locale);
+                let convertedValues = convertToEnglish(JSON.stringify(values))
+                saveCheckoutAddress(JSON.parse(convertedValues), locale);
                 setSubmitting(false);
+                ctx.next();
             }}
             errors={(errors) => {
                 console.log(errors)
@@ -68,7 +78,7 @@ function AddressForm({ ctx, col ,isDetails , address }) {
                             <h3>{t('billing_details')}</h3>
                         </div>
                         <div className="row check-out">
-                            {addresses && !isDetails &&
+                            {addresses.length > 0 && !isDetails &&
                                 <div className="form-group col-md-12 col-sm-12 col-xs-12">
                                     <div className="field-label d-flex justify-content-between">
                                         <label>{t("shipping_address")}</label>
@@ -148,6 +158,7 @@ function AddressForm({ ctx, col ,isDetails , address }) {
                             <Col md="6" sm="12" xs="12" className="form-group">
                                 <Label className="form-label" for="phone">
                                     {t('phone')}
+                                    {errors.phone && touched.phone && <span className="error ms-1 text-danger">{errors.phone}</span>}
                                 </Label>
                                 <Field
                                     disabled={isDetails}
@@ -181,6 +192,7 @@ function AddressForm({ ctx, col ,isDetails , address }) {
                             <Col md="6" sm="12" xs="12" className="form-group">
                                 <Label className="form-label" for="address1">
                                     {t("address_label")}
+                                    {errors.address1 && touched.address1 && <span className="error ms-1 text-danger">{errors.address1}</span>}
                                 </Label>
                                 <Field
                                     disabled={isDetails}
@@ -197,6 +209,7 @@ function AddressForm({ ctx, col ,isDetails , address }) {
                             <Col md="6" sm="12" xs="12" className="form-group">
                                 <Label className="form-label" for="zip-code">
                                     {t("postcode")}
+                                    {errors.postcode && touched.postcode && <span className="error ms-1 text-danger">{errors.postcode}</span>}
                                 </Label>
                                 <Field
                                     disabled={isDetails}
@@ -213,10 +226,11 @@ function AddressForm({ ctx, col ,isDetails , address }) {
                             <Col md="6" sm="12" xs="12" className="form-group">
                                 <Label className="form-label" for="country">
                                     {t("country_label")}
+                                    {errors.country && touched.country && <span className="error ms-1 text-danger">{errors.country}</span>}
                                 </Label>
                                 <Field
                                     disabled={isDetails}
-                                    type="text"
+                                    as="select"
                                     className="form-control"
                                     id="country"
                                     name="country"
@@ -224,11 +238,18 @@ function AddressForm({ ctx, col ,isDetails , address }) {
                                     value={values.country}
                                     onChange={(e) => setFieldValue('country', e.target.value)}
                                     required=""
-                                />
+                                >
+                                    <option disabled value=''>{t("select.country")}</option>
+                                    {countries && countries.map((country, i) => (
+                                        <option key={i} value={country.currency_code}>{country.name}</option>
+                                    ))}
+                                </Field>
+
                             </Col>
                             <Col md="6" sm="12" xs="12" className="form-group">
                                 <Label className="form-label" for="city">
                                     {t("city_label")}
+                                    {errors.city && touched.city && <span className="error ms-1 text-danger">{errors.city}</span>}
                                 </Label>
                                 <Field
                                     disabled={isDetails}

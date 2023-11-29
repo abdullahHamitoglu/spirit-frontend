@@ -175,7 +175,6 @@ const useCartStore = create(
                 },
             }).then((res) => {
                 toast.success(res.data.message);
-                console.log(res);
                 set({ savedAddress: res.data.data });
             }).catch((error) => {
                 set({ cartLoading: false });
@@ -231,6 +230,9 @@ const useCartStore = create(
                 headers: {
                     'Authorization': `Bearer ${useUserStore.getState().token}`
                 },
+                data: {
+                    cart_id: get().cartData.id
+                }
             }).then((res) => {
                 toast.success(res.data.message);
                 set({ redirect_url: res.data.redirect_url });
