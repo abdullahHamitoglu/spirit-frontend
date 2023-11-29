@@ -20,8 +20,8 @@ const useUserStore = create(
       addresses: [],
       address: [],
       api_session: '',
+      registeredDeviceID : '',
       register: async (userData, locale) => {
-        // Send a POST request to your registration API endpoint
         await axios({
           method: "post",
           url: `${process.env.NEXT_PUBLIC_API_URL
@@ -248,26 +248,25 @@ const useUserStore = create(
       },
 
       registerDevice: async () => {
-        if (!get().fcmToken) {
-          set({ fcmToken: uuid().replaceAll("-", "") });
+        if (Cookies.get('spirit_session')) {
+          await axios({
+            method: "post",
+            url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/register_device`,
+            data: {
+              fcmToken: Cookies.get('spirit_session'),
+              os: "web",
+            },
+          }).then((res) => {
+              set({ registeredDeviceID: res.data.registered_device_id });
+              console.log(res);
+            })
+            .catch(function (error) {
+              if (error.response) {
+                toast.error(error.response.data.message);
+              }
+              console.log(error);
+            });
         }
-        // await axios({
-        //   method: "post",
-        //   url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/register_device`,
-        //   data: {
-        //     fcmToken: get().token,
-        //     os: "web",
-        //   },
-        // }).then((res) => {
-        //     set({ fcmToken: res.data.data.deviceDetails.fcmToken });
-        //     console.log(res);
-        //   })
-        //   .catch(function (error) {
-        //     if (error.response) {
-        //       toast.error(error.response.data.message);
-        //     }
-        //     console.log(error);
-        //   });
       },
     }),
     {
