@@ -3,7 +3,7 @@ import { Media } from "reactstrap";
 
 const MasterCategory = ({ img, title, link }) => {
     return (
-        <div className="category-block">
+        <div className="category-block btn">
             <div className="category-image border-0">
                 <Media className="object-fit-cover w-100" src={img} alt={title} />
             </div>

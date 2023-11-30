@@ -56,14 +56,26 @@ const ProductList = ({ colClass, layoutList, openSidebar, noSidebar, products, p
       handlePagination();
     }
   };
-  const handelSortBy = (event) => {
+  const handelSortBy = async (event) => {
+    setIsLoading(true);
+    setProductsData([]);
     router.push({
       query: {
-        name: event.target.value.split(',')[0],
-        sort: event.target.value.split(',')[1]
+        sort: event.target.value.split(',')[0],
+        order: event.target.value.split(',')[1]
       }
     },
       undefined, { shallow: true })
+    try {
+      const response = await getProducts(locale, router.query, token);
+      console.log(response);
+      setProductsData(response.data);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    } finally {
+      setIsLoading(false);
+    }
+
   };
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
@@ -245,35 +257,37 @@ const ProductList = ({ colClass, layoutList, openSidebar, noSidebar, products, p
                     productsData.length === 0 ? (
                     productsData &&
                       productsData &&
-                      productsData.length === 0 ? (
-                      <Col xs="12">
-                        <div>
-                          <div className="col-sm-12 empty-cart-cls text-center">
-                            <img
-                              src={`/assets/images/empty-search.jpg`}
-                              className="img-fluid mb-4 mx-auto"
-                              alt=""
-                            />
-                            <h4>Explore more shortlist some items.</h4>
+                      productsData.length === 0 ?
+                      (
+                        setTimeout(() =>
+                          <Col xs="12">
+                            <div>
+                              <div className="col-sm-12 empty-cart-cls text-center">
+                                <img
+                                  src={`/assets/images/empty-search.jpg`}
+                                  className="img-fluid mb-4 mx-auto"
+                                  alt=""
+                                />
+                                <h4>Explore more shortlist some items.</h4>
+                              </div>
+                            </div>
+                          </Col>, 10000)
+                      ) : (
+                        <>
+                          <div lassName={grid} className="col-xl-3 col-lg-4 col-6">
+                            <PostLoader />
                           </div>
-                        </div>
-                      </Col>
-                    ) : (
-                      <div className="row mx-0 margin-default mt-4">
-                        <div className="col-xl-3 col-lg-4 col-6">
-                          <PostLoader />
-                        </div>
-                        <div className="col-xl-3 col-lg-4 col-6">
-                          <PostLoader />
-                        </div>
-                        <div className="col-xl-3 col-lg-4 col-6">
-                          <PostLoader />
-                        </div>
-                        <div className="col-xl-3 col-lg-4 col-6">
-                          <PostLoader />
-                        </div>
-                      </div>
-                    )
+                          <div lassName={grid} className="col-xl-3 col-lg-4 col-6">
+                            <PostLoader />
+                          </div>
+                          <div lassName={grid} className="col-xl-3 col-lg-4 col-6">
+                            <PostLoader />
+                          </div>
+                          <div lassName={grid} className="col-xl-3 col-lg-4 col-6">
+                            <PostLoader />
+                          </div>
+                        </>
+                      )
                   ) : (
                     productsData &&
                     productsData.map((product, i) => (
@@ -307,20 +321,20 @@ const ProductList = ({ colClass, layoutList, openSidebar, noSidebar, products, p
                     ))
                   )}
                   {isLoading && (
-                    <div className="row mx-0 margin-default mt-4">
-                      <div className="col-xl-3 col-lg-4 col-6">
+                    <>
+                      <div lassName={grid} className="col-xl-3 col-lg-4 col-6">
                         <PostLoader />
                       </div>
-                      <div className="col-xl-3 col-lg-4 col-6">
+                      <div lassName={grid} className="col-xl-3 col-lg-4 col-6">
                         <PostLoader />
                       </div>
-                      <div className="col-xl-3 col-lg-4 col-6">
+                      <div lassName={grid} className="col-xl-3 col-lg-4 col-6">
                         <PostLoader />
                       </div>
-                      <div className="col-xl-3 col-lg-4 col-6">
+                      <div lassName={grid} className="col-xl-3 col-lg-4 col-6">
                         <PostLoader />
                       </div>
-                    </div>
+                    </>
                   )}
                 </Row>
               </div>

@@ -32,11 +32,11 @@ function MyApp({ Component, pageProps }) {
       document.body.classList.remove("ltr");
       document.documentElement.dir = "ltr";
       document.body.classList.remove("rtl");
-      setCookie(null, "token", token, {
-        maxAge: 7 * 24 * 60 * 60,
-        path: "/",
-      });
     }
+    setCookie(null, "token", token, {
+      maxAge: 7 * 24 * 60 * 60,
+      path: "/",
+    });
   }, [router.locale])
   
   useEffect(() => {

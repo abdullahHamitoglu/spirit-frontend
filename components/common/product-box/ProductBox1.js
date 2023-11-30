@@ -111,10 +111,10 @@ const ProductItem = ({ wishListLoading, product, addCart, backImage, des, addWis
         </div>
         {product.images ? (
           <ul className="product-thumb-list">
-            {product.images.map((img, i) => (
-              <li className={`grid_thumb_img ${img.large_image_url === image ? "active" : ""}`} key={i}>
+            {product.images.length > 1 && product.images.map((img, i) => (
+              <li className={`grid_thumb_img ${img.original_image_url === image ? "active" : ""}`} key={i}>
                 <a href={null} title={t('add_to_wishlist')}>
-                  <Media src={img.small_image_url} alt={t('wishlist')} onClick={() => onClickHandle(img.large_image_url)} />
+                  <Media src={img.small_image_url} alt={t('wishlist')} onClick={() => onClickHandle(img.original_image_url)} />
                 </a>
               </li>
             ))}

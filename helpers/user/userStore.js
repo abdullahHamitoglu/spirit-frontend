@@ -135,18 +135,17 @@ const useUserStore = create(
             process.env.NEXT_PUBLIC_API_URL +
             `api/v1/customer/forgot-password?locale=${locale.slice(0, 2)}`,
           data,
+        }).then((res) => {
+          if (res.data && res.status == 200) {
+            toast.success(res.data.message);
+            set({
+              user: res.data.data,
+              isAuthenticated: true,
+              token: res.data.token,
+              expirationTime: new Date().getTime() + 24 * 60 * 60 * 1000,
+            });
+          }
         })
-          .then((res) => {
-            if (res.data && res.status == 200) {
-              toast.success(res.data.message);
-              set({
-                user: res.data.data,
-                isAuthenticated: true,
-                token: res.data.token,
-                expirationTime: new Date().getTime() + 24 * 60 * 60 * 1000,
-              });
-            }
-          })
           .catch(function (error, errors) {
             if (error.response) {
               toast.error(error.response.data.message);

@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="25" height="25" viewBox="0 0 25 25">
+  <defs>
+    <clipPath id="clip-path">
+      <rect id="Rectangle_3691" data-name="Rectangle 3691" width="25" height="25" transform="translate(308 517)" fill="#fff" stroke="#707070" stroke-width="1"/>
+    </clipPath>
+  </defs>
+  <g id="Mask_Group_100" data-name="Mask Group 100" transform="translate(-308 -517)" clip-path="url(#clip-path)">
+    <g id="category" transform="translate(310.5 519.5)">
+      <g id="Group_11122" data-name="Group 11122" transform="translate(11 11)">
+        <path id="Path_18703" data-name="Path 18703" d="M41.767,44H37.233A2.233,2.233,0,0,1,35,41.767v-6.1A.669.669,0,0,1,35.667,35h6.1A2.233,2.233,0,0,1,44,37.233v4.533A2.233,2.233,0,0,1,41.767,44Zm-5.433-7.667v5.433a.9.9,0,0,0,.9.9h4.533a.9.9,0,0,0,.9-.9V37.233a.9.9,0,0,0-.9-.9Z" transform="translate(-35 -35)"/>
+      </g>
+      <g id="Group_11123" data-name="Group 11123" transform="translate(0 11)">
+        <path id="Path_18704" data-name="Path 18704" d="M8.767,44H4.233A2.233,2.233,0,0,1,2,41.767V37.233A2.233,2.233,0,0,1,4.233,35h6.1a.669.669,0,0,1,.667.667v6.1A2.233,2.233,0,0,1,8.767,44ZM4.233,36.333a.9.9,0,0,0-.9.9v4.533a.9.9,0,0,0,.9.9H8.767a.9.9,0,0,0,.9-.9V36.333Z" transform="translate(-2 -35)"/>
+      </g>
+      <g id="Group_11124" data-name="Group 11124" transform="translate(11 0)">
+        <path id="Path_18705" data-name="Path 18705" d="M41.767,11h-6.1A.669.669,0,0,1,35,10.333v-6.1A2.233,2.233,0,0,1,37.233,2h4.533A2.233,2.233,0,0,1,44,4.233V8.767A2.233,2.233,0,0,1,41.767,11ZM36.333,9.667h5.433a.9.9,0,0,0,.9-.9V4.233a.9.9,0,0,0-.9-.9H37.233a.9.9,0,0,0-.9.9Z" transform="translate(-35 -2)"/>
+      </g>
+      <g id="Group_11125" data-name="Group 11125" transform="translate(0)">
+        <path id="Path_18706" data-name="Path 18706" d="M10.333,11h-6.1A2.233,2.233,0,0,1,2,8.767V4.233A2.233,2.233,0,0,1,4.233,2H8.767A2.233,2.233,0,0,1,11,4.233v6.1A.669.669,0,0,1,10.333,11Zm-6.1-7.667a.9.9,0,0,0-.9.9V8.767a.9.9,0,0,0,.9.9H9.667V4.233a.9.9,0,0,0-.9-.9Z" transform="translate(-2 -2)"/>
+      </g>
+    </g>
+  </g>
+</svg>

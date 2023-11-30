@@ -69,11 +69,21 @@ const index = ({ products, page, attributes, categories }) => {
                 <Swiper
                   className="mb-5"
                   spaceBetween={50}
-                  slidesPerView={8}
-                  centeredSlides={true}
+                  slidesPerView="auto"
+                  breakpoints={{
+                    // when window width is >= 640px
+                    0:{
+                      slidesPerView:4,
+                    },
+                    640: {
+                      slidesPerView:4,
+                    },
+                    // when window width is >= 768px
+                    768: {
+                      slidesPerView: 8,
+                    },
+                  }}
                   loop={true}
-                  onSlideChange={() => console.log('slide change')}
-                  onSwiper={(swiper) => console.log(swiper)}
                 >
                   {categories.map((category) => (
                     <SwiperSlide onClick={() => handelCategory(category.id)}>

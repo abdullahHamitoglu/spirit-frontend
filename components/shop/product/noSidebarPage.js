@@ -29,7 +29,7 @@ const NoSidebarPage = ({ reviews, product }) => {
                       <Swiper modules={[Thumbs]}  zoom={true} thumbs={{swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null}} >
                         {data.images.map((vari, index) => (
                           <SwiperSlide key={index} className="d-flex justify-content-center">
-                            <Media src={`${vari.large_image_url}`} alt={data.name} className="img-fluid image_zoom_cls-0" />
+                            <Media src={`${vari.original_image_url}`} alt={data.name} className="img-fluid image_zoom_cls-0" />
                           </SwiperSlide>
                         ))}
                       </Swiper>

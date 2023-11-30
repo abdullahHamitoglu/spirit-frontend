@@ -10,10 +10,11 @@ import Link from "next/link";
 import Slider from "react-slick";
 
 import { Product5 } from "@/services/script";
+import Image from "next/image";
 const MasterCollection = ({ img, totalProducts, type, about, link, btn }) => {
 
   return (
-    <Col lg="2" md="6">
+    <Col lg="2" md="6" xs="6">
       <Link href={link}>
         <div className="collection-block">
           <div>
@@ -31,22 +32,6 @@ const MasterCollection = ({ img, totalProducts, type, about, link, btn }) => {
         </div>
       </Link>
     </Col>
-  );
-};
-const MasterCategory = ({ img, title, link }) => {
-  return (
-    <div className="category-block">
-      <a href={`/categories/${link}`}>
-        <div className="category-image">
-          <Media src={img} alt="" />
-        </div>
-      </a>
-      <div className="category-details">
-        <Link href={`/categories/${link}`}>
-          <h5>{title}</h5>
-        </Link>
-      </div>
-    </div>
   );
 };
 const Collection = ({ categories }) => {
@@ -71,10 +56,11 @@ const Collection = ({ categories }) => {
                   return (
                     <NavItem key={i}>
                       <NavLink
-                        className="rounded-0"
+                        className="rounded-0 btn text-start"
                         active={activeTab == i}
                         onClick={() => { handleClick(data.children, i) }}
                       >
+                        <Image className="me-2" width='25' height="25" src={data.category_icon_path ??(activeTab == i ? '/assets/images/category-light.svg' : '/assets/images/category.svg')} />
                         {data.name}
                       </NavLink>
                     </NavItem>
