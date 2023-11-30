@@ -12,8 +12,9 @@ export async function getProducts(locale, params, token) {
       page: 1,
       ...params,
     },
+            withCredentials: true,
     headers: {
-      Authorization: `Bearer ${token}`,
+      'Authorization': `Bearer ${token}`,
     }
   }).catch((error) => {
     console.log(error);

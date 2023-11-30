@@ -31,10 +31,12 @@ const useUserStore = create(
       addresses: [],
       address: [],
       api_session: '',
-      registeredDeviceID: '',
+      registeredDeviceID: null,
       register: async (userData, locale) => {
         await axios({
           method: "post",
+
+          withCredentials: true,
           headers: {
             'Access-Control-Allow-Origin': '*',
             'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
@@ -101,6 +103,8 @@ const useUserStore = create(
         await axios({
           method: "put",
           url: process.env.NEXT_PUBLIC_API_URL + `api/v1/customer/profile`,
+
+          withCredentials: true,
           headers: {
             Authorization: `Bearer ${get().token}`,
           },
@@ -125,7 +129,6 @@ const useUserStore = create(
           isAuthenticated: false,
           token: null,
           expirationTime: null,
-          fcmToken: null,
         });
       },
       forgetPwd: async (data, locale) => {
@@ -160,6 +163,8 @@ const useUserStore = create(
           params: {
             locale: locale.slice(0, 2),
           },
+
+          withCredentials: true,
           headers: {
             Authorization: `Bearer ${get().token}`,
           },
@@ -184,6 +189,8 @@ const useUserStore = create(
           params: {
             locale: locale.slice(0, 2),
           },
+
+          withCredentials: true,
           headers: {
             Authorization: `Bearer ${get().token}`,
           },
@@ -207,6 +214,8 @@ const useUserStore = create(
           params: {
             locale: locale.slice(0, 2),
           },
+
+          withCredentials: true,
           headers: {
             Authorization: `Bearer ${get().token}`,
           },
@@ -225,6 +234,8 @@ const useUserStore = create(
           params: {
             locale: locale.slice(0, 2),
           },
+
+          withCredentials: true,
           headers: {
             Authorization: `Bearer ${get().token}`,
           },
@@ -247,6 +258,8 @@ const useUserStore = create(
           params: {
             locale: locale.slice(0, 2),
           },
+
+          withCredentials: true,
           headers: {
             Authorization: `Bearer ${get().token}`,
           },
@@ -263,16 +276,21 @@ const useUserStore = create(
       },
 
       registerDevice: async () => {
-        if (getCookie('spirit_session')) {
+        if (get().fcmToken == null) {
+          set({ fcmToken: uuid().replaceAll('-', '') })
+        }
+        console.log(get().registeredDeviceID);
+        if (get().fcmToken != null && !get().registeredDeviceID) {
           await axios({
-            method: "get",
-            url: `${process.env.NEXT_PUBLIC_API_URL}sanctum/csrf-cookie`,
-            // data: {
-            //   fcmToken: getCookie('spirit_session'),
-            //   os: "web",
-            // },
+            method: "post",
+            url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/register_device`,
+            data: {
+              fcmToken: get().fcmToken,
+              os: "web",
+            },
           }).then((res) => {
-            set({ registeredDeviceID: res.deviceDetails.id });
+            console.log(res.data.deviceDetails.id);
+            set({ registeredDeviceID: res.data.deviceDetails.id });
           })
             .catch(function (error) {
               if (error.response) {

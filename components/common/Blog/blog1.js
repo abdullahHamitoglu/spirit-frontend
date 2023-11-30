@@ -1,7 +1,6 @@
 import React, { Fragment } from "react";
 import Slider from "react-slick";
 import Link from "next/link";
-import { useQuery } from "@apollo/client";
 import { Slider3 } from "../../../services/script";
 import { Media, Container, Row, Col } from "reactstrap";
 

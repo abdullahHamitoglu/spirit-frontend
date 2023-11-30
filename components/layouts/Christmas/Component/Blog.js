@@ -3,21 +3,11 @@ import Slider from "react-slick";
 import { Col, Container, Media, Row } from "reactstrap";
 import { Slider3 } from "../../../../services/script";
 
-import { useQuery } from "@apollo/client";
 import Link from "next/link";
 import Image from "next/image";
 
-const GET_PRODUCTS = gql`
-  query blog($type: String!) {
-    blog(type: $type) {
-      img
-      link
-      title
-      desc
-      date
-    }
-  }
-`;
+
+
 
 const Data = [
   {
@@ -52,11 +42,7 @@ const BlogSlider = ({ img, name, post, about }) => {
 };
 
 const BlogSection = ({ type }) => {
-  var { data } = useQuery(GET_PRODUCTS, {
-    variables: {
-      type: type,
-    },
-  });
+  var data  = []
   return (
     <section className="blog-section grey-bg section-b-space">
       <Container>

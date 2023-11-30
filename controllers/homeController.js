@@ -10,7 +10,9 @@ export async function getPageData(locale, page ,token) {
             params: {
                 locale: locale.slice(0, 2)
             },
-            headers: {
+            
+            withCredentials: true,
+    headers: {
               Authorization: `Bearer ${token}`,
             },
         })

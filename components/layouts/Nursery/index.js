@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-// import { withApollo } from "../../../helpers/apollo/apollo";
 import HeaderEight from "../../../components/headers/header-eight";
 import Banner from "./components/Banner";
 import TopCollection from "../../../components/common/Collections/Collection1";

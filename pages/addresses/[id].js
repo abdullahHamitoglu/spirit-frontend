@@ -48,7 +48,9 @@ const UniqueAddress = () => {
         params: {
           locale: locale.slice(0, 2),
         },
-        headers: {
+        
+            withCredentials: true,
+    headers: {
           'Authorization': `Bearer ${JSON.parse(window.localStorage.getItem('user-storage')).state.token}`,
         },
       });

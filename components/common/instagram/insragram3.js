@@ -1,24 +1,13 @@
 import React from "react";
-import { useQuery } from "@apollo/client";
 
 import Slider from "react-slick";
 import { Product5 } from "../../../services/script";
 import { Container, Row, Col } from "reactstrap";
 
-const GET_PRODUCTS = gql`
-  query instagram($type: String!) {
-    instagram(type: $type) {
-      img
-    }
-  }
-`;
+
 
 const Instagram = ({ type }) => {
-  var { data } = useQuery(GET_PRODUCTS, {
-    variables: {
-      type: type,
-    },
-  });
+  var data = []
 
   return (
     <section className="instagram ratio_square">

@@ -22,6 +22,7 @@ const useCartStore = create(
             axios({
                 method: "GET",
                 url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/customer/cart`,
+                withCredentials: true,
                 headers: {
                     'Authorization': `Bearer ${useUserStore.getState().token}`
                 },
@@ -37,12 +38,14 @@ const useCartStore = create(
             axios({
                 method: "post",
                 url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/customer/cart/add`,
+
+                withCredentials: true,
                 headers: {
                     'Authorization': `Bearer ${useUserStore.getState().token}`
                 },
                 data: {
                     ...data,
-                    // register_device_id: useUserStore.getState().fcmToken
+                    register_device_id: useUserStore.getState().registeredDeviceID
                 },
             }).then((res) => {
                 set({ cartData: res.data.data, cartLoading: false });
@@ -58,6 +61,8 @@ const useCartStore = create(
             axios({
                 method: "DELETE",
                 url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/customer/cart/remove/${id}`,
+
+                withCredentials: true,
                 headers: {
                     'Authorization': `Bearer ${useUserStore.getState().token}`
                 },
@@ -75,6 +80,8 @@ const useCartStore = create(
             axios({
                 method: "DELETE",
                 url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/customer/cart/empty`,
+
+                withCredentials: true,
                 headers: {
                     'Authorization': `Bearer ${useUserStore.getState().token}`
                 },
@@ -92,6 +99,8 @@ const useCartStore = create(
             axios({
                 method: "POST",
                 url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/customer/cart/update`,
+
+                withCredentials: true,
                 headers: {
                     'Authorization': `Bearer ${useUserStore.getState().token}`
                 },
@@ -112,6 +121,8 @@ const useCartStore = create(
             axios({
                 method: "POST",
                 url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/customer/cart/move-to-wishlist/${id}`,
+
+                withCredentials: true,
                 headers: {
                     'Authorization': `Bearer ${useUserStore.getState().token}`
                 },
@@ -129,6 +140,8 @@ const useCartStore = create(
             await axios({
                 method: "POST",
                 url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/customer/cart/coupon`,
+
+                withCredentials: true,
                 headers: {
                     'Authorization': `Bearer ${useUserStore.getState().token}`
                 },
@@ -147,6 +160,8 @@ const useCartStore = create(
             await axios({
                 method: "DELETE",
                 url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/customer/cart/coupon`,
+
+                withCredentials: true,
                 headers: {
                     'Authorization': `Bearer ${useUserStore.getState().token}`
                 },
@@ -162,6 +177,8 @@ const useCartStore = create(
             await axios({
                 method: "post",
                 url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/customer/checkout/save-address`,
+
+                withCredentials: true,
                 headers: {
                     'Authorization': `Bearer ${useUserStore.getState().token}`
                 },
@@ -171,7 +188,7 @@ const useCartStore = create(
                 data: {
                     billing: data,
                     shipping: data,
-                    // register_device_id: useUserStore.getState().fcmToken
+                    register_device_id: useUserStore.getState().registeredDeviceID
                 },
             }).then((res) => {
                 toast.success(res.data.message);
@@ -188,6 +205,8 @@ const useCartStore = create(
                 params: {
                     locale: locale.slice(0, 2)
                 },
+
+                withCredentials: true,
                 headers: {
                     'Authorization': `Bearer ${useUserStore.getState().token}`
                 },
@@ -204,13 +223,15 @@ const useCartStore = create(
             await axios({
                 method: "POST",
                 url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/customer/checkout/save-payment`,
+                withCredentials: true,
                 headers: {
                     'Authorization': `Bearer ${useUserStore.getState().token}`
                 },
                 data: {
                     payment: {
-                        method: data.payment_method
-                    }
+                        method: data.payment_method,
+                    },
+                    register_device_id: useUserStore.getState().registeredDeviceID
                 },
             }).then((res) => {
                 toast.success(res.data.message);
@@ -227,11 +248,14 @@ const useCartStore = create(
                 params: {
                     locale: locale.slice(0, 2)
                 },
+
+                withCredentials: true,
                 headers: {
                     'Authorization': `Bearer ${useUserStore.getState().token}`
                 },
                 data: {
-                    cart_id: get().cartData.id
+                    cart_id: get().cartData.id,
+                    register_device_id: useUserStore.getState().registeredDeviceID
                 }
             }).then((res) => {
                 toast.success(res.data.message);

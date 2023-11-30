@@ -5,41 +5,8 @@ import CartContext from '../../../../helpers/cart';
 import { WishlistContext } from '../../../../helpers/wishlist/WishlistContext';
 import { CompareContext } from '../../../../helpers/Compare/CompareContext';
 import currencyStore from "../../../../helpers/Currency/CurrencyStore";
-import { useQuery } from '@apollo/client';
-import { useRouter } from 'next/router';
-const GET_PRODUCTS = gql`
-    query  products($type:_CategoryType!,$indexFrom:Int! ,$limit:Int!) {
-        products (type: $type,indexFrom:$indexFrom ,limit:$limit){
-            items {
-                id
-                title
-                description
-                type
-                brand
-                category 
-                price
-                new
-                stock
-                sale
-                discount
-                variants{
-                    id
-                    sku
-                    size
-                    color
-                    image_id
-                }
-                images{
-                    image_id
-                    id
-                    alt
-                    src
-                }
-            }
-        }
-    }
-`;
 
+import { useRouter } from 'next/router';
 
 const MasonryProduct = ({ type, cartClass }) => {
 

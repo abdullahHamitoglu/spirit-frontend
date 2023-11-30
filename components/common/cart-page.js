@@ -13,11 +13,10 @@ const CartPage = () => {
       updateQty(item, quantity);
     }
   };
-
-
+  
   useEffect(() => {
     getCart()
-  }, [])
+  }, []);
   return (
     <div>
       {cartData && cartData.items && cartData.items.length > 0 ?
@@ -65,6 +64,7 @@ const CartPage = () => {
                                         type="number"
                                         name="quantity"
                                         min={'1'}
+                                        value={item.quantity}
                                         onChange={(e) =>
                                           handleQtyUpdate(item.id, e.target.value)
                                         }

@@ -15,22 +15,21 @@ const useWishListStore = create(
             wishList: async (method, id, moveToCart) => {
                 set({ wishListLoading: true });
                 axios({
-                validateStatus: false,
-                method: method,
+                    validateStatus: false,
+                    method: method,
                     url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/customer/wishlist${id != undefined ? '/' + id : ''}${moveToCart ? '/move-to-cart' : ''}`,
+
+                            withCredentials: true,
                     headers: {
                         'Authorization': `Bearer ${useUserStore.getState().token}`
                     },
                 }).then((res) => {
-                    set({ wishListItems: res.data.data , wishListLoading: false });
+                    set({ wishListItems: res.data.data, wishListLoading: false });
                     if (method == 'post') {
                         toast.success(res.data.message);
                     }
                 }).catch((error) => {
                     set({ wishListLoading: false });
-                    if(error.response.status == 401){
-                        router.push(`/account/login?redirect_url=${router.asPath}`);
-                    }
                     console.error(error);
                 });
             },

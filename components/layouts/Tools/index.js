@@ -6,7 +6,6 @@ import AboutSection from "./component/About-section";
 import Category from "./component/Category";
 import ParallaxSlider from "./component/ParallaxSlider";
 import TopCollection from "../../../components/common/Collections/Collection2";
-// import { withApollo } from "../../../helpers/apollo/apollo";
 import LogoBlock from "../../../components/common/logo-block";
 import NewProduct from "../../../components/common/Collections/TabCollection3";
 import ModalComponent from "../../../components/common/Modal";

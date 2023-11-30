@@ -1,5 +1,4 @@
 import React, { useContext } from "react";
-import { useQuery } from "@apollo/client";
 
 import Slider from "react-slick";
 import currencyStore from "../../../helpers/Currency/CurrencyStore";

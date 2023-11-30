@@ -4,7 +4,6 @@ import HomeSlider from "./component/Home-slider";
 import AboutUs from "./component/About-us";
 import BannerSection from "./component/Banner-section";
 import Sections from "./component/Section";
-// import { withApollo } from "../../../helpers/apollo/apollo";
 import ProductSlider from "../../../components/common/Collections/Collection2";
 import TabCollection from "../../../components/common/Collections/TabCollection9";
 import BlogBanner from "../../../components/common/Blog/blog2";

@@ -4,7 +4,6 @@ import HomeSlider from "./component/Home-slider";
 import Banner from "./component/Banner";
 import { Container } from "reactstrap";
 import TopCollection from "../../../components/common/Collections/TabCollection10";
-// import { withApollo } from "../../../helpers/apollo/apollo";
 import FullBanner from "./component/Full-banner";
 import ProductSection from "../../../components/common/Collections/Collection11";
 import ServiceLayout from "../../../components/common/Service/service3";

@@ -1,7 +1,6 @@
 import React from "react";
 import Slider from "react-slick";
 import { Row, Col, Media, Container } from "reactstrap";
-import { useQuery } from "@apollo/client";
 
 
 

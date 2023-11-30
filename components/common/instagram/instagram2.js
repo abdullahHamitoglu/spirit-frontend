@@ -1,25 +1,13 @@
 import React from "react";
 import Slider from "react-slick";
 import { Row, Col, Container } from "reactstrap";
-import { useQuery } from "@apollo/client";
 
 import { Slider5 } from "../../../services/script";
 
-const GET_PRODUCTS = gql`
-  query instagram($type: String!) {
-    instagram(type: $type) {
-      img
-    }
-  }
-`;
+
 
 const Instagram = ({ type }) => {
-  var { data } = useQuery(GET_PRODUCTS, {
-    variables: {
-      type: type,
-    },
-  });
-
+  var data = []
   return (
     <Container>
       <Row>

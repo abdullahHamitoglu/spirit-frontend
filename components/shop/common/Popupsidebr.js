@@ -1,7 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Col, Row, Media, Button, Spinner } from "reactstrap";
 import Menu2 from "../../../public/assets/images/mega-menu/2.jpg";
-import { useQuery } from "@apollo/client";
 
 import FilterContext from "../../../helpers/filter/FilterContext";
 import ProductItem from "../../../components/common/product-box/ProductBox1";
@@ -12,66 +11,13 @@ import { CompareContext } from "../../../helpers/Compare/CompareContext";
 import FilterPage from "./filter";
 import currencyStore from "../../../helpers/Currency/CurrencyStore";
 
-const GET_PRODUCTS = gql`
-  query products(
-    $type: _CategoryType!
-    $indexFrom: Int!
-    $limit: Int!
-    $color: String!
-    $brand: [String!]!
-    $sortBy: _SortBy!
-    $priceMax: Int!
-    $priceMin: Int!
-  ) {
-    products(
-      type: $type
-      indexFrom: $indexFrom
-      limit: $limit
-      color: $color
-      brand: $brand
-      sortBy: $sortBy
-      priceMax: $priceMax
-      priceMin: $priceMin
-    ) {
-      total
-      hasMore
-      items {
-        id
-        title
-        description
-        type
-        brand
-        category
-        price
-        new
-        sale
-        stock
-        discount
-        variants {
-          id
-          sku
-          size
-          color
-          image_id
-        }
-        images {
-          image_id
-          id
-          alt
-          src
-        }
-      }
-    }
-  }
-`;
-
 const Popupsidebar = ({ colClass, layoutList }) => {
   const cartContext = useContext(CartContext);
   const quantity = cartContext.quantity;
   const wishlistContext = useContext(WishlistContext);
   const compareContext = useContext(CompareContext);
   const [limit, setLimit] = useState(8);
-  const {selectedCurrency} = currencyStore()
+  const { selectedCurrency } = currencyStore()
   const currency = selectedCurrency.symbol;
   const [grid, setGrid] = useState(colClass);
   const filterContext = useContext(FilterContext);
@@ -85,19 +31,8 @@ const Popupsidebar = ({ colClass, layoutList }) => {
   const [layout, setLayout] = useState(layoutList);
   const [sidebarView, setSidebarView] = useState(false);
 
-  var { loading, data, fetchMore } = useQuery(GET_PRODUCTS, {
-    variables: {
-      type: selectedCategory,
-      priceMax: selectedPrice.max,
-      priceMin: selectedPrice.min,
-      color: selectedColor,
-      brand: selectedBrands,
-      sortBy: sortBy,
-      indexFrom: 0,
-      limit: limit,
-    },
-  });
-
+  const data = []
+  const loading = false
   const handlePagination = () => {
     setIsLoading(true);
     setTimeout(
@@ -150,7 +85,7 @@ const Popupsidebar = ({ colClass, layoutList }) => {
     filterContext.setSelectedColor("");
   };
 
-  useEffect(() => {}, [
+  useEffect(() => { }, [
     selectedBrands,
     selectedColor,
     selectedSize,
@@ -343,14 +278,14 @@ const Popupsidebar = ({ colClass, layoutList }) => {
                 <Row>
                   {/* Product Box */}
                   {!data ||
-                  !data.products ||
-                  !data.products.items ||
-                  data.products.items.length === 0 ||
-                  loading ? (
+                    !data.products ||
+                    !data.products.items ||
+                    data.products.items.length === 0 ||
+                    loading ? (
                     data &&
-                    data.products &&
-                    data.products.items &&
-                    data.products.items.length === 0 ? (
+                      data.products &&
+                      data.products.items &&
+                      data.products.items.length === 0 ? (
                       <Col xs="12">
                         <div>
                           <div className="col-sm-12 empty-cart-cls text-center">

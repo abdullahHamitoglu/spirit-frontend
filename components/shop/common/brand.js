@@ -1,5 +1,4 @@
 import React, { useState, useContext } from "react";
-import { useQuery } from "@apollo/client";
 
 import { Collapse, Input } from "reactstrap";
 import FilterContext from "../../../helpers/filter/FilterContext";

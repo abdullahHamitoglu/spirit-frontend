@@ -100,7 +100,7 @@ const TopCollection = ({ type, title, subtitle, designClass, noSlider, cartClass
                             addCart={() =>{
                               addToCart({
                                 product_id:product.id,
-                                quantity : '1',
+                                quantity : 1,
                               })
                               getCart()
                               }

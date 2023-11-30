@@ -1,7 +1,6 @@
 import React, { Fragment, useContext } from "react";
 import Slider from "react-slick";
 import { tools_product_4 } from "../../../../services/script";
-import { useQuery } from "@apollo/client";
 
 import CartContext from "../../../../helpers/cart";
 import { CompareContext } from "../../../../helpers/Compare/CompareContext";
@@ -9,37 +8,6 @@ import { WishlistContext } from "../../../../helpers/wishlist/WishlistContext";
 import { Container, Row, Col } from "reactstrap";
 import ProductItem from "../../../../components/common/product-box/ProductBox12";
 
-const GET_PRODUCTS = gql`
-  query productByCategory($category: String!) {
-    productByCategory(category: $category) {
-      id
-      title
-      description
-      type
-      brand
-      collection
-      category
-      price
-      sale
-      discount
-      new
-      images {
-        image_id
-        id
-        alt
-        src
-      }
-      variants {
-        variant_id
-        id
-        sku
-        size
-        color
-        image_id
-      }
-    }
-  }
-`;
 
 const ParallaxSlider = () => {
   const context = useContext(CartContext);

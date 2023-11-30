@@ -8,14 +8,13 @@ import useCartStore from "../../helpers/cart/cartStore";
 const CartContainer = ({ icon }) => {
   const { selectedCurrency }  = currencyStore();
   const {getCart,cartData , cartLoading } = useCartStore();
-
   useEffect(()=>{
     getCart()
   },[]);
   return (
     <Fragment>
       <li className="onhover-div mobile-cart">
-        <div className="cart-qty-cls">{cartData && cartData.items_count > 0 ? cartData.items_count : '0'}</div>
+        <div className="cart-qty-cls">{cartData && cartData.length > 0 ? cartData.length : 0}</div>
         <Link href={`/account/cart`}>
           <div href={null}>
             <Media src={icon} className="img-fluid" alt="" />

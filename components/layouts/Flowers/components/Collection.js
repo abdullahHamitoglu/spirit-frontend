@@ -2,59 +2,19 @@ import React, { useContext } from 'react';
 import { Container, Row, Col } from 'reactstrap';
 import LeftCollection from '../../../../components/common/Collections/LeftCollection';
 import ProductItem from '../../../../components/common/product-box/ProductBox1';
-import { useQuery } from '@apollo/client';
+
 
 import { CompareContext } from '../../../../helpers/Compare/CompareContext';
 import { WishlistContext } from '../../../../helpers/wishlist/WishlistContext';
 import CartContext from '../../../../helpers/cart';
 
-const GET_PRODUCTS = gql`
-    query  products($type:_CategoryType!,$indexFrom:Int!,$limit:Int!) {
-        products (type: $type,indexFrom:$indexFrom,limit:$limit){
-            items {
-                id
-                title
-                description
-                type
-                brand
-                category 
-                price
-                new
-                stock
-                sale
-                discount
-                variants{
-                    id
-                    sku
-                    size
-                    color
-                    image_id
-                }
-                images{
-                    image_id
-                    id
-                    alt
-                    src
-                }
-            }
-        }
-    }
-`;
-
-
-const ProductBox = ({ type ,cartClass, productDetail }) => {
+const ProductBox = ({ type, cartClass, productDetail }) => {
     const context = useContext(CartContext)
     const contextWishlist = useContext(WishlistContext);
     const contextCompare = useContext(CompareContext);
     const quantity = context.quantity;
 
-    var { data } = useQuery(GET_PRODUCTS, {
-        variables: {
-            type: type,
-            indexFrom:0,
-            limit:2
-        }
-    });
+    var data = []
 
     return (
         <section className="section-b-space">
@@ -75,7 +35,7 @@ const ProductBox = ({ type ,cartClass, productDetail }) => {
                                         addCompare={() => contextCompare.addToCompare(product)}
                                         addWishlist={() => contextWishlist.addToWish(product)}
                                         productDetail={productDetail}
-                                        addCart={() => context.addToCart(product,quantity)} key={index} cartClass={cartClass} />
+                                        addCart={() => context.addToCart(product, quantity)} key={index} cartClass={cartClass} />
                                 </div>
                             )
                             }

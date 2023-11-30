@@ -28,7 +28,7 @@ const ProductList = ({ colClass, layoutList, openSidebar, noSidebar, products, p
   const [isLoading, setIsLoading] = useState(false);
   const [layout, setLayout] = useState(layoutList);
   const [url, setUrl] = useState();
-  const [quantity, setQuantity] = useState('1');
+  const [quantity, setQuantity] = useState(1);
   const { t } = useTranslation();
   const [pageCount, setPageCount] = useState(1); // Initialize pageCount to 1
   const handlePagination = async () => {

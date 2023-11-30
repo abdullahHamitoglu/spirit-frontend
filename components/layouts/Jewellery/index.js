@@ -1,5 +1,4 @@
 import React, { Fragment, useEffect } from "react";
-// import { withApollo } from "../../../helpers/apollo/apollo";
 import HeaderSeven from "../../../components/headers/header-seven";
 import Banner from "./Component/Banner";
 import Category from "./Component/Category";

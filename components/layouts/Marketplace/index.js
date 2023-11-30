@@ -4,7 +4,6 @@ import HomeSlider from "./components/Home-slider";
 import Collections from "./components/Collections";
 import Paragraph from "../../../components/common/Paragraph";
 import ProductSection from "../../../components/common/Collections/Collection10";
-// import { withApollo } from "../../../helpers/apollo/apollo";
 import ProductSlider from "../../../components/common/Collections/TabCollection7.js";
 import ServiceLayout from "../../../components/common/Service/service1";
 import Instagram from "../../../components/common/instagram/instagram1";

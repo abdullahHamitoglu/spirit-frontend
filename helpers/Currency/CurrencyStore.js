@@ -1,4 +1,3 @@
-import { errorCodes } from '@apollo/client/invariantErrorCodes';
 import axios from 'axios';
 import { useEffect } from 'react';
 import { create } from 'zustand';

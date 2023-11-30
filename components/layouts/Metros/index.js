@@ -4,7 +4,6 @@ import HomeSlider from "./components/Home-slider";
 import Products from "../../../components/common/Collections/Collection12";
 import ServiceLayout from "../../../components/common/Service/service1";
 import Blog from "../../../components/common/Blog/blog1";
-// import { withApollo } from "../../../helpers/apollo/apollo";
 import Instagram from "../../../components/common/instagram/instagram1";
 import LogoBlock from "../../../components/common/logo-block";
 import Helmet from "react-helmet";

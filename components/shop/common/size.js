@@ -1,16 +1,9 @@
 import React, { useState, useContext } from "react";
-import { useQuery } from "@apollo/client";
 
 import { Collapse, Input } from "reactstrap";
 import FilterContext from "../../../helpers/filter/FilterContext";
 
-const GET_SIZE = gql`
-  query getSize($type: String) {
-    getSize(type: $type) {
-      size
-    }
-  }
-`;
+
 
 const Size = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -19,11 +12,8 @@ const Size = () => {
   const filterChecked = context.filterChecked;
   const toggle = () => setIsOpen(!isOpen);
 
-  var { loading, data } = useQuery(GET_SIZE, {
-    variables: {
-      type: context.state,
-    },
-  });
+  const data = []
+  const loading = false
 
   return (
     <div className="collection-collapse-block border-0 open">
@@ -36,26 +26,26 @@ const Size = () => {
             {!data || !data.getSize || data.getSize.length === 0 || loading
               ? "loading"
               : data &&
-                data.getSize.size.map((size, index) => (
-                  <div key={index}
-                    className="form-check custom-checkbox collection-filter-checkbox"
-                    key={index}
-                  >
-                    <Input
-                      checked={context.selectedSize.includes(size)}
-                      onChange={() => {
-                        context.handleSizes(size, isChecked);
-                      }}
-                      type="checkbox"
-                      className="custom-control-input"
-                      id={size}
-                    />
+              data.getSize.size.map((size, index) => (
+                <div key={index}
+                  className="form-check custom-checkbox collection-filter-checkbox"
+                  key={index}
+                >
+                  <Input
+                    checked={context.selectedSize.includes(size)}
+                    onChange={() => {
+                      context.handleSizes(size, isChecked);
+                    }}
+                    type="checkbox"
+                    className="custom-control-input"
+                    id={size}
+                  />
 
-                    <label className="custom-control-label" htmlFor={size}>
-                      {size}
-                    </label>
-                  </div>
-                ))}
+                  <label className="custom-control-label" htmlFor={size}>
+                    {size}
+                  </label>
+                </div>
+              ))}
           </div>
         </div>
       </Collapse>

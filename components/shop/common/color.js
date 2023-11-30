@@ -1,26 +1,13 @@
 import React, { useState ,useContext } from 'react';
-import { useQuery } from "@apollo/client";
 
 import { Collapse } from 'reactstrap';
 import FilterContext from '../../../helpers/filter/FilterContext';
-
-const GET_COLOR = gql`
-    query getColors($type:String)  {
-        getColors(type: $type){
-            colors
-        }
-    }
-`;
 
 const Color = () => {
     const context = useContext(FilterContext);
     const [isOpen, setIsOpen] = useState(false);
     const toggle = () => setIsOpen(!isOpen);
-    var { loading, data } = useQuery(GET_COLOR, {
-        variables: {
-            type: context.state
-        }
-    })
+    const data = []
 
     return (
         <div className="collection-collapse-block open">
