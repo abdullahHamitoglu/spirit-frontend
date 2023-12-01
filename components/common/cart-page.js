@@ -8,9 +8,9 @@ import useCartStore from "../../helpers/cart/cartStore";
 const CartPage = () => {
   const { getCart, cartData, removeFromCart, cartLoading, updateQty } = useCartStore();
   const { t } = useTranslation();
-  const handleQtyUpdate = (item, quantity) => {
+  const handleQtyUpdate = (id, quantity) => {
     if (quantity >= 1) {
-      updateQty(item, quantity);
+      updateQty(id, quantity);
     }
   };
   
@@ -45,8 +45,8 @@ const CartPage = () => {
                                 <Media
                                   src={
                                     item.product.base_image
-                                      ? item.product.base_image.small_image_url
-                                      : item.product.base_image.small_image_url
+                                      ? item.product.base_image.large_image_url
+                                      : item.product.base_image.large_image_url
                                   }
                                   alt={item.product.name}
                                 />
@@ -105,7 +105,7 @@ const CartPage = () => {
                                     name="quantity"
                                     min={'1'}
                                     onChange={(e) =>
-                                      handleQtyUpdate(item, e.target.value)
+                                      handleQtyUpdate(item.id, e.target.value)
                                     }
                                     className="form-control input-number"
                                     defaultValue={item.quantity}

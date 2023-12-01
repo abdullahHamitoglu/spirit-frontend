@@ -11,7 +11,7 @@ const CartHeader = ({ item }) => {
         <div className="media">
           <Link href={"/products/" + item.product.url_key}>
             {item.product.base_image.length ??
-              <Media alt="" className="me-3" src={`${item.product.base_image.small_image_url}`} />
+              <Media alt="" className="me-3" src={`${item.product.base_image.large_image_url}`} />
             }
           </Link>
           <div className="media-body">
