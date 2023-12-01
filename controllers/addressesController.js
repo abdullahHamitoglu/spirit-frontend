@@ -12,7 +12,7 @@ export async function getAddresses(locale, token) {
       Authorization: `Bearer ${token}`,
     },
   }).catch((error) => {
-    console.log(error);
+    console.error(error);
   });
 
   return response.data.data;
@@ -30,7 +30,7 @@ export async function getAddressById(locale, id, token) {
       Authorization: `Bearer ${token}`,
     },
   }).catch((error) => {
-    console.log(error);
+    console.error(error);
   });
 
   return response.data.data;

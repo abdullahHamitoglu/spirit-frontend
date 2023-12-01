@@ -248,7 +248,6 @@ const useCartStore = create(
                 params: {
                     locale: locale.slice(0, 2)
                 },
-
                 withCredentials: true,
                 headers: {
                     'Authorization': `Bearer ${useUserStore.getState().token}`
@@ -259,7 +258,8 @@ const useCartStore = create(
                 }
             }).then((res) => {
                 toast.success(res.data.message);
-                set({ redirect_url: res.data.redirect_url });
+                res
+                set({ redirect_url: res.data.data.redirect_url });
             }).catch((error) => {
                 set({ cartLoading: false });
                 console.error(error);

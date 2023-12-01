@@ -163,7 +163,6 @@ const useUserStore = create(
           params: {
             locale: locale.slice(0, 2),
           },
-
           withCredentials: true,
           headers: {
             Authorization: `Bearer ${get().token}`,
@@ -173,13 +172,14 @@ const useUserStore = create(
           .then((res) => {
             if (res.data && res.status == 200) {
               toast.success(res.data.message);
+              get().getAddresses(locale)
             }
           })
           .catch((error) => {
             if (error.response.data) {
               toast.error(error.response.data.message);
             }
-            console.log(error);
+            console.error(error);
           });
       },
       getAddresses: async (locale) => {
@@ -204,7 +204,7 @@ const useUserStore = create(
             if (error.response.data) {
               toast.error(error.response.data.message);
             }
-            console.log(error);
+            console.error(error);
           });
       },
       getAddressById: async (locale, id) => {
@@ -224,7 +224,7 @@ const useUserStore = create(
             set({ address: response.data.data });
           })
           .catch((error) => {
-            console.log(error);
+            console.error(error);
           });
       },
       updateAddress: async (data, locale, id) => {
@@ -248,7 +248,7 @@ const useUserStore = create(
             if (error.response.data) {
               toast.error(error.response.data.message);
             }
-            console.log(error);
+            console.error(error);
           });
       },
       deleteAddress: async (locale, id) => {
@@ -271,7 +271,7 @@ const useUserStore = create(
             if (error.response.data) {
               toast.error(error.response.data.message);
             }
-            console.log(error);
+            console.error(error);
           });
       },
 
@@ -294,14 +294,14 @@ const useUserStore = create(
               if (error.response) {
                 toast.error(error.response.data.message);
               }
-              console.log(error);
+              console.error(error);
             });
         }
       },
     }),
     {
       name: "userStorage", // name of the item in the storage (must be unique)
-      storage: createJSONStorage(() => sessionStorage), // (optional) by default, 'localStorage' is used
+      storage: createJSONStorage(() => localStorage), // (optional) by default, 'localStorage' is used
     },
   ),
 );

@@ -9,8 +9,14 @@ import { useRouter } from 'next/router';
 const Wishliat = () => {
     const { isAuthenticated } = useUserStore();
     const router = useRouter();
-    if(!isAuthenticated){
-        router.push(`/account/login?redirect_url=${router.asPath}`);
+    if (!isAuthenticated && !user) {
+        router.push({
+            pathname: "/account/login",
+            locale,
+            query: {
+                redirectUrl: router.pathname,
+            },
+        });
     }
     return (
         <CommonLayout parent="home" title="wishlist">

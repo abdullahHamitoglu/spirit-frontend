@@ -56,7 +56,7 @@ const CheckoutPage = () => {
                 <Steps>
                   <Step>
                     {ctx => (
-                      <AddressForm ctx={ctx} button={true} address={address} />
+                      <AddressForm checkout={true} ctx={ctx} col='6' button={true} address={address} />
                     )}
                   </Step>
                   <Step>
@@ -210,7 +210,7 @@ const CheckoutPage = () => {
                                                 {paymentMethods.methods.map((rate, i) => (
                                                   <div className="shopping-option" key={i}>
                                                     <Field type="radio" className="form-check-input" name="payment_method" value={rate.method} id={rate.method} onChange={(e) => setFieldValue('payment_method', e.target.value)} />
-                                                    <label className={`${errors.payment_method && touched.payment_method && 'text-danger'}`} htmlFor={rate.method}>{rate.method_title}</label>
+                                                    <label className={`${errors.checkout_method && touched.checkout_method && 'text-danger'}`} htmlFor={rate.method}>{rate.method_title}</label>
                                                   </div>
                                                 ))}
                                               </div>
@@ -280,12 +280,14 @@ const CheckoutPage = () => {
                                                 {orderDetails.cart.selected_shipping_rate.carrier_title}
                                               </span>
                                             </li>
-                                            <li>
-                                              {t('payment')}
-                                              <span className="count">
-                                                {orderDetails.cart.payment.method_title}
-                                              </span>
-                                            </li>
+                                            {payment &&
+                                              <li>
+                                                {t('payment')}
+                                                <span className="count">
+                                                  {orderDetails.cart.payment.method_title}
+                                                </span>
+                                              </li>
+                                            }
                                             <li>
                                               {t('subtotal')}{" "}
                                               <span className="count">
@@ -310,7 +312,8 @@ const CheckoutPage = () => {
                                         </div>
                                         <div className="col-md-12">
                                           <button className="btn btn-sm btn-solid" type="button" onClick={ctx.previous}>{t('previous')}</button>
-                                          <Link href={redirect_url} className="btn btn-sm btn-solid mx-4" type="button">{t('pay')}</Link>
+                                          <button className="btn btn-sm btn-solid mx-4" type="button" onClick={ctx.next}>{t('next')}</button>
+                                          <Link href={redirect_url ? redirect_url : '/'} className="btn btn-sm btn-solid mx-4" type="button">{t('pay')}</Link>
                                         </div>
                                       </div>
                                     </div>
@@ -324,6 +327,13 @@ const CheckoutPage = () => {
                             }
                           </Row>
                         </div>
+                      </>
+                    )}
+                  </Step>
+                  <Step>
+                    {ctx => (
+                      <>
+                        <iframe src={redirect_url} height="200" width="300" title="Iframe Example"></iframe>
                       </>
                     )}
                   </Step>

@@ -48,9 +48,9 @@ const UniqueAddress = () => {
         params: {
           locale: locale.slice(0, 2),
         },
-        
-            withCredentials: true,
-    headers: {
+
+        withCredentials: true,
+        headers: {
           'Authorization': `Bearer ${JSON.parse(window.localStorage.getItem('user-storage')).state.token}`,
         },
       });
@@ -61,14 +61,24 @@ const UniqueAddress = () => {
       setLoading(false);
     } catch (error) {
       setLoading(false);
-      console.log(error);
+      console.error(error);
     }
   };
 
   React.useEffect(() => {
     getUniqueAddress();
   }, []);
+  const { user, isAuthenticated, } = useUserStore();
 
+  if (!isAuthenticated && !user) {
+    router.push({
+      pathname: "/account/login",
+      locale,
+      query: {
+        redirectUrl: router.pathname,
+      },
+    });
+  }
   return (
 
     <CommonLayout parent={t('home')} title={address.company_name}>
@@ -284,7 +294,7 @@ export async function getStaticProps({ locale }) {
     props: {
       ...(await serverSideTranslations(locale)),
     }
-  } 
+  }
 }
 
 export default UniqueAddress;

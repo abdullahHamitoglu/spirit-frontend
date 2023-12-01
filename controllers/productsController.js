@@ -17,7 +17,7 @@ export async function getProducts(locale, params, token) {
       'Authorization': `Bearer ${token}`,
     }
   }).catch((error) => {
-    console.log(error);
+    console.error(error);
   });
 
   return response.data;
@@ -30,7 +30,7 @@ export async function getProductBySlug(locale, slug) {
       currency: currency,
     },
   }).catch((error) => {
-    console.log(error);
+    console.error(error);
   });
 
   return response.data.data;
@@ -45,7 +45,7 @@ export async function getProductReviews(locale, id, params) {
       ...params
     },
   }).catch((error) => {
-    console.log(error);
+    console.error(error);
   });
 
   return response.data.data;
@@ -62,7 +62,7 @@ export async function getCatagories(locale, id) {
       parent_id: id ?? 1,
     },
   }).catch((error) => {
-    console.log(error);
+    console.error(error);
   });
 
   return response.data.data;
@@ -77,7 +77,7 @@ export async function getCatagoriesTree(locale) {
       parent_id: 1,
     },
   }).catch((error) => {
-    console.log(error);
+    console.error(error);
   });
 
   return response.data.data;

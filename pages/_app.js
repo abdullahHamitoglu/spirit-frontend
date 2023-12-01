@@ -42,7 +42,6 @@ function MyApp({ Component, pageProps }) {
   useEffect(() => {
     setIsLoading(false);
     registerDevice();
-    console.log(fcmToken);
   }, []);
   return (
     <>

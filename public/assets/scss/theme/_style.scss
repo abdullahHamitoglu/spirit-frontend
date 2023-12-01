@@ -9427,6 +9427,13 @@ footer {
       margin-bottom: 30px;
       height: inherit;
     }
+    select {
+      border-color: $round-border;
+      font-size: 12px;
+      padding: 17px 25px; 
+      margin-bottom: 30px;
+      height: inherit;
+    }
     textarea {
       border-color: $round-border;
       font-size: 12px;

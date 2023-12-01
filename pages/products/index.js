@@ -129,7 +129,7 @@ export async function getStaticProps(context) {
   try {
     categories = await getCatagories(locale, query.category_id);
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
   return {
     props: {
