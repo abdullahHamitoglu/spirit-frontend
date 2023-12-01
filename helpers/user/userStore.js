@@ -289,7 +289,6 @@ const useUserStore = create(
               os: "web",
             },
           }).then((res) => {
-            console.log(res.data.deviceDetails.id);
             set({ registeredDeviceID: res.data.deviceDetails.id });
           })
             .catch(function (error) {
