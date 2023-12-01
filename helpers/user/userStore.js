@@ -279,7 +279,6 @@ const useUserStore = create(
         if (get().fcmToken == null) {
           set({ fcmToken: uuid().replaceAll('-', '') })
         }
-        console.log(get().registeredDeviceID);
         if (get().fcmToken != null && !get().registeredDeviceID) {
           await axios({
             method: "post",
