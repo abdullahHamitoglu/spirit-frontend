@@ -8,6 +8,8 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import useCartStore from '@/helpers/cart/cartStore';
 import currencyStore from '@/helpers/Currency/CurrencyStore';
+import PhoneInput from 'react-phone-input-2'
+import 'react-phone-input-2/lib/style.css'
 
 function AddressForm({ ctx, col, isDetails, address, checkout }) {
     const { t } = useTranslation();
@@ -26,7 +28,7 @@ function AddressForm({ ctx, col, isDetails, address, checkout }) {
     });
     const { saveCheckoutAddress } = useCartStore();
     const { getAddresses, addresses, getAddressById, addAddress } = useUserStore();
-    const { getCountries, countries } = currencyStore();
+    const { getCountries, countries, fetchStates , states } = currencyStore();
     const handleAddress = (id) => {
         getAddressById(locale, id);
     }
@@ -43,6 +45,15 @@ function AddressForm({ ctx, col, isDetails, address, checkout }) {
         getAddresses(locale);
         getCountries(locale);
     }, []);
+
+    const getStatesByCountry = (code) => {
+        fetchStates(locale, code);
+    };
+
+    const getCitiesByState = (cities) => {
+        fetchCities(cities);
+    };
+
     return (
         <Formik
             enableReinitialize
@@ -73,7 +84,7 @@ function AddressForm({ ctx, col, isDetails, address, checkout }) {
                 }
             }}
             errors={(errors) => {
-                console.log(errors)
+                console.log(errors);
             }}
         >
             {({ values, errors, touched, handleSubmit, isSubmitting, setFieldValue }) => (
@@ -109,15 +120,38 @@ function AddressForm({ ctx, col, isDetails, address, checkout }) {
                                     name="country"
                                     placeholder={t("country_label")}
                                     value={values.country}
-                                    onChange={(e) => setFieldValue('country', e.target.value)}
+                                    onChange={(e) => {setFieldValue('country', e.target.value); getStatesByCountry(e.target.value)}}
                                     required=""
                                 >
                                     <option disabled value=''>{t("select.country")}</option>
                                     {countries && countries.map((country, i) => (
-                                        <option key={i} value={country.currency_code}>{country.name}</option>
+                                        <option key={i} value={country.code}>{country.name}</option>
                                     ))}
                                 </Field>
 
+                            </Col>
+                            <Col md="6" sm="12" xs="12" className="form-group">
+                                <Label className="form-label" for="state">
+                                    {t('state')}
+                                    {errors.state && touched.state && <span className="error ms-1 text-danger">{errors.state}</span>}
+                                </Label>
+                                <Field
+                                    disabled={isDetails}
+                                    as="select"
+                                    className="form-control"
+                                    id="country"
+                                    name="country"
+                                    placeholder={t('inter.state')}
+                                    value={values.state}
+                                    onChange={(e) => {setFieldValue('state', e.target.value)}}
+                                    required=""
+                                >
+                                    <option disabled value=''>{t("select.state")}</option>
+                                    {console.log(states)}
+                                    {states && states.map((state, i) => (
+                                        <option key={i} value={state.code}>{state.default_name}</option>
+                                    ))}
+                                </Field>
                             </Col>
                             <Col md="6" sm="12" xs="12" className="form-group">
                                 <Label className="form-label" for="city">
@@ -134,23 +168,6 @@ function AddressForm({ ctx, col, isDetails, address, checkout }) {
                                     required=""
                                     value={values.city}
                                     onChange={(e) => setFieldValue('city', e.target.value)}
-                                />
-                            </Col>
-                            <Col md="6" sm="12" xs="12" className="form-group">
-                                <Label className="form-label" for="state">
-                                    {t('state')}
-                                    {errors.state && touched.state && <span className="error ms-1 text-danger">{errors.state}</span>}
-                                </Label>
-                                <Field
-                                    disabled={isDetails}
-                                    type="text"
-                                    className="form-control"
-                                    id="state"
-                                    name='state'
-                                    placeholder={t('inter.state')}
-                                    value={values.state}
-                                    onChange={(e) => setFieldValue('state', e.target.value)}
-                                    required=""
                                 />
                             </Col>
                             <Col md="6" sm="12" xs="12" className="form-group">
@@ -222,6 +239,11 @@ function AddressForm({ ctx, col, isDetails, address, checkout }) {
                                     {t('phone')}
                                     {errors.phone && touched.phone && <span className="error ms-1 text-danger">{errors.phone}</span>}
                                 </Label>
+                                {/* <PhoneInput
+                                    country={'us'}
+                                    value={this.state.phone}
+                                    onChange={phone => this.setState({ phone })}
+                                /> */}
                                 <Field
                                     disabled={isDetails}
                                     type="number"
