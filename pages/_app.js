@@ -6,7 +6,7 @@ import TapTop from "../components/common/widgets/Tap-Top";
 import FilterProvider from "../helpers/filter/FilterProvider";
 import SettingProvider from "../helpers/theme-setting/SettingProvider";
 import { CompareContextProvider } from "../helpers/Compare/CompareContext";
-import { appWithTranslation } from "next-i18next";
+import { appWithTranslation, useTranslation } from "next-i18next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import useUserStore from "../helpers/user/userStore";
@@ -19,7 +19,8 @@ function MyApp({ Component, pageProps }) {
   const [url, setUrl] = useState();
   const router = useRouter();
   const { locale } = useRouter();
-  const { token, registerDevice, fcmToken } = useUserStore();
+  const { token, registerDevice } = useUserStore();
+  const { t } = useTranslation();
   useEffect(() => {
     setIsLoading(true);
     document.documentElement.style.setProperty("--theme-deafult", "#00c2b5");
@@ -38,7 +39,7 @@ function MyApp({ Component, pageProps }) {
       path: "/",
     });
   }, [router.locale])
-  
+
   useEffect(() => {
     setIsLoading(false);
     registerDevice();
@@ -47,7 +48,7 @@ function MyApp({ Component, pageProps }) {
     <>
       {isLoading ? (
         <div className="loader-wrapper">
-            <div className="loader"></div>
+          <div className="loader"></div>
         </div>
       ) : (
         <>
@@ -59,7 +60,6 @@ function MyApp({ Component, pageProps }) {
                   rel="preconnect"
                   href="https://fonts.gstatic.com"
                   crossorigin
-                  
                 />
                 <link
                   href="https://fonts.googleapis.com/css2?family=Tajawal:wght@200;300;400;500;700;800;900&display=swap"
@@ -79,7 +79,7 @@ function MyApp({ Component, pageProps }) {
               type="image/x-icon"
               href="assets/images/favicon.png"
             />
-            <title>Spirit</title>
+            <title>{t('spirit')}</title>
           </Head>
           <SettingProvider>
             <CompareContextProvider>

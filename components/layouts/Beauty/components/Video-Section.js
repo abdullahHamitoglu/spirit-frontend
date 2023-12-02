@@ -9,8 +9,6 @@ const VideoSection = ({ video }) => {
 
     const [open, setOpen] = useState(false);
 
-    const [videoId, setVideoId] = useState('UAVC8XfYLWw');
-
     const onOpenModal = () => {
         setOpen(!open)
     };
@@ -20,38 +18,40 @@ const VideoSection = ({ video }) => {
     };
 
     return (
-        <Fragment>
-            <section className="video-section pt-0">
-                {video &&
-                    <div className="title1">
-                        <h4>{video.title}</h4>
-                        <h2 className="title-inner1">{video.description}</h2>
-                    </div>
-                }
-                <Container>
-                    <Row>
-                        <Col md='8' className="offset-md-2">
-                            <a onClick={onOpenModal}>
-                                <div className="video-img">
-                                    <img src={video.image} alt="" className="img-fluid blur-up lazyload w-100" />
-                                    <div className="play-btn">
-                                        <span><i className="fa fa-play" aria-hidden="true"></i></span>
+        <>{video.length > 0 &&
+            <Fragment>
+                <section className="video-section pt-0 mb-4">
+                    {video &&
+                        <div className="title1">
+                            <h4>{video.title}</h4>
+                            <h2 className="title-inner1">{video.description}</h2>
+                        </div>
+                    }
+                    <Container>
+                        <Row>
+                            <Col md='8' className="offset-md-2">
+                                <a onClick={onOpenModal}>
+                                    <div className="video-img">
+                                        <img src={video.image} alt="" className="img-fluid blur-up lazyload w-100" />
+                                        <div className="play-btn">
+                                            <span><i className="fa fa-play" aria-hidden="true"></i></span>
+                                        </div>
                                     </div>
-                                </div>
-                            </a>
-                            <Modal
-                                isOpen={open}
-                                toggle={onOpenModal}
-                                id="video"
-                                className="video-modal" centered size="lg">
-                                <iframe title="video" src={video.url}
-                                    allowFullScreen></iframe>
-                            </Modal>
-                        </Col>
-                    </Row>
-                </Container>
-            </section>
-        </Fragment>
+                                </a>
+                                <Modal
+                                    isOpen={open}
+                                    toggle={onOpenModal}
+                                    id="video"
+                                    className="video-modal" centered size="lg">
+                                    <iframe title="video" src={video.url}
+                                        allowFullScreen></iframe>
+                                </Modal>
+                            </Col>
+                        </Row>
+                    </Container>
+                </section>
+            </Fragment>
+        }</>
     );
 }
 

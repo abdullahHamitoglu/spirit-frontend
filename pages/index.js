@@ -18,7 +18,7 @@ import cheerio from 'cheerio';
 import axios from "axios";
 
 
-const Fashion = ({ page, homeData ,videoInfo }) => {
+const Fashion = ({ page, homeData, video }) => {
   const { t } = useTranslation()
   return (
     <Fragment>
@@ -26,46 +26,43 @@ const Fashion = ({ page, homeData ,videoInfo }) => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" type="image/x-icon" href={"/assets/images/favicon/1.png"} />
         <meta name="description" content={page.content} />
-        <title>{page.title}</title>
+        <meta name="keywords" content={page.meta_keywords} />
+        <meta name="description" content={page.meta_description} />
+        <meta property="og:type" content="product" />
+        <meta property="og:title" content={page.meta_title} />
+        <meta property="og:url" content={page.url} />
+        <meta property="og:image" content={page.image} />
+        <meta property="og:image:alt" content={page.meta_title} />
+        <meta property="og:description" content={page.meta_description} />
+        <title>{page.meta_title}</title>
       </Head>
       <ModalComponent />
       <MainBanner sliders={homeData.sliders} />
-      <div className="section-b-space">
-        <AboutSection />
-      </div>
-      <div className="section-b-space">
-        <TopCollection
-          type="beauty"
-          innerClass="title1"
-          inner="title-inner1"
-          productSlider={Product5}
-          title={t('topCollections.title')} // Add a text key for the title
-          subtitle={t('topCollections.subtitle')} // Add a text key for the subtitle
-          designClass="p-t-0 ratio_asos"
-          noSlider="true"
-          cartClass="cart-info cart-wrap"
-          collection={homeData.collections_products[1]}
-        />
-      </div>
-      <div className="section-b-space">
-        <VideoSection video={videoInfo} />
-      </div>
-      <TopCollection
-        innerClass="title1"
-        inner="title-inner1"
-        type="beauty"
-        productSlider={Product5}
-        title={t('topCollections.title')} // Add a text key for the title
-        subtitle={t('topCollections.subtitle')} // Add a text key for the subtitle
-        designClass="p-t-0 ratio_asos"
-        noSlider="true"
-        cartClass="cart-info cart-wrap"
-        collection={homeData.collections_products[0]}
-      />
-      <Blog type="beauty" title="title1" inner="title-inner1" />
-      <section className="instagram ratio_square section-b-space">
+      {
+        homeData.collections_products &&
+        <div className="section-b-space">
+          {homeData.collections_products.map((collection, key) => (
+            <>
+              <TopCollection
+                key={key}
+                type="beauty"
+                innerClass="title1"
+                inner="title-inner1"
+                designClass="p-t-0 ratio_asos mb-4"
+                noSlider="true"
+                cartClass="cart-info cart-wrap"
+                collection={collection}
+              />
+              {key == 0 &&
+                <VideoSection video={video} />
+              }
+            </>
+          ))}
+        </div>
+      }
+      {/* <section className="instagram ratio_square section-b-space">
         <Instagram type="beauty" />
-      </section>
+      </section> */}
       <MasterFooter
         footerClass={`footer-light`}
         footerLayOut={"light-layout upper-footer"}
@@ -88,9 +85,9 @@ export async function getServerSideProps(context) {
 
   const page = await getPageData(locale, 'home', token);
 
-
+  let video = []
   try {
-    const videoId = 'UAVC8XfYLWw'; // Replace with the actual YouTube video ID
+    const videoId = homeData.video; // Replace with the actual YouTube video ID
     const response = await axios.get(`https://www.youtube.com/watch?v=${videoId}`, {
       rejectUnauthorized: false,
       method: 'GET',
@@ -111,25 +108,21 @@ export async function getServerSideProps(context) {
         url
       };
 
-      return {
-        props: {
-          // pass the translation props to the page component
-          videoInfo,
-          page,
-          homeData,
-          ...(await serverSideTranslations(locale)),
-        },
-      };
+      
     } else {
-      return {
-        notFound: true,
-      };
+      video = []
     }
   } catch (error) {
-    return {
-      notFound: true,
-    };
+    video = []
   }
+  return {
+    props: {
+      page,
+      video,
+      homeData,
+      ...(await serverSideTranslations(locale)),
+    },
+  };
 }
 
 export default Fashion;
