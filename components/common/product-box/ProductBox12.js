@@ -29,9 +29,8 @@ const ProductItem = ({
     setQuantity(parseInt(e.target.value));
   };
   const clickProductDetail = () => {
-    const titleProps = product.title.split(" ").join("");
     router.push(
-      `/product-details/${product.id}` + "-" + `${titleProps}`,
+      `/products/${product.url_key}`,
       undefined,
       { shallow: true }
     );
@@ -40,7 +39,7 @@ const ProductItem = ({
   const renderStars = () => {
     const starArray = [];
     const averageRating = Math.round(product.reviews.average_rating);
-    
+
     if (averageRating === 0) {
       return null;
     }
@@ -51,6 +50,13 @@ const ProductItem = ({
     }
 
     return starArray;
+  };
+  const handelAddCart = () => {
+    if (product.type == 'simple') {
+      addCart();
+    } else {
+      clickProductDetail();
+    }
   };
   return (
     <div className="product-box product-wrap">
@@ -125,24 +131,26 @@ const ProductItem = ({
             <i className="fa fa-heart" aria-hidden="true"></i>
           </a>
           <a className="d-flex align-items-center text-nowrap w-100 justify-content-center text-black ms-2 btn"
-            onClick={addCart}> {Trans("add_to_cart")}
+            onClick={handelAddCart}> {Trans("add_to_cart")}
           </a>
         </div>
 
-        <div className="rating">
-          {renderStars()}
-        </div>
-        <h6 title={product.name}>{product.name}</h6>
-        <h4 className="justify-content-center flex-column">
-          {product.formatted_price}
-          {product.special_price > 0 &&
-            <del>
-              <span className="money">
-                {product.formatted_special_price}
-              </span>
-            </del>
-          }
-        </h4>
+        <Link href={`/products/${product.url_key}`}>
+          <div className="rating">
+            {renderStars()}
+          </div>
+          <h6 title={product.name}>{product.name}</h6>
+          <h4 className="justify-content-center flex-column">
+            {product.formatted_price}
+            {product.special_price > 0 &&
+              <del>
+                <span className="money">
+                  {product.formatted_special_price}
+                </span>
+              </del>
+            }
+          </h4>
+        </Link>
       </div>
       <Modal
         isOpen={modal}
@@ -181,7 +189,7 @@ const ProductItem = ({
                 <div className="product-buttons">
                   <button
                     className="btn btn-solid"
-                    onClick={() => addCart(product, quantity)}>
+                    onClick={() => handelAddCart(product, count)}>
                     add to cart
                   </button>
                   <button

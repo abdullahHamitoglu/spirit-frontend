@@ -310,7 +310,7 @@ const ProductList = ({ colClass, layoutList, openSidebar, noSidebar, products, p
                                 addToCart({
                                   product_id: product.id,
                                   quantity,
-                                })
+                                });
                                 getCart();
                               }
                               }
