@@ -1,44 +1,69 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
 import CommonLayout from "@/components/shop/common-layout";
 import * as Yup from 'yup';
-import { Container, Row, Form, Input, Label, Col } from 'reactstrap';
-import { Field, Formik } from 'formik';
+import { Container, Row, Label, Col, Button } from 'reactstrap';
+import { Field, Form, Formik } from 'formik';
 import CartLoader from "@/components/layouts/Bags/common/cartLoader";
 import { isEqual } from "lodash";
 import useUserStore from "@/helpers/user/userStore";
 import { getAddressById, getAddresses } from "@/controllers/addressesController";
 import { parseCookies } from "nookies";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import CustomPhoneInput from "@/components/account/customPhoneInput";
+import addressStore from "@/helpers/address/addressStore";
+import ContactFormLoader from "@/components/layouts/Bags/common/formLoader";
 
 const UniqueAddress = () => {
   const [address, setAddress] = React.useState({});
   const [loading, setLoading] = React.useState(false);
+  const [cities, setCities] = useState([]);
   const { query } = useRouter();
-
+  const router = useRouter();
+  const [stateLoading, setStateLoading] = useState(false);
   const currentAddressId = query.id;
 
   const { t } = useTranslation();
   const { locale } = useRouter();
   const { updateAddress } = useUserStore();
+  const { getCountries, countries, fetchStates, states } = addressStore();
 
-
-
+  useEffect(() => {
+    getCountries(locale);
+    states.map((state) => {
+      if (state.code == address.country) {
+        setCities(state.cities);
+      }
+    })
+  }, []);
   const addressValidationSchema = Yup.object().shape({
-    company_name: Yup.string().required(t('first_name_required')),
-    first_name: Yup.string().required(t('first_name_required')),
-    last_name: Yup.string().required(t('first_name_required')),
-    email: Yup.string().email(t('invalid_email')).required(t('first_name_required')),
-    address1: Yup.array().required(t('first_name_required')),
-    state: Yup.string().required(t('first_name_required')),
-    city: Yup.string().required(t('first_name_required')),
-    postcode: Yup.string().required(t('first_name_required')),
-    phone: Yup.string().required(t('first_name_required')),
-    vat_id: Yup.string().required(t('first_name_required')),
+    company_name: Yup.string().required(t('this_field_is_required')),
+    first_name: Yup.string().required(t('this_field_is_required')),
+    last_name: Yup.string().required(t('this_field_is_required')),
+    email: Yup.string().email(t('invalid_email')).required(t('this_field_is_required')),
+    country: Yup.string().required(t('this_field_is_required')),
+    state: Yup.string().required(t('this_field_is_required')),
+    city: Yup.string().required(t('this_field_is_required')),
+    postcode: Yup.string().required(t('this_field_is_required')),
+    phone: Yup.string().required(t('this_field_is_required')),
+    vat_id: Yup.string().required(t('this_field_is_required')),
   });
 
+  const getStatesByCountry = (code) => {
+    fetchStates('en', code);
+    setCities([]);
+  };
+
+  const getCitiesByState = (id) => {
+    states.map((state) => {
+      console.log(state.id, id);
+      if (state.id == id) {
+        setCities(state.cities);
+      }
+    })
+  };
   const getUniqueAddress = async () => {
     try {
       setLoading(true);
@@ -51,12 +76,11 @@ const UniqueAddress = () => {
 
         withCredentials: true,
         headers: {
-          'Authorization': `Bearer ${JSON.parse(window.localStorage.getItem('user-storage')).state.token}`,
+          'Authorization': `Bearer ${JSON.parse(window.localStorage.getItem('userStorage')).state.token}`,
         },
       });
 
       const { data } = response.data;
-
       setAddress(data);
       setLoading(false);
     } catch (error) {
@@ -79,22 +103,24 @@ const UniqueAddress = () => {
       },
     });
   }
+  console.log(states);
   return (
 
     <CommonLayout parent={t('home')} title={address.company_name}>
-      {loading && address ? <CartLoader className="d-flex justify-content-center w-100" /> :
+      {loading && address ? <ContactFormLoader className="d-flex justify-content-center w-100" /> :
         <section className="contact-page register-page section-b-space">
           <Container>
-            <Row>
-              <Col sm="12">
-                <h3>{t("shipping_address")}</h3>
+            <Row className="justify-content-center">
+              <Col lg='6' sm="12">
+                <h3>{t("address")}</h3>
                 <Formik
+                  enableReinitialize
                   initialValues={{
                     company_name: address.company_name,
                     first_name: address.first_name,
                     last_name: address.last_name,
                     email: address.email,
-                    address1: address.address1 && address.address1.length > 0 ? address.address1[0] : '',
+                    address1: address.address1 || [''],
                     country: address.country,
                     state: address.state,
                     city: address.city,
@@ -102,16 +128,87 @@ const UniqueAddress = () => {
                     phone: address.phone,
                     vat_id: address.vat_id
                   }}
-                  validationSchema={addressValidationSchema}
+                  // validationSchema={addressValidationSchema}
                   onSubmit={(values, { setSubmitting }) => {
                     updateAddress(values, locale, currentAddressId);
                     setSubmitting(false);
                   }}
+                  errors={(errors) => {
+                    console.error(errors);
+                  }}
                 >
-                  {({ values, errors, touched, handleSubmit, isSubmitting, setFieldValue, setFieldValues }) => (
-                    <Form className="theme-form" onSubmit={handleSubmit}>
-                      <Row>
-                        <Col md="6">
+                  {({ values, errors, touched, handleSubmit, isSubmitting, setFieldValue }) => (
+                    <Form onSubmit={handleSubmit} className="d-flex flex-wrap justify-content-center theme-form">
+                      <div className="row check-out">
+                        <Col md="6" sm="12" xs="12" className="form-group">
+                          <Label className="form-label" for="country">
+                            {t("country_label")}
+                            {errors.country && touched.country && <span className="error ms-1 text-danger">{errors.country}</span>}
+                          </Label>
+                          <Field
+                            as="select"
+                            className="form-control"
+                            id="country"
+                            name="country"
+                            placeholder={t("country_label")}
+                            value={values.country}
+                            onChange={(e) => { setFieldValue('country', e.target.value); getStatesByCountry(e.target.value) }}
+                            required=""
+                          >
+                            {countries && countries.map((country, i) => (
+                              <option key={i} value={country.code}>{country.name}</option>
+                            ))}
+                          </Field>
+                        </Col>
+                        <Col md="6" sm="12" xs="12" className="form-group">
+                          <Label className="form-label" for="state">
+                            {t('state')}
+                            {errors.state && touched.state && <span className="error ms-1 text-danger">{errors.state}</span>}
+                          </Label>
+                          <Field
+                            disabled={states.length <= 0}
+                            as="select"
+                            className="form-control"
+                            id="state"
+                            name="state"
+                            placeholder={t('inter.state')}
+                            value={values.state}
+                            onChange={(e) => {
+                              setFieldValue('state', e.target.value);
+                              const selectedOptionId = e.target.options[e.target.selectedIndex].getAttribute('id');
+                              getCitiesByState(parseInt(selectedOptionId));
+                            }}
+                            required=""
+                          >
+                            {/* <option value='' selected>{t("select.state")}</option> */}
+                            {states && states.map((state, i) => (
+                              <option key={i} value={state.default_name} id={state.id}>{state.default_name}</option>
+                            ))}
+                          </Field>
+                        </Col>
+                        <Col md="6" sm="12" xs="12" className="form-group">
+                          <Label className="form-label" for="city">
+                            {t("city_label")}
+                            {errors.city && touched.city && <span className="error ms-1 text-danger">{errors.city}</span>}
+                          </Label>
+                          <Field
+                            disabled={cities.length <= 0}
+                            as="select"
+                            className="form-control"
+                            id="city"
+                            name="city"
+                            placeholder={t("city_label")}
+                            value={values.city}
+                            onChange={(e) => { setFieldValue('city', e.target.value) }}
+                            required=""
+                          >
+                            <option value='' selected>{t("select.city")}</option>
+                            {cities && cities.map((city, i) => (
+                              <option key={i} value={city.code}>{city.default_name}</option>
+                            ))}
+                          </Field>
+                        </Col>
+                        <Col md="6" sm="12" xs="12" className="form-group">
                           <Label className="form-label" for="company_name">
                             {t('company_name')}
                             {errors.company_name && touched.company_name && <span className="error ms-1 text-danger">{errors.company_name}</span>}
@@ -127,7 +224,7 @@ const UniqueAddress = () => {
                             required=""
                           />
                         </Col>
-                        <Col md="6">
+                        <Col md="6" sm="12" xs="12" className="form-group">
                           <Label className="form-label" for="first_name">
                             {t('first_name')}
                             {errors.first_name && touched.first_name && <span className="error ms-1 text-danger">{errors.first_name}</span>}
@@ -143,7 +240,7 @@ const UniqueAddress = () => {
                             required=""
                           />
                         </Col>
-                        <Col md="6">
+                        <Col md="6" sm="12" xs="12" className="form-group">
                           <Label className="form-label" for="last_name">
                             {t('last_name')}
                             {errors.last_name && touched.last_name && <span className="error ms-1 text-danger">{errors.last_name}</span>}
@@ -159,7 +256,7 @@ const UniqueAddress = () => {
                             onChange={(e) => setFieldValue('last_name', e.target.value)}
                           />
                         </Col>
-                        <Col md="6">
+                        <Col md="6" sm="12" xs="12" className="form-group">
                           <Label className="form-label" for="email">
                             {t('email')}
                           </Label>
@@ -171,57 +268,35 @@ const UniqueAddress = () => {
                             name="email"
                           />
                         </Col>
-                        <Col md="6">
+                        <Col md="6" sm="12" xs="12" className="form-group">
                           <Label className="form-label" for="phone">
                             {t('phone')}
+                            {errors.phone && touched.phone && <span className="error ms-1 text-danger">{errors.phone}</span>}
                           </Label>
-                          <Field
-                            type="number"
-                            className="form-control"
-                            id="phone"
-                            name='phone'
-                            placeholder={t('inter.number')}
-                            value={values.phone}
-                            onChange={(e) => setFieldValue('phone', e.target.value)}
-                            required=""
-                          />
+                          <CustomPhoneInput values={values} isDetails={false} setFieldValue={setFieldValue} />
                         </Col>
-                        <Col md="6">
-                          <Label className="form-label" for="state">
-                            {t('state')}
-                            {errors.state && touched.state && <span className="error ms-1 text-danger">{errors.state}</span>}
-                          </Label>
-                          <Field
-                            type="text"
-                            className="form-control"
-                            id="state"
-                            name='state'
-                            placeholder={t('inter.state')}
-                            value={values.state}
-                            onChange={(e) => setFieldValue('state', e.target.value)}
-                            required=""
-                          />
-                        </Col>
-                        <Col md="6">
+                        <Col md="6" sm="12" xs="12" className="form-group">
                           <Label className="form-label" for="address1">
                             {t("address_label")}
+                            {errors.address1 && touched.address1 && <span className="error ms-1 text-danger">{errors.address1}</span>}
                           </Label>
-                          <Input
+                          <Field
                             type="text"
                             className="form-control"
                             id="address1"
-                            name="address1"
+                            name="address1[0]" // Update this line
                             placeholder={t("address_label")}
                             value={[values.address1]}
                             onChange={(e) => setFieldValue('address1', [e.target.value])}
                             required=""
                           />
                         </Col>
-                        <Col md="6">
+                        <Col md="6" sm="12" xs="12" className="form-group">
                           <Label className="form-label" for="zip-code">
                             {t("postcode")}
+                            {errors.postcode && touched.postcode && <span className="error ms-1 text-danger">{errors.postcode}</span>}
                           </Label>
-                          <Input
+                          <Field
                             type="number"
                             className="form-control"
                             id="zip-code"
@@ -232,42 +307,10 @@ const UniqueAddress = () => {
                             onChange={(e) => setFieldValue('postcode', e.target.value)}
                           />
                         </Col>
-                        <Col md="6">
-                          <Label className="form-label" for="country">
-                            {t("country_label")}
-                          </Label>
-                          <Input
-                            type="text"
-                            className="form-control"
-                            id="country"
-                            name="country"
-                            placeholder={t("country_label")}
-                            value={values.country}
-                            onChange={(e) => setFieldValue('country', e.target.value)}
-                            required=""
-                          />
-                        </Col>
-                        <Col md="6">
-                          <Label className="form-label" for="city">
-                            {t("city_label")}
-                          </Label>
-                          <Input
-                            type="text"
-                            className="form-control"
-                            id="city"
-                            name="city"
-                            placeholder={t("city_label")}
-                            required=""
-                            value={values.city}
-                            onChange={(e) => setFieldValue('city', e.target.value)}
-                          />
-                        </Col>
                         <div className="col-md-12">
-                          <button className="btn btn-sm btn-solid" type="submit" name="submit_button" disabled={isEqual(values, address)}>
-                            {t("button_text")}
-                          </button>
+                          <Button className="btn btn-sm btn-solid" type="submit" disabled={isEqual(address, values)}>{t('update')}</Button>
                         </div>
-                      </Row>
+                      </div>
                     </Form>
                   )}
                 </Formik>

@@ -9,6 +9,7 @@ import LogoImage from "./common/logo";
 import Currency from "./common/currency";
 import { useRouter } from "next/router";
 import SearchOverlay from "./common/search-overlay";
+import { getCategoriesTree } from "@/controllers/productsController";
 
 const HeaderOne = ({
   logoName,
@@ -47,15 +48,26 @@ const HeaderOne = ({
       else document.getElementById("sticky").classList.add("fixed");
     }
     else {
-      document.getElementById("sticky").classList.add("fixed");
+      if (document.getElementById("sticky")) {
+        document.getElementById("sticky").classList.add("fixed");
+      }
       document.getElementById("sticky").classList.remove("fixed");
     }
   };
 
-  const openNav = () => {
+  const [loading, setLoading] = useState(false);
+  const [categories, setCategories] = useState([]);
+  const fetchCates = async () => {
+    const response = await getCategoriesTree(router.locale);
+    setCategories(response);
+  };
+  const openNav = async () => {
     var openMySlide = document.getElementById("mySidenav");
+    var body = document.body;
     if (openMySlide) {
       openMySlide.classList.add("open-side");
+      body.classList.add("overflow-hidden");
+      fetchCates();
     }
   };
   const openSearch = () => {
@@ -92,7 +104,7 @@ const HeaderOne = ({
                       </div>
                     </a>
                     {/*SideBar Navigation Component*/}
-                    <SideBar />
+                    <SideBar categories={categories} />
                   </div>
                   <div className="brand-logo">
                     <LogoImage logo={logoName} />
@@ -101,7 +113,6 @@ const HeaderOne = ({
                 <div className="menu-right pull-right">
                   {/*Top Navigation Bar Component*/}
                   <NavBar />
-
                   <div>
                     <div className="icon-nav">
                       <ul>

@@ -36,7 +36,7 @@ const Fashion = ({ page, homeData, video }) => {
         <meta property="og:description" content={page.meta_description} />
         <title>{page.meta_title}</title>
       </Head>
-      <ModalComponent />
+      {/* <ModalComponent /> */}
       <MainBanner sliders={homeData.sliders} />
       {
         homeData.collections_products &&

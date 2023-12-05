@@ -4,7 +4,7 @@ import PostLoader from "../PostLoader";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
-import ProductItem from "../product-box/ProductBox1";
+import ProductItem from "../product-box/ProductBox12";
 import useCartStore from "../../../helpers/cart/cartStore";
 import currencyStore from "../../../helpers/Currency/CurrencyStore";
 import useWishListStore from "../../../helpers/wishlist/wishlistStore";
@@ -28,7 +28,7 @@ const TopCollection = ({ type, title, subtitle, designClass, noSlider, cartClass
   }, [delayProduct]);
   return (
     <>
-      <section className={designClass}>
+      <section className={designClass + ' ' + 'tools-grey'}>
         <Container>
           <Row>
             <Col>

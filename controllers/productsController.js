@@ -67,7 +67,7 @@ export async function getCatagories(locale, id) {
 
   return response.data.data;
 }
-export async function getCatagoriesTree(locale) {
+export async function getCategoriesTree(locale) {
   const response = await axios({
     method: "GET",
     url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/categories-tree`,

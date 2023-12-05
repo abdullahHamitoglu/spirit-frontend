@@ -1,4 +1,11 @@
-@mixin round_corner($amount, $chainable: "ul > li:last-child > ", $level: 4, $chain_prefix: "> li:last-child > ", $chain: "", $selector: "") {
+@mixin round_corner(
+  $amount,
+  $chainable: "ul > li:last-child > ",
+  $level: 4,
+  $chain_prefix: "> li:last-child > ",
+  $chain: "",
+  $selector: ""
+) {
   $chain: $chain_prefix;
   $selector: $chain + "a, " + $chain + "*:not(ul) a, " + $chain + "ul";
   @for $i from 1 through $level {
@@ -479,7 +486,6 @@ header {
       direction: ltr;
       text-align: left;
       li {
-        position: relative;
         display: block;
         margin: 0;
         padding: 0;
@@ -492,7 +498,7 @@ header {
           color: #222222;
           font-size: 14px;
           font-weight: 400;
-          line-height: 23px;
+          line-height: 20px;
           text-decoration: none;
           text-transform: uppercase;
           letter-spacing: 0.07em;
@@ -978,6 +984,7 @@ header {
     }
     .sidenav {
       .sidebar-menu {
+        position: relative;
         li {
           a {
             .sub-arrow {
@@ -1033,6 +1040,11 @@ header {
           &:hover {
             > ul {
               display: block;
+            }
+          }
+          &:nth-child(n + 7) {
+            .mega-menu {
+              top: 40vh;
             }
           }
           .mega-menu {
@@ -1371,7 +1383,8 @@ header {
     // Main menu box
     &.sm-vertical {
       a {
-        padding: $theme-deafult__desktop-vertical-item-padding-vertical $theme-deafult__desktop-vertical-item-padding-horizontal;
+        padding: $theme-deafult__desktop-vertical-item-padding-vertical
+          $theme-deafult__desktop-vertical-item-padding-horizontal;
         .sub-arrow {
           &:before {
             content: "\f105";

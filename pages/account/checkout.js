@@ -4,13 +4,36 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import CheckoutPage from '@/components/common/checkout-page';
 import { useTranslation } from 'react-i18next';
 import Head from 'next/head';
+import useCartStore from '@/helpers/cart/cartStore';
+import { toast } from 'react-toastify';
+import { useRouter } from 'next/router';
+import CheckoutLoader from '@/components/layouts/Bags/common/checkoutLoader';
 
 const Checkout = () => {
     const [currentUser, setCurrentUser] = useState(localStorage.getItem('user'));
     const { t } = useTranslation();
+    const router = useRouter();
     useEffect(() => {
         setCurrentUser(localStorage.getItem('user'))
-    }, [localStorage.getItem('user')])
+    }, [localStorage.getItem('user')]);
+    const {
+        cartData,
+        getCart
+    } = useCartStore();
+    useEffect(() => {
+        getCart();
+        if (!cartData) {
+            toast.warn(t('your_cart_is_empty'));
+            router.push('/products');
+        }
+    }, []);
+    if (!cartData) {
+        return (
+            <div className="loader-wrapper">
+                <div className="loader"></div>
+            </div>
+        )
+    }
     return (
         <>
             <Head>

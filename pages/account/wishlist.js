@@ -7,7 +7,7 @@ import { useRouter } from 'next/router';
 
 
 const Wishliat = () => {
-    const { isAuthenticated } = useUserStore();
+    const { isAuthenticated, user } = useUserStore();
     const router = useRouter();
     if (!isAuthenticated && !user) {
         router.push({

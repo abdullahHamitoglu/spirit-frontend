@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Field, Formik } from 'formik';
 import { Col, Container, Form, Input, Label, Row } from 'reactstrap';
@@ -8,6 +8,10 @@ import * as Yup from 'yup';
 import useUserStore from '@/helpers/user/userStore';
 import CommonLayout from '@/components/shop/common-layout';
 
+import PhoneInput from 'react-phone-input-2'
+import 'react-phone-input-2/lib/style.css'
+import addressStore from '@/helpers/address/addressStore';
+import CustomPhoneInput from '@/components/account/customPhoneInput';
 
 const Register = () => {
     const { locale } = useRouter();
@@ -25,6 +29,7 @@ const Register = () => {
             .oneOf([Yup.ref('password'), null], 'Passwords must match')
             .required('Confirm Password is required'),
     });
+    const { getCountries, countries } = addressStore();
 
 
     if (isAuthenticated) {
@@ -35,6 +40,10 @@ const Register = () => {
             router.push('/');
         }
     }
+    useEffect(() => {
+        getCountries(locale)
+    }, []);
+
     return (
         <CommonLayout parent="home" title="register">
             <section className="register-page section-b-space">
@@ -49,6 +58,8 @@ const Register = () => {
                                         last_name: '',
                                         email: '',
                                         password: '',
+                                        phone: '',
+                                        phone_code: '',
                                         password_confirmation: ''
                                     }}
                                     validationSchema={validationSchema}
@@ -56,7 +67,7 @@ const Register = () => {
                                         register(values, locale);
                                         setSubmitting(false);
                                     }} >
-                                    {({ values, errors, touched, handleSubmit, isSubmitting, }) => (
+                                    {({ values, errors, touched, handleSubmit, isSubmitting, setFieldValue }) => (
                                         <Form className="theme-form" onSubmit={handleSubmit}>
                                             <Row>
                                                 <Col md="6">
@@ -80,6 +91,13 @@ const Register = () => {
                                                         {errors.email && touched.email && <span className="error ms-1 text-danger">{errors.email}</span>}
                                                     </Label>
                                                     <Field type="email" className="form-control" id="email" name="email" placeholder={t('email')} required="" />
+                                                </Col>
+                                                <Col md="6" sm="12" xs="12" className="form-group">
+                                                    <Label className="form-label" for="phone">
+                                                        {t('phone')}
+                                                        {errors.phone && touched.phone && <span className="error ms-1 text-danger">{errors.phone}</span>}
+                                                    </Label>
+                                                    <CustomPhoneInput values={values} isDetails={false} setFieldValue={setFieldValue} />
                                                 </Col>
                                                 <Col md="6">
                                                     <Label className="form-label" for="password" >{t('password')}

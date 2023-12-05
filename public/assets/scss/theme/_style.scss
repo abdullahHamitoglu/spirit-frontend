@@ -3290,9 +3290,6 @@ header {
         &:nth-child(-n + 4) {
           color: $star-yellow;
         }
-        &:last-child {
-          color: $round-border;
-        }
       }
     }
     h6 {
@@ -3307,6 +3304,7 @@ header {
       color: #000;
       margin-bottom: 7px;
       text-overflow: ellipsis;
+      white-space: nowrap !important;
     }
     h4 {
       font-size: 18px;
@@ -6675,8 +6673,9 @@ footer {
     }
     .cart-info {
       display: flex;
-      left: 0;
-      bottom: -30px;
+      position: initial;
+      opacity: 1;
+      margin-top: 10px;
       transition: all 0.5s ease;
       .mobile-quick-view {
         display: none;
@@ -6742,6 +6741,9 @@ footer {
         margin-top: 0;
         padding-top: 15px;
       }
+    }
+    a:hover {
+      color: #fff !important;
     }
     .br {
       &.br-default {
@@ -9430,7 +9432,7 @@ footer {
     select {
       border-color: $round-border;
       font-size: 12px;
-      padding: 17px 25px; 
+      padding: 17px 25px;
       margin-bottom: 30px;
       height: inherit;
     }
@@ -10301,12 +10303,7 @@ footer {
   margin-top: 0;
   i {
     padding-right: 5px;
-    &:nth-child(-n + 4) {
-      color: $star-yellow;
-    }
-    &:last-child {
-      color: $round-border;
-    }
+    color: $star-yellow;
   }
   .three-star {
     padding-bottom: 5px;
@@ -10667,6 +10664,12 @@ footer {
       padding: 0 22px;
       height: 45px;
       border: 1px solid #dddddd;
+    }
+    select{
+      padding-inline-start: 35px ;
+      &:disabled{
+        background-color: #f1f1f1;
+      }
     }
   }
   .check-box {

@@ -57,8 +57,8 @@ const Addresses = () => {
                     <Container>
                         <div className="box">
                             <Row>
-                                {addresses ? addresses.map((address) => (
-                                    <Col sm="3">
+                                {addresses ? addresses.map((address, i) => (
+                                    <Col sm="3" key={i}>
                                         <h6> {address.company_name}</h6>
                                         <address>
                                             <h6 className='text-black'>{t('address_label')}: {address.company_name}</h6>

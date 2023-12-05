@@ -1,10 +1,10 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Col, Row, Media, Button, Spinner } from "reactstrap";
 
-import ProductItem from "../../../components/common/product-box/ProductBox1";
+import ProductItem from "../../../components/common/product-box/ProductBox12";
 
 import { useRouter } from "next/router";
-import PostLoader from "../../../components/common/PostLoader";
+import ProductCardLoader from "../../../components/common/ProductCardLoader";
 import { CompareContext } from "../../../helpers/Compare/CompareContext";
 import currencyStore from "@/helpers/Currency/CurrencyStore";
 import useWishListStore from "@/helpers/wishlist/wishlistStore";
@@ -250,7 +250,7 @@ const ProductList = ({ colClass, layoutList, openSidebar, noSidebar, products, p
                   </Col>
                 </Row>
               </div>
-              <div className={`product-wrapper-grid ${layout}`}>
+              <div className={`product-wrapper-grid tools-grey ${layout}`}>
                 <Row>
                   {/* Product Box */}
                   {!productsData ||
@@ -275,16 +275,16 @@ const ProductList = ({ colClass, layoutList, openSidebar, noSidebar, products, p
                       ) : (
                         <>
                           <div lassName={grid} className="col-xl-3 col-lg-4 col-6">
-                            <PostLoader />
+                            <ProductCardLoader />
                           </div>
                           <div lassName={grid} className="col-xl-3 col-lg-4 col-6">
-                            <PostLoader />
+                            <ProductCardLoader />
                           </div>
                           <div lassName={grid} className="col-xl-3 col-lg-4 col-6">
-                            <PostLoader />
+                            <ProductCardLoader />
                           </div>
                           <div lassName={grid} className="col-xl-3 col-lg-4 col-6">
-                            <PostLoader />
+                            <ProductCardLoader />
                           </div>
                         </>
                       )
@@ -323,16 +323,16 @@ const ProductList = ({ colClass, layoutList, openSidebar, noSidebar, products, p
                   {isLoading && (
                     <>
                       <div lassName={grid} className="col-xl-3 col-lg-4 col-6">
-                        <PostLoader />
+                        <ProductCardLoader />
                       </div>
                       <div lassName={grid} className="col-xl-3 col-lg-4 col-6">
-                        <PostLoader />
+                        <ProductCardLoader />
                       </div>
                       <div lassName={grid} className="col-xl-3 col-lg-4 col-6">
-                        <PostLoader />
+                        <ProductCardLoader />
                       </div>
                       <div lassName={grid} className="col-xl-3 col-lg-4 col-6">
-                        <PostLoader />
+                        <ProductCardLoader />
                       </div>
                     </>
                   )}

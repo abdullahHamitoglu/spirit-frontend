@@ -1,5 +1,5 @@
-import { Field, Form, Formik } from 'formik';
-import React, { useEffect } from 'react'
+import { Field, Form, Formik, useFormik } from 'formik';
+import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next';
 import { Col, Label } from 'reactstrap';
 import * as Yup from 'yup';
@@ -10,6 +10,9 @@ import useCartStore from '@/helpers/cart/cartStore';
 import currencyStore from '@/helpers/Currency/CurrencyStore';
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
+import addressStore from '@/helpers/address/addressStore';
+import CustomPhoneInput from './customPhoneInput';
+import { getAddressById } from '@/controllers/addressesController';
 
 function AddressForm({ ctx, col, isDetails, address, checkout }) {
     const { t } = useTranslation();
@@ -27,10 +30,14 @@ function AddressForm({ ctx, col, isDetails, address, checkout }) {
         phone: Yup.string().required(t('this_field_is_required')),
     });
     const { saveCheckoutAddress } = useCartStore();
-    const { getAddresses, addresses, getAddressById, addAddress } = useUserStore();
-    const { getCountries, countries, fetchStates , states } = currencyStore();
-    const handleAddress = (id) => {
-        getAddressById(locale, id);
+    const { getAddresses, addresses, addAddress, token } = useUserStore();
+    const { getCountries, countries, fetchStates, states, loading } = addressStore();
+    const [cities, setCities] = useState([]);
+    const [selectedAddress, setSelectedAddress] = useState([]);
+    const handleAddress = async (id) => {
+        const address = await getAddressById(locale, id, token);
+        setSelectedAddress(address);
+        console.log(address);
     }
     function convertToEnglish(inputString) {
         const charMap = {
@@ -44,31 +51,47 @@ function AddressForm({ ctx, col, isDetails, address, checkout }) {
     useEffect(() => {
         getAddresses(locale);
         getCountries(locale);
-    }, []);
+        fetchStates(locale, address.country);
+        setSelectedAddress(address);
+    }, [locale, address.country]); // Make sure to include address.country as a dependency
+
+    // This useEffect will run whenever the states are loaded or when the selected state changes
+    useEffect(() => {
+        states.map((state) => {
+            if (state.default_name === address.state) { // Check if the state matches the selected state
+                setCities(state.cities);
+            }
+        });
+    }, [states, address.state]);
 
     const getStatesByCountry = (code) => {
         fetchStates(locale, code);
+        setCities([]);
     };
 
-    const getCitiesByState = (cities) => {
-        fetchCities(cities);
+    const getCitiesByState = (id) => {
+        states.map((state) => {
+            if (state.id == id) {
+                setCities(state.cities);
+            }
+        })
     };
-
     return (
         <Formik
             enableReinitialize
             initialValues={{
-                company_name: address.company_name || '',
-                first_name: address.first_name || '',
-                last_name: address.last_name || '',
-                email: address.email || '',
-                address1: address.address1 || [''],
-                country: address.country || '',
-                state: address.state || '',
-                city: address.city || '',
-                postcode: address.postcode || '',
-                phone: address.phone || '',
-                vat_id: address.vat_i || ''
+                company_name: selectedAddress.company_name || '',
+                first_name: selectedAddress.first_name || '',
+                last_name: selectedAddress.last_name || '',
+                email: selectedAddress.email || '',
+                address1: selectedAddress.address1 || [''],
+                country: selectedAddress.country || '',
+                state: selectedAddress.state || '',
+                city: selectedAddress.city || '',
+                postcode: selectedAddress.postcode || '',
+                phone: selectedAddress.phone || '',
+                phone_code: selectedAddress.phone_code || '',
+                vat_id: selectedAddress.vat_i || ''
             }}
             validationSchema={addressValidationSchema}
             onSubmit={(values, { setSubmitting }) => {
@@ -84,7 +107,7 @@ function AddressForm({ ctx, col, isDetails, address, checkout }) {
                 }
             }}
             errors={(errors) => {
-                console.log(errors);
+                console.error(errors);
             }}
         >
             {({ values, errors, touched, handleSubmit, isSubmitting, setFieldValue }) => (
@@ -100,7 +123,7 @@ function AddressForm({ ctx, col, isDetails, address, checkout }) {
                                         <label>{t("shipping_address")}</label>
                                         <Link style={{ color: '#54c3bd' }} href={'/addresses#form'}>{t('add_new_address')}</Link>
                                     </div>
-                                    <select name="address" onChange={() => handleAddress(event.target.value)}>
+                                    <select name="address" onChange={(e) => handleAddress(e.target.value)}>
                                         {addresses.map((address, i) => (
                                             <option key={i} value={address.id}>{address.company_name}</option>
                                         ))}
@@ -120,10 +143,9 @@ function AddressForm({ ctx, col, isDetails, address, checkout }) {
                                     name="country"
                                     placeholder={t("country_label")}
                                     value={values.country}
-                                    onChange={(e) => {setFieldValue('country', e.target.value); getStatesByCountry(e.target.value)}}
+                                    onChange={(e) => { setFieldValue('country', e.target.value); getStatesByCountry(e.target.value) }}
                                     required=""
                                 >
-                                    <option disabled value=''>{t("select.country")}</option>
                                     {countries && countries.map((country, i) => (
                                         <option key={i} value={country.code}>{country.name}</option>
                                     ))}
@@ -136,20 +158,23 @@ function AddressForm({ ctx, col, isDetails, address, checkout }) {
                                     {errors.state && touched.state && <span className="error ms-1 text-danger">{errors.state}</span>}
                                 </Label>
                                 <Field
-                                    disabled={isDetails}
+                                    disabled={isDetails || states.length <= 0}
                                     as="select"
                                     className="form-control"
-                                    id="country"
-                                    name="country"
+                                    id="state"
+                                    name="state"
                                     placeholder={t('inter.state')}
                                     value={values.state}
-                                    onChange={(e) => {setFieldValue('state', e.target.value)}}
+                                    onChange={(e) => {
+                                        setFieldValue('state', e.target.value);
+                                        let selectedOptionId = e.target.options[e.target.selectedIndex].getAttribute('id');
+                                        getCitiesByState(parseInt(selectedOptionId));
+                                    }}
                                     required=""
                                 >
-                                    <option disabled value=''>{t("select.state")}</option>
-                                    {console.log(states)}
+                                    <option value='' selected>{t("select.state")}</option>
                                     {states && states.map((state, i) => (
-                                        <option key={i} value={state.code}>{state.default_name}</option>
+                                        <option key={i} value={state.code} id={state.id}>{state.default_name}</option>
                                     ))}
                                 </Field>
                             </Col>
@@ -159,16 +184,21 @@ function AddressForm({ ctx, col, isDetails, address, checkout }) {
                                     {errors.city && touched.city && <span className="error ms-1 text-danger">{errors.city}</span>}
                                 </Label>
                                 <Field
-                                    disabled={isDetails}
-                                    type="text"
+                                    disabled={isDetails || cities.length <= 0}
+                                    as="select"
                                     className="form-control"
                                     id="city"
                                     name="city"
                                     placeholder={t("city_label")}
-                                    required=""
                                     value={values.city}
-                                    onChange={(e) => setFieldValue('city', e.target.value)}
-                                />
+                                    onChange={(e) => { setFieldValue('city', e.target.value) }}
+                                    required=""
+                                >
+                                    <option value='' selected>{t("select.city")}</option>
+                                    {cities && cities.map((city, i) => (
+                                        <option key={i} value={city.code}>{city.default_name}</option>
+                                    ))}
+                                </Field>
                             </Col>
                             <Col md="6" sm="12" xs="12" className="form-group">
                                 <Label className="form-label" for="company_name">
@@ -239,22 +269,7 @@ function AddressForm({ ctx, col, isDetails, address, checkout }) {
                                     {t('phone')}
                                     {errors.phone && touched.phone && <span className="error ms-1 text-danger">{errors.phone}</span>}
                                 </Label>
-                                {/* <PhoneInput
-                                    country={'us'}
-                                    value={this.state.phone}
-                                    onChange={phone => this.setState({ phone })}
-                                /> */}
-                                <Field
-                                    disabled={isDetails}
-                                    type="number"
-                                    className="form-control"
-                                    id="phone"
-                                    name='phone'
-                                    placeholder={t('inter.number')}
-                                    value={values.phone}
-                                    onChange={(e) => setFieldValue('phone', e.target.value)}
-                                    required=""
-                                />
+                                <CustomPhoneInput values={values} isDetails={isDetails} setFieldValue={setFieldValue} />
                             </Col>
                             <Col md="6" sm="12" xs="12" className="form-group">
                                 <Label className="form-label" for="address1">

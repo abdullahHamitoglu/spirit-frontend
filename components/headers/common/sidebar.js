@@ -1,11 +1,21 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect } from "react";
 import { Row, Col, Media } from "reactstrap";
 import Image from "next/image";
+import { getCategoriesTree } from "@/controllers/productsController";
+import { useRouter } from "next/router";
+import MenuLoader from "@/components/layouts/Bags/common/MenuLoader";
+import Link from "next/link";
+import { useTranslation } from "react-i18next";
+import Trans from "@/helpers/Trans";
 
-const SideBar = () => {
-  const closeNav = () => {
+const SideBar = ({ categories }) => {
+  const closeNav = async () => {
     var closemyslide = document.getElementById("mySidenav");
-    if (closemyslide) closemyslide.classList.remove("open-side");
+    var body = document.body;
+    if (closemyslide) {
+      closemyslide.classList.remove("open-side");
+      body.classList.remove("overflow-hidden");
+    }
   };
 
   const handleSubmenu = (event) => {
@@ -70,10 +80,10 @@ const SideBar = () => {
       event.target.nextElementSibling.classList.add("opensidesubmenu");
     }
   };
-
+  const { locale } = useRouter();
   return (
     <Fragment>
-      <div id="mySidenav" className="sidenav">
+      {/* <div id="mySidenav" className="sidenav">
         <a href={null} className="sidebar-overlay" onClick={closeNav}></a>
         <nav>
           <a href={null} onClick={closeNav}>
@@ -351,6 +361,57 @@ const SideBar = () => {
               <a href="#">kitchen</a>
             </li>
           </ul>
+        </nav>
+      </div> */}
+      <div id="mySidenav" className="sidenav">
+        <a href={null} className="sidebar-overlay" onClick={closeNav}></a>
+        <nav>
+          <a href={null} onClick={closeNav}>
+            <div className="sidebar-back text-start">
+              <i className="fa fa-angle-left pe-2" aria-hidden="true"></i> {Trans('back')}
+            </div>
+          </a>
+          {categories && categories.length <= 0 ? <MenuLoader /> :
+            <>
+              <ul id="sub-menu" className="sidebar-menu">
+                {categories.map((category, i) => (
+                  <li key={i}>
+                    <Link href={`/products?category_id=${category.id}`} onClick={(e) => handleMegaSubmenu(e)} title={category.name}>
+                      <span className="text-nowrap overflow-hidden mw-100 d-block">
+                        {category.name}
+                      </span>
+                      <span className="sub-arrow"></span>
+                    </Link>
+                    {category.children &&
+                      <ul className="mega-menu clothing-menu">
+                        <li>
+                          <Row m="0">
+                            <Col xl="6">
+                              <div className="link-section">
+                                <h5>{category.name}</h5>
+                                <ul>
+                                  {category.children.map((chide, i) => (
+                                    <li key={i}>
+                                      <Link href={`/products?category_id=${chide.id}`}>{chide.name}</Link>
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                            </Col>
+                            <Col xl="6">
+                              <a href="#" className="mega-menu-banner">
+                                <img width={500} height={600} src={category.image_url} alt="" className="img-fluid" />
+                              </a>
+                            </Col>
+                          </Row>
+                        </li>
+                      </ul>
+                    }
+                  </li>
+                ))}
+              </ul>
+            </>
+          }
         </nav>
       </div>
     </Fragment>

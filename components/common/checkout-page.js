@@ -15,37 +15,19 @@ import AddressForm from "../account/addressForm";
 
 const CheckoutPage = () => {
   const { redirect_url, saveCheckoutOrder, orderDetails, getCart, cartData, saveCheckoutPayment, savedAddress, saveCheckoutShipping, paymentMethods } = useCartStore();
-  const { address } = useUserStore();
+  const { addresses } = useUserStore();
   const [obj, setObj] = useState({});
   const [payment, setPayment] = useState("cod");
   const router = useRouter();
   const { locale } = useRouter();
   const { t } = useTranslation();
-  const addressValidationSchema = Yup.object().shape({
-    company_name: Yup.string().required(t('this_field_is_required')),
-    first_name: Yup.string().required(t('this_field_is_required')),
-    last_name: Yup.string().required(t('this_field_is_required')),
-    email: Yup.string().email(t('invalid_email')).required(t('this_field_is_required')),
-    address1: Yup.array().required(t('this_field_is_required')),
-    state: Yup.string().required(t('this_field_is_required')),
-    city: Yup.string().required(t('this_field_is_required')),
-    postcode: Yup.string().required(t('this_field_is_required')),
-    phone: Yup.string().required(t('this_field_is_required')),
-    // vat_id: Yup.string().required(t('this_field_is_required')),
-  });
   const sippingValidationSchema = Yup.object().shape({
     shipping_method: Yup.string().required(t('this_field_is_required'))
   });
   const paymentValidationSchema = Yup.object().shape({
     payment_method: Yup.string().required(t('this_field_is_required'))
   });
-  useEffect(() => {
-    getCart();
-    if (!cartData) {
-      toast.warn(t('your_cart_is_empty'));
-      router.push('/products');
-    }
-  }, []);
+  
   return (
     <section className="section-b-space">
       <Container>
@@ -56,7 +38,7 @@ const CheckoutPage = () => {
                 <Steps>
                   <Step>
                     {ctx => (
-                      <AddressForm checkout={true} ctx={ctx} col='6' button={true} address={address} />
+                      <AddressForm checkout={true} ctx={ctx} col='6' button={true} address={addresses[0]} />
                     )}
                   </Step>
                   <Step>

@@ -34,7 +34,7 @@ const FilterPage = ({ sm, sidebarView, closeSidebar, attributes, setProductsData
                         </span>
                     </div>
                     {/* <Category categories={categories} /> */}
-                    {attributes.map((attribute, i) => (
+                    {attributes.length > 0 && attributes.map((attribute, i) => (
                         attribute.type != 'price' ?
                             <FilterOptions key={i} attr={attribute} /> :
                             <Price key={i} />

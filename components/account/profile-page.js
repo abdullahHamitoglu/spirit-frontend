@@ -7,6 +7,7 @@ import * as Yup from 'yup';
 import isEqual from "lodash/isEqual";
 import useUserStore from '../../helpers/user/userStore';
 import { useRouter } from 'next/router';
+import CustomPhoneInput from './customPhoneInput';
 
 const formatDate = (date) => {
     const formattedDate = new Date(date);
@@ -23,6 +24,7 @@ const ProfilePage = ({ userDetails }) => {
         date_of_birth: formatDate(userDetails.date_of_birth),
         gender: userDetails.gender,
         phone: userDetails.phone,
+        phone_code: userDetails.phone_code,
         password: '',
         password_confirmation: ''
     });
@@ -63,7 +65,7 @@ const ProfilePage = ({ userDetails }) => {
 
     return (
         <>
-            <section className="contact-page register-page" id='adresses'>
+            <section className="contact-page register-page mb-5" id='adresses'>
                 <Container>
                     <Row>
                         <Col sm="12">
@@ -75,6 +77,7 @@ const ProfilePage = ({ userDetails }) => {
                                     date_of_birth: user.date_of_birth,
                                     gender: user.gender,
                                     phone: user.phone,
+                                    phone_code: user.phone_code,
                                     password: '',
                                     password_confirmation: ''
                                 }}
@@ -88,7 +91,7 @@ const ProfilePage = ({ userDetails }) => {
                                     setSubmitting(false);
                                 }}
                                 on >
-                                {({ values, errors, touched, handleSubmit, isSubmitting, setFieldValue, setFieldValues }) => (
+                                {({ values, errors, touched, handleSubmit, isSubmitting, setFieldValue, setFieldValues, setValue }) => (
                                     <Form className="theme-form" onSubmit={handleSubmit} >
                                         <Row>
                                             <Col md="6">
@@ -110,8 +113,7 @@ const ProfilePage = ({ userDetails }) => {
                                             </Col>
                                             <Col md="6">
                                                 <Label className="form-label" for="phone">{t('phone')}</Label>
-                                                <Field type="number" className="form-control" id="phone" name='phone' placeholder={t('inter.number')} value={values.phone} onChange={(e) => setFieldValue('phone', e.target.value)}
-                                                    required="" />
+                                                <CustomPhoneInput values={values} isDetails={false} setFieldValue={setFieldValue} />
                                             </Col>
                                             <Col md="6">
                                                 <Label className="form-label" for="date_of_birth">{t('date_of_birth')}</Label>
@@ -120,7 +122,7 @@ const ProfilePage = ({ userDetails }) => {
                                             </Col>
                                             <Col md="6" className='search-box'>
                                                 <label className="form-label" htmlFor="gender">{t('gender')}:</label>
-                                                <select className="form-select form-control py-2" size="1" value={values.gender} onChange={(e) => setFieldValue('gender', e.target.value)}>
+                                                <select className="form-select form-control py-3" size="1" value={values.gender} onChange={(e) => setFieldValue('gender', e.target.value)}>
                                                     <option value="f">{t("female")}</option>
                                                     <option value="m">{t('male')}</option>
                                                 </select>
@@ -137,195 +139,6 @@ const ProfilePage = ({ userDetails }) => {
                                             <Col md="12">
                                                 <button className={`btn btn-sm mt-4 btn-solid`} type="submit" disabled={isSubmitting || isEqual(values, user)}>{isSubmitting ? t('loading') : t('save')}</button>
                                             </Col>
-                                        </Row>
-                                    </Form>
-                                )}
-                            </Formik>
-                        </Col>
-                    </Row>
-                </Container>
-            </section>
-            <section className="contact-page register-page section-b-space">
-                <Container>
-                    <Row>
-                        <Col sm="12">
-                            <h3>{t("shipping_address")}</h3><Formik
-                                initialValues={{
-                                    company_name: "",
-                                    first_name: user.first_name,
-                                    last_name: user.last_name,
-                                    email: user.email,
-                                    address1: [],
-                                    country: "",
-                                    state: "",
-                                    city: "",
-                                    postcode: "",
-                                    phone: user.phone,
-                                    vat_id: ""
-                                }}
-                                validationSchema={addressValidationSchema}
-                                onSubmit={(values, { setSubmitting }) => {
-                                    addAddress(values, locale);
-                                    setSubmitting(false);
-                                }}
-                            >
-                                {({ values, errors, touched, handleSubmit, isSubmitting, setFieldValue, setFieldValues }) => (
-                                    <Form className="theme-form" onSubmit={handleSubmit}>
-                                        <Row>
-                                            <Col md="6">
-                                                <Label className="form-label" for="company_name">
-                                                    {t('company_name')}
-                                                    {errors.company_name && touched.company_name && <span className="error ms-1 text-danger">{errors.company_name}</span>}
-                                                </Label>
-                                                <Field
-                                                    type="text"
-                                                    className="form-control"
-                                                    id="company_name"
-                                                    name='company_name'
-                                                    placeholder={t('inter.company_name')}
-                                                    onChange={(e) => setFieldValue('company_name', e.target.value)}
-                                                    required=""
-                                                />
-                                            </Col>
-                                            <Col md="6">
-                                                <Label className="form-label" for="first_name">
-                                                    {t('first_name')}
-                                                    {errors.first_name && touched.first_name && <span className="error ms-1 text-danger">{errors.first_name}</span>}
-                                                </Label>
-                                                <Field
-                                                    type="text"
-                                                    className="form-control"
-                                                    id="first_name"
-                                                    name='first_name'
-                                                    placeholder={t('inter.name')}
-                                                    value={values.first_name}
-                                                    onChange={(e) => setFieldValue('first_name', e.target.value)}
-                                                    required=""
-                                                />
-                                            </Col>
-                                            <Col md="6">
-                                                <Label className="form-label" for="last_name">
-                                                    {t('last_name')}
-                                                    {errors.last_name && touched.last_name && <span className="error ms-1 text-danger">{errors.last_name}</span>}
-                                                </Label>
-                                                <Field
-                                                    type="text"
-                                                    className="form-control"
-                                                    id="last_name"
-                                                    name='last_name'
-                                                    placeholder={t('inter.name')}
-                                                    required=""
-                                                    value={values.last_name}
-                                                    onChange={(e) => setFieldValue('last_name', e.target.value)}
-                                                />
-                                            </Col>
-                                            <Col md="6">
-                                                <Label className="form-label" for="email">
-                                                    {t('email')}
-                                                </Label>
-                                                <Field
-                                                    type="email"
-                                                    className="form-control"
-                                                    id="email"
-                                                    placeholder={t('inter.email')}
-                                                    name="email"
-                                                />
-                                            </Col>
-                                            <Col md="6">
-                                                <Label className="form-label" for="phone">
-                                                    {t('phone')}
-                                                </Label>
-                                                <Field
-                                                    type="number"
-                                                    className="form-control"
-                                                    id="phone"
-                                                    name='phone'
-                                                    placeholder={t('inter.number')}
-                                                    value={values.phone}
-                                                    onChange={(e) => setFieldValue('phone', e.target.value)}
-                                                    required=""
-                                                />
-                                            </Col>
-                                            <Col md="6">
-                                                <Label className="form-label" for="state">
-                                                    {t('state')}
-                                                    {errors.state && touched.state && <span className="error ms-1 text-danger">{errors.state}</span>}
-                                                </Label>
-                                                <Field
-                                                    type="text"
-                                                    className="form-control"
-                                                    id="state"
-                                                    name='state'
-                                                    placeholder={t('inter.state')}
-                                                    onChange={(e) => setFieldValue('state', e.target.value)}
-                                                    required=""
-                                                />
-                                            </Col>
-                                            <Col md="6">
-                                                <Label className="form-label" for="address1">
-                                                    {t("address_label")}
-                                                </Label>
-                                                <Input
-                                                    type="text"
-                                                    className="form-control"
-                                                    id="address1"
-                                                    name="address1"
-                                                    placeholder={t("address_label")}
-                                                    value={[values.address1]}
-                                                    onChange={(e) => setFieldValue('address1', [e.target.value])}
-                                                    required=""
-                                                />
-                                            </Col>
-                                            <Col md="6">
-                                                <Label className="form-label" for="zip-code">
-                                                    {t("postcode")}
-                                                </Label>
-                                                <Input
-                                                    type="number"
-                                                    className="form-control"
-                                                    id="zip-code"
-                                                    name="postcode"
-                                                    placeholder={t("postcode")}
-                                                    required=""
-                                                    value={values.postcode}
-                                                    onChange={(e) => setFieldValue('postcode', e.target.value)}
-                                                />
-                                            </Col>
-                                            <Col md="6">
-                                                <Label className="form-label" for="country">
-                                                    {t("country_label")}
-                                                </Label>
-                                                <Input
-                                                    type="text"
-                                                    className="form-control"
-                                                    id="country"
-                                                    name="country"
-                                                    placeholder={t("country_label")}
-                                                    value={values.country}
-                                                    onChange={(e) => setFieldValue('country', e.target.value)}
-                                                    required=""
-                                                />
-                                            </Col>
-                                            <Col md="6">
-                                                <Label className="form-label" for="city">
-                                                    {t("city_label")}
-                                                </Label>
-                                                <Input
-                                                    type="text"
-                                                    className="form-control"
-                                                    id="city"
-                                                    name="city"
-                                                    placeholder={t("city_label")}
-                                                    required=""
-                                                    value={values.city}
-                                                    onChange={(e) => setFieldValue('city', e.target.value)}
-                                                />
-                                            </Col>
-                                            <div className="col-md-12">
-                                                <button className="btn btn-sm btn-solid" type="submit" name="submit_button">
-                                                    {t("button_text")}
-                                                </button>
-                                            </div>
                                         </Row>
                                     </Form>
                                 )}

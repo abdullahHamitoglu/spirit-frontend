@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import CommonLayout from "../../components/shop/common-layout";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { getCatagories, getCatagoriesTree, getFilterAttr, getProducts } from "@/controllers/productsController";
+import { getCatagories, getCategoriesTree, getFilterAttr, getProducts } from "@/controllers/productsController";
 import { getPageData } from "@/controllers/homeController";
 import { parseCookies } from "nookies";
 import { Container, Media, Row, Col, Nav, NavItem, NavLink } from "reactstrap";
@@ -92,7 +92,7 @@ const Collection = ({ categories }) => {
 export async function getServerSideProps(context) {
   const { locale, params } = context;
   const { token } = parseCookies(context);
-  const categories = await getCatagoriesTree(locale);
+  const categories = await getCategoriesTree(locale);
   const page = await getPageData(locale, "categories");
   return {
     props: {

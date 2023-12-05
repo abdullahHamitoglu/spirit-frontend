@@ -312,6 +312,7 @@
     "cheapest_first": "Cheapest First",
     "expensive_first": "Expensive First",
     "show_results": "Show results",
+    "catagories":"catagories",
     "select": {
         "country": "Select country",
         "city": "Select City",
