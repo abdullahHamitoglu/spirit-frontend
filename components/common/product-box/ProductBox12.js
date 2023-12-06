@@ -62,9 +62,9 @@ const ProductItem = ({
     <div className="product-box product-wrap">
       <div className="img-wrapper">
         <div className="lable-block">
-          {product.new === "true" ? <span className="lable3">new</span> : ""}
+          {product.new === "true" ? <span className="lable3">{t("new")}</span> : ""}
           {product.sale === "true" ? (
-            <span className="lable4">on sale</span>
+            <span className="lable4">on_sale</span>
           ) : (
             ""
           )}
@@ -90,23 +90,6 @@ const ProductItem = ({
                       alt=""
                       className="img-fluid"
                     />
-                    <div className="media-body align-self-center text-center">
-                      <h5>
-                        <i className="fa fa-check"></i>Item{" "}
-                        <span>{product.name} </span>
-                        <span> successfully added to your Compare list</span>
-                      </h5>
-                      <div className="buttons d-flex justify-content-center">
-                        <Link href="/page/compare" className="btn-sm btn-solid">
-                          {/* <a
-                            
-                            onClick={addToCompare}
-                          > */}
-                          View Compare list
-                          {/* </a> */}
-                        </Link>
-                      </div>
-                    </div>
                   </div>
                 </Col>
               </Row>

@@ -5,6 +5,7 @@ import { getProductBySlug, getProductReviews, getProducts } from '@/controllers/
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
+import Script from 'next/script';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -24,24 +25,27 @@ function Post({ product, reviews }) {
       </div>
     );
   }
-  console.log(router);
+  console.log(product.rich_snippets);
   return (
     <>
       <Head>
         {/* <meta name="keywords" content={product.meta_keywords} /> */}
         <meta name="description" content={product.description} />
         <meta property="og:type" content="product" />
-        <meta property="og:title" content={product.title} />
+        <meta property="og:title" content={product.name} />
         <meta property="og:url" content={URL} />
         <meta property="og:image" content={product.images.original_image_url} />
-        <meta property="og:image:alt" content={product.title} />
+        <meta property="og:image:alt" content={product.name} />
         <meta property="og:description" content={product.description} />
-        <title>{product.title}</title>
+        <title>{product.name}</title>
       </Head>
       <CommonLayout parent={t('products')} parentLink="/products" title={product.name}>
         <NoSidebarPage pathId={product.id} product={product} reviews={reviews} />
         <ProductSection />
       </CommonLayout>
+      <Script type="application/ld+json">
+        {product.rich_snippets}
+      </Script>
     </>
   );
 }

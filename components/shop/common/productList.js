@@ -90,14 +90,6 @@ const ProductList = ({ colClass, layoutList, openSidebar, noSidebar, products, p
       <div className="page-main-content">
         <Row>
           <Col sm="12">
-            {page.length > 0 &&
-              <div className="top-banner-wrapper">
-                <div className="top-banner-content small-section">
-                  <h1 className="h4">{page.title}</h1>
-                  <div dangerouslySetInnerHTML={{ __html: page.content }} />
-                </div>
-              </div>
-            }
             <Row>
               <Col xs="12">
                 {/* <ul className="product-filter-tags">
@@ -254,46 +246,32 @@ const ProductList = ({ colClass, layoutList, openSidebar, noSidebar, products, p
                 <Row>
                   {/* Product Box */}
                   {!productsData ||
-                    productsData.length === 0 ? (
-                    productsData &&
+                    productsData.length === 0 ?
+                    (
                       productsData &&
-                      productsData.length === 0 ?
-                      (
-                        setTimeout(() =>
-                          <Col xs="12">
-                            <div>
-                              <div className="col-sm-12 empty-cart-cls text-center">
-                                <img
-                                  src={`/assets/images/empty-search.jpg`}
-                                  className="img-fluid mb-4 mx-auto"
-                                  alt=""
-                                />
-                                <h4>Explore more shortlist some items.</h4>
-                              </div>
+                        productsData &&
+                        productsData.length === 0 ?
+                        '' : (
+                          <>
+                            <div lassName={grid} className="col-xl-3 col-lg-4 col-6">
+                              <ProductCardLoader />
                             </div>
-                          </Col>, 10000)
-                      ) : (
-                        <>
-                          <div lassName={grid} className="col-xl-3 col-lg-4 col-6">
-                            <ProductCardLoader />
-                          </div>
-                          <div lassName={grid} className="col-xl-3 col-lg-4 col-6">
-                            <ProductCardLoader />
-                          </div>
-                          <div lassName={grid} className="col-xl-3 col-lg-4 col-6">
-                            <ProductCardLoader />
-                          </div>
-                          <div lassName={grid} className="col-xl-3 col-lg-4 col-6">
-                            <ProductCardLoader />
-                          </div>
-                        </>
-                      )
-                  ) : (
-                    productsData &&
-                    productsData.map((product, i) => (
-                      <div className={grid} key={i}>
-                        <div className="product">
-                          <div>
+                            <div lassName={grid} className="col-xl-3 col-lg-4 col-6">
+                              <ProductCardLoader />
+                            </div>
+                            <div lassName={grid} className="col-xl-3 col-lg-4 col-6">
+                              <ProductCardLoader />
+                            </div>
+                            <div lassName={grid} className="col-xl-3 col-lg-4 col-6">
+                              <ProductCardLoader />
+                            </div>
+                          </>
+                        )
+                    ) : (
+                      productsData &&
+                      productsData.map((product, i) => (
+                        <div className={grid} key={i}>
+                          <div className="product">
                             <ProductItem
                               des={true}
                               product={product}
@@ -317,9 +295,8 @@ const ProductList = ({ colClass, layoutList, openSidebar, noSidebar, products, p
                             />
                           </div>
                         </div>
-                      </div>
-                    ))
-                  )}
+                      ))
+                    )}
                   {isLoading && (
                     <>
                       <div lassName={grid} className="col-xl-3 col-lg-4 col-6">

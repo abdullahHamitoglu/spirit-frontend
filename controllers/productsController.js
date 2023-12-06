@@ -1,5 +1,6 @@
 import currencyStore from "@/helpers/Currency/CurrencyStore";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const currency = currencyStore.getState().selectedCurrency.code;
 export async function getProducts(locale, params, token) {
@@ -12,7 +13,7 @@ export async function getProducts(locale, params, token) {
       page: 1,
       ...params,
     },
-            withCredentials: true,
+    withCredentials: true,
     headers: {
       'Authorization': `Bearer ${token}`,
     }
@@ -128,6 +129,27 @@ export async function getMaxPrice(locale, params) {
       },
     });
     return response.data.data;
+  } catch (error) {
+    throw error;
+  }
+}
+export async function addReview(locale, data, id, token) {
+  try {
+    const response = await axios({
+      method: "post",
+      url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/products/${id}/reviews`,
+      params: {
+        locale: locale.slice(0, 2)
+      },
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+      data
+    }).then((response) => {
+      toast.success(response.data.message)
+    }).catch((error) => {
+      toast.error(error);
+    });
   } catch (error) {
     throw error;
   }

@@ -22,37 +22,42 @@ const FilterPage = ({ sm, sidebarView, closeSidebar, attributes, setProductsData
         const response = await getProducts(locale, router.query);
         setProductsData(response.data);
     }
+    if (attributes.length) {
+        return false
+    }
     return (
         <>
-            <Col sm={sm} className="collection-filter" style={sidebarView ? { left: "0px" } : {}}>
-                {/* <!-- side-bar collops block stat --> */}
-                <div className="collection-filter-block">
-                    {/* <!-- brand filter start --> */}
-                    <div className="collection-mobile-back" onClick={() => closeSidebar()}>
-                        <span className="filter-back">
-                            <i className="fa fa-angle-left" aria-hidden="true"></i> {t('back')}
-                        </span>
+            {attributes.length > 0 &&
+                <Col sm={sm} className="collection-filter" style={sidebarView ? { left: "0px" } : {}}>
+                    {/* <!-- side-bar collops block stat --> */}
+                    <div className="collection-filter-block">
+                        {/* <!-- brand filter start --> */}
+                        <div className="collection-mobile-back" onClick={() => closeSidebar()}>
+                            <span className="filter-back">
+                                <i className="fa fa-angle-left" aria-hidden="true"></i> {t('back')}
+                            </span>
+                        </div>
+                        {/* <Category categories={categories} /> */}
+                        { attributes.map((attribute, i) => (
+                            attribute.type != 'price' ?
+                                <FilterOptions key={i} attr={attribute} /> :
+                                <Price key={i} />
+                        ))}
+                        <Col md="12">
+                            <button type="submit" className="btn btn-solid w-100 ms-auto mb-4" onClick={() => showFilterResults()}>{t('show_results')}</button>
+                        </Col>
                     </div>
-                    {/* <Category categories={categories} /> */}
-                    {attributes.length > 0 && attributes.map((attribute, i) => (
-                        attribute.type != 'price' ?
-                            <FilterOptions key={i} attr={attribute} /> :
-                            <Price key={i} />
-                    ))}
-                    <Col md="12">
-                        <button type="submit" className="btn btn-solid w-100 ms-auto mb-4" onClick={() => showFilterResults()}>{t('show_results')}</button>
-                    </Col>
-                </div>
-                {/* <!-- slide-bar collops block end here -->*/}
-                <NewProduct />
-                {/* <!-- side-bar banner start here -->  */}
-                <div className="collection-sidebar-banner">
-                    <a href={null}>
-                        <Media src='/assets/images/side-banner.png' className="img-fluid blur-up lazyload" alt="banner" />
-                    </a>
-                </div>
-                {/* <!-- side-bar banner end here --> */}
-            </Col>
+                    {/* <!-- slide-bar collops block end here -->*/}
+                    <NewProduct />
+                    {/* <!-- side-bar banner start here -->  */}
+                    <div className="collection-sidebar-banner">
+                        <a href={null}>
+                            <Media src='/assets/images/side-banner.png' className="img-fluid blur-up lazyload" alt="banner" />
+                        </a>
+                    </div>
+                    {/* <!-- side-bar banner end here --> */}
+                </Col>
+            }
         </>
     )
 }

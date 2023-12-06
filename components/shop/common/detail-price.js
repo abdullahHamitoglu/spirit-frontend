@@ -13,6 +13,7 @@ import "swiper/css/free-mode";
 import "swiper/css/navigation";
 import "swiper/css/thumbs";
 import { toast } from "react-toastify";
+import Trans from "@/helpers/Trans";
 const DetailsWithPrice = ({ item, stickyClass }) => {
   const [modal, setModal] = useState(false);
   const toggle = () => setModal(!modal);
@@ -68,6 +69,7 @@ const DetailsWithPrice = ({ item, stickyClass }) => {
       getCart();
     }
   };
+
   const handelChangePrice = (price) => {
     setPrice(price);
     document.querySelectorAll(".variants .variant").forEach((e) => {
@@ -77,7 +79,19 @@ const DetailsWithPrice = ({ item, stickyClass }) => {
   return (
     <>
       <div className={`product-right ${stickyClass}`}>
-        <h2> {product.title} </h2>
+        <h1 className="h3"> {product.name} </h1>
+        <Link className="h6" href={`/brands/${product.brand}`}>{product.brand}</Link>
+        <h6>
+          {Trans('model_no')} : {product.sku}
+          <span className="opacity-25 fw-bold fs-5"> | </span>
+          {product.reviews.total &&
+            <a href="#reviews" className="text-black" onClick={() => document.querySelector('#reviews a').click()}>
+              <span className="text-warning">{`${product.reviews.average_rating} `} </span>
+              <i className='fa fa-star text-warning'></i>
+              {` (${product.reviews.total})`}
+            </a>
+          }
+        </h6>
         {parseFloat(product.special_price) < 0 ?
           <h4>
             <del>
