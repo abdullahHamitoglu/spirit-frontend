@@ -154,7 +154,7 @@ const ProductItem = ({
             </Col>
             <Col lg="6" className="rtl-text">
               <div className="product-right d">
-                <h2> {product.title} </h2>
+                <h3 className="fs-4"> {product.name} </h3>
                 <h3>
                   {product.formatted_price}
                   {product.special_price > 0 &&

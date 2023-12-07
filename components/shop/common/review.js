@@ -5,7 +5,6 @@ import RatingForm from "@/components/common/widgets/RatingForm";
 import { Rating } from "@mui/material";
 
 const MasterReview = ({ name, datetime, review, rating }) => {
-  console.log(Math.floor(rating));
   const timestamp = datetime;
   const date = new Date(timestamp);
 
@@ -18,7 +17,6 @@ const MasterReview = ({ name, datetime, review, rating }) => {
     second: '2-digit',
     timeZone: 'UTC'
   }).format(date);
-  console.log(formattedDate);
 
   return (
     <Row className="text-start border-bottom w-100">

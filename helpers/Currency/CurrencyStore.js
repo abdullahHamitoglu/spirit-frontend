@@ -17,15 +17,28 @@ const currencyStore = create(
             fetchCurrencies: async (locale) => {
                 await axios({
                     method: 'GET',
-                    url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/currencies?locale=${locale.slice(0, 2)}`
+                    url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/currencies`,
+                    params: {
+                        locale: locale.slice(0, 2)
+                    }
                 }).then((response) => {
                     set({ currencies: response.data });
                 }).catch((error) => {
                     console.error(error);
                 })
             },
-            setCurrency: (currency) => {
-                set({ selectedCurrency: currency });
+            setCurrency: async (locale, id) => {
+                await axios({
+                    method: 'GET',
+                    url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/currencies/${id}`,
+                    params: {
+                        locale: locale.slice(0, 2)
+                    }
+                }).then((response) => {
+                    set({ selectedCurrency: response.data.data });
+                }).catch((error) => {
+                    console.error(error);
+                })
             },
         }),
         {

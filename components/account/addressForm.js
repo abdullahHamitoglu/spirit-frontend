@@ -33,7 +33,7 @@ function AddressForm({ ctx, col, isDetails, address, checkout }) {
     const { getAddresses, addresses, addAddress, token } = useUserStore();
     const { getCountries, countries, fetchStates, states, loading } = addressStore();
     const [cities, setCities] = useState([]);
-    const [selectedAddress, setSelectedAddress] = useState([]);
+    const [selectedAddress, setSelectedAddress] = useState({});
     const handleAddress = async (id) => {
         const address = await getAddressById(locale, id, token);
         setSelectedAddress(address);
@@ -51,9 +51,11 @@ function AddressForm({ ctx, col, isDetails, address, checkout }) {
     useEffect(() => {
         getAddresses(locale);
         getCountries(locale);
-        fetchStates(locale, address.country);
+        if (address) {
+            fetchStates(locale, address.country);
+        }
         setSelectedAddress(address);
-    }, [locale, address.country]); // Make sure to include address.country as a dependency
+    }, [locale, address]); // Make sure to include address.country as a dependency
 
     // This useEffect will run whenever the states are loaded or when the selected state changes
     useEffect(() => {
@@ -62,7 +64,7 @@ function AddressForm({ ctx, col, isDetails, address, checkout }) {
                 setCities(state.cities);
             }
         });
-    }, [states, address.state]);
+    }, [states, address]);
 
     const getStatesByCountry = (code) => {
         fetchStates(locale, code);
@@ -76,22 +78,25 @@ function AddressForm({ ctx, col, isDetails, address, checkout }) {
             }
         })
     };
+    console.log(address);
     return (
         <Formik
             enableReinitialize
             initialValues={{
-                company_name: selectedAddress.company_name || '',
-                first_name: selectedAddress.first_name || '',
-                last_name: selectedAddress.last_name || '',
-                email: selectedAddress.email || '',
-                address1: selectedAddress.address1 || [''],
-                country: selectedAddress.country || '',
-                state: selectedAddress.state || '',
-                city: selectedAddress.city || '',
-                postcode: selectedAddress.postcode || '',
-                phone: selectedAddress.phone || '',
-                phone_code: selectedAddress.phone_code || '',
-                vat_id: selectedAddress.vat_i || ''
+                company_name: (selectedAddress && selectedAddress.company_name) || '',
+                first_name: (selectedAddress && selectedAddress.first_name) || '',
+                last_name: (selectedAddress && selectedAddress.last_name) || '',
+                email: (selectedAddress && selectedAddress.email) || '',
+                address1: (selectedAddress && selectedAddress.address1) || [''],
+                country: (selectedAddress && selectedAddress.country) || '',
+                state: (selectedAddress && selectedAddress.state) || '',
+                state_id: (selectedAddress && selectedAddress.state_id) || '',
+                city: (selectedAddress && selectedAddress.city) || '',
+                city_id: (selectedAddress && selectedAddress.city_id) || '',
+                postcode: (selectedAddress && selectedAddress.postcode) || '',
+                phone: (selectedAddress && selectedAddress.phone) || '',
+                phone_code: (selectedAddress && selectedAddress.phone_code) || '',
+                vat_id: (selectedAddress && selectedAddress.vat_i) || ''
             }}
             validationSchema={addressValidationSchema}
             onSubmit={(values, { setSubmitting }) => {
@@ -166,8 +171,9 @@ function AddressForm({ ctx, col, isDetails, address, checkout }) {
                                     placeholder={t('inter.state')}
                                     value={values.state}
                                     onChange={(e) => {
-                                        setFieldValue('state', e.target.value);
                                         let selectedOptionId = e.target.options[e.target.selectedIndex].getAttribute('id');
+                                        setFieldValue('state', e.target.value);
+                                        setFieldValue('state_id', selectedOptionId);
                                         getCitiesByState(parseInt(selectedOptionId));
                                     }}
                                     required=""

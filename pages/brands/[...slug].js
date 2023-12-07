@@ -9,7 +9,7 @@ import Script from 'next/script';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-function Product({ product, reviews }) {
+function Post({ product, reviews }) {
   const { t } = useTranslation();
   const router = useRouter();
   const origin =
@@ -29,15 +29,15 @@ function Product({ product, reviews }) {
   return (
     <>
       <Head>
-        <meta name="keywords" content={product.meta_keywords} />
-        <meta name="description" content={product.meta_desorption} />
+        {/* <meta name="keywords" content={product.meta_keywords} /> */}
+        <meta name="description" content={product.description} />
         <meta property="og:type" content="product" />
-        <meta property="og:title" content={product.meta_title} />
+        <meta property="og:title" content={product.name} />
         <meta property="og:url" content={URL} />
         <meta property="og:image" content={product.images.original_image_url} />
-        <meta property="og:image:alt" content={product.meta_title} />
+        <meta property="og:image:alt" content={product.name} />
         <meta property="og:description" content={product.description} />
-        <title>{product.meta_title}</title>
+        <title>{product.name}</title>
       </Head>
       <CommonLayout parent={t('products')} parentLink="/products" title={product.name}>
         <NoSidebarPage pathId={product.id} product={product} reviews={reviews} />
@@ -92,4 +92,4 @@ export async function getStaticProps(context) {
 }
 
 
-export default Product;
+export default Post;

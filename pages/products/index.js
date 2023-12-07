@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import CommonLayout from "../../components/shop/common-layout";
 import { Container, Row } from "reactstrap";
 import FilterPage from "@/components/shop/common/filter";
@@ -16,7 +16,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 // Import Swiper styles
 import 'swiper/css';
 import useUserStore from "@/helpers/user/userStore";
-const index = ({ products, page, attributes, categories }) => {
+const Products = ({ products, page, attributes, categories }) => {
   if (!products) {
     return (
       <div className="loader-wrapper">
@@ -123,7 +123,7 @@ export async function getStaticProps(context) {
   const { locale, query = {} } = context;
   const { token } = parseCookies(context);
   const products = await getProducts(locale, query, token);
-  const attributes = await getFilterAttr(locale);
+  const attributes = await getFilterAttr(locale , query);
   const page = await getPageData(locale, "products");
   let categories = [];
   try {
@@ -142,4 +142,4 @@ export async function getStaticProps(context) {
   };
 }
 
-export default index;
+export default Products;

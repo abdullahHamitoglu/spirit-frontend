@@ -72,7 +72,9 @@ function AddressForm({ ctx, col, isDetails, address, checkout }) {
                 address1: [''],
                 country: '',
                 state: '',
+                state_id: '',
                 city: '',
+                city_id: '',
                 postcode: '',
                 phone: '',
                 phone_code: '',
@@ -128,8 +130,9 @@ function AddressForm({ ctx, col, isDetails, address, checkout }) {
                                     placeholder={t('inter.state')}
                                     value={values.state}
                                     onChange={(e) => {
-                                        setFieldValue('state', e.target.value);
                                         let selectedOptionId = e.target.options[e.target.selectedIndex].getAttribute('id');
+                                        setFieldValue('state_id', selectedOptionId);
+                                        setFieldValue('state', e.target.value);
                                         getCitiesByState(parseInt(selectedOptionId));
                                     }}
                                     required=""
@@ -153,12 +156,16 @@ function AddressForm({ ctx, col, isDetails, address, checkout }) {
                                     name="city"
                                     placeholder={t("city_label")}
                                     value={values.city}
-                                    onChange={(e) => { setFieldValue('city', e.target.value) }}
+                                    onChange={(e) => { 
+                                        let selectedOptionId = e.target.options[e.target.selectedIndex].getAttribute('id');
+                                        setFieldValue('city_id', selectedOptionId);
+                                        setFieldValue('city', e.target.value)
+                                         }}
                                     required=""
                                 >
                                     <option disabled value='' selected>{t("select.city")}</option>
-                                    {cities && cities.map((state, i) => (
-                                        <option key={i} value={state.code}>{state.default_name}</option>
+                                    {cities && cities.map((city, i) => (
+                                        <option key={i} value={city.code} id={city.id}>{city.default_name}</option>
                                     ))}
                                 </Field>
                             </Col>

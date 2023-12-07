@@ -68,6 +68,26 @@ export async function getCatagories(locale, id) {
 
   return response.data.data;
 }
+export async function getCategoryBySlug(locale, slug, token, query) {
+
+  const response = await axios({
+    method: "GET",
+    url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/categories-slug/${slug}`,
+    withCredentials: true,
+    headers: {
+      'Authorization': `Bearer ${token}`,
+    },
+    params: {
+      locale: locale.slice(0, 2),
+      currency: currency,
+      ...query
+    },
+  }).catch((error) => {
+    console.error(error);
+  });
+
+  return response.data;
+}
 export async function getCategoriesTree(locale) {
   const response = await axios({
     method: "GET",

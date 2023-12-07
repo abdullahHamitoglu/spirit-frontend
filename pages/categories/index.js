@@ -41,7 +41,8 @@ const Collection = ({ categories }) => {
     setChildeData(data);
     setActiveTab(i);
   }
-  return (
+  return (<>
+    
     <CommonLayout parent="home" title="collection">
       <section className="collection section-b-space ratio_square ">
         <Container>
@@ -78,6 +79,7 @@ const Collection = ({ categories }) => {
                       type={data.name}
                       about={data.description}
                       link={`/products?category_id=${data.id}`}
+                      // link={`/categories/${data.slug}`}
                     />
                   );
                 })}
@@ -87,6 +89,7 @@ const Collection = ({ categories }) => {
         </Container>
       </section>
     </CommonLayout>
+  </>
   );
 };
 export async function getServerSideProps(context) {

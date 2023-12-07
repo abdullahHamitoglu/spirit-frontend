@@ -79,8 +79,9 @@ const DetailsWithPrice = ({ item, stickyClass }) => {
   return (
     <>
       <div className={`product-right ${stickyClass}`}>
+        <Link className="h6 mb-5" href={`/brands/${product.brand}`}>{product.brand}</Link>
         <h1 className="h3"> {product.name} </h1>
-        <Link className="h6" href={`/brands/${product.brand}`}>{product.brand}</Link>
+        <Link className="h6 mb-5" href={`/categories/${product.brand}`}>{product.category}</Link>
         <h6>
           {Trans('model_no')} : {product.sku}
           <span className="opacity-25 fw-bold fs-5"> | </span>
@@ -101,7 +102,7 @@ const DetailsWithPrice = ({ item, stickyClass }) => {
           </h4> :
           ''}
         <h3 className="price">
-          {price * quantity} {selectedCurrency.symbol}
+          {price * quantity} {selectedCurrency.name}
         </h3>
         <div className="product-description border-product">
           <span className="instock-cls">
