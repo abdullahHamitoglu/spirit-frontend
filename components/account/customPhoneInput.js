@@ -18,10 +18,10 @@ function CustomPhoneInput({ values, isDetails, setFieldValue }) {
     }, []);
     return (
         <>
-            <Row className='m-0'>
+            <Row className='m-0' dir='ltr'>
                 <Field
                     disabled={isDetails}
-                    className="form-control  w-25"
+                    className="form-control  w-25 px-3"
                     as="select"
                     id="phone_code"
                     placeholder={t('inter.phone_code')}

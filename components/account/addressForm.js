@@ -31,14 +31,14 @@ function AddressForm({ ctx, col, isDetails, address, checkout }) {
     });
     const { saveCheckoutAddress } = useCartStore();
     const { getAddresses, addresses, addAddress, token } = useUserStore();
-    const { getCountries, countries, fetchStates, states, loading } = addressStore();
+    const { getCountries, countries, fetchStates, loading } = addressStore();
     const [cities, setCities] = useState([]);
+    const [states, setStates] = useState([]);
     const [selectedAddress, setSelectedAddress] = useState({});
     const handleAddress = async (id) => {
         const address = await getAddressById(locale, id, token);
         setSelectedAddress(address);
-        console.log(address);
-    }
+        }
     function convertToEnglish(inputString) {
         const charMap = {
             'á': 'a', 'é': 'e', 'í': 'i', 'ó': 'o', 'ú': 'u', 'ü': 'u',
@@ -51,23 +51,13 @@ function AddressForm({ ctx, col, isDetails, address, checkout }) {
     useEffect(() => {
         getAddresses(locale);
         getCountries(locale);
-        if (address) {
-            fetchStates(locale, address.country);
-        }
         setSelectedAddress(address);
-    }, [locale, address]); // Make sure to include address.country as a dependency
+    }, [locale]); // Make sure to include address.country as a dependency
 
     // This useEffect will run whenever the states are loaded or when the selected state changes
-    useEffect(() => {
-        states.map((state) => {
-            if (state.default_name === address.state) { // Check if the state matches the selected state
-                setCities(state.cities);
-            }
-        });
-    }, [states, address]);
+    
 
-    const getStatesByCountry = (code) => {
-        fetchStates(locale, code);
+    const getStatesByCountry = async (code) => {
         setCities([]);
     };
 
@@ -78,7 +68,6 @@ function AddressForm({ ctx, col, isDetails, address, checkout }) {
             }
         })
     };
-    console.log(address);
     return (
         <Formik
             enableReinitialize
@@ -180,7 +169,7 @@ function AddressForm({ ctx, col, isDetails, address, checkout }) {
                                 >
                                     <option value='' selected>{t("select.state")}</option>
                                     {states && states.map((state, i) => (
-                                        <option key={i} value={state.code} id={state.id}>{state.default_name}</option>
+                                        <option key={i} value={state.default_name} id={state.id}>{state.default_name}</option>
                                     ))}
                                 </Field>
                             </Col>

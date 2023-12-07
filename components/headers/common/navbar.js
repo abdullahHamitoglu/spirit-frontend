@@ -111,7 +111,7 @@ const NavBar = () => {
     setMainMenu({ mainmenu: MENUITEMS });
   };
 
-  const openMblNav = (event) => {
+  const  openMblNav = (event) => {
     if (event.target.classList.contains("sub-arrow")) return;
 
     if (event.target.nextElementSibling.classList.contains("opensubmenu"))

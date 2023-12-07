@@ -15,8 +15,8 @@ const addressStore = create(
                     locale: locale.slice(0, 2)
                 },
             }).then((response) => {
-                set({ countries: response.data.data })
-            }).catch((error) => {
+                set({ countries: response.data.data });
+            }).catch((error) => {   
                 console.error(error);
             })
         },

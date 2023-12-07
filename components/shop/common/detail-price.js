@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import Link from "next/link";
-import { Modal, ModalBody, ModalHeader, Media, Input } from "reactstrap";
+import { Modal, ModalBody, ModalHeader, Media, Input, Badge } from "reactstrap";
 import CountdownComponent from "../../../components/common/widgets/countdownComponent";
 import MasterSocial from "./master_social";
 import { useTranslation } from "react-i18next";
@@ -79,7 +79,17 @@ const DetailsWithPrice = ({ item, stickyClass }) => {
   return (
     <>
       <div className={`product-right ${stickyClass}`}>
-        <Link className="h6 mb-5" href={`/brands/${product.brand}`}>{product.brand}</Link>
+
+        {product.label &&
+          <>
+            <Badge
+              color="black"
+              pill
+              className="fs-6 mb-2"
+            >{product.label}</Badge><br />
+          </>
+        }
+        <Link className="h6 mb-5" href={`/products?brand=${product.brand_id}`}>{product.brand}</Link>
         <h1 className="h3"> {product.name} </h1>
         <Link className="h6 mb-5" href={`/categories/${product.brand}`}>{product.category}</Link>
         <h6>
