@@ -1,3 +1,12 @@
-.link {
-    background-color: black;
+.phoneInput{
+    margin: 0;
+    height: 54px;
+    select{
+        width: 25%;
+        min-height: 100%;
+    }
+    input{
+        width: 75%;
+        margin: 0;
+    }
 }

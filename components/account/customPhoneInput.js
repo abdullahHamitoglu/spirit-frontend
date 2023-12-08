@@ -3,8 +3,7 @@ import { Field } from 'formik';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { PhoneInput } from 'react-international-phone';
-import 'react-international-phone/style.css';
+import style from '@/styles/style.module.scss'
 import { Row } from 'reactstrap';
 function CustomPhoneInput({ values, isDetails, setFieldValue }) {
     const { t } = useTranslation();
@@ -18,10 +17,10 @@ function CustomPhoneInput({ values, isDetails, setFieldValue }) {
     }, []);
     return (
         <>
-            <Row className='m-0' dir='ltr'>
+            <Row className={style.phoneInput} dir='ltr'>
                 <Field
                     disabled={isDetails}
-                    className="form-control  w-25 px-3"
+                    className="form-control"
                     as="select"
                     id="phone_code"
                     placeholder={t('inter.phone_code')}
@@ -36,7 +35,7 @@ function CustomPhoneInput({ values, isDetails, setFieldValue }) {
                 <Field
                     disabled={isDetails}
                     type="number"
-                    className="form-control w-75"
+                    className="form-control"
                     id="phone"
                     name='phone'
                     placeholder={t('inter.number')}

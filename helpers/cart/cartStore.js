@@ -9,9 +9,10 @@ const useCartStore = create(
         cartData: [],
         cartLoading: false,
         count: 0,
-        savedAddress: {},
-        paymentMethods: {},
-        orderDetails: {},
+        savedAddress: [],
+        rates: [],
+        paymentMethods: [],
+        orderDetails: [],
         redirect_url: '',
         increment: () => {
             set((state) => ({ count: state.count > -1 ? state.count + 1 : state.count }))
@@ -172,7 +173,7 @@ const useCartStore = create(
                 console.error(error);
             });
         },
-        saveCheckoutAddress: async (data, locale) => {
+        saveCheckoutAddress: async (data, locale, closeModal) => {
             set({ cartLoading: true });
             await axios({
                 method: "post",
@@ -192,9 +193,17 @@ const useCartStore = create(
                 },
             }).then((res) => {
                 toast.success(res.data.message);
-                set({ savedAddress: res.data.data });
+                set({
+                    rates: res.data.data.rates,
+                    savedAddress: res.data.data.cart.billing_address,
+                    cartData: res.data.data.cart
+                });
+                if (closeModal) {
+                    closeModal();
+                }
             }).catch((error) => {
                 set({ cartLoading: false });
+                toast.error(error.message)
                 console.error(error);
             });
         },
@@ -213,29 +222,10 @@ const useCartStore = create(
                 data,
             }).then((res) => {
                 toast.success(res.data.message);
-                set({ paymentMethods: res.data.data });
-            }).catch((error) => {
-                set({ cartLoading: false });
-                console.error(error);
-            });
-        },
-        saveCheckoutPayment: async (data) => {
-            await axios({
-                method: "POST",
-                url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/customer/checkout/save-payment`,
-                withCredentials: true,
-                headers: {
-                    'Authorization': `Bearer ${useUserStore.getState().token}`
-                },
-                data: {
-                    payment: {
-                        method: data.payment_method,
-                    },
-                    register_device_id: useUserStore.getState().registeredDeviceID
-                },
-            }).then((res) => {
-                toast.success(res.data.message);
-                set({ orderDetails: res.data.data });
+                set({
+                    paymentMethods: res.data.data.methods,
+                    cartData: res.data.data.cart
+                });
             }).catch((error) => {
                 set({ cartLoading: false });
                 console.error(error);
@@ -264,7 +254,33 @@ const useCartStore = create(
                 set({ cartLoading: false });
                 console.error(error);
             });
-        }
+        },
+        saveCheckoutPayment: async (data, locale) => {
+            await axios({
+                method: "POST",
+                url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/customer/checkout/save-payment`,
+                params: {
+                    locale: locale.slice(0, 2)
+                },
+                withCredentials: true,
+                headers: {
+                    'Authorization': `Bearer ${useUserStore.getState().token}`
+                },
+                data: {
+                    payment: {
+                        method: data.payment_method,
+                    },
+                    register_device_id: useUserStore.getState().registeredDeviceID
+                },
+            }).then((res) => {
+                toast.success(res.data.message);
+                set({ orderDetails: res.data.data });
+                get().saveCheckoutOrder(locale);
+            }).catch((error) => {
+                set({ cartLoading: false });
+                console.error(error);
+            });
+        },
     })
 );
 

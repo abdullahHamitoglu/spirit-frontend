@@ -319,5 +319,8 @@
     "model_no": "Model number",
     "title": "title",
     "comment": "comment",
-    "rating": "rating"
+    "rating": "rating",
+    "discount":"discount",
+    "payment_method":"Payment method",
+    "payment_complete":"Confirm the order"
 }

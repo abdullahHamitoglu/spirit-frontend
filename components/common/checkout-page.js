@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Media, Container, Form, Row, Col, Label } from "reactstrap";
+import { Media, Container, Form, Row, Col, Label, CardHeader, Card, CardBody, CardFooter, Button, Input, FormGroup } from "reactstrap";
 import { useRouter } from "next/router";
 import { Field, Formik } from "formik";
 import * as Yup from 'yup';
@@ -7,322 +7,264 @@ import { useTranslation } from "react-i18next";
 import useCartStore from "../../helpers/cart/cartStore";
 import useUserStore from "../../helpers/user/userStore";
 import Link from "next/link";
-import { toast } from "react-toastify";
-
-import { Wizard, Steps, Step } from 'react-multistep-wizard';
 import CheckoutLoader from "../layouts/Bags/common/checkoutLoader";
 import AddressForm from "../account/addressForm";
+import EditAddressModal from "./editAddressModal";
+import AddressModal from "./addNewAddressModal";
+import CartCheckout from "../headers/common/cart-checkout";
+import PostLoader from "./PostLoader";
+import CardLoader from "./cardLoader";
+import ButtonLoader from "./buttonLoader";
+import PaymentModal from "./paymentModal";
 
 const CheckoutPage = () => {
-  const { redirect_url, saveCheckoutOrder, orderDetails, getCart, cartData, saveCheckoutPayment, savedAddress, saveCheckoutShipping, paymentMethods } = useCartStore();
-  const { addresses } = useUserStore();
-  const [obj, setObj] = useState({});
-  const [payment, setPayment] = useState("cod");
+  const { redirect_url, rates, savedAddress, saveCheckoutShipping, cartData, paymentMethods, saveCheckoutAddress, saveCheckoutPayment } = useCartStore();
+  const { getAddresses, addresses, isAuthenticated } = useUserStore();
   const router = useRouter();
   const { locale } = useRouter();
   const { t } = useTranslation();
+  const [modalAdd, setModalAdd] = useState(false);
+  const [modal, setModal] = useState(false);
+  const [paymentModal, setPaymentModal] = useState(false);
+  const paymentToggle = () => setPaymentModal(!paymentModal);
+  const toggleEdit = () => setModal(!modal);
+  const toggleAdd = () => setModalAdd(!modalAdd);
+  const [checkoutAddress, setCheckoutAddress] = useState(addresses[0]);
+  const [editableAddress, setEditableAddress] = useState(addresses[0]);
+  const [addressLoader, setAddressLoader] = useState(false)
+  const [buttonLoader, setButtonLoader] = useState(false)
+  const [loading, setLoading] = useState(false);
   const sippingValidationSchema = Yup.object().shape({
     shipping_method: Yup.string().required(t('this_field_is_required'))
   });
   const paymentValidationSchema = Yup.object().shape({
     payment_method: Yup.string().required(t('this_field_is_required'))
   });
-  
+  useEffect(() => {
+    if (isAuthenticated) {
+      getAddresses(locale);
+    }
+  }, []);
+  const handleCheckoutAddress = async (address) => {
+    setAddressLoader(true);
+    await saveCheckoutAddress(address, locale);
+    setAddressLoader(false);
+  }
+  const handleCheckoutShipping = async (value) => {
+    setLoading(true);
+    await saveCheckoutShipping({ shipping_method: value }, locale);
+    setLoading(false);
+  }
+  const handleCheckoutPayment = async (value) => {
+    setButtonLoader(true);
+    await saveCheckoutPayment({ payment_method: value }, locale);
+    setButtonLoader(false);
+  }
   return (
     <section className="section-b-space">
       <Container>
         <div className="checkout-page">
-          <div className="checkout-form">
-            <Row className="d-flex flex-wrap justify-content-center">
-              <Wizard>
-                <Steps>
-                  <Step>
-                    {ctx => (
-                      <AddressForm checkout={true} ctx={ctx} col='6' button={true} address={addresses[0]} />
-                    )}
-                  </Step>
-                  <Step>
-                    {ctx => (
-                      <>
-                        <Formik
-                          enableReinitialize
-                          initialValues={{
-                            shipping_method: '',
-                          }}
-                          validationSchema={sippingValidationSchema}
-                          onSubmit={(values, { setSubmitting }) => {
-                            saveCheckoutShipping(values, locale);
-                            ctx.next()
-                            setSubmitting(false);
-                          }} >
-                          {({ values, errors, touched, handleSubmit, isSubmitting, setFieldValue }) => (
-                            <Form onSubmit={handleSubmit} className="d-flex flex-wrap justify-content-center">
-                              <Col lg="6" sm="12" xs="12">
-                                <div className="checkout-title">
-                                  <h3>{t('shipping_type')}</h3>
-                                </div>
-                                <div className="row check-out">
-                                  {savedAddress && savedAddress.rates ?
-                                    <div className="form-group col-md-12 col-sm-12 col-xs-12">
-                                      <div className="checkout-details">
-                                        <div className="order-box">
-                                          <div className="title-box">
-                                            <div>
-                                              {t('product')} <span>{t('total')}</span>
-                                            </div>
-                                          </div>
-                                          <ul className="qty">
-                                            {savedAddress.cart.items.map((item, index) => (
-                                              <li key={index}>
-                                                {item.product.name} × {item.quantity}{" "}
-                                                <span>
-                                                  {item.formatted_total}
-                                                </span>
-                                              </li>
-                                            ))}
-                                          </ul>
-                                          <ul className="sub-total">
-                                            <li>
-                                              {t('subtotal')}{" "}
-                                              <span className="count">
-                                                {savedAddress.cart.formatted_sub_total}
-                                              </span>
-                                            </li>
-                                            <li>
-                                              {t('tasks')}{" "}
-                                              <span className="count">
-                                                {savedAddress.cart.formatted_tax_amount}
-                                              </span>
-                                            </li>
-                                            <li>
-                                              {t('shipping')}
-                                              <div className="shipping">
-                                                {savedAddress.rates.map((rate, i) => (
-                                                  <div className="shopping-option" key={i}>
-                                                    <Field type="radio" className="form-check-input" name="shipping_method" value={rate.method} id={rate.method} onChange={(e) => setFieldValue('shipping_method', e.target.value)} />
-                                                    <label className={`${errors.shipping_method && touched.shipping_method && 'text-danger'}`} htmlFor={rate.method}>{rate.carrier_title} </label>
-                                                  </div>
-                                                ))}
-                                              </div>
-                                            </li>
-                                          </ul>
-                                          <ul className="total">
-                                            <li>
-                                              {t('total_label')}{" "}
-                                              <span className="count">
-                                                {savedAddress.cart.formatted_grand_total}
-                                              </span>
-                                            </li>
-                                          </ul>
-                                        </div>
-                                        <div className="col-md-12">
-                                          <button className="btn btn-sm btn-solid" type="button" onClick={ctx.previous}>{t('previous')}</button>
-                                          <button className="btn btn-sm btn-solid mx-4" type="submit">{t('next')}</button>
-                                        </div>
-                                      </div>
-                                    </div>
-                                    : <CheckoutLoader />
-                                  }
-                                </div>
-                              </Col>
-
-                            </Form>
-                          )}
-                        </Formik>
-                      </>
-                    )}
-                  </Step>
-                  <Step>
-                    {ctx => (
-                      <>
-                        <Formik
-                          enableReinitialize
-                          initialValues={{
-                            payment_method: '',
-                          }}
-                          validationSchema={paymentValidationSchema}
-                          onSubmit={(values, { setSubmitting }) => {
-                            saveCheckoutPayment(values, locale);
-                            saveCheckoutOrder(locale);
-                            setSubmitting(false);
-                            ctx.next()
-                          }} >
-                          {({ values, errors, touched, handleSubmit, isSubmitting, setFieldValue }) => (
-                            <Form onSubmit={handleSubmit} className="d-flex flex-wrap justify-content-center">
-                              <Col lg="6" sm="12" xs="12">
-                                <div className="checkout-title">
-                                  <h3>{t('payment_type')}</h3>
-                                </div>
-                                <div className="row check-out">
-                                  {paymentMethods && paymentMethods.methods ?
-                                    <div className="form-group col-md-12 col-sm-12 col-xs-12">
-                                      <div className="checkout-details">
-                                        <div className="order-box">
-                                          <div className="title-box">
-                                            <div>
-                                              {t('product')} <span>{t('total')}</span>
-                                            </div>
-                                          </div>
-                                          <ul className="qty">
-                                            {paymentMethods.cart.items.map((item, index) => (
-                                              <li key={index}>
-                                                {item.product.name} × {item.quantity}{" "}
-                                                <span>
-                                                  {item.formatted_total}
-                                                </span>
-                                              </li>
-                                            ))}
-                                          </ul>
-                                          <ul className="sub-total">
-                                            <li>
-                                              {t('subtotal')}{" "}
-                                              <span className="count">
-                                                {paymentMethods.cart.formatted_sub_total}
-                                              </span>
-                                            </li>
-                                            <li>
-                                              {t('tasks')}{" "}
-                                              <span className="count">
-                                                {paymentMethods.cart.formatted_tax_amount}
-                                              </span>
-                                            </li>
-                                            <li>
-                                              {t('payment')}
-                                              <div className="shipping">
-                                                {paymentMethods.methods.map((rate, i) => (
-                                                  <div className="shopping-option" key={i}>
-                                                    <Field type="radio" className="form-check-input" name="payment_method" value={rate.method} id={rate.method} onChange={(e) => setFieldValue('payment_method', e.target.value)} />
-                                                    <label className={`${errors.checkout_method && touched.checkout_method && 'text-danger'}`} htmlFor={rate.method}>{rate.method_title}</label>
-                                                  </div>
-                                                ))}
-                                              </div>
-                                            </li>
-                                          </ul>
-                                          <ul className="total">
-                                            <li>
-                                              {t('total_label')}{" "}
-                                              <span className="count">
-                                                {paymentMethods.cart.formatted_grand_total}
-                                              </span>
-                                            </li>
-                                          </ul>
-                                        </div>
-                                        <div className="col-md-12">
-                                          <button className="btn btn-sm btn-solid" type="button" onClick={ctx.previous}>{t('previous')}</button>
-                                          <button className="btn btn-sm btn-solid mx-4" type="submit">{t('next')}</button>
-                                        </div>
-                                      </div>
-                                    </div>
-                                    : <CheckoutLoader />
-                                  }
-                                </div>
-                              </Col>
-
-                            </Form>
-                          )}
-                        </Formik>
-                      </>
-                    )}
-                  </Step>
-                  <Step>
-                    {ctx => (
-                      <>
-                        <div className="d-flex flex-wrap justify-content-center">
-                          <Row>
-                            {orderDetails && orderDetails.cart ?
-                              <>
-                                <Col lg="6" sm="12" xs="12">
-                                  <div className="checkout-title">
-                                    <h3>{t('order_details')}</h3>
-                                  </div>
-                                  <div className="row check-out">
-                                    <div className="form-group col-md-12 col-sm-12 col-xs-12">
-                                      <div className="checkout-details">
-                                        <div className="order-box">
-                                          <div className="title-box">
-                                            <div>
-                                              {t('product')} <span>{t('total')}</span>
-                                            </div>
-                                          </div>
-
-                                          <ul className="qty">
-                                            {orderDetails.cart.items.map((item, index) => (
-                                              <li key={index} className="d-flex w-100 justify-content-between">
-                                                <p>{item.product.name} × {item.quantity}{" "}</p>
-                                                <span className="text-start">
-                                                  {item.formatted_total}
-                                                </span>
-                                              </li>
-                                            ))}
-                                          </ul>
-                                          <ul className="sub-total">
-                                            <li>
-                                              {t('shipping')}
-                                              <span className="count">
-                                                {orderDetails.cart.selected_shipping_rate.carrier_title}
-                                              </span>
-                                            </li>
-                                            {payment &&
-                                              <li>
-                                                {t('payment')}
-                                                <span className="count">
-                                                  {orderDetails.cart.payment.method_title}
-                                                </span>
-                                              </li>
-                                            }
-                                            <li>
-                                              {t('subtotal')}{" "}
-                                              <span className="count">
-                                                {orderDetails.cart.formatted_sub_total}
-                                              </span>
-                                            </li>
-                                            <li>
-                                              {t('tasks')}{" "}
-                                              <span className="count">
-                                                {JSON.parse(orderDetails.cart.formatted_taxes)[0]}
-                                              </span>
-                                            </li>
-                                          </ul>
-                                          <ul className="total">
-                                            <li>
-                                              {t('total_label')}{" "}
-                                              <span className="count">
-                                                {orderDetails.cart.formatted_grand_total}
-                                              </span>
-                                            </li>
-                                          </ul>
-                                        </div>
-                                        <div className="col-md-12">
-                                          <button className="btn btn-sm btn-solid" type="button" onClick={ctx.previous}>{t('previous')}</button>
-                                          <button className="btn btn-sm btn-solid mx-4" type="button" onClick={ctx.next}>{t('next')}</button>
-                                          <Link href={redirect_url ? redirect_url : '/'} className="btn btn-sm btn-solid mx-4" type="button">{t('pay')}</Link>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
+          <Container>
+            <Row>
+              <Col lg='9'>
+                <Card className="mb-3">
+                  <CardHeader>
+                    <h4 className="m-2 ms-0">{t('address')}</h4>
+                  </CardHeader>
+                  <CardBody>
+                    <Button
+                      color="success"
+                      outline
+                      size="lg"
+                      className="border-success-subtle border rounded mb-5 w-auto"
+                      onClick={toggleAdd}
+                    >
+                      <i className="fa fa-plus me-3" aria-hidden="true"></i>
+                      {t('add_new_address')}
+                    </Button>
+                    <AddressModal toggle={toggleAdd} isOpen={modalAdd} />
+                    <Row>
+                      {isAuthenticated && addresses ?
+                        addresses.map((address, i) => (
+                          <Col lg='4' sm="12" key={i} className='mb-4'>
+                            <Card className='h-100 '>
+                              <CardHeader className="d-flex justify-content-between">
+                                <h6 className='fs-4 p-2 mb-0 text-black'>{address.company_name}</h6>
+                                <FormGroup switch>
+                                  <Input
+                                    type="radio"
+                                    name="address"
+                                    className="mt-2"
+                                    onChange={() => handleCheckoutAddress(address)}
+                                  />
+                                </FormGroup>
+                              </CardHeader>
+                              <CardBody>
+                                <p>{t('name')}: {address.first_name} {address.last_name}</p>
+                                <p>{t('phone')}: {address.phone} </p>
+                                <p>{t('email')}: {address.email}</p>
+                                <p>{t('address')}: {address.country} / {address.city} / {address.state} {address.postcode} </p>
+                                <p>{t('address1')}: {address.address1[0]}</p>
+                              </CardBody>
+                              <CardFooter className='row m-0 px-0'>
+                                <Col xs='12'>
+                                  <Button className='btn btn-warning d-block w-100 rounded' onClick={() => {
+                                    toggleEdit();
+                                    setEditableAddress(address);
+                                  }} >{t('edit')}
+                                  </Button>
                                 </Col>
-                                <Col lg="6" sm="12" xs="12" className="last-step-address">
-                                  <AddressForm address={orderDetails.cart.billing_address} col='12' isDetails />
-                                </Col>
-                              </>
-                              : <CheckoutLoader />
-                            }
-                          </Row>
+                              </CardFooter>
+                            </Card>
+                          </Col>
+                        )) : ''}
+                      {savedAddress && savedAddress.company_name &&
+                        <Col lg='4' sm="12" className='mb-4'>
+                          <Card className='h-100 bg-success-subtle'>
+                            <CardHeader className="d-flex justify-content-between">
+                              <h6 className='fs-4 p-2 mb-0 text-black'>{savedAddress.company_name}</h6>
+                              <FormGroup switch>
+                                <Input
+                                  type="radio"
+                                  name="address"
+                                  className="mt-2"
+                                  onChange={() => handleCheckoutAddress(savedAddress)}
+                                />
+                              </FormGroup>
+                            </CardHeader>
+                            <CardBody>
+                              <p>{t('name')}: {savedAddress.first_name} {savedAddress.last_name}</p>
+                              <p>{t('phone')}: {savedAddress.phone} </p>
+                              <p>{t('email')}: {savedAddress.email}</p>
+                              <p>{t('address')}: {savedAddress.country} / {savedAddress.city} / {savedAddress.state} {savedAddress.postcode} </p>
+                              <p>{t('address1')}: {savedAddress.address1}</p>
+                            </CardBody>
+                            <CardFooter className='row m-0 px-0'>
+                              <Col xs='12'>
+                                <Button className='btn btn-warning d-block w-100 rounded' onClick={() => {
+                                  toggleAdd();
+                                }} >{t('edit')}
+                                </Button>
+                              </Col>
+                            </CardFooter>
+                          </Card>
+                        </Col>
+                      }
+                      {addressLoader && <PostLoader className='col-4' />}
+                    </Row>
+                    <EditAddressModal toggle={toggleEdit} isOpen={modal} address={editableAddress} />
+                  </CardBody>
+                </Card>
+                {rates && rates[0] &&
+                  <Card className="mb-3">
+                    <CardHeader>
+                      <h4 className="m-2 ms-0">{t('shipping')}</h4>
+                    </CardHeader>
+                    <CardBody>
+                      <Form>
+                        {rates.map((rate) => (
+                          <FormGroup switch className="d-flex align-items-center" >
+                            <Input
+                              type="radio"
+                              id={rate.id}
+                              name='shipping_method'
+                              value={rate.method}
+                              className="me-2 mt-0"
+                              onChange={(e) => handleCheckoutShipping(e.target.value)}
+                            />
+                            <Label htmlFor={rate.id} className="m-0">{rate.method_title} {rate.formatted_price}</Label>
+                          </FormGroup>
+                        ))
+                        }
+                      </Form>
+                    </CardBody>
+                  </Card>
+                }
+                {paymentMethods && paymentMethods[0] &&
+                  <Card className="mb-3">
+                    <CardHeader>
+                      <h4 className="m-2 ms-0">{t('payment_type')}</h4>
+                    </CardHeader>
+                    <CardBody>
+                      <Form>
+                        {paymentMethods.map((method) => (
+                          <FormGroup switch className="d-flex align-items-center" >
+                            <Input
+                              type="radio"
+                              id={method.id}
+                              name={method.method}
+                              value={method.method}
+                              className="me-2 mt-0"
+                              onChange={(e) => handleCheckoutPayment(e.target.value)}
+                            />
+                            <Label htmlFor={method.id} className="m-0">{method.method_title} {method.description}</Label>
+                          </FormGroup>
+                        ))
+                        }
+                      </Form>
+                    </CardBody>
+                  </Card>
+                }
+                {loading && <CardLoader />}
+              </Col>
+              <Col lg='3'>
+                <Card>
+                  <CardHeader>
+                    <h4 className="m-2 ms-0">{t('tabText.details')}</h4>
+                  </CardHeader>
+                  <CardBody>
+                    <ul className="show-div shopping-cart">
+                      {cartData && cartData.items && cartData.items.map((item, index) => (
+                        <CartCheckout key={index} item={item} total={item.formatted_total} />
+                      ))}
+                      {cartData && cartData.items && cartData.items.length > 0 ? (
+                        <div>
+                          <li>
+                            <div className="total">
+                              <h5>
+                                {t('subtotal')} :{" "}
+                                <span>
+                                  {cartData.formatted_sub_total}
+                                </span>
+                              </h5>
+                              <h5>
+                                {t('tasks')} :{" "}
+                                <span>
+                                  {cartData.formatted_tax_total}
+                                </span>
+                              </h5>
+                              {cartData.formatted_discount > 0 &&
+                                <h5>
+                                  {t('discount')} :{" "}
+                                  <span>
+                                    {cartData.formatted_discount}
+                                  </span>
+                                </h5>
+                              }
+                              <h5>
+                                {t('total')} :{" "}
+                                <span>
+                                  {cartData.formatted_base_grand_total}
+                                </span>
+                              </h5>
+                            </div>
+                          </li>
                         </div>
-                      </>
-                    )}
-                  </Step>
-                  <Step>
-                    {ctx => (
-                      <>
-                        <iframe src={redirect_url} height="200" width="300" title="Iframe Example"></iframe>
-                      </>
-                    )}
-                  </Step>
-                </Steps>
-              </Wizard>
+                      ) : (
+                        <li>
+                          <h5>{t('your_cart_is_empty')}</h5>
+                        </li>
+                      )}
+                    </ul>
+                  </CardBody>
+                </Card>
+                <PaymentModal toggle={paymentToggle} isOpen={paymentModal} redirect_url={redirect_url} />
+                {!buttonLoader ?
+                  <Button block size="lg" disabled={redirect_url ? false : true} onClick={() => paymentToggle()} className="mt-4 btn-solid  rounded">{t('payment_complete')}</Button>
+                  : <ButtonLoader />}
+              </Col>
             </Row>
-          </div>
+          </Container>
         </div>
       </Container>
     </section>

@@ -38,7 +38,7 @@ function AddressForm({ ctx, col, isDetails, address, checkout }) {
     const handleAddress = async (id) => {
         const address = await getAddressById(locale, id, token);
         setSelectedAddress(address);
-        }
+    }
     function convertToEnglish(inputString) {
         const charMap = {
             'á': 'a', 'é': 'e', 'í': 'i', 'ó': 'o', 'ú': 'u', 'ü': 'u',
@@ -52,18 +52,26 @@ function AddressForm({ ctx, col, isDetails, address, checkout }) {
         getAddresses(locale);
         getCountries(locale);
         setSelectedAddress(address);
-    }, [locale]); // Make sure to include address.country as a dependency
+    }, []); // Make sure to include address.country as a dependency
 
-    // This useEffect will run whenever the states are loaded or when the selected state changes
-    
-
+    useEffect(() => {
+        countries.map((country) => {
+            if (country.code == address.country) {
+                setStates(country.states);
+            }
+        });
+    }, [countries]);
     const getStatesByCountry = async (code) => {
-        setCities([]);
+        countries.map((country) => {
+            if (country.code == code) {
+                setStates(country.states);
+            }
+        });
     };
 
-    const getCitiesByState = (id) => {
+    const getCitiesByState = (code) => {
         states.map((state) => {
-            if (state.id == id) {
+            if (state.code == code) {
                 setCities(state.cities);
             }
         })
@@ -141,7 +149,7 @@ function AddressForm({ ctx, col, isDetails, address, checkout }) {
                                     required=""
                                 >
                                     {countries && countries.map((country, i) => (
-                                        <option key={i} value={country.code}>{country.name}</option>
+                                        <option key={i} value={country.code} >{country.name}</option>
                                     ))}
                                 </Field>
 
@@ -163,14 +171,21 @@ function AddressForm({ ctx, col, isDetails, address, checkout }) {
                                         let selectedOptionId = e.target.options[e.target.selectedIndex].getAttribute('id');
                                         setFieldValue('state', e.target.value);
                                         setFieldValue('state_id', selectedOptionId);
-                                        getCitiesByState(parseInt(selectedOptionId));
+                                        getCitiesByState(e.target.value);
+                                        console.log(e.target.value);
                                     }}
                                     required=""
                                 >
-                                    <option value='' selected>{t("select.state")}</option>
-                                    {states && states.map((state, i) => (
-                                        <option key={i} value={state.default_name} id={state.id}>{state.default_name}</option>
-                                    ))}
+                                    <option value=''>{t("select.state")}</option>
+                                    {states && states.map((state, i) => {
+                                        if (values.state == state.code) {
+                                            return <option key={i} selected value={state.code} id={state.id} data-cities={state.cities}>{state.default_name}</option>
+                                        } else {
+                                            return <option key={i} value={state.code} id={state.id} data-cities={state.cities}>{state.default_name}</option>
+                                        }
+
+                                    }
+                                    )}
                                 </Field>
                             </Col>
                             <Col md="6" sm="12" xs="12" className="form-group">
@@ -186,12 +201,16 @@ function AddressForm({ ctx, col, isDetails, address, checkout }) {
                                     name="city"
                                     placeholder={t("city_label")}
                                     value={values.city}
-                                    onChange={(e) => { setFieldValue('city', e.target.value) }}
+                                    onChange={(e) => {
+                                        let selectedOptionId = e.target.options[e.target.selectedIndex].getAttribute('id');
+                                        setFieldValue('city_id', selectedOptionId);
+                                        setFieldValue('city', e.target.value)
+                                    }}
                                     required=""
                                 >
-                                    <option value='' selected>{t("select.city")}</option>
+                                    <option disabled value='' >{t("select.city")}</option>
                                     {cities && cities.map((city, i) => (
-                                        <option key={i} value={city.code}>{city.default_name}</option>
+                                        <option key={i} value={city.code} id={city.id}>{city.default_name}</option>
                                     ))}
                                 </Field>
                             </Col>

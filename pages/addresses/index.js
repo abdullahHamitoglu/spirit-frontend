@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import CommonLayout from '../../components/shop/common-layout';
-import { Col, Container, Label, Row } from 'reactstrap';
+import { Button, CardBody, CardFooter, CardHeader, Col, Container, Label, Row } from 'reactstrap';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'react-i18next';
 import useUserStore from '@/helpers/user/userStore';
@@ -12,6 +12,7 @@ import { parseCookies } from 'nookies';
 import { getAddresses } from '@/controllers/addressesController';
 import { getPageData } from '@/controllers/homeController';
 import AddressForm from '@/components/account/addressPageForm';
+import EditAddressModal from '@/components/common/editAddressModal';
 
 const Addresses = () => {
     const { locale } = useRouter();
@@ -30,6 +31,9 @@ const Addresses = () => {
         phone: Yup.string().required(t('first_name_required')),
         vat_id: Yup.string().required(t('first_name_required')),
     });
+    const [modal, setModal] = useState(false);
+    const toggle = () => setModal(!modal);
+    const [editableAddress, setEditableAddress] = useState([]);
 
     useEffect(() => {
         getAddresses(locale);
@@ -55,24 +59,38 @@ const Addresses = () => {
             <CommonLayout title={t('addresses')} parent={t('home')} >
                 <section className="section-b-space border-1">
                     <Container>
-                        <div className="box">
-                            <Row>
-                                {addresses ? addresses.map((address, i) => (
-                                    <Col sm="3" key={i}>
-                                        <h6> {address.company_name}</h6>
-                                        <address>
-                                            <h6 className='text-black'>{t('address_label')}: {address.company_name}</h6>
-                                            {t('name')}: {address.first_name} {address.last_name} <br />
-                                            {t('phone')}: {address.phone} <br />{t('email')}: {address.email} <br />
-                                            {t('address')}: {address.country} / {address.city} / {address.state} {address.postcode} <br />
-                                            {t('address1')}: {address.address1[0]}  <br />
-                                            <Link className='text-primary' href={`/addresses/${address.id}`}>{t('edit')}</Link>
-                                            <a className='text-danger ms-2' onClick={() => { handleDeleteAddress(address.id) }}>{t('delete')}</a>
+                        <Row>
+                            {addresses ?
+                                addresses.map((address, i) => (
+                                    <Col lg='3' sm="12" key={i} className='mb-4'>
+                                        <address className='card h-100'>
+                                            <CardHeader>
+                                                <h6 className='fs-4 p-2 mb-0 text-black'>{address.company_name}</h6>
+                                            </CardHeader>
+                                            <CardBody>
+                                                <p>{t('name')}: {address.first_name} {address.last_name}</p>
+                                                <p>{t('phone')}: {address.phone} </p>
+                                                <p>{t('email')}: {address.email}</p>
+                                                <p>{t('address')}: {address.country} / {address.city} / {address.state} {address.postcode} </p>
+                                                <p>{t('address1')}: {address.address1[0]}</p>
+                                            </CardBody>
+                                            <CardFooter className='row m-0 px-0'>
+                                                <Col xs='6'>
+                                                    <Button className='btn btn-success d-block w-100 rounded' onClick={() => {
+                                                        toggle();
+                                                        setEditableAddress(address);
+                                                    }} >{t('edit')}
+                                                    </Button>
+                                                </Col>
+                                                <Col xs='6'>
+                                                    <Button className='btn btn-danger d-block w-100 rounded' onClick={() => { handleDeleteAddress(address.id) }}>{t('delete')}</Button>
+                                                </Col>
+                                            </CardFooter>
                                         </address>
                                     </Col>
                                 )) : ''}
-                            </Row>
-                        </div>
+                            <EditAddressModal toggle={toggle} isOpen={modal} address={editableAddress} />
+                        </Row>
                     </Container>
                 </section>
                 <section className="contact-page register-page section-b-space">
@@ -80,7 +98,9 @@ const Addresses = () => {
                         <Row>
                             <Col sm="12">
                                 <h3>{t("shipping_address")}</h3>
-                                <AddressForm />
+                                {!modal &&
+                                    <AddressForm />
+                                }
                             </Col>
                         </Row>
                     </Container>

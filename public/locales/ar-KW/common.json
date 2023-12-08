@@ -320,5 +320,8 @@
     "model_no": "رقم الموديل",
     "title": "العنوان",
     "comment": "التعليق",
-    "rating": "التقييم"
+    "rating": "التقييم",
+    "discount":"الخصم",
+    "payment_method":"طريقة الدفع",
+    "payment_complete":"تاكيد الطلب"
 }

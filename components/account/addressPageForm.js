@@ -114,7 +114,6 @@ function AddressForm({ ctx, col, isDetails, address, checkout }) {
                                         <option key={i} value={country.code}>{country.name}</option>
                                     ))}
                                 </Field>
-
                             </Col>
                             <Col md="6" sm="12" xs="12" className="form-group">
                                 <Label className="form-label" for="state">
@@ -133,13 +132,13 @@ function AddressForm({ ctx, col, isDetails, address, checkout }) {
                                         let selectedOptionId = e.target.options[e.target.selectedIndex].getAttribute('id');
                                         setFieldValue('state_id', selectedOptionId);
                                         setFieldValue('state', e.target.value);
-                                        getCitiesByState(parseInt(selectedOptionId));
+                                        getCitiesByState(selectedOptionId);
                                     }}
                                     required=""
                                 >
-                                    <option disabled value='' selected>{t("select.state")}</option>
+                                    <option disabled value=''>{t("select.state")}</option>
                                     {states && states.map((state, i) => (
-                                        <option key={i} value={state.default_name} id={state.id}>{state.default_name}</option>
+                                        <option key={i} value={state.code} id={state.id}>{state.default_name}</option>
                                     ))}
                                 </Field>
                             </Col>
@@ -156,14 +155,14 @@ function AddressForm({ ctx, col, isDetails, address, checkout }) {
                                     name="city"
                                     placeholder={t("city_label")}
                                     value={values.city}
-                                    onChange={(e) => { 
+                                    onChange={(e) => {
                                         let selectedOptionId = e.target.options[e.target.selectedIndex].getAttribute('id');
                                         setFieldValue('city_id', selectedOptionId);
                                         setFieldValue('city', e.target.value)
-                                         }}
+                                    }}
                                     required=""
                                 >
-                                    <option disabled value='' selected>{t("select.city")}</option>
+                                    <option disabled value='' >{t("select.city")}</option>
                                     {cities && cities.map((city, i) => (
                                         <option key={i} value={city.code} id={city.id}>{city.default_name}</option>
                                     ))}

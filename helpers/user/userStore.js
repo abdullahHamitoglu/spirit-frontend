@@ -222,7 +222,7 @@ const useUserStore = create(
             console.error(error);
           });
       },
-      updateAddress: async (data, locale, id) => {
+      updateAddress: async (data, locale, id , closeModal) => {
         await axios({
           method: "put",
           url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/customer/addresses/${id}`,
@@ -237,6 +237,7 @@ const useUserStore = create(
         })
           .then((res) => {
             toast(res.data.message);
+            closeModal();
           })
           .catch((error) => {
             if (error.response.data) {

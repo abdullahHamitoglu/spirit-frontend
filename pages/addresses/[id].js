@@ -36,7 +36,7 @@ const UniqueAddress = () => {
       if (state.code == address.country) {
         setCities(state.cities);
       }
-    })
+    });
   }, []);
   const addressValidationSchema = Yup.object().shape({
     company_name: Yup.string().required(t('this_field_is_required')),
@@ -48,7 +48,6 @@ const UniqueAddress = () => {
     city: Yup.string().required(t('this_field_is_required')),
     postcode: Yup.string().required(t('this_field_is_required')),
     phone: Yup.string().required(t('this_field_is_required')),
-    vat_id: Yup.string().required(t('this_field_is_required')),
   });
 
   const getStatesByCountry = (code) => {
@@ -105,7 +104,6 @@ const UniqueAddress = () => {
   }
   console.log(states);
   return (
-
     <CommonLayout parent={t('home')} title={address.company_name}>
       {loading && address ? <ContactFormLoader className="d-flex justify-content-center w-100" /> :
         <section className="contact-page register-page section-b-space">
@@ -199,12 +197,16 @@ const UniqueAddress = () => {
                             name="city"
                             placeholder={t("city_label")}
                             value={values.city}
-                            onChange={(e) => { setFieldValue('city', e.target.value) }}
+                            onChange={(e) => {
+                              let selectedOptionId = e.target.options[e.target.selectedIndex].getAttribute('id');
+                              setFieldValue('city_id', selectedOptionId);
+                              setFieldValue('city', e.target.value)
+                            }}
                             required=""
                           >
-                            <option value='' selected>{t("select.city")}</option>
+                            <option disabled value='' >{t("select.city")}</option>
                             {cities && cities.map((city, i) => (
-                              <option key={i} value={city.code}>{city.default_name}</option>
+                              <option key={i} value={city.code} id={city.id}>{city.default_name}</option>
                             ))}
                           </Field>
                         </Col>
