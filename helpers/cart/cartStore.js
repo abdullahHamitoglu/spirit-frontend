@@ -14,6 +14,7 @@ const useCartStore = create(
         paymentMethods: [],
         orderDetails: [],
         redirect_url: '',
+        iframeHtml: '',
         increment: () => {
             set((state) => ({ count: state.count > -1 ? state.count + 1 : state.count }))
         },
@@ -174,7 +175,7 @@ const useCartStore = create(
             });
         },
         saveCheckoutAddress: async (data, locale, closeModal) => {
-            set({ cartLoading: true });
+            set({ cartLoading: true, savedAddress: [] });
             await axios({
                 method: "post",
                 url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/customer/checkout/save-address`,
@@ -248,7 +249,8 @@ const useCartStore = create(
                 }
             }).then((res) => {
                 toast.success(res.data.message);
-                res
+                console.log(res);
+                set({ iframeHtml: res.data });
                 set({ redirect_url: res.data.data.redirect_url });
             }).catch((error) => {
                 set({ cartLoading: false });

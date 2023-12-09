@@ -80,9 +80,11 @@ function AddressModal(args) {
                         }}
                         validationSchema={addressValidationSchema}
                         onSubmit={(values, { setSubmitting }) => {
+                            if(document.querySelector('[name=address]') && document.querySelector('[name=address]').checked){
+                                document.querySelector('[name=address]').checked = false
+                            }
                             saveCheckoutAddress(values, locale,args.toggle);
                             setSubmitting(false);
-                            // args.toggle();
                         }}
                         errors={(errors) => {
                             console.error(errors);

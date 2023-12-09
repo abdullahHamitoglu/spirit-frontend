@@ -287,7 +287,7 @@
     "city_required": "City is required",
     "postcode_required": "Postcode is required",
     "vat_id_required": "VAT ID is required",
-    "add_new_address": "Add  new address",
+    "add_address": "Add address",
     "this_field_is_required": "This Filled is required",
     "next": "next",
     "previous": "previous",
@@ -322,5 +322,6 @@
     "rating": "rating",
     "discount":"discount",
     "payment_method":"Payment method",
-    "payment_complete":"Confirm the order"
+    "payment_complete":"Confirm the order",
+    "order-failure":"order failure"
 }

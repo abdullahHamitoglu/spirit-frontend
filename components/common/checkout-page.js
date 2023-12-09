@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Media, Container, Form, Row, Col, Label, CardHeader, Card, CardBody, CardFooter, Button, Input, FormGroup } from "reactstrap";
+import { Media, Container, Form, Row, Col, Label, CardHeader, Card, CardBody, CardFooter, Button, Input, FormGroup, Alert } from "reactstrap";
 import { useRouter } from "next/router";
 import { Field, Formik } from "formik";
 import * as Yup from 'yup';
@@ -16,6 +16,8 @@ import PostLoader from "./PostLoader";
 import CardLoader from "./cardLoader";
 import ButtonLoader from "./buttonLoader";
 import PaymentModal from "./paymentModal";
+import { isEqual } from 'lodash';
+import CartCardLoader from "./cartCardLoader";
 
 const CheckoutPage = () => {
   const { redirect_url, rates, savedAddress, saveCheckoutShipping, cartData, paymentMethods, saveCheckoutAddress, saveCheckoutPayment } = useCartStore();
@@ -25,8 +27,6 @@ const CheckoutPage = () => {
   const { t } = useTranslation();
   const [modalAdd, setModalAdd] = useState(false);
   const [modal, setModal] = useState(false);
-  const [paymentModal, setPaymentModal] = useState(false);
-  const paymentToggle = () => setPaymentModal(!paymentModal);
   const toggleEdit = () => setModal(!modal);
   const toggleAdd = () => setModalAdd(!modalAdd);
   const [checkoutAddress, setCheckoutAddress] = useState(addresses[0]);
@@ -56,6 +56,7 @@ const CheckoutPage = () => {
     setLoading(false);
   }
   const handleCheckoutPayment = async (value) => {
+    console.log(value);
     setButtonLoader(true);
     await saveCheckoutPayment({ payment_method: value }, locale);
     setButtonLoader(false);
@@ -80,79 +81,62 @@ const CheckoutPage = () => {
                       onClick={toggleAdd}
                     >
                       <i className="fa fa-plus me-3" aria-hidden="true"></i>
-                      {t('add_new_address')}
+                      {t('add_address')}
                     </Button>
                     <AddressModal toggle={toggleAdd} isOpen={modalAdd} />
                     <Row>
-                      {isAuthenticated && addresses ?
-                        addresses.map((address, i) => (
-                          <Col lg='4' sm="12" key={i} className='mb-4'>
-                            <Card className='h-100 '>
-                              <CardHeader className="d-flex justify-content-between">
-                                <h6 className='fs-4 p-2 mb-0 text-black'>{address.company_name}</h6>
-                                <FormGroup switch>
-                                  <Input
-                                    type="radio"
-                                    name="address"
-                                    className="mt-2"
-                                    onChange={() => handleCheckoutAddress(address)}
-                                  />
-                                </FormGroup>
-                              </CardHeader>
-                              <CardBody>
-                                <p>{t('name')}: {address.first_name} {address.last_name}</p>
-                                <p>{t('phone')}: {address.phone} </p>
-                                <p>{t('email')}: {address.email}</p>
-                                <p>{t('address')}: {address.country} / {address.city} / {address.state} {address.postcode} </p>
-                                <p>{t('address1')}: {address.address1[0]}</p>
-                              </CardBody>
-                              <CardFooter className='row m-0 px-0'>
-                                <Col xs='12'>
-                                  <Button className='btn btn-warning d-block w-100 rounded' onClick={() => {
-                                    toggleEdit();
-                                    setEditableAddress(address);
-                                  }} >{t('edit')}
-                                  </Button>
-                                </Col>
-                              </CardFooter>
-                            </Card>
-                          </Col>
-                        )) : ''}
+                      {isAuthenticated && addresses.length > 0 ?
+                        <>
+                          {addresses.map((address, i) => (
+                            <Col lg='4' sm="12" key={i} className='mb-4'>
+                              <Card className='h-100 '>
+                                <CardHeader className="d-flex justify-content-between">
+                                  <h6 className='fs-4 p-2 mb-0 text-black'>{address.company_name}</h6>
+                                  <FormGroup switch>
+                                    <Input
+                                      type="radio"
+                                      name="address"
+                                      className="mt-2"
+                                      onChange={() => handleCheckoutAddress(address)}
+                                    />
+                                  </FormGroup>
+                                </CardHeader>
+                                <CardBody>
+                                  <p>{t('name')}: {address.first_name} {address.last_name}</p>
+                                  <p>{t('phone')}: {address.phone} </p>
+                                  <p>{t('email')}: {address.email}</p>
+                                  <p>{t('address')}: {address.country} / {address.city} / {address.state} {address.postcode} </p>
+                                  <p>{t('address1')}: {address.address1[0]}</p>
+                                </CardBody>
+                                <CardFooter className='row m-0 px-0'>
+                                  <Col xs='12'>
+                                    <Button className='btn btn-warning d-block w-100 rounded' onClick={() => {
+                                      toggleEdit();
+                                      setEditableAddress(address);
+                                    }} >{t('edit')}
+                                    </Button>
+                                  </Col>
+                                </CardFooter>
+                              </Card>
+                            </Col>
+                          ))}
+                          <EditAddressModal toggle={toggleEdit} isOpen={modal} address={editableAddress} />
+                        </>
+                        : ''}
                       {savedAddress && savedAddress.company_name &&
-                        <Col lg='4' sm="12" className='mb-4'>
-                          <Card className='h-100 bg-success-subtle'>
-                            <CardHeader className="d-flex justify-content-between">
-                              <h6 className='fs-4 p-2 mb-0 text-black'>{savedAddress.company_name}</h6>
-                              <FormGroup switch>
-                                <Input
-                                  type="radio"
-                                  name="address"
-                                  className="mt-2"
-                                  onChange={() => handleCheckoutAddress(savedAddress)}
-                                />
-                              </FormGroup>
-                            </CardHeader>
-                            <CardBody>
-                              <p>{t('name')}: {savedAddress.first_name} {savedAddress.last_name}</p>
-                              <p>{t('phone')}: {savedAddress.phone} </p>
-                              <p>{t('email')}: {savedAddress.email}</p>
-                              <p>{t('address')}: {savedAddress.country} / {savedAddress.city} / {savedAddress.state} {savedAddress.postcode} </p>
-                              <p>{t('address1')}: {savedAddress.address1}</p>
-                            </CardBody>
-                            <CardFooter className='row m-0 px-0'>
-                              <Col xs='12'>
-                                <Button className='btn btn-warning d-block w-100 rounded' onClick={() => {
-                                  toggleAdd();
-                                }} >{t('edit')}
-                                </Button>
-                              </Col>
-                            </CardFooter>
-                          </Card>
+                        <Col lg='12' sm="12" className='mb-4'>
+                          <Alert>
+                            <h4 className="alert-heading">
+                              {savedAddress.company_name}
+                            </h4>
+                            <p>{t('name')}: {savedAddress.first_name} {savedAddress.last_name} || {t('phone')}: {savedAddress.phone} </p>
+                            <p>{t('email')}: {savedAddress.email} || {t('address')}: {savedAddress.country} / {savedAddress.city} / {savedAddress.state} {savedAddress.postcode} </p>
+                            <p>{t('address1')}: {savedAddress.address1}</p>
+                          </Alert>
                         </Col>
                       }
-                      {addressLoader && <PostLoader className='col-4' />}
+                      {addressLoader && <PostLoader className='col-12' />}
                     </Row>
-                    <EditAddressModal toggle={toggleEdit} isOpen={modal} address={editableAddress} />
                   </CardBody>
                 </Card>
                 {rates && rates[0] &&
@@ -192,7 +176,7 @@ const CheckoutPage = () => {
                             <Input
                               type="radio"
                               id={method.id}
-                              name={method.method}
+                              name='payment_method'
                               value={method.method}
                               className="me-2 mt-0"
                               onChange={(e) => handleCheckoutPayment(e.target.value)}
@@ -251,16 +235,13 @@ const CheckoutPage = () => {
                           </li>
                         </div>
                       ) : (
-                        <li>
-                          <h5>{t('your_cart_is_empty')}</h5>
-                        </li>
+                        <CartCardLoader />
                       )}
                     </ul>
                   </CardBody>
                 </Card>
-                <PaymentModal toggle={paymentToggle} isOpen={paymentModal} redirect_url={redirect_url} />
                 {!buttonLoader ?
-                  <Button block size="lg" disabled={redirect_url ? false : true} onClick={() => paymentToggle()} className="mt-4 btn-solid  rounded">{t('payment_complete')}</Button>
+                  <a href={redirect_url} className={`${redirect_url ? '' :'disabled'}  mt-4 btn btn-solid d-block rounded`}>{t('payment_complete')}</a>
                   : <ButtonLoader />}
               </Col>
             </Row>

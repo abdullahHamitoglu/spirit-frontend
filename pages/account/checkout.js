@@ -21,13 +21,23 @@ const Checkout = () => {
         getCart
     } = useCartStore();
     useEffect(() => {
-        getCart();
+
         if (!cartData) {
             toast.warn(t('your_cart_is_empty'));
             router.push('/products');
         }
+        getCart();
     }, []);
+
+    useEffect(()=>{
+
+        if (router.query && router.query.status) {
+            toast.error(t(router.query.status));
+        }
+    },[router.query])
+
     if (!cartData) {
+        router.push('/products');
         return (
             <div className="loader-wrapper">
                 <div className="loader"></div>

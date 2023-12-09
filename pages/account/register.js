@@ -7,11 +7,9 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import * as Yup from 'yup';
 import useUserStore from '@/helpers/user/userStore';
 import CommonLayout from '@/components/shop/common-layout';
-
-import PhoneInput from 'react-phone-input-2'
-import 'react-phone-input-2/lib/style.css'
 import addressStore from '@/helpers/address/addressStore';
 import CustomPhoneInput from '@/components/account/customPhoneInput';
+import { toast } from 'react-toastify';
 
 const Register = () => {
     const { locale } = useRouter();
@@ -29,8 +27,7 @@ const Register = () => {
             .oneOf([Yup.ref('password'), null], 'Passwords must match')
             .required('Confirm Password is required'),
     });
-    const { getCountries, countries } = addressStore();
-
+    const { getCountries } = addressStore();
 
     if (isAuthenticated) {
         const redirectUrl = router.query.redirect_url

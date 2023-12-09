@@ -8,8 +8,6 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import useCartStore from '@/helpers/cart/cartStore';
 import currencyStore from '@/helpers/Currency/CurrencyStore';
-import PhoneInput from 'react-phone-input-2'
-import 'react-phone-input-2/lib/style.css'
 import addressStore from '@/helpers/address/addressStore';
 import CustomPhoneInput from './customPhoneInput';
 

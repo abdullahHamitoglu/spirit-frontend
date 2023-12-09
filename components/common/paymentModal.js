@@ -12,13 +12,16 @@ import CustomPhoneInput from '../account/customPhoneInput';
 import { isEqual } from 'lodash';
 import axios from 'axios';
 import Cheerio from 'cheerio';
+import useCartStore from '@/helpers/cart/cartStore';
 
 function PaymentModal(args) {
     const [loading, setLoading] = useState(false);
     const router = useRouter();
     const { t } = useTranslation();
     const { locale, query } = useRouter();
-    
+    const {iframeHtml} = useCartStore();
+    console.log(args.redirect_url);
+    console.log(iframeHtml);
     return (
         <div>
             <Modal {...args} centered backdrop='static' size='xl' >
@@ -26,7 +29,7 @@ function PaymentModal(args) {
                     {t("payment")}
                 </ModalHeader>
                 <ModalBody className='p-4'>
-                    
+                    <iframe src={iframeHtml} width="100%" height="600" />
                 </ModalBody>
             </Modal>
         </div>
