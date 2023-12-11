@@ -327,8 +327,6 @@ const UniqueAddress = () => {
 export async function getStaticPaths() {
   return {
     paths: [
-      // String variant:
-      // Object variant:
       { params: { id: '9' } },
     ],
     fallback: true,

@@ -3,6 +3,7 @@ const { i18n } = require('./next-i18next.config')
 
 const nextConfig = {
   reactStrictMode: true,
+  trailingSlash: true,
   i18n,
   reactStrictMode: true,
   images: {
@@ -10,7 +11,7 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'http',
-        hostname: '96.30.193.192',
+        hostname: process.env.NEXT_PUBLIC_API_URL
       },
     ],
   },

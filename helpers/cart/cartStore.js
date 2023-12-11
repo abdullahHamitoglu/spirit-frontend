@@ -248,10 +248,10 @@ const useCartStore = create(
                     register_device_id: useUserStore.getState().registeredDeviceID
                 }
             }).then((res) => {
-                toast.success(res.data.message);
-                console.log(res);
-                set({ iframeHtml: res.data });
                 set({ redirect_url: res.data.data.redirect_url });
+                if(typeof window !== "undefined" && res.data.data.redirect_url){
+                    window.location = res.data.data.redirect_url
+                }
             }).catch((error) => {
                 set({ cartLoading: false });
                 console.error(error);
@@ -277,7 +277,6 @@ const useCartStore = create(
             }).then((res) => {
                 toast.success(res.data.message);
                 set({ orderDetails: res.data.data });
-                get().saveCheckoutOrder(locale);
             }).catch((error) => {
                 set({ cartLoading: false });
                 console.error(error);

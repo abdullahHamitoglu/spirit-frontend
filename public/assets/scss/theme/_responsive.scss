@@ -2307,9 +2307,6 @@ body {
       padding: 0;
     }
   }
-  .alert {
-    max-width: 45% !important;
-  }
   .theme-modal {
     &.modal-dialog {
       .modal-content {
@@ -5325,11 +5322,7 @@ body {
       }
     }
   }
-  .alert {
-    right: 0 !important;
-    left: 0;
-    max-width: 90% !important;
-  }
+  
   .tap-top {
     width: 35px;
     height: 35px;

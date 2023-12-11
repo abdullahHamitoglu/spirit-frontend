@@ -23,12 +23,16 @@ const Login = () => {
   });
   if (isAuthenticated) {
     const redirectUrl = router.query.redirect_url
-    if(redirectUrl){
+    if (redirectUrl) {
       router.push(redirectUrl);
-    }else{
+    } else {
       router.push('/');
     }
-    
+    return (
+      <div className="loader-wrapper">
+        <div className="loader"></div>
+      </div>
+    )
   }
   return (
     <CommonLayout parent={t('home')} title={t('login')}>
@@ -46,7 +50,7 @@ const Login = () => {
                   }}
                   validationSchema={validationSchema}
                   onSubmit={(values, { setSubmitting }) => {
-                    login(values , locale)
+                    login(values, locale)
                     setSubmitting(false);
                   }} >
                   {({

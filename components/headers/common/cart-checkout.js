@@ -9,9 +9,9 @@ const CartCheckout = ({ item }) => {
     <Fragment>
       <li className="border-bottom pb-2 mb-3 position-relative">
         <div className="media">
-          <Link href={"/products/" + item.product.url_key}>
+          <Link href={"/products/" + item.product.url_key} className="w-50">
             {item.product.base_image.length ??
-              <Media alt="" className="me-3" src={`${item.product.base_image.small_image_url}`} />
+              <Media alt="" className="me-3 mw-100 w-100" src={`${item.product.base_image.small_image_url}`} />
             }
           </Link>
           <div className="media-body">

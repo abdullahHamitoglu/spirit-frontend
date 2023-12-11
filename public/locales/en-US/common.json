@@ -39,7 +39,7 @@
     "contact": "contact",
     "checkout": "checkout",
     "compare": "compare",
-    "order_success": "order_success",
+    "order_success": "order success",
     "dashboard": "Dashboard",
     "FAQ": "FAQ",
     "Shop": "Shop",
@@ -323,5 +323,10 @@
     "discount":"discount",
     "payment_method":"Payment method",
     "payment_complete":"Confirm the order",
-    "order-failure":"order failure"
+    "order-failure":"order failure",
+    "your_order_details":"your order details",
+    "thank_you": "thank you",
+    "payment_successful":"The request was completed successfully",
+    "order_date":"Order Date",
+    "order_total":"Order Total"
 }

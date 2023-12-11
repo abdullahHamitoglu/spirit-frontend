@@ -21,21 +21,21 @@ const Checkout = () => {
         getCart
     } = useCartStore();
     useEffect(() => {
-
         if (!cartData) {
             toast.warn(t('your_cart_is_empty'));
             router.push('/products');
         }
         getCart();
     }, []);
-
-    useEffect(()=>{
-
+    useEffect(() => {
         if (router.query && router.query.status) {
             toast.error(t(router.query.status));
         }
-    },[router.query])
-
+    }, [router.query])
+    
+    if (router.query && router.query.status) {
+        if (typeof window !== "undefined") { window.history.replaceState(null, '', router.pathname ) }
+    }
     if (!cartData) {
         router.push('/products');
         return (

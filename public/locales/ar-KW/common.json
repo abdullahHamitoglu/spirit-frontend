@@ -40,6 +40,7 @@
     "checkout": "الدفع",
     "compare": "المقارنة",
     "order_success": "نجاح الطلب",
+    "order_id": "رقم الطلب",
     "dashboard": "لوحة التحكم",
     "FAQ": "الأسئلة الشائعة",
     "shop": "متجر",
@@ -322,10 +323,13 @@
     "title": "العنوان",
     "comment": "التعليق",
     "rating": "التقييم",
-    "discount":"الخصم",
-    "payment_method":"طريقة الدفع",
-    "payment_complete":"تاكيد الطلب",
-    "order-failure":"فشل الطلب"
-
-
+    "discount": "الخصم",
+    "payment_method": "طريقة الدفع",
+    "payment_complete": "تاكيد الطلب",
+    "order-failure": "فشل الطلب",
+    "your_order_details": "تفاصيل الطلب الخاص بك",
+    "thank_you": "شكرا لك",
+    "payment_successful": "تم الطلب بنجاح",
+    "order_date": "تاريخ الطلب",
+    "order_total": "المجموع الكلي"
 }

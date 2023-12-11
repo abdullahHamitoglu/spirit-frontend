@@ -63,8 +63,8 @@ function EditAddressModal(args) {
                 <ModalHeader toggle={args.toggle}>
                     {t("address")}
                 </ModalHeader>
-                <ModalBody className='p-4'>
-                    {args.address.length < 0 ? <ContactFormLoader className="d-flex justify-content-center w-100" /> :
+                <ModalBody className='p-4'> 
+                    {args.address ? <ContactFormLoader className="d-flex justify-content-center w-100" /> :
                         <Formik
                             enableReinitialize
                             initialValues={{

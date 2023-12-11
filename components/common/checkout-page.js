@@ -20,7 +20,7 @@ import { isEqual } from 'lodash';
 import CartCardLoader from "./cartCardLoader";
 
 const CheckoutPage = () => {
-  const { redirect_url, rates, savedAddress, saveCheckoutShipping, cartData, paymentMethods, saveCheckoutAddress, saveCheckoutPayment } = useCartStore();
+  const { saveCheckoutOrder, redirect_url, rates, savedAddress, saveCheckoutShipping, cartData, paymentMethods, saveCheckoutAddress, saveCheckoutPayment } = useCartStore();
   const { getAddresses, addresses, isAuthenticated } = useUserStore();
   const router = useRouter();
   const { locale } = useRouter();
@@ -56,9 +56,13 @@ const CheckoutPage = () => {
     setLoading(false);
   }
   const handleCheckoutPayment = async (value) => {
-    console.log(value);
     setButtonLoader(true);
     await saveCheckoutPayment({ payment_method: value }, locale);
+    setButtonLoader(false);
+  }
+  const handleCheckoutOrder = async (value) => {
+    setButtonLoader(true);
+    await saveCheckoutOrder(locale);
     setButtonLoader(false);
   }
   return (
@@ -124,8 +128,8 @@ const CheckoutPage = () => {
                         </>
                         : ''}
                       {savedAddress && savedAddress.company_name &&
-                        <Col lg='12' sm="12" className='mb-4'>
-                          <Alert>
+                        <Col lg='12' xs='12'>
+                          <Alert className="mw-100 mb-0">
                             <h4 className="alert-heading">
                               {savedAddress.company_name}
                             </h4>
@@ -181,7 +185,7 @@ const CheckoutPage = () => {
                               className="me-2 mt-0"
                               onChange={(e) => handleCheckoutPayment(e.target.value)}
                             />
-                            <Label htmlFor={method.id} className="m-0">{method.method_title} {method.description}</Label>
+                            <Label htmlFor={method.id} className="m-0">{method.method_title}</Label>
                           </FormGroup>
                         ))
                         }
@@ -194,7 +198,7 @@ const CheckoutPage = () => {
               <Col lg='3'>
                 <Card>
                   <CardHeader>
-                    <h4 className="m-2 ms-0">{t('tabText.details')}</h4>
+                    <h4 className="m-2 ms-0">{t('products')}</h4>
                   </CardHeader>
                   <CardBody>
                     <ul className="show-div shopping-cart">
@@ -241,7 +245,7 @@ const CheckoutPage = () => {
                   </CardBody>
                 </Card>
                 {!buttonLoader ?
-                  <a href={redirect_url} className={`${redirect_url ? '' :'disabled'}  mt-4 btn btn-solid d-block rounded`}>{t('payment_complete')}</a>
+                  <Button block onClick={()=> handleCheckoutOrder()} className={`${paymentMethods && paymentMethods[0] ? '' : 'disabled'}  mt-4 btn btn-solid d-block rounded`}>{t('payment_complete')}</Button>
                   : <ButtonLoader />}
               </Col>
             </Row>
