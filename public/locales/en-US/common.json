@@ -328,5 +328,6 @@
     "thank_you": "thank you",
     "payment_successful":"The request was completed successfully",
     "order_date":"Order Date",
-    "order_total":"Order Total"
+    "order_total":"Order Total",
+    "show_more":"show more ..."
 }

@@ -220,13 +220,15 @@ const CheckoutPage = () => {
                                   {cartData.formatted_sub_total}
                                 </span>
                               </h5>
-                              <h5>
-                                {t('tasks')} :{" "}
-                                <span>
-                                  {cartData.formatted_tax_total}
-                                </span>
-                              </h5>
-                              {cartData.formatted_discount > 0 &&
+                              {cartData.tax_total > 0 &&
+                                <h5>
+                                  {t('tasks')} :{" "}
+                                  <span>
+                                    {cartData.formatted_tax_total}
+                                  </span>
+                                </h5>
+                              }
+                              {cartData.discount > 0 &&
                                 <h5>
                                   {t('discount')} :{" "}
                                   <span>
@@ -250,7 +252,7 @@ const CheckoutPage = () => {
                   </CardBody>
                 </Card>
                 {!buttonLoader ?
-                  <Button block onClick={()=> handleCheckoutOrder()} className={`${paymentMethods && paymentMethods[0] ? '' : 'disabled'}  mt-4 btn btn-solid d-block rounded`}>{t('payment_complete')}</Button>
+                  <Button block onClick={() => handleCheckoutOrder()} className={`${paymentMethods && paymentMethods[0] ? '' : 'disabled'}  mt-4 btn btn-solid d-block rounded`}>{t('payment_complete')}</Button>
                   : <ButtonLoader />}
               </Col>
             </Row>

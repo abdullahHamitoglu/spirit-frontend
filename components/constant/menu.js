@@ -3,10 +3,12 @@ export const MENUITEMS = [
   {
     title: "home",
     path: "/",
+    type: "link",
   },
   {
     title: "shop",
-    path:"/Products"
+    path:"/Products",
+    type: "link",
   },
   {
     title: "products",

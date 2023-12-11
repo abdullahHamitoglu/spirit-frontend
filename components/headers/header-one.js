@@ -17,6 +17,7 @@ const HeaderOne = ({
   topClass,
   noTopBar,
   direction,
+  categories
 }) => {
   const router = useRouter();
 
@@ -56,18 +57,12 @@ const HeaderOne = ({
   };
 
   const [loading, setLoading] = useState(false);
-  const [categories, setCategories] = useState([]);
-  const fetchCates = async () => {
-    const response = await getCategoriesTree(router.locale);
-    setCategories(response);
-  };
   const openNav = async () => {
     var openMySlide = document.getElementById("mySidenav");
     var body = document.body;
     if (openMySlide) {
       openMySlide.classList.add("open-side");
       body.classList.add("overflow-hidden");
-      fetchCates();
     }
   };
   const openSearch = () => {
@@ -112,7 +107,7 @@ const HeaderOne = ({
                 </div>
                 <div className="menu-right pull-right">
                   {/*Top Navigation Bar Component*/}
-                  <NavBar />
+                  <NavBar categories={categories} openNavMain={openNav} />
                   <div>
                     <div className="icon-nav">
                       <ul>

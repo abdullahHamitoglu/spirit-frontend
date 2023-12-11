@@ -13,6 +13,8 @@ import {
 import LogoImage from "../../headers/common/logo";
 import CopyRight from "./copyright";
 import { useTranslation } from "react-i18next";
+import { CoreConfigFrontFields, coreConfigFrontFields } from "@/controllers/homeController";
+import { useRouter } from "next/router";
 
 const MasterFooter = ({
   containerFluid,
@@ -25,11 +27,18 @@ const MasterFooter = ({
   belowContainerFluid,
   CopyRightFluid,
   newLatter,
+  categories
 }) => {
   const [isOpen, setIsOpen] = useState();
   const [collapse, setCollapse] = useState(0);
   const width = window.innerWidth <= 767;
   const { t } = useTranslation();
+  const [fields, setFields] = useState({});
+  const { locale } = useRouter();
+  const getFields = async () => {
+    const response = await coreConfigFrontFields(locale);
+    setFields(response);
+  }
   useEffect(() => {
     const changeCollapse = () => {
       if (window.innerWidth <= 767) {
@@ -41,13 +50,15 @@ const MasterFooter = ({
     window.addEventListener("resize", changeCollapse);
 
     return () => {
+      getFields();
       window.removeEventListener("resize", changeCollapse);
     };
+
   }, []);
   return (
     <div>
       <footer className={footerClass}>
-        {newLatter ? (
+        {/* newLatter ? (
           <div className={footerLayOut}>
             <Container fluid={containerFluid ? containerFluid : ""}>
               <section className={footerSection}>
@@ -77,11 +88,11 @@ const MasterFooter = ({
                   </Col>
                 </Row>
               </section>
-            </Container>
+            </Container> 
           </div>
         ) : (
           ""
-        )}
+        )*/}
 
         <section className={belowSection}>
           <Container fluid={belowContainerFluid ? belowContainerFluid : ""}>
@@ -138,91 +149,42 @@ const MasterFooter = ({
                   </div>
                 </Collapse>
               </Col>
-              <Col className="offset-xl-1">
-                <div className="sub-title">
-                  <div
-                    className={`footer-title ${isOpen && collapse == 2 ? "active" : ""
-                      } `}>
-                    <h4
-                      onClick={() => {
-                        if (width) {
-                          setIsOpen(!isOpen);
-                          setCollapse(2);
-                        } else setIsOpen(true);
-                      }}>
-                      {t('footer.myAccountTitle')}
-                      <span className="according-menu"></span>
-                    </h4>
-                  </div>
-                  <Collapse
-                    isOpen={width ? (collapse === 2 ? isOpen : false) : true}>
-                    <div className="footer-contant">
-                      <ul>
-                        <li>
-                          <Link href={`/shop/left_sidebar`}>
-                            {t('footer.myAccountLink1')}
-                          </Link>
-                        </li>
-                        <li>
-                          <Link href={`/shop/left_sidebar`}>
-                            {t('footer.myAccountLink2')}
-                          </Link>
-                        </li>
-                        <li>
-                          <Link href={`/shop/left_sidebar`}>
-                            {t('footer.myAccountLink3')}
-                          </Link>
-                        </li>
-                        <li>
-                          <Link href={`/shop/left_sidebar`}>
-                            {t('footer.myAccountLink4')}
-                          </Link>
-                        </li>
-                      </ul>
+              {categories && categories.slice(0, 2).map((category, i) => (
+                <Col className={i == 1 ? `offset-xl-1` : ''}>
+                  <div className="sub-title">
+                    <div
+                      className={`footer-title ${isOpen && collapse == category.id + 213 ? "active" : ""
+                        } `}>
+                      <h4
+                        onClick={() => {
+                          if (width) {
+                            setIsOpen(!isOpen);
+                            setCollapse(category.id + 213);
+                          } else setIsOpen(true);
+
+                        }}
+                        className="overflow-hidden text-nowrap">
+                        {category.name}
+                        <span className="according-menu"></span>
+                      </h4>
                     </div>
-                  </Collapse>
-                </div>
-              </Col>
-              <Col>
-                <div className="sub-title">
-                  <div
-                    className={`footer-title ${isOpen && collapse == 3 ? "active" : ""
-                      } `}>
-                    <h4
-                      onClick={() => {
-                        if (width) {
-                          setIsOpen(!isOpen);
-                          setCollapse(3);
-                        } else setIsOpen(true);
-                      }}>
-                      {t('footer.whyChooseTitle')}
-                      <span className="according-menu"></span>
-                    </h4>
+                    <Collapse
+                      isOpen={width ? (collapse === category.id + 213 ? isOpen : false) : true}>
+                      <div className="footer-contant">
+                        <ul>
+                          {category.children.slice(0, 6).map((chide, i) => (
+                            <li>
+                              <Link href={`/products?category=${chide.id}`}>
+                                {chide.name}
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </Collapse>
                   </div>
-                  <Collapse
-                    isOpen={width ? (collapse === 3 ? isOpen : false) : true}>
-                    <div className="footer-contant">
-                      <ul>
-                        <li>
-                          <a href="#">{t('footer.whyChooseLink1')}</a>
-                        </li>
-                        <li>
-                          <a href="#">{t('footer.whyChooseLink2')}</a>
-                        </li>
-                        <li>
-                          <a href="#">{t('footer.whyChooseLink3')}</a>
-                        </li>
-                        <li>
-                          <a href="#">{t('footer.whyChooseLink4')}</a>
-                        </li>
-                        <li>
-                          <a href="#">{t('footer.whyChooseLink5')}</a>
-                        </li>
-                      </ul>
-                    </div>
-                  </Collapse>
-                </div>
-              </Col>
+                </Col>
+              ))}
               <Col>
                 <div className="sub-title">
                   <div
@@ -243,10 +205,15 @@ const MasterFooter = ({
                     isOpen={width ? (collapse === 4 ? isOpen : false) : true}>
                     <div className="footer-contant">
                       <ul className="contact-list">
-                        <li>
-                          <i className="fa fa-map-marker"></i>{t('footer.storeAddress')}
-                        </li>
-                        <li>
+                        {fields.length > 0 ? fields.map((field, i) => (
+                          <li>
+                            {field.code.indexOf('address') > 0 ? <i className="fa fa-map-marker"></i> : ''}
+                            {field.code.indexOf('phone') > 0 ? <i className="fa fa-phone"></i> : ''}
+                            {field.code.indexOf('email') > 0 ? <i className="fa fa-envelope"></i> : ''}
+                            {field.name} : {field.value}
+                          </li>
+                        )) : ''}
+                        {/* <li>
                           <i className="fa fa-phone"></i>{t('footer.storePhoneNumber')}
                         </li>
                         <li>
@@ -254,7 +221,7 @@ const MasterFooter = ({
                         </li>
                         <li>
                           <i className="fa fa-fax"></i>{t('footer.storeFax')}
-                        </li>
+                        </li> */}
                       </ul>
                     </div>
                   </Collapse>

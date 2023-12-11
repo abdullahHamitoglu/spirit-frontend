@@ -16,7 +16,7 @@ const addressStore = create(
                 },
             }).then((response) => {
                 set({ countries: response.data.data });
-            }).catch((error) => {   
+            }).catch((error) => {
                 console.error(error);
             })
         },

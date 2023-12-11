@@ -331,5 +331,6 @@
     "thank_you": "شكرا لك",
     "payment_successful": "تم الطلب بنجاح",
     "order_date": "تاريخ الطلب",
-    "order_total": "المجموع الكلي"
+    "order_total": "المجموع الكلي",
+    "show_more":" ... اضهار المزيد"
 }

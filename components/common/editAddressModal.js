@@ -22,7 +22,6 @@ function EditAddressModal(args) {
     const { locale } = useRouter();
     const { updateAddress, getAddresses } = useUserStore();
     const { getCountries, countries, fetchStates, states } = addressStore();
-    console.log(args.address);
     useEffect(() => {
         getCountries(locale);
     }, []);

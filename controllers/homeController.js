@@ -31,3 +31,18 @@ export async function getHomePageData(locale) {
         throw error;
     }
 }
+export async function coreConfigFrontFields(locale) {
+    try {
+        const response = await axios({
+            method: "get",
+            url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/core-config-front-fields`,
+            params: {
+                locale: locale.slice(0, 2)
+            },
+        })
+        return response.data.data;
+    } catch (error) {
+        throw error;
+    }
+}
+

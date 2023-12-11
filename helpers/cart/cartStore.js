@@ -223,9 +223,10 @@ const useCartStore = create(
                 data,
             }).then((res) => {
                 toast.success(res.data.message);
+                console.log(res.data.data.cart);
                 set({
                     paymentMethods: res.data.data.methods,
-                    cartData: res.data.data.cart
+                    // cartData: res.data.cart
                 });
             }).catch((error) => {
                 set({ cartLoading: false });

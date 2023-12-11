@@ -38,6 +38,7 @@ const UniqueAddress = () => {
       }
     });
   }, []);
+  
   const addressValidationSchema = Yup.object().shape({
     company_name: Yup.string().required(t('this_field_is_required')),
     first_name: Yup.string().required(t('this_field_is_required')),
