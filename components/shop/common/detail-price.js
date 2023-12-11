@@ -17,7 +17,7 @@ import Trans from "@/helpers/Trans";
 const DetailsWithPrice = ({ item, stickyClass }) => {
   const [modal, setModal] = useState(false);
   const toggle = () => setModal(!modal);
-  const product = item;
+  const [product , setProduct] = useState(item);
   const [price, setPrice] = useState(product.price);
   const { selectedCurrency } = currencyStore();
   // Add the following useState hook
@@ -106,13 +106,13 @@ const DetailsWithPrice = ({ item, stickyClass }) => {
         {parseFloat(product.special_price) < 0 ?
           <h4>
             <del>
-              {product.special_price * quantity} {selectedCurrency.symbol}
+              {product.formatted_special_price }
             </del>
             <span>{product.percentage} {t('off')}</span>
           </h4> :
           ''}
         <h3 className="price">
-          {price * quantity} {selectedCurrency.name}
+          {product.formatted_price}
         </h3>
         <div className="product-description border-product">
           <span className="instock-cls">

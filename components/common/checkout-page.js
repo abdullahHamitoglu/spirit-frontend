@@ -33,6 +33,7 @@ const CheckoutPage = () => {
   const [editableAddress, setEditableAddress] = useState(addresses[0]);
   const [addressLoader, setAddressLoader] = useState(false)
   const [buttonLoader, setButtonLoader] = useState(false)
+  const [redirecting, setRedirecting] = useState(false);
   const [loading, setLoading] = useState(false);
   const sippingValidationSchema = Yup.object().shape({
     shipping_method: Yup.string().required(t('this_field_is_required'))
@@ -61,12 +62,16 @@ const CheckoutPage = () => {
     setButtonLoader(false);
   }
   const handleCheckoutOrder = async (value) => {
-    setButtonLoader(true);
+    setRedirecting(true);
     await saveCheckoutOrder(locale);
-    setButtonLoader(false);
   }
   return (
     <section className="section-b-space">
+      {redirecting &&
+        <div className="loader-wrapper">
+          <div className="loader"></div>
+        </div>
+      }
       <Container>
         <div className="checkout-page">
           <Container>
@@ -115,8 +120,8 @@ const CheckoutPage = () => {
                                 <CardFooter className='row m-0 px-0'>
                                   <Col xs='12'>
                                     <Button className='btn btn-warning d-block w-100 rounded' onClick={() => {
-                                      toggleEdit();
                                       setEditableAddress(address);
+                                      toggleEdit();
                                     }} >{t('edit')}
                                     </Button>
                                   </Col>

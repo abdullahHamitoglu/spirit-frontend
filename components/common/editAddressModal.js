@@ -22,14 +22,9 @@ function EditAddressModal(args) {
     const { locale } = useRouter();
     const { updateAddress, getAddresses } = useUserStore();
     const { getCountries, countries, fetchStates, states } = addressStore();
-
+    console.log(args.address);
     useEffect(() => {
         getCountries(locale);
-        states.map((state) => {
-            if (state.code == args.address.country) {
-                setCities(state.cities);
-            }
-        });
     }, []);
     const addressValidationSchema = Yup.object().shape({
         company_name: Yup.string().required(t('this_field_is_required')),
@@ -44,7 +39,7 @@ function EditAddressModal(args) {
     });
 
     const getStatesByCountry = (code) => {
-        fetchStates('en', code);
+        fetchStates(locale, code);
         setCities([]);
     };
 
@@ -64,7 +59,7 @@ function EditAddressModal(args) {
                     {t("address")}
                 </ModalHeader>
                 <ModalBody className='p-4'> 
-                    {args.address ? <ContactFormLoader className="d-flex justify-content-center w-100" /> :
+                    {!args.address ? <ContactFormLoader className="d-flex justify-content-center w-100" /> :
                         <Formik
                             enableReinitialize
                             initialValues={{
