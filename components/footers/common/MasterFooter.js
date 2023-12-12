@@ -188,10 +188,10 @@ const MasterFooter = ({
                       isOpen={width ? (collapse === 2 ? isOpen : false) : true}>
                       <div className="footer-contant">
                         <ul>
-                          {pages.slice(0, 6).map((chide, i) => (
+                          {pages.slice(0, 6).map((page, i) => (
                             <li key={i}>
-                              <Link href={`/products?category=${chide.id}`}>
-                                {chide.title}
+                              <Link href={page.url_key}>
+                                {page.title}
                               </Link>
                             </li>
                           ))}
@@ -223,10 +223,10 @@ const MasterFooter = ({
                       isOpen={width ? (collapse === 2 ? isOpen : false) : true}>
                       <div className="footer-contant">
                         <ul>
-                          {pages.slice(6, 12).map((chide, i) => (
+                          {pages.slice(6, 12).map((page, i) => (
                             <li key={i}>
-                              <Link href={`/products?category=${chide.id}`}>
-                                {chide.title}
+                              <Link href={page.url_key}>
+                                {page.title}
                               </Link>
                             </li>
                           ))}
