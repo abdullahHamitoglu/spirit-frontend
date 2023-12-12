@@ -23,6 +23,26 @@ export async function getProducts(locale, params, token) {
 
   return response.data;
 }
+export async function getProductsByCategorySlug(locale, params, token, slug) {
+  const response = await axios({
+    method: "GET",
+    url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/get-category-products/${slug}`,
+    params: {
+      locale: locale.slice(0, 2),
+      currency: currency,
+      page: 1,
+      ...params,
+    },
+    withCredentials: true,
+    headers: {
+      'Authorization': `Bearer ${token}`,
+    }
+  }).catch((error) => {
+    console.error(error);
+  });
+
+  return response.data;
+}
 export async function getProductBySlug(locale, slug) {
   const response = await axios({
     url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/products-slug/${slug}`,
@@ -86,7 +106,7 @@ export async function getCategoryBySlug(locale, slug, token, query) {
     console.error(error);
   });
 
-  return response.data;
+  return response.data.data;
 }
 export async function getCategoriesTree(locale) {
   const response = await axios({

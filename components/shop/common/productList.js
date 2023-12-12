@@ -13,7 +13,7 @@ import { useTranslation } from "react-i18next";
 import { getProducts } from "@/controllers/productsController";
 import useUserStore from "@/helpers/user/userStore";
 
-const ProductList = ({ colClass, layoutList, openSidebar, noSidebar, products, page, productsData, setProductsData }) => {
+const ProductList = ({ colClass, layoutList, openSidebar, noSidebar, productsData, setProductsData }) => {
   const { wishList } = useWishListStore();
   const { addToCart, getCart } = useCartStore();
   const { token } = useUserStore();
@@ -32,18 +32,19 @@ const ProductList = ({ colClass, layoutList, openSidebar, noSidebar, products, p
   const { t } = useTranslation();
   const [pageCount, setPageCount] = useState(1); // Initialize pageCount to 1
   const handlePagination = async () => {
-    setIsLoading(true);
-    // Increment pageCount before making the API call
-    let nextPageCount = pageCount + 1;
-    try {
-      const response = await getProducts(locale, { ...router.query, page: nextPageCount }, token);
-      // Update state only if the API call is successful
-      setPageCount(nextPageCount);
-      setProductsData((prevData) => [...prevData, ...response.data]);
-    } catch (error) {
-      console.error("Error fetching products:", error);
-    } finally {
-      setIsLoading(false);
+    if (productsData && productsData.length > 10) {
+      setIsLoading(true);
+      let nextPageCount = pageCount + 1;
+      try {
+        const response = await getProducts(locale, { ...router.query, page: nextPageCount }, token);
+        // Update state only if the API call is successful
+        setPageCount(nextPageCount);
+        setProductsData(() => [...productsData, ...response.data]);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      } finally {
+        setIsLoading(false);
+      }
     }
   };
   const handleScroll = () => {
@@ -65,7 +66,7 @@ const ProductList = ({ colClass, layoutList, openSidebar, noSidebar, products, p
         order: event.target.value.split(',')[1]
       }
     },
-      undefined, { shallow: true })
+      undefined, { shallow: true });
     try {
       const response = await getProducts(locale, router.query, token);
       console.log(response);

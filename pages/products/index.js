@@ -71,11 +71,11 @@ const Products = ({ products, page, attributes, categories }) => {
                   slidesPerView="auto"
                   breakpoints={{
                     // when window width is >= 640px
-                    0:{
-                      slidesPerView:4,
+                    0: {
+                      slidesPerView: 4,
                     },
                     640: {
-                      slidesPerView:4,
+                      slidesPerView: 4,
                     },
                     // when window width is >= 768px
                     768: {
@@ -120,14 +120,14 @@ const Products = ({ products, page, attributes, categories }) => {
   );
 };
 export async function getStaticProps(context) {
-  const { locale, query = {} } = context;
-  const { token } = parseCookies(context);
-  const products = await getProducts(locale, query, token);
-  const attributes = await getFilterAttr(locale , query);
+  const { locale, query ,params} = context;
+  const { token } = parseCookies(context);  
+  const products = await getProducts(locale, params, token);
+  const attributes = await getFilterAttr(locale, query);
   const page = await getPageData(locale, "products");
   let categories = [];
   try {
-    categories = await getCatagories(locale, query.category_id);
+    if (query.category_id) categories = await getCatagories(locale, query.category_id);
   } catch (error) {
     console.error(error);
   }

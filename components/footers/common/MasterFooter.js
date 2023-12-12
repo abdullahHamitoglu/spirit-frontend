@@ -34,7 +34,7 @@ const MasterFooter = ({
   const width = window.innerWidth <= 767;
   const { t } = useTranslation();
   const [fields, setFields] = useState({});
-  const [pages, setPages] = useState({});
+  const [pages, setPages] = useState([]);
   const { locale } = useRouter();
   const getFields = async () => {
     const response = await coreConfigFrontFields(locale);
@@ -165,33 +165,33 @@ const MasterFooter = ({
                   </div>
                 </Collapse>
               </Col>
-              {categories && categories.slice(0, 2).map((category, i) => (
-                <Col className={i == 1 ? `offset-xl-1` : ''}>
+              {pages.length > 0 &&
+                <Col className={`offset-xl-1`}>
                   <div className="sub-title">
                     <div
-                      className={`footer-title ${isOpen && collapse == category.id + 213 ? "active" : ""
+                      className={`footer-title ${isOpen && collapse == 2 ? "active" : ""
                         } `}>
                       <h4
                         onClick={() => {
                           if (width) {
                             setIsOpen(!isOpen);
-                            setCollapse(category.id + 213);
+                            setCollapse(2);
                           } else setIsOpen(true);
 
                         }}
                         className="overflow-hidden text-nowrap">
-                        {category.name}
+                        {t('pages')}
                         <span className="according-menu"></span>
                       </h4>
                     </div>
                     <Collapse
-                      isOpen={width ? (collapse === category.id + 213 ? isOpen : false) : true}>
+                      isOpen={width ? (collapse === 2 ? isOpen : false) : true}>
                       <div className="footer-contant">
                         <ul>
-                          {category.children.slice(0, 6).map((chide, i) => (
-                            <li>
+                          {pages.slice(0, 6).map((chide, i) => (
+                            <li key={i}>
                               <Link href={`/products?category=${chide.id}`}>
-                                {chide.name}
+                                {chide.title}
                               </Link>
                             </li>
                           ))}
@@ -200,7 +200,42 @@ const MasterFooter = ({
                     </Collapse>
                   </div>
                 </Col>
-              ))}
+              }
+              {pages.slice(6, 12).length > 0 &&
+                <Col>
+                  <div className="sub-title">
+                    <div
+                      className={`footer-title ${isOpen && collapse == 2 ? "active" : ""
+                        } `}>
+                      <h4
+                        onClick={() => {
+                          if (width) {
+                            setIsOpen(!isOpen);
+                            setCollapse(2);
+                          } else setIsOpen(true);
+                        }}
+                        className="overflow-hidden text-nowrap">
+                        {t('pages')}
+                        <span className="according-menu"></span>
+                      </h4>
+                    </div>
+                    <Collapse
+                      isOpen={width ? (collapse === 2 ? isOpen : false) : true}>
+                      <div className="footer-contant">
+                        <ul>
+                          {pages.slice(6, 12).map((chide, i) => (
+                            <li key={i}>
+                              <Link href={`/products?category=${chide.id}`}>
+                                {chide.title}
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </Collapse>
+                  </div>
+                </Col>
+              }
               <Col>
                 <div className="sub-title">
                   <div

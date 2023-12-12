@@ -6,7 +6,7 @@ import ProductList from "@/components/shop/common/productList";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "react-i18next";
 import Head from "next/head";
-import { getCatagories, getCategoryBySlug, getFilterAttr, getProducts } from "@/controllers/productsController";
+import { getCatagories, getCategoryBySlug, getFilterAttr, getProducts, getProductsByCategorySlug } from "@/controllers/productsController";
 import { getPageData } from "@/controllers/homeController";
 import { useRouter } from "next/router";
 import { parseCookies } from "nookies";
@@ -65,7 +65,7 @@ const Products = ({ products, page, attributes, categories }) => {
             <CommonLayout title={page.title} parent={t("home")}>
                 <section className="section-b-space ratio_asos">
                     <div className="collection-wrapper">
-                        {router.query.category_id && categories &&
+                        {categories &&
                             <Container>
                                 <Swiper
                                     className="mb-5"
@@ -99,6 +99,7 @@ const Products = ({ products, page, attributes, categories }) => {
                                 <FilterPage
                                     attributes={attributes}
                                     setProductsData={setProductsData}
+                                    productsData={productsData}
                                     sm="3"
                                     sidebarView={sidebarView}
                                     closeSidebar={() => openCloseSidebar(sidebarView)}
@@ -142,12 +143,11 @@ export async function getStaticProps(context) {
     try {
         const { locale, query } = context;
         const { token } = parseCookies(context);
-        const slug = context.params.slug;
+        const slug = context.params.slug[0];
         const attributes = await getFilterAttr(locale);
         const page = await getPageData(locale, "products");
-        const response = await getCategoryBySlug(locale, slug, token, query);
-        const products = response.data;
-        const categories = await getCatagories(locale, response.parent_id);
+        const products = await getProductsByCategorySlug(locale, query , token , slug);
+        const categories = await getCategoryBySlug(locale, slug, token, query);
         return {
             props: {
                 page,

@@ -78,7 +78,7 @@ const Collection = ({ categories }) => {
                       img={data.image_url}
                       type={data.name}
                       about={data.description}
-                      link={`/products?category_id=${data.id}`}
+                      link={`/categories/${data.slug}`}
                       // link={`/categories/${data.slug}`}
                     />
                   );

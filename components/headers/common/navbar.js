@@ -129,6 +129,7 @@ const NavBar = ({ categories, openNavMain }) => {
       event.target.nextElementSibling.classList.add("opensubmenu");
     }
   };
+
   return (
     <div>
       <div className="main-navbar">
@@ -146,10 +147,20 @@ const NavBar = ({ categories, openNavMain }) => {
                   </div>
                 </li>
                 {categories.slice(0, 4).map((category, i) => (
-                  <li className="mega-menu" key={i}>
+                  <li key={i}>
                     <Link className="nav-link" href={`/products?category_id=${category.id}`}>
                       {category.name}
+                      <span className="sub-arrow"></span>
                     </Link>
+                    <ul className={`nav-submenu`}>
+                      {category.children.map((chide, i) => (
+                        <li className="nav-link" key={i}>
+                          <Link href={`/categories/${chide.slug}`}>
+                            {chide.name}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
                   </li>
                 ))}
                 <li li key='10'>

@@ -371,7 +371,7 @@ const SideBar = ({ categories  }) => {
               <i className="fa fa-angle-left pe-2" aria-hidden="true"></i> {Trans('back')}
             </div>
           </a>
-          {categories && categories.map ? <MenuLoader /> :
+          {!categories && categories.map ? <MenuLoader /> :
             <>
               <ul id="sub-menu" className="sidebar-menu">
                 {categories && categories.map && categories.map((category, i) => (
