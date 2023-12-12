@@ -148,8 +148,8 @@ const NavBar = ({ categories, openNavMain }) => {
                 </li>
                 {categories.slice(0, 4).map((category, i) => (
                   <li key={i}>
-                    <Link className="nav-link" href={`/products?category_id=${category.id}`}>
-                      {category.name}
+                    <Link className="nav-link" href={`/products?category_id=${category.id}`} title={category.name}>
+                      {category.name.slice(0,18) + (category.name.length > 17 ? '...' : '')}
                       <span className="sub-arrow"></span>
                     </Link>
                     <ul className={`nav-submenu`}>
