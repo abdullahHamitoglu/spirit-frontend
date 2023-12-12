@@ -40,7 +40,7 @@ const Collection = ({ brands }) => {
                   key={i}
                   img={data.image}
                   type={data.label}
-                  link={`/products?brand=${data.id}`}
+                  link={`/brands/${data.label.replace(' ' , '-').toLowerCase()}`}
                 />
               );
             })}

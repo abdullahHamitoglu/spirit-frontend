@@ -22,7 +22,7 @@ const FilterPage = ({ sm, sidebarView, closeSidebar, attributes, setProductsData
         const response = await getProducts(locale, router.query);
         setProductsData(response.data);
     }
-    if (attributes.length) {
+    if (attributes.length < 0) {
         return false
     }
     return (
@@ -48,13 +48,13 @@ const FilterPage = ({ sm, sidebarView, closeSidebar, attributes, setProductsData
                         </Col>
                     </div>
                     {/* <!-- slide-bar collops block end here -->*/}
-                    <NewProduct />
+                    {/* <NewProduct /> */}
                     {/* <!-- side-bar banner start here -->  */}
-                    <div className="collection-sidebar-banner">
+                    {/* <div className="collection-sidebar-banner">
                         <a href={null}>
                             <Media src='/assets/images/side-banner.png' className="img-fluid blur-up lazyload" alt="banner" />
                         </a>
-                    </div>
+                    </div> */}
                     {/* <!-- side-bar banner end here --> */}
                 </Col>
             }

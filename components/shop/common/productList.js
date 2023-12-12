@@ -10,10 +10,9 @@ import currencyStore from "@/helpers/Currency/CurrencyStore";
 import useWishListStore from "@/helpers/wishlist/wishlistStore";
 import useCartStore from "@/helpers/cart/cartStore";
 import { useTranslation } from "react-i18next";
-import { getProducts } from "@/controllers/productsController";
 import useUserStore from "@/helpers/user/userStore";
 
-const ProductList = ({ colClass, layoutList, openSidebar, noSidebar, productsData, setProductsData }) => {
+const ProductList = ({ colClass, layoutList, openSidebar, noSidebar, productsData, setProductsData, getProducts }) => {
   const { wishList } = useWishListStore();
   const { addToCart, getCart } = useCartStore();
   const { token } = useUserStore();

@@ -104,6 +104,7 @@ const Products = ({ products, page, attributes, categories }) => {
                 <ProductList
                   page={page}
                   colClass="col-xl-3 col-6 col-grid-box"
+                  getProducts={getProducts}
                   layoutList=""
                   openSidebar={() => openCloseSidebar(sidebarView)}
                   products={products}
@@ -120,9 +121,9 @@ const Products = ({ products, page, attributes, categories }) => {
   );
 };
 export async function getStaticProps(context) {
-  const { locale, query ,params} = context;
-  const { token } = parseCookies(context);  
-  const products = await getProducts(locale, params, token);
+  const { locale, query} = context;
+  const { token } = parseCookies(context);
+  const products = await getProducts(locale, query, token);
   const attributes = await getFilterAttr(locale, query);
   const page = await getPageData(locale, "products");
   let categories = [];

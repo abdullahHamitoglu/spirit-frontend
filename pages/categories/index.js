@@ -79,7 +79,6 @@ const Collection = ({ categories }) => {
                       type={data.name}
                       about={data.description}
                       link={`/categories/${data.slug}`}
-                      // link={`/categories/${data.slug}`}
                     />
                   );
                 })}

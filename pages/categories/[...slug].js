@@ -98,6 +98,7 @@ const Products = ({ products, page, attributes, categories }) => {
                             <Row>
                                 <FilterPage
                                     attributes={attributes}
+                                    getProducts={getProductsByCategorySlug}
                                     setProductsData={setProductsData}
                                     productsData={productsData}
                                     sm="3"
@@ -106,6 +107,7 @@ const Products = ({ products, page, attributes, categories }) => {
                                 />
                                 <ProductList
                                     page={page}
+                                    getProducts={getProductsByCategorySlug}
                                     colClass="col-xl-3 col-6 col-grid-box"
                                     layoutList=""
                                     openSidebar={() => openCloseSidebar(sidebarView)}
@@ -145,8 +147,8 @@ export async function getStaticProps(context) {
         const { token } = parseCookies(context);
         const slug = context.params.slug[0];
         const attributes = await getFilterAttr(locale);
-        const page = await getPageData(locale, "products");
-        const products = await getProductsByCategorySlug(locale, query , token , slug);
+        const page = await getPageData(locale, "brand");
+        const products = await getProductsByCategorySlug(locale, query, token, slug);
         const categories = await getCategoryBySlug(locale, slug, token, query);
         return {
             props: {

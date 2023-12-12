@@ -3,6 +3,26 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 const currency = currencyStore.getState().selectedCurrency.code;
+export async function getProductsByBrandSlug(locale, params, token, slug) {
+  const response = await axios({
+    method: "GET",
+    url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/get-brand-products/${slug}`,
+    params: {
+      locale: locale.slice(0, 2),
+      currency: currency,
+      page: 1,
+      ...params,
+    },
+    withCredentials: true,
+    headers: {
+      'Authorization': `Bearer ${token}`,
+    }
+  }).catch((error) => {
+    console.error(error);
+  });
+
+  return response.data;
+}
 export async function getProducts(locale, params, token) {
   const response = await axios({
     method: "GET",
