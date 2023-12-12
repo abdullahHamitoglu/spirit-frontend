@@ -3,6 +3,24 @@ import currencyStore from "@/helpers/Currency/CurrencyStore";
 
 
 const currency = currencyStore.getState().selectedCurrency.code;
+
+
+export async function getPagesData(locale) {
+    try {
+        const response = await axios({
+            method: 'get',
+            url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/pages`,
+            params: {
+                locale: locale.slice(0, 2)
+            },
+        })
+
+        return response.data.data;
+    } catch (error) {
+        return []
+    }
+
+}
 export async function getPageData(locale, page, token) {
     try {
         const response = await axios({

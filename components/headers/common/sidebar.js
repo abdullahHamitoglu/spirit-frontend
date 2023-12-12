@@ -8,7 +8,7 @@ import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import Trans from "@/helpers/Trans";
 
-const SideBar = ({ categories }) => {
+const SideBar = ({ categories  }) => {
   const closeNav = async () => {
     var closemyslide = document.getElementById("mySidenav");
     var body = document.body;
@@ -371,10 +371,10 @@ const SideBar = ({ categories }) => {
               <i className="fa fa-angle-left pe-2" aria-hidden="true"></i> {Trans('back')}
             </div>
           </a>
-          {categories && categories.length <= 0 ? <MenuLoader /> :
+          {categories && categories.map ? <MenuLoader /> :
             <>
               <ul id="sub-menu" className="sidebar-menu">
-                {categories.map((category, i) => (
+                {categories && categories.map && categories.map((category, i) => (
                   <li key={i}>
                     <Link href={`/products?category_id=${category.id}`} onClick={(e) => handleMegaSubmenu(e)} title={category.name}>
                       <span className="text-nowrap overflow-hidden mw-100 d-block">

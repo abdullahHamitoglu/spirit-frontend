@@ -17,7 +17,6 @@ const HeaderOne = ({
   topClass,
   noTopBar,
   direction,
-  categories
 }) => {
   const router = useRouter();
 
@@ -68,7 +67,15 @@ const HeaderOne = ({
   const openSearch = () => {
     document.getElementById("search-overlay").style.display = "block";
   };
-
+  const [categories, setCategories] = useState([]);
+  const fetchCates = async () => {
+      const response = await getCategoriesTree(router.locale);
+      setCategories(response);
+    };
+  
+    useEffect(() => {
+      fetchCates();
+    }, [])
   // eslint-disable-next-line
   const load = () => {
     setIsLoading(true);

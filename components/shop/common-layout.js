@@ -23,11 +23,10 @@ const CommonLayout = ({ children, title, parent, subTitle, parentLink }) => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" type="image/x-icon" href="/assets/images/favicon/1.png" />
       </Head>
-      <HeaderOne categories={categories} topClass="top-header" logoName="logo.png" />
+      <HeaderOne topClass="top-header" logoName="logo.png" />
       <Breadcrubs title={title} parent={parent} subTitle={subTitle} parentLink={parentLink} />
       <>{children}</>
       <MasterFooter
-        categories={categories}
         footerClass={`footer-light `}
         footerLayOut={"light-layout upper-footer"}
         footerSection={"small-section border-section border-top-0"}

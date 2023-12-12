@@ -13,8 +13,9 @@ import {
 import LogoImage from "../../headers/common/logo";
 import CopyRight from "./copyright";
 import { useTranslation } from "react-i18next";
-import { CoreConfigFrontFields, coreConfigFrontFields } from "@/controllers/homeController";
+import { CoreConfigFrontFields, coreConfigFrontFields, getPagesData } from "@/controllers/homeController";
 import { useRouter } from "next/router";
+import { getCategoriesTree } from "@/controllers/productsController";
 
 const MasterFooter = ({
   containerFluid,
@@ -27,17 +28,21 @@ const MasterFooter = ({
   belowContainerFluid,
   CopyRightFluid,
   newLatter,
-  categories
 }) => {
   const [isOpen, setIsOpen] = useState();
   const [collapse, setCollapse] = useState(0);
   const width = window.innerWidth <= 767;
   const { t } = useTranslation();
   const [fields, setFields] = useState({});
+  const [pages, setPages] = useState({});
   const { locale } = useRouter();
   const getFields = async () => {
     const response = await coreConfigFrontFields(locale);
     setFields(response);
+  }
+  const getPages = async () => {
+    const response = await getPagesData(locale);
+    setPages(response);
   }
   useEffect(() => {
     const changeCollapse = () => {
@@ -51,10 +56,21 @@ const MasterFooter = ({
 
     return () => {
       getFields();
+      getPages();
       window.removeEventListener("resize", changeCollapse);
     };
 
   }, []);
+  const router = useRouter();
+  const [categories, setCategories] = useState([]);
+  const fetchCates = async () => {
+    const response = await getCategoriesTree(router.locale);
+    setCategories(response);
+  };
+
+  useEffect(() => {
+    fetchCates();
+  }, [])
   return (
     <div>
       <footer className={footerClass}>

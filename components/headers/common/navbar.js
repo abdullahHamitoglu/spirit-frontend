@@ -136,7 +136,7 @@ const NavBar = ({ categories, openNavMain }) => {
           <div className="toggle-nav" onClick={openNav.bind(this)}>
             <i className="fa fa-bars sidebar-bar"></i>
           </div>
-          {categories && categories.length <= 0 ? <NavLoader /> :
+          {!categories ? <NavLoader /> :
             <>
               <ul className="nav-menu" style={navClose}>
                 <li className="back-btn" onClick={closeNav.bind(this)}>
