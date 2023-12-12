@@ -142,28 +142,23 @@ export async function getStaticPaths(context) {
 }
 
 export async function getStaticProps(context) {
-    try {
-        const { locale, query } = context;
-        const { token } = parseCookies(context);
-        const slug = context.params.slug[0];
-        const attributes = await getFilterAttr(locale);
-        const page = await getPageData(locale, "brand");
-        const products = await getProductsByCategorySlug(locale, query, token, slug);
-        const categories = await getCategoryBySlug(locale, slug, token, query);
-        return {
-            props: {
-                page,
-                products,
-                attributes,
-                categories,
-                ...(await serverSideTranslations(locale)),
-            },
-        };
-    } catch (error) {
-        return {
-            notFound: true,
-        }
-    }
+
+    const { locale, query } = context;
+    const { token } = parseCookies(context);
+    const slug = context.params.slug[0];
+    const attributes = await getFilterAttr(locale);
+    const page = await getPageData(locale, "products");
+    const products = await getProductsByCategorySlug(locale, query, token, slug);
+    const categories = await getCategoryBySlug(locale, slug, token, query);
+    return {
+        props: {
+            page,
+            products,
+            attributes,
+            categories,
+            ...(await serverSideTranslations(locale)),
+        },
+    };
 }
 
 export default Products;

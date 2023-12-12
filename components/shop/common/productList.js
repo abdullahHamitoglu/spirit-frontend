@@ -31,7 +31,7 @@ const ProductList = ({ colClass, layoutList, openSidebar, noSidebar, productsDat
   const { t } = useTranslation();
   const [pageCount, setPageCount] = useState(1); // Initialize pageCount to 1
   const handlePagination = async () => {
-    if (productsData && productsData.length > 10) {
+    if (productsData && productsData.length >= 12) {
       setIsLoading(true);
       let nextPageCount = pageCount + 1;
       try {
