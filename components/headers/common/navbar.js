@@ -149,14 +149,14 @@ const NavBar = ({ categories, openNavMain }) => {
                 {categories.slice(0, 4).map((category, i) => (
                   <li key={i}>
                     <Link className="nav-link" href={`/products?category_id=${category.id}`} title={category.name}>
-                      {category.name.slice(0,18) + (category.name.length > 17 ? '...' : '')}
+                      {category.name.slice(0, 18) + (category.name.length > 17 ? '...' : '')}
                       <span className="sub-arrow"></span>
                     </Link>
                     <ul className={`nav-submenu`}>
                       {category.children.map((chide, i) => (
                         <li className="nav-link" key={i}>
-                          <Link href={`/categories/${chide.slug}`}>
-                            {chide.name}
+                          <Link href={`/categories/${chide.slug}`} title={chide.name}>
+                            {chide.name.slice(0, 17) + (chide.name.length > 17 ? '...' : '')}
                           </Link>
                         </li>
                       ))}
