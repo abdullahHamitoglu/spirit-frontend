@@ -56,14 +56,15 @@ const Collection = ({ categories }) => {
                 {categories && categories.map((data, i) => {
                   return (
                     <NavItem key={i}>
-                      <NavLink
-                        className="rounded-0 btn text-start"
+                      <Link
+                        href={`/categories/${data.slug}`}
+                        className="rounded-0 btn text-start nav-link"
                         active={activeTab == i}
-                        onClick={() => { handleClick(data.children, i) }}
+                        onMouseEnter={() => { handleClick(data.children, i) }}
                       >
                         <Image className="me-2" width='25' height="25" src={data.category_icon_path ??(activeTab == i ? '/assets/images/category-light.svg' : '/assets/images/category.svg')} />
                         {data.name}
-                      </NavLink>
+                      </Link>
                     </NavItem>
                   );
                 })}

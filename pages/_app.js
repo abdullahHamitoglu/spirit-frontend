@@ -13,6 +13,7 @@ import useUserStore from "../helpers/user/userStore";
 import { setCookie } from "nookies";
 import { getServerSideProps } from "./account/dashboard";
 import { getProducts } from "@/controllers/productsController";
+import PageLoader from "@/components/layouts/Bags/common/PageLoader";
 
 function MyApp({ Component, pageProps }) {
   const [isLoading, setIsLoading] = useState(true);
@@ -40,10 +41,12 @@ function MyApp({ Component, pageProps }) {
     });
   }, [router.locale])
 
+
   useEffect(() => {
     setIsLoading(false);
     registerDevice();
   }, []);
+
   return (
     <>
       {isLoading ? (
@@ -52,6 +55,7 @@ function MyApp({ Component, pageProps }) {
         </div>
       ) : (
         <>
+          {isLoading && <PageLoader />}
           <Head>
             {locale == "ar-KW" ? (
               <>

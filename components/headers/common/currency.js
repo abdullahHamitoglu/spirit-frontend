@@ -19,6 +19,7 @@ const Currency = ({ icon }) => {
   const handleCurrencyClick = async (currencyID) => {
     await setCurrency(locale, currencyID);
   };
+  
   return (
     <li className="onhover-div mobile-setting">
       <div>
@@ -36,7 +37,7 @@ const Currency = ({ icon }) => {
             </li>
           ))}
         </ul>
-        <h6>currency</h6>
+        <h6>{t("currency")}</h6>
         <ul className="list-inline">
           {currencies.data && currencies.data.map((currency, i) => (
             <li className={selectedCurrency == currency.code ? 'true' : 'false'} key={i} title={currency.name}>

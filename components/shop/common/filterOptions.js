@@ -45,12 +45,12 @@ const FilterOptions = (attr) => {
               attr.attr.options.map((option, index) => (
                 <div className="form-check custom-checkbox collection-filter-checkbox ms-1" key={index}>
                   <Input
-                    checked={router.query[attr.attr.code] && router.query[attr.attr.code].includes(option.label)}
+                    checked={router.query[attr.attr.code] && router.query[attr.attr.code].includes(option.id)}
                     type="checkbox"
                     className="custom-control-input"
                     name={attr.attr.code}
                     id={option.label.toLowerCase()}
-                    value={option.label}
+                    value={option.id}
                     onChange={(event) => handleChange(event, option, attr.attr.code)}
                   />
                   <label className="custom-control-label" htmlFor={option.label.toLowerCase()}>

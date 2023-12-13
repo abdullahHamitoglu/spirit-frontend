@@ -14,9 +14,7 @@ const Price = () => {
   const { locale } = useRouter();
   const router = useRouter();
   useEffect(() => {
-
     getMaxPrice(locale, { ...router.query, price: '' });
-
   }, []);
   const priceHandle = (event) => {
     document.querySelector('.priceStart').innerHTML = event[0];

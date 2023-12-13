@@ -30,15 +30,18 @@ const ProductList = ({ colClass, layoutList, openSidebar, noSidebar, productsDat
   const [quantity, setQuantity] = useState(1);
   const { t } = useTranslation();
   const [pageCount, setPageCount] = useState(1); // Initialize pageCount to 1
+  const [noNextPage , setNoNextPage] = useState(false)
   const handlePagination = async () => {
-    if (productsData && productsData.length >= 12) {
+    if (productsData && productsData.length >= 12 && !noNextPage) {
       setIsLoading(true);
       let nextPageCount = pageCount + 1;
       try {
-        const response = await getProducts(locale, { ...router.query, page: nextPageCount }, token);
-        // Update state only if the API call is successful
+        const response = await getProducts(locale, { ...router.query, page: nextPageCount }, token , (router.query.slug ? router.query.slug[0] : ''));
+        if(response.data.length <= 0 ){
+          setNoNextPage(true);
+        }
         setPageCount(nextPageCount);
-        setProductsData(() => [...productsData, ...response.data]);
+        setProductsData(() => [...(productsData.length > 0 ? productsData : []), ...response.data]);
       } catch (error) {
         console.error("Error fetching products:", error);
       } finally {

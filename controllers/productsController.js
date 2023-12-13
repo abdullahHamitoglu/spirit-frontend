@@ -117,7 +117,7 @@ export async function getCategoryBySlug(locale, slug, token, query) {
     
     const response = await axios({
       method: "GET",
-      url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/categories-slug/${slug}`,
+      url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/category-children/${slug}`,
       withCredentials: true,
       headers: {
         'Authorization': `Bearer ${token}`,

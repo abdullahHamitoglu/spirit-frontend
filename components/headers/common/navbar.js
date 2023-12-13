@@ -11,6 +11,7 @@ const NavBar = ({ categories, openNavMain }) => {
   const { t } = useTranslation();
   const [navClose, setNavClose] = useState({ right: "0px" });
   const router = useRouter();
+  const {locale} = useRouter();
 
   useEffect(() => {
     if (window.innerWidth < 750) {
@@ -148,7 +149,7 @@ const NavBar = ({ categories, openNavMain }) => {
                 </li>
                 {categories.slice(0, 4).map((category, i) => (
                   <li key={i}>
-                    <Link className="nav-link" href={`/products?category_id=${category.id}`} title={category.name}>
+                    <Link className="nav-link" href={`/categories/${category.slug}`} title={category.name}>
                       {category.name.slice(0, 18) + (category.name.length > 17 ? '...' : '')}
                       <span className="sub-arrow"></span>
                     </Link>
@@ -156,7 +157,8 @@ const NavBar = ({ categories, openNavMain }) => {
                       {category.children.map((chide, i) => (
                         <li className="nav-link" key={i}>
                           <Link href={`/categories/${chide.slug}`} title={chide.name}>
-                            {chide.name.slice(0, 17) + (chide.name.length > 17 ? '...' : '')}
+                            {(chide.name.length > 17 && locale == 'en' ? `${chide.name.slice(0, 17)}...` : chide.name)}
+                            {(chide.name.length > 17 && locale == 'ar' ? `... ${chide.name.slice(0, 17)}` : chide.name)}
                           </Link>
                         </li>
                       ))}

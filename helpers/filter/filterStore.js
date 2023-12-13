@@ -28,7 +28,7 @@ const useFilterStore = create(
                         ...params
                     }
                 }).then((response) => {
-                    // set({ maxPrice: response.data.data.max_price });
+                    set({ maxPrice: response.data.data.max_price });
                 }).catch((error) => {
                     console.error(error);
                 });

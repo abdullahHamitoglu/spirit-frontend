@@ -49,18 +49,24 @@ const Products = ({ products, page, attributes, categories }) => {
             setProductsData((prevData) => [...prevData, ...response]);
         }
     }
+    const origin =
+        typeof window !== 'undefined' && window.location.origin
+            ? window.location.origin
+            : '';
+
+    const URL = `${origin}${router.asPath}`;
     return (
         <>
             <Head>
-                <meta name="keywords" content={page.meta_keywords} />
-                <meta name="description" content={page.meta_description} />
+                <meta name="keywords" content={products.meta_keywords} />
+                <meta name="description" content={products.meta_description} />
                 <meta property="og:type" content="product" />
-                <meta property="og:title" content={page.meta_title} />
-                <meta property="og:url" content={page.url} />
-                <meta property="og:image" content={page.image} />
-                <meta property="og:image:alt" content={page.meta_title} />
-                <meta property="og:description" content={page.meta_description} />
-                <title>{page.meta_title}</title>
+                <meta property="og:title" content={products.meta_title} />
+                <meta property="og:url" content={URL} />
+                <meta property="og:image" content={products.meta_image} />
+                <meta property="og:image:alt" content={products.meta_title} />
+                <meta property="og:description" content={products.meta_description} />
+                <title>{products.meta_title}</title>
             </Head>
             <CommonLayout title={page.title} parent={t("home")}>
                 <section className="section-b-space ratio_asos">

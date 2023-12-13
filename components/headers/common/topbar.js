@@ -17,7 +17,7 @@ const TopBar = ({ topClass }) => {
                 <li>{t('welcome_to_our_store_Spirit')}</li>
                 <li>
                   <i className="fa fa-phone" aria-hidden="true"></i>
-                  {t('call_us')}: 123 - 456 - 7890
+                  {t('call_us')}: 
                 </li>
               </ul>
             </div>

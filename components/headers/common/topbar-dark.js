@@ -17,15 +17,6 @@ const TopBarDark = ({ topClass, fluid }) => {
       <Container fluid={fluid}>
         <Row>
           <Col lg="6">
-            <div className="header-contact">
-              <ul>
-                <li>Welcome to Our store Spirit</li>
-                <li>
-                  <i className="fa fa-phone text-white" aria-hidden="true"></i>
-                  Call Us: 123 - 456 - 7890
-                </li>
-              </ul>
-            </div>
           </Col>
           <Col lg="6" className="text-end">
             <ul className="header-dropdown">
