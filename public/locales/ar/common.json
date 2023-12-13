@@ -234,6 +234,7 @@
     "forget_your_password": "نسيت كلمة المرور",
     "back": "رجوع",
     "account_info": "معلومات الحساب",
+    "info": "معلومات",
     "address_book": "دليل العناوين",
     "my_orders": "طلباتي",
     "my_wishlist": "قائمة الرغبات",
@@ -335,5 +336,9 @@
     "show_more": " ... اضهار المزيد",
     "loading": "جاري التحميل ...",
     "language":"اللغة",
-    "currency":"العملة"
+    "currency":"العملة",
+    "my-orders":"طلباتي",
+    "cancel_order":"الغاء الطلب",
+    "do_you_want_to_cancel_the_order":"هل تريد الغاء الطلبية ؟",
+    "yes":"نعم"
 }

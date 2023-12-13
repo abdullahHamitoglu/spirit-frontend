@@ -104,7 +104,7 @@ const OrderSuccess = () => {
                         <Col lg="6">
                             <Row className="order-success-sec">
                                 <Col sm="6">
-                                    <h4>summery</h4>
+                                    <h4>{t("info")}</h4>
                                     <ul className="order-detail">
                                         <li>{t('order_id')}: {order.id}</li>
                                         <li>{t('order_date')}: {order.updated_at}</li>

@@ -231,6 +231,7 @@
     "brand": "Brand",
     "forget_your_password": "Forget Your Password",
     "back": "Back",
+    "info": "Info",
     "account_info": "Account Info",
     "address_book": "Address Book",
     "my_orders": "My Orders",
@@ -332,5 +333,9 @@
     "show_more":"show more ...",
     "loading":"loading ...",
     "language":"language",
-    "currency":"currency"
+    "currency":"currency",
+    "my-orders":"my orders",
+    "cancel_order":"cancel order",
+    "do_you_want_to_cancel_the_order":"Do you want to cancel the order?",
+    "yes":"yes"
 }

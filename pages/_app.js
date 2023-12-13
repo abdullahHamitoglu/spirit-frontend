@@ -57,7 +57,7 @@ function MyApp({ Component, pageProps }) {
         <>
           {isLoading && <PageLoader />}
           <Head>
-            {locale == "ar-KW" ? (
+            {locale == "ar" ? (
               <>
                 <link rel="preconnect" href="https://fonts.googleapis.com" />
                 <link

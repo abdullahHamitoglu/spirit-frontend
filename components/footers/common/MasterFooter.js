@@ -132,32 +132,27 @@ const MasterFooter = ({
                     <div className="footer-logo">
                       <LogoImage logo={logoName} />
                     </div>
-                    <p>{t('footer.aboutContent')}</p>
+                    {/* <p>{t('footer.aboutContent')}</p> */}
                     <div className="footer-social">
                       <ul>
                         <li>
-                          <a href="https://www.facebook.com" target="_blank">
+                          <a href="https://www.facebook.com/spirit.pharmacies?mibextid=LQQJ4d" target="_blank">
                             <i className="fa fa-facebook" aria-hidden="true"></i>
                           </a>
                         </li>
                         <li>
-                          <a href="https://plus.google.com" target="_blank">
-                            <i className="fa fa-google-plus" aria-hidden="true"></i>
+                          <a href="https://tiktok.com/@spirit_pharmacy" target="_blank">
+                            <i class="fa fa-music"></i>
                           </a>
                         </li>
                         <li>
-                          <a href="https://twitter.com" target="_blank">
-                            <i className="fa fa-twitter" aria-hidden="true"></i>
+                          <a href="https://www.snapchat.com/add/spirit_pharmacy?share_id=3XfE1rgrsW8&locale=en-GB" target="_blank">
+                            <i className="fa fa-snapchat" aria-hidden="true"></i>
                           </a>
                         </li>
                         <li>
-                          <a href="https://www.instagram.com" target="_blank">
+                          <a href="https://www.instagram.com/spirit_pharmacies/" target="_blank">
                             <i className="fa fa-instagram" aria-hidden="true"></i>
-                          </a>
-                        </li>
-                        <li>
-                          <a href="https://rss.com" target="_blank">
-                            <i className="fa fa-rss" aria-hidden="true"></i>
                           </a>
                         </li>
                       </ul>
