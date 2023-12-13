@@ -41,31 +41,32 @@ export async function getProductsByCategorySlug(locale, params, token, slug) {
     }).catch((error) => {
       console.error(error);
     });
-  
+
     return response.data;
   } catch (error) {
     return []
   }
 }
-export async function getProducts(locale, params, token) {
-  const response = await axios({
-    method: "GET",
-    url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/products`,
-    params: {
-      locale: locale.slice(0, 2),
-      currency: currency,
-      page: 1,
-      ...params,
-    },
-    withCredentials: true,
-    headers: {
-      'Authorization': `Bearer ${token}`,
-    }
-  }).catch((error) => {
-    console.error(error);
-  });
-
-  return response.data;
+export async function getProducts(locale, params, token, currencyCode) {
+  try {
+    const response = await axios({
+      method: "GET",
+      url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/products`,
+      params: {
+        locale: locale.slice(0, 2),
+        currency: currencyCode,
+        page: 1,
+        ...params,
+      },
+      withCredentials: true,
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      }
+    })
+    return response.data;
+  } catch (error) {
+    return []
+  }
 }
 export async function getProductBySlug(locale, slug) {
   const response = await axios({
@@ -114,7 +115,7 @@ export async function getCatagories(locale, id) {
 }
 export async function getCategoryBySlug(locale, slug, token, query) {
   try {
-    
+
     const response = await axios({
       method: "GET",
       url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/category-children/${slug}`,
@@ -148,9 +149,9 @@ export async function getCategoriesTree(locale) {
     }).catch((error) => {
       console.error(error);
     });
-  
+
     return response.data.data;
-    
+
   } catch (error) {
     return []
   }

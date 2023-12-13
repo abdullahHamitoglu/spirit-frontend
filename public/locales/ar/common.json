@@ -104,8 +104,8 @@
     "portfolio_masonry_4": "Masonry 4",
     "portfolio_masonary_full": "Masonry عرض كامل",
     "enus": "الإنجليزية",
-    "arkw": "العربية",
-    "trtr": "التركية",
+    "ar-kw": "العربية",
+    "tr-tr": "التركية",
     "name": "الاسم",
     "email": "البريد الإلكتروني",
     "password": "كلمة المرور",
@@ -332,5 +332,8 @@
     "payment_successful": "تم الطلب بنجاح",
     "order_date": "تاريخ الطلب",
     "order_total": "المجموع الكلي",
-    "show_more":" ... اضهار المزيد"
+    "show_more": " ... اضهار المزيد",
+    "loading": "جاري التحميل ...",
+    "language":"اللغة",
+    "currency":"العملة"
 }

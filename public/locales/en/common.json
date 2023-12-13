@@ -102,9 +102,9 @@
     "portfolio_masonary_3": "masonary 3",
     "portfolio_masonary_4": "masonary 4",
     "portfolio_masonary_full": "masonary full width",
-    "enus": "English",
-    "arkw": "Arabic",
-    "trtr": "Turkish",
+    "en-us": "English",
+    "ar-kw": "Arabic",
+    "tr-tr": "Turkish",
     "name": "Name",
     "email": "Email",
     "password": "Password",
@@ -329,5 +329,8 @@
     "payment_successful":"The request was completed successfully",
     "order_date":"Order Date",
     "order_total":"Order Total",
-    "show_more":"show more ..."
+    "show_more":"show more ...",
+    "loading":"loading ...",
+    "language":"language",
+    "currency":"currency"
 }

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Col, Media } from 'reactstrap';
+import { Col, Media, Spinner } from 'reactstrap';
 import NewProduct from './newProduct';
 import Category from './category';
 import Brand from './brand';
@@ -8,19 +8,22 @@ import { useTranslation } from 'react-i18next';
 import FilterOptions from './filterOptions';
 import { useRouter } from 'next/router';
 import useFilterStore from '@/helpers/filter/filterStore';
-import { getProducts } from '@/controllers/productsController';
 import useUserStore from '@/helpers/user/userStore';
+import currencyStore from '@/helpers/Currency/CurrencyStore';
 
-const FilterPage = ({ sm, sidebarView, closeSidebar, attributes, setProductsData }) => {
+const FilterPage = ({ sm, sidebarView, closeSidebar, attributes, setProductsData, getProducts }) => {
     const { t } = useTranslation();
     const router = useRouter();
     const { locale } = useRouter();
     const [loading, setLoading] = useState(false);
+    const { selectedCurrency } = currencyStore();
     const { filteredProducts } = useFilterStore();
     const { token } = useUserStore();
     const showFilterResults = async () => {
-        const response = await getProducts(locale, router.query);
+        setLoading(true)
+        const response = await getProducts(locale, { ...router.query, currency: selectedCurrency.code }, token, (router.query.slug ? router.query.slug[0] : ''));
         setProductsData(response.data);
+        setLoading(false)
     }
     if (attributes.length < 0) {
         return false
@@ -38,13 +41,22 @@ const FilterPage = ({ sm, sidebarView, closeSidebar, attributes, setProductsData
                             </span>
                         </div>
                         {/* <Category categories={categories} /> */}
-                        { attributes.map((attribute, i) => (
+                        {attributes.map((attribute, i) => (
                             attribute.type != 'price' ?
                                 <FilterOptions key={i} attr={attribute} /> :
                                 <Price key={i} />
                         ))}
                         <Col md="12">
-                            <button type="submit" className="btn btn-solid w-100 ms-auto mb-4" onClick={() => showFilterResults()}>{t('show_results')}</button>
+                            <button type="submit" disabled={loading} className="btn btn-solid w-100 ms-auto mb-4" onClick={() => showFilterResults()}>
+                                {loading ?
+                                    <>
+                                        {t('loading')}
+                                        <Spinner size='sm'>
+                                        </Spinner>
+                                    </>
+                                    : t('show_results')
+                                }
+                            </button>
                         </Col>
                     </div>
                     {/* <!-- slide-bar collops block end here -->*/}

@@ -6,7 +6,7 @@ import ProductList from "@/components/shop/common/productList";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "react-i18next";
 import Head from "next/head";
-import { getCatagories, getCategoryBySlug, getFilterAttr, getProducts, getProductsByCategorySlug } from "@/controllers/productsController";
+import { getCatagories, getCategoryBySlug, getFilterAttr, getProductsByCategorySlug } from "@/controllers/productsController";
 import { getPageData } from "@/controllers/homeController";
 import { useRouter } from "next/router";
 import { parseCookies } from "nookies";

@@ -7,7 +7,7 @@ const nextConfig = {
   i18n,
   reactStrictMode: true,
   images: {
-    formats: ['image/webp' , 'image/avif'],
+    formats: ['image/webp', 'image/avif'],
     remotePatterns: [
       {
         protocol: 'http',
@@ -15,9 +15,9 @@ const nextConfig = {
       },
     ],
   },
-  
+
   webpack(config, options) {
-    
+
     config.module.rules.push({
       test: /\.(png|jpe?g|gif|mp4)$/i,
       use: [
@@ -29,14 +29,14 @@ const nextConfig = {
           },
         },
       ],
-      
+
     });
     config.module = {
       ...config.module,
       exprContextCritical: false,
     };
     config.resolve.fallback = { fs: false };
-    config.infrastructureLogging = { debug: /PackFileCache/ }; 
+    config.infrastructureLogging = { debug: /PackFileCache/ };
     return config;
   },
 }

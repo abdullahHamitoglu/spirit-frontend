@@ -15,9 +15,10 @@ const Currency = ({ icon }) => {
   useEffect(() => {
     fetchCurrencies(locale);
   }, []);
-
+  
   const handleCurrencyClick = async (currencyID) => {
     await setCurrency(locale, currencyID);
+    router.reload();
   };
   
   return (
@@ -27,20 +28,23 @@ const Currency = ({ icon }) => {
         <i className="fa fa-cog"></i>
       </div>
       <div className="show-div setting">
-        <h6>language</h6>
+        <h6>{t('language')}</h6>
         <ul>
-          {locales.map((l, i) => (
-            <li key={i}>
-              <Link href={{ pathname: router.pathname, query: router.query, }} locale={l}>
-                {t(l.toLowerCase().replace('-', ''))}
+            <li>
+              <Link href={{ pathname: router.pathname, query: router.query, }} locale="ar-KW">
+                {t('ar-kw')}
               </Link>
             </li>
-          ))}
+            <li>
+              <Link href={{ pathname: router.pathname, query: router.query, }} locale="en-US">
+                {t('en-us')}
+              </Link>
+            </li>
         </ul>
         <h6>{t("currency")}</h6>
         <ul className="list-inline">
           {currencies.data && currencies.data.map((currency, i) => (
-            <li className={selectedCurrency == currency.code ? 'true' : 'false'} key={i} title={currency.name}>
+            <li className={selectedCurrency.code.toLowerCase() == currency.code.toLowerCase() ? 'active fw-bolder' : ''} key={i} title={currency.name}>
               <div onClick={() => handleCurrencyClick(currency.id)} title={currency.name}>
                 {currency.code} {currency.symbol}
               </div>

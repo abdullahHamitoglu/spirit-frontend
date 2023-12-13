@@ -25,7 +25,7 @@ function MyApp({ Component, pageProps }) {
   useEffect(() => {
     setIsLoading(true);
     document.documentElement.style.setProperty("--theme-deafult", "#00c2b5");
-    if (locale == "ar-KW") {
+    if (locale == "ar") {
       setIsLoading(false);
       document.documentElement.dir = "rtl";
       document.body.classList.add("rtl");
@@ -39,7 +39,7 @@ function MyApp({ Component, pageProps }) {
       maxAge: 7 * 24 * 60 * 60,
       path: "/",
     });
-  }, [router.locale])
+  }, [locale])
 
 
   useEffect(() => {

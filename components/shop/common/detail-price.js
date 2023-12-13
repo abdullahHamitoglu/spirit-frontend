@@ -17,7 +17,7 @@ import Trans from "@/helpers/Trans";
 const DetailsWithPrice = ({ item, stickyClass }) => {
   const [modal, setModal] = useState(false);
   const toggle = () => setModal(!modal);
-  const [product , setProduct] = useState(item);
+  const [product, setProduct] = useState(item);
   const [price, setPrice] = useState(product.price);
   const { selectedCurrency } = currencyStore();
   // Add the following useState hook
@@ -86,12 +86,14 @@ const DetailsWithPrice = ({ item, stickyClass }) => {
               color="black"
               pill
               className="fs-6 mb-2"
-            >{product.label}</Badge><br />
+            >
+              {product.label}
+            </Badge><br />
           </>
         }
-        <Link className="h6 mb-5" href={`/products?brand=${product.brand_id}`}>{product.brand}</Link>
+        <Link className="h6 mb-5" href={`/brands/${product.brand.replace(' ', '-').toLowerCase()}`}>{product.brand}</Link>
         <h1 className="h3"> {product.name} </h1>
-        <Link className="h6 mb-5" href={`/categories/${product.brand}`}>{product.category}</Link>
+        <Link className="h6 mb-5" href={`/categories/${product.category.replace(' ', '-').toLowerCase()}`}>{product.category}</Link>
         <h6>
           {Trans('model_no')} : {product.sku}
           <span className="opacity-25 fw-bold fs-5"> | </span>
@@ -106,7 +108,7 @@ const DetailsWithPrice = ({ item, stickyClass }) => {
         {parseFloat(product.special_price) < 0 ?
           <h4>
             <del>
-              {product.formatted_special_price }
+              {product.formatted_special_price}
             </del>
             <span>{product.percentage} {t('off')}</span>
           </h4> :

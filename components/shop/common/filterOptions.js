@@ -30,9 +30,6 @@ const FilterOptions = (attr) => {
       undefined, { shallow: true }
     );
   };
-  useEffect(()=>{
-    
-  },[])
   return (
     <div className="collection-collapse-block open">
       <h3 className="collapse-block-title" onClick={toggleBrand}>

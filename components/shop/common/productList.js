@@ -36,7 +36,7 @@ const ProductList = ({ colClass, layoutList, openSidebar, noSidebar, productsDat
       setIsLoading(true);
       let nextPageCount = pageCount + 1;
       try {
-        const response = await getProducts(locale, { ...router.query, page: nextPageCount }, token , (router.query.slug ? router.query.slug[0] : ''));
+        const response = await getProducts(locale, { ...router.query, page: nextPageCount, currency: selectedCurrency.code }, token , (router.query.slug ? router.query.slug[0] : ''));
         if(response.data.length <= 0 ){
           setNoNextPage(true);
         }
@@ -70,8 +70,7 @@ const ProductList = ({ colClass, layoutList, openSidebar, noSidebar, productsDat
     },
       undefined, { shallow: true });
     try {
-      const response = await getProducts(locale, router.query, token);
-      console.log(response);
+      const response = await getProducts(locale, { ...router.query, currency: selectedCurrency.code }, token);
       setProductsData(response.data);
     } catch (error) {
       console.error("Error fetching products:", error);
@@ -87,7 +86,14 @@ const ProductList = ({ colClass, layoutList, openSidebar, noSidebar, productsDat
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, [handleScroll])
+  }, [handleScroll]);
+  const changeDataCurrency = async () => {
+    const response = await getProducts(locale, { ...router.query, currency: selectedCurrency.code } , token );
+    setProductsData(response.data);
+  }
+  useEffect(()=>{
+    changeDataCurrency()
+  },[])
   return (
     <Col className="collection-content">
       <div className="page-main-content">

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CommonLayout from "../../components/shop/common-layout";
 import { Container, Row } from "reactstrap";
 import FilterPage from "@/components/shop/common/filter";
@@ -16,7 +16,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 // Import Swiper styles
 import 'swiper/css';
 import useUserStore from "@/helpers/user/userStore";
-const Products = ({ products, page, attributes, categories }) => {
+const Products = ({ products, page, attributes, categories, currency }) => {
   if (!products) {
     return (
       <div className="loader-wrapper">
@@ -47,6 +47,7 @@ const Products = ({ products, page, attributes, categories }) => {
       setProductsData((prevData) => [...prevData, ...response]);
     }
   }
+
   return (
     <>
       <Head>
@@ -96,6 +97,7 @@ const Products = ({ products, page, attributes, categories }) => {
               <Row>
                 <FilterPage
                   attributes={attributes}
+                  getProducts={getProducts}
                   setProductsData={setProductsData}
                   sm="3"
                   sidebarView={sidebarView}
