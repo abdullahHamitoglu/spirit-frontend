@@ -16,10 +16,18 @@ import { getHomePageData, getPageData } from "../controllers/homeController";
 import { parseCookies } from "nookies";
 import cheerio from 'cheerio';
 import axios from "axios";
+import PageLoader from "@/components/layouts/Bags/common/PageLoader";
+import BrandSlider from "@/components/layouts/Beauty/components/brandSlider";
+import CategoriesSlider from "@/components/layouts/Beauty/components/categoriesSlider";
+import Collection from "@/components/layouts/Electronic/Electronic-2/component/collection";
+import CollectionsSlider from "@/components/layouts/Beauty/components/collectionsSlider";
 
 
 const Fashion = ({ page, homeData, video }) => {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
+  if (!homeData) {
+    return <PageLoader />
+  }
   return (
     <Fragment>
       <Head>
@@ -38,6 +46,11 @@ const Fashion = ({ page, homeData, video }) => {
       </Head>
       {/* <ModalComponent /> */}
       <MainBanner sliders={homeData.sliders} />
+      {homeData.collections &&
+        <div className="section-b-space mt-5">
+          <CollectionsSlider data={homeData.collections} />
+        </div>
+      }
       {
         homeData.collections_products &&
         <div className="section-b-space">
@@ -60,9 +73,16 @@ const Fashion = ({ page, homeData, video }) => {
           ))}
         </div>
       }
-      {/* <section className="instagram ratio_square section-b-space">
-        <Instagram type="beauty" />
-      </section> */}
+      {homeData.categories &&
+        <div className="section-b-space">
+          <CategoriesSlider categories={homeData.categories} />
+        </div>
+      }
+      {homeData.brands &&
+        <div className="section-b-space">
+          <BrandSlider brands={homeData.brands} />
+        </div>
+      }
       <MasterFooter
         footerClass={`footer-light`}
         footerLayOut={"light-layout upper-footer"}
@@ -108,7 +128,7 @@ export async function getServerSideProps(context) {
         url
       };
 
-      
+
     } else {
       video = []
     }
