@@ -6,11 +6,14 @@ import { Row, Col, Container, Media } from "reactstrap";
 import DetailsWithPrice from "../common/detail-price";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Thumbs } from 'swiper/modules';
+import { useTranslation } from "react-i18next";
 
 
 const NoSidebarPage = ({ reviews, product }) => {
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
   var data = product;
+
+  const { t } = useTranslation();
   return (
     <section>
       <div className="collection-wrapper">
@@ -26,7 +29,7 @@ const NoSidebarPage = ({ reviews, product }) => {
                   <Row>
                     <Col lg="6" className="product-thumbnail">
 
-                      <Swiper modules={[Thumbs]}  zoom={true} thumbs={{swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null}} >
+                      <Swiper modules={[Thumbs]} zoom={true} thumbs={{ swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null }} >
                         {data.images.map((vari, index) => (
                           <SwiperSlide key={index} className="d-flex justify-content-center">
                             <Media src={`${vari.original_image_url}`} alt={data.name} className="img-fluid image_zoom_cls-0" />
