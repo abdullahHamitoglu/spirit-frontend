@@ -70,7 +70,7 @@ const ProductList = ({ colClass, layoutList, openSidebar, noSidebar, productsDat
     },
       undefined, { shallow: true });
     try {
-      const response = await getProducts(locale, { ...router.query, currency: selectedCurrency.code }, token);
+      const response = await getProducts(locale, { ...router.query, currency: selectedCurrency.code }, token , (router.query.slug ? router.query.slug[0] : ''));
       setProductsData(response.data);
     } catch (error) {
       console.error("Error fetching products:", error);
@@ -88,7 +88,7 @@ const ProductList = ({ colClass, layoutList, openSidebar, noSidebar, productsDat
     };
   }, [handleScroll]);
   const changeDataCurrency = async () => {
-    const response = await getProducts(locale, { ...router.query, currency: selectedCurrency.code }, token);
+    const response = await getProducts(locale, { ...router.query, currency: selectedCurrency.code }, token, (router.query.slug ? router.query.slug[0] : ''));
     setProductsData(response.data);
   }
   useEffect(() => {
