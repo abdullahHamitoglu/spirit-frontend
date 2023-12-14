@@ -14,10 +14,10 @@ import { getPageData } from '@/controllers/homeController';
 import AddressForm from '@/components/account/addressPageForm';
 import EditAddressModal from '@/components/common/editAddressModal';
 
-const Addresses = () => {
+const Addresses = ({addresses}) => {
     const { locale } = useRouter();
     const router = useRouter();
-    const { addresses, addAddress, getAddresses, user, deleteAddress } = useUserStore()
+    const { addAddress, getAddresses, user, deleteAddress } = useUserStore()
     const { t } = useTranslation();
     const addressValidationSchema = Yup.object().shape({
         company_name: Yup.string().required(t('first_name_required')),
@@ -109,12 +109,17 @@ const Addresses = () => {
         </>
     )
 }
-export async function getServerSideProps({ locale, params }) {
+export async function getServerSideProps(context) {
+    const { locale , query } = context
+    const { token } = parseCookies(context)
+    const addresses = await getAddresses(locale, token )
     return {
-        props: {
-            ...(await serverSideTranslations(locale)),
-        },
+      props: {
+        addresses,
+        ...(await serverSideTranslations(locale)),
+      }
     }
-}
+  }
+  
 
 export default Addresses;

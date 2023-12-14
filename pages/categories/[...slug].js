@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CommonLayout from "../../components/shop/common-layout";
 import { Container, Row } from "reactstrap";
 import FilterPage from "@/components/shop/common/filter";
@@ -16,6 +16,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 // Import Swiper styles
 import 'swiper/css';
 import useUserStore from "@/helpers/user/userStore";
+import currencyStore from "@/helpers/Currency/CurrencyStore";
 const Products = ({ products, page, attributes, categories }) => {
     if (!products) {
         return (
@@ -35,6 +36,7 @@ const Products = ({ products, page, attributes, categories }) => {
 
     const { t } = useTranslation();
     const { token } = useUserStore();
+    const { selectedCurrency } = currencyStore();
 
     const openCloseSidebar = () => {
         if (sidebarView) {
@@ -55,6 +57,16 @@ const Products = ({ products, page, attributes, categories }) => {
             : '';
 
     const URL = `${origin}${router.asPath}`;
+    const slug = router.query.slug;
+    const query = router.query;
+    useEffect(() => {
+        const fetchData = async () => {
+            const products = await getProductsByCategorySlug(locale, query, token, slug , selectedCurrency.code);
+            // Update state or do something with categoryData
+            setProductsData(products.data)
+        };
+        fetchData();
+    }, [slug]);
     return (
         <>
             <Head>
@@ -68,7 +80,7 @@ const Products = ({ products, page, attributes, categories }) => {
                 <meta property="og:description" content={products.meta_description} />
                 <title>{products.meta_title}</title>
             </Head>
-            <CommonLayout title={page.title} parent={t("home")}>
+            <CommonLayout title={products.meta_title} parent={t("home")}>
                 <section className="section-b-space ratio_asos">
                     <div className="collection-wrapper">
                         {categories &&
@@ -131,30 +143,14 @@ const Products = ({ products, page, attributes, categories }) => {
     );
 };
 
-export async function getStaticPaths(context) {
-    const { locales } = context
-
-    const paths = locales.map((locale) => ({
-        params: {
-            slug: ['slug'],
-        },
-        locale,
-    }));
-
-    return {
-        paths,
-        fallback: true,
-    };
-}
-
-export async function getStaticProps(context) {
+export async function getServerSideProps(context) {
 
     const { locale, query } = context;
-    const { token } = parseCookies(context);
+    const { token, currencyCode } = parseCookies(context);
     const slug = context.params.slug[0];
     const attributes = await getFilterAttr(locale);
     const page = await getPageData(locale, "products");
-    const products = await getProductsByCategorySlug(locale, query, token, slug);
+    const products = await getProductsByCategorySlug(locale, query, token, slug, currencyCode);
     const categories = await getCategoryBySlug(locale, slug, token, query);
     return {
         props: {

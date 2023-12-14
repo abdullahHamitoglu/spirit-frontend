@@ -1,9 +1,12 @@
 import axios from "axios";
 import currencyStore from "@/helpers/Currency/CurrencyStore";
+import { parseCookies } from "nookies";
 
 
-const currency = currencyStore.getState().selectedCurrency.code;
+const { token, currencyCode } = parseCookies();
 
+
+const currency = currencyCode ;
 
 export async function getPagesData(locale) {
     try {

@@ -11,12 +11,12 @@ import { getPageData } from "@/controllers/homeController";
 import { useRouter } from "next/router";
 import { parseCookies } from "nookies";
 import MasterCategory from "@/components/common/Collections/categoryCard";
-import { Swiper, SwiperSlide } from 'swiper/react';
 
 // Import Swiper styles
 import 'swiper/css';
 import useUserStore from "@/helpers/user/userStore";
-const Products = ({ products, page, attributes, categories, currency }) => {
+const Products = (context) => {
+  const { products, page, attributes, currency } = context;
   if (!products) {
     return (
       <div className="loader-wrapper">
@@ -32,7 +32,9 @@ const Products = ({ products, page, attributes, categories, currency }) => {
   const [productsData, setProductsData] = useState(products.data);
 
   const { t } = useTranslation();
-  const { token } = useUserStore();
+  // const { token } = useUserStore();
+  const { token, currencyCode } = parseCookies(context);
+
 
   const openCloseSidebar = () => {
     if (sidebarView) {
@@ -64,35 +66,6 @@ const Products = ({ products, page, attributes, categories, currency }) => {
       <CommonLayout title={page.title} parent={t("home")}>
         <section className="section-b-space ratio_asos">
           <div className="collection-wrapper">
-            {router.query.category_id && categories &&
-              <Container>
-                <Swiper
-                  className="mb-5"
-                  spaceBetween={50}
-                  slidesPerView="auto"
-                  breakpoints={{
-                    // when window width is >= 640px
-                    0: {
-                      slidesPerView: 4,
-                    },
-                    640: {
-                      slidesPerView: 4,
-                    },
-                    // when window width is >= 768px
-                    768: {
-                      slidesPerView: 8,
-                    },
-                  }}
-                  loop={true}
-                >
-                  {categories.map((category) => (
-                    <SwiperSlide onClick={() => handelCategory(category.id)}>
-                      <MasterCategory title={category.name} img={category.image_url} />
-                    </SwiperSlide>
-                  ))}
-                </Swiper>
-              </Container>
-            }
             <Container>
               <Row>
                 <FilterPage
@@ -122,24 +95,18 @@ const Products = ({ products, page, attributes, categories, currency }) => {
     </>
   );
 };
-export async function getStaticProps(context) {
-  const { locale, query} = context;
-  const { token } = parseCookies(context);
-  const products = await getProducts(locale, query, token);
+export async function getServerSideProps(context) {
+  const { locale, query } = context;
+  const { token, currencyCode } = parseCookies(context);
+  const products = await getProducts(locale, query, token, currencyCode);
   const attributes = await getFilterAttr(locale, query);
   const page = await getPageData(locale, "products");
-  let categories = [];
-  try {
-    if (query.category_id) categories = await getCatagories(locale, query.category_id);
-  } catch (error) {
-    console.error(error);
-  }
+  
   return {
     props: {
       page,
       products,
       attributes,
-      categories,
       ...(await serverSideTranslations(locale)),
     },
   };

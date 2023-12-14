@@ -154,7 +154,7 @@ function ordersCom() {
                                                     <Col sm="12">
                                                         <Button id="PopoverFocus" type="button" color="danger" className="mt-3 rounded text-capitalize">
                                                             {t('cancel_order')}
-                                                            <i class="ms-2 fa fa-trash" aria-hidden="true"></i>
+                                                            <i className="ms-2 fa fa-trash" aria-hidden="true"></i>
                                                         </Button>
                                                         <UncontrolledPopover
                                                             placement="top"

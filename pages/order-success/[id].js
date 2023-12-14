@@ -11,36 +11,12 @@ import useUserStore from '@/helpers/user/userStore';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'react-i18next';
 
-const OrderSuccess = () => {
+const OrderSuccess = ({ order }) => {
     const router = useRouter();
     const { locale } = useRouter();
     const { token } = useUserStore();
     const [loading, setLoading] = useState(false)
-    const [order, setOrder] = useState([]);
-    const { query } = useRouter();
-    const currentAddressId = query.id;
-    const { cartData } = useCartStore();
-    const cartItems = cartData;
-    const { selectedCurrency } = currencyStore();
-    const currentId = query.id;
-    const getOrder = async () => {
-        setLoading(true);
-        const response = await GetOrderByID(locale, currentId, token);
-        setOrder(response);
-        setLoading(false);
-    }
-    console.log(order);
-    useEffect(() => {
-        getOrder();
-    }, []);
     const { t } = useTranslation();
-    if (order.length <= 0) {
-        return (
-            <div className="loader-wrapper">
-                <div className="loader"></div>
-            </div>
-        )
-    }
     return (
         <CommonLayout parent={t("home")} title={t("order_success")}>
             <section className="section-b-space light-layout white-1">
@@ -132,19 +108,13 @@ const OrderSuccess = () => {
     )
 }
 
-export async function getStaticPaths() {
-    return {
-        paths: [
-            { params: { id: '0' } },
-        ],
-        fallback: true,
-    }
-}
-export async function getStaticProps(context) {
-    const { locale } = context;
-
+export async function getServerSideProps(context) {
+    const { locale, query } = context;
+    const { token } = parseCookies(context)
+    const order = await GetOrderByID(locale, query.id, token);
     return {
         props: {
+            order,
             ...(await serverSideTranslations(locale)),
         },
     };

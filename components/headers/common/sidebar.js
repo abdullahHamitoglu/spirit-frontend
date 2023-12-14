@@ -376,7 +376,7 @@ const SideBar = ({ categories  }) => {
               <ul id="sub-menu" className="sidebar-menu">
                 {categories && categories.map && categories.map((category, i) => (
                   <li key={i}>
-                    <Link href={`/products?category_id=${category.id}`} onClick={(e) => handleMegaSubmenu(e)} title={category.name}>
+                    <Link href={`/categories/${category.slug}`} onClick={(e) => handleMegaSubmenu(e)} title={category.name}>
                       <span className="text-nowrap overflow-hidden mw-100 d-block">
                         {category.name}
                       </span>
@@ -392,7 +392,7 @@ const SideBar = ({ categories  }) => {
                                 <ul>
                                   {category.children.map((chide, i) => (
                                     <li key={i}>
-                                      <Link href={`/products?category_id=${chide.id}`}>{chide.name}</Link>
+                                      <Link href={`/categories/${chide.slug}`}>{chide.name}</Link>
                                     </li>
                                   ))}
                                 </ul>

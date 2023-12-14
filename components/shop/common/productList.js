@@ -87,13 +87,13 @@ const ProductList = ({ colClass, layoutList, openSidebar, noSidebar, productsDat
       window.removeEventListener("scroll", handleScroll);
     };
   }, [handleScroll]);
-  const changeDataCurrency = async () => {
-    const response = await getProducts(locale, { ...router.query, currency: selectedCurrency.code }, token, (router.query.slug ? router.query.slug[0] : ''));
-    setProductsData(response.data);
-  }
-  useEffect(() => {
-    changeDataCurrency()
-  }, [])
+  // const changeDataCurrency = async () => {
+  //   const response = await getProducts(locale, { ...router.query, currency: selectedCurrency.code }, token, (router.query.slug ? router.query.slug[0] : ''));
+  //   setProductsData(response.data);
+  // }
+  // useEffect(() => {
+  //   changeDataCurrency()
+  // }, [])
   return (
     <Col className="collection-content">
       <div className="page-main-content">
@@ -166,7 +166,7 @@ const ProductList = ({ colClass, layoutList, openSidebar, noSidebar, productsDat
                 <Row>
                   <Col>
                     <div className="product-filter-content">
-                      <div className="collection-view">
+                      {/* <div className="collection-view">
                         <ul>
                           <li>
                             <i
@@ -187,7 +187,7 @@ const ProductList = ({ colClass, layoutList, openSidebar, noSidebar, productsDat
                             ></i>
                           </li>
                         </ul>
-                      </div>
+                      </div> */}
                       <div
                         className="collection-grid-view"
                         style={
@@ -219,14 +219,6 @@ const ProductList = ({ colClass, layoutList, openSidebar, noSidebar, productsDat
                               alt=""
                               className="product-4-layout-view"
                               onClick={() => setGrid("col-lg-3")}
-                            />
-                          </li>
-                          <li>
-                            <Media
-                              src={`/assets/images/icon/6.png`}
-                              alt=""
-                              className="product-6-layout-view"
-                              onClick={() => setGrid("col-lg-2")}
                             />
                           </li>
                         </ul>

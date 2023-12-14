@@ -1,9 +1,13 @@
 import axios from "axios";
+import { parseCookies } from "nookies";
 
 //api/v1/customer/orders/
 
+const { token, currencyCode } = parseCookies();
 
-export async function GetOrders(locale, token , currency) {
+
+const currency = currencyCode ;
+export async function GetOrders(locale, token ) {
     try {
 
         const response = await axios({

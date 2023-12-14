@@ -142,7 +142,7 @@ const MasterFooter = ({
                         </li>
                         <li>
                           <a href="https://tiktok.com/@spirit_pharmacy" target="_blank">
-                            <i class="fa fa-music"></i>
+                            <i className="fa fa-music"></i>
                           </a>
                         </li>
                         <li>
@@ -252,7 +252,7 @@ const MasterFooter = ({
                     <div className="footer-contant">
                       <ul className="contact-list">
                         {fields.length > 0 ? fields.map((field, i) => (
-                          <li>
+                          <li key={i}>
                             {field.code.indexOf('address') > 0 ? <i className="fa fa-map-marker"></i> : ''}
                             {field.code.indexOf('phone') > 0 ? <i className="fa fa-phone"></i> : ''}
                             {field.code.indexOf('email') > 0 ? <i className="fa fa-envelope"></i> : ''}

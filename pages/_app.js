@@ -45,6 +45,7 @@ function MyApp({ Component, pageProps }) {
   useEffect(() => {
     setIsLoading(false);
     registerDevice();
+    document.body.classList.remove("overflow-hidden");
   }, []);
 
   return (

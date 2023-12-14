@@ -2,16 +2,19 @@ import ProductSection from '@/components/common/product-box/ProductBox11';
 import CommonLayout from '@/components/shop/common-layout';
 import NoSidebarPage from '@/components/shop/product/noSidebarPage';
 import { getProductBySlug, getProductReviews, getProducts } from '@/controllers/productsController';
+import currencyStore from '@/helpers/Currency/CurrencyStore';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import Script from 'next/script';
-import React from 'react';
+import { parseCookies } from 'nookies';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-function Product({ product, reviews }) {
+function Product({ productData, reviews }) {
   const { t } = useTranslation();
   const router = useRouter();
+  const [product, setProduct] = useState(productData);
   const origin =
     typeof window !== 'undefined' && window.location.origin
       ? window.location.origin
@@ -25,7 +28,17 @@ function Product({ product, reviews }) {
       </div>
     );
   }
-  console.log(product.rich_snippets);
+  const { locale, query } = useRouter();
+  const { selectedCurrency } = currencyStore();
+  const updateCurrency = async () => {
+    const productData = await getProductBySlug(locale, query.slug, selectedCurrency.code);
+    setProduct(productData);
+  }
+
+  useEffect(() => {
+    updateCurrency();
+  }, []);
+  console.log(product);
   return (
     <>
       <Head>
@@ -49,33 +62,21 @@ function Product({ product, reviews }) {
     </>
   );
 }
-export async function getStaticPaths(context) {
-  const { locales } = context
 
-  const paths = locales.map((locale) => ({
-    params: {
-      slug: ['product-slug'],
-    },
-    locale,
-  }));
 
-  return {
-    paths,
-    fallback: true,
-  };
-}
-
-export async function getStaticProps(context) {
+export async function getServerSideProps(context) {
 
   const { locale } = context;
 
   const slug = context.params.slug;
 
-  const product = await getProductBySlug(locale, slug);
+  const { token, currencyCode } = parseCookies(context);
+  
+  const productData = await getProductBySlug(locale, slug, currencyCode);
 
-  const reviews = await getProductReviews(locale, product.id);
+  const reviews = await getProductReviews(locale, productData.id);
 
-  if (!product && !reviews) {
+  if (!productData && !reviews) {
     return {
       notFound: true, // Return notFound: true if product not found
     };
@@ -83,7 +84,7 @@ export async function getStaticProps(context) {
 
   return {
     props: {
-      product,
+      productData,
       reviews,
       ...(await serverSideTranslations(locale)),
     },

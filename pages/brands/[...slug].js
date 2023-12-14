@@ -102,30 +102,16 @@ const Products = ({ products, page, attributes }) => {
     );
 };
 
-export async function getStaticPaths(context) {
-    const { locales } = context
 
-    const paths = locales.map((locale) => ({
-        params: {
-            slug: ['slug'],
-        },
-        locale,
-    }));
 
-    return {
-        paths,
-        fallback: true,
-    };
-}
-
-export async function getStaticProps(context) {
+export async function getServerSideProps(context) {
     try {
         const { locale, query } = context;
-        const { token } = parseCookies(context);
+        const { token, currencyCode } = parseCookies(context);
         const slug = context.params.slug;
         const attributes = await getFilterAttr(locale);
         const page = await getPageData(locale, "brand");
-        const products = await getProductsByBrandSlug(locale, query, token, slug);
+        const products = await getProductsByBrandSlug(locale, query, token, slug, currencyCode);
         return {
             props: {
                 page,

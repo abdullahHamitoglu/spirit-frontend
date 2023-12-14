@@ -16,7 +16,7 @@ import CustomPhoneInput from "@/components/account/customPhoneInput";
 import addressStore from "@/helpers/address/addressStore";
 import ContactFormLoader from "@/components/layouts/Bags/common/formLoader";
 
-const UniqueAddress = () => {
+const UniqueAddress = ({serverAddresses}) => {
   const [address, setAddress] = React.useState({});
   const [loading, setLoading] = React.useState(false);
   const [cities, setCities] = useState([]);
@@ -24,7 +24,7 @@ const UniqueAddress = () => {
   const router = useRouter();
   const [stateLoading, setStateLoading] = useState(false);
   const currentAddressId = query.id;
-
+  console.log(serverAddresses);
   const { t } = useTranslation();
   const { locale } = useRouter();
   const { updateAddress } = useUserStore();
@@ -38,7 +38,7 @@ const UniqueAddress = () => {
       }
     });
   }, []);
-  
+
   const addressValidationSchema = Yup.object().shape({
     company_name: Yup.string().required(t('this_field_is_required')),
     first_name: Yup.string().required(t('this_field_is_required')),
@@ -73,7 +73,6 @@ const UniqueAddress = () => {
         params: {
           locale: locale.slice(0, 2),
         },
-
         withCredentials: true,
         headers: {
           'Authorization': `Bearer ${JSON.parse(window.localStorage.getItem('userStorage')).state.token}`,
@@ -325,17 +324,14 @@ const UniqueAddress = () => {
     </CommonLayout>
   );
 };
-export async function getStaticPaths() {
-  return {
-    paths: [
-      { params: { id: '9' } },
-    ],
-    fallback: true,
-  }
-}
-export async function getStaticProps({ locale }) {
+
+export async function getServerSideProps(context) {
+  const { locale , query } = context
+  const { token ,currencyCode } = parseCookies(context)
+  const serverAddresses = await getAddressById(locale, query.id, token ,currencyCode)
   return {
     props: {
+      serverAddresses,
       ...(await serverSideTranslations(locale)),
     }
   }
