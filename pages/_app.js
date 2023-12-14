@@ -90,7 +90,6 @@ function MyApp({ Component, pageProps }) {
               <FilterProvider>
                 <Component {...pageProps} />
               </FilterProvider>
-              <ThemeSettings />
             </CompareContextProvider>
           </SettingProvider>
           <ToastContainer />
