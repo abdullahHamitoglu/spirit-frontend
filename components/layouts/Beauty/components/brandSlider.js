@@ -8,6 +8,9 @@ SwiperCore.use([Navigation, Pagination, Autoplay]);
 
 const BrandSlider = ({ brands }) => {
   const breakpoints = {
+    0:{
+      slidesPerView: 3,
+    },
     768: {
       slidesPerView: 3,
     },
