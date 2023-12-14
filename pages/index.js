@@ -21,6 +21,7 @@ import BrandSlider from "@/components/layouts/Beauty/components/brandSlider";
 import CategoriesSlider from "@/components/layouts/Beauty/components/categoriesSlider";
 import Collection from "@/components/layouts/Electronic/Electronic-2/component/collection";
 import CollectionsSlider from "@/components/layouts/Beauty/components/collectionsSlider";
+import Link from "next/link";
 
 
 const Fashion = ({ page, homeData, video }) => {
@@ -46,41 +47,55 @@ const Fashion = ({ page, homeData, video }) => {
       </Head>
       {/* <ModalComponent /> */}
       <MainBanner sliders={homeData.sliders} />
-      {homeData.collections &&
+
+      {homeData && homeData.collections &&
         <div className="section-b-space mt-5">
-          <CollectionsSlider data={homeData.collections} />
-        </div>
-      }
-      {
-        homeData.collections_products &&
-        <div className="section-b-space">
-          {homeData.collections_products.map((collection, key) => (
-            <>
-              <TopCollection
-                key={key}
-                type="beauty"
-                innerClass="title1"
-                inner="title-inner1"
-                designClass="p-t-0 ratio_asos mb-4"
-                noSlider="true"
-                cartClass="cart-info cart-wrap"
-                collection={collection}
-              />
-              {key == 0 &&
+          {homeData.collections.map((collection, key) => {
+            if (key == 3) {
+              return (
                 <VideoSection video={video} />
-              }
-            </>
-          ))}
-        </div>
-      }
-      {homeData.categories &&
-        <div className="section-b-space">
-          <CategoriesSlider categories={homeData.categories} />
-        </div>
-      }
-      {homeData.brands &&
-        <div className="section-b-space">
-          <BrandSlider brands={homeData.brands} />
+              )
+            }
+            if (collection.type == 'brands') {
+              return (
+                <div className="section-b-space">
+                  <BrandSlider brands={collection} />
+                </div>
+              )
+            }
+            if (collection.type.includes('products')) {
+              return (
+                <TopCollection
+                  key={key}
+                  type="beauty"
+                  innerClass="title1"
+                  inner="title-inner1"
+                  designClass="p-t-0 ratio_asos mb-4"
+                  noSlider="true"
+                  cartClass="cart-info cart-wrap"
+                  collection={collection}
+                />)
+            }
+            if (collection.type == 'categories') {
+              return (
+                <div className="section-b-space">
+                  <CategoriesSlider categories={collection} />
+                </div>
+              )
+            }
+            if (collection.type == 'message') {
+              return (
+                <Link href={collection.path} className="my-5 d-block">
+                  <div className='title2'>
+                    <h2 className='title-inner2'>{collection.title}</h2>
+                  </div>
+                  {collection.image &&
+                    <Media className="mw-100" src={collection.image} alt={collection.title} />
+                  }
+                </Link>
+              )
+            }
+          })}
         </div>
       }
       <MasterFooter

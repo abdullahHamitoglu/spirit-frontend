@@ -12,6 +12,7 @@ import {
     AccordionBody,
     AccordionHeader,
     AccordionItem,
+    Badge,
     Button,
     Col,
     Container,
@@ -32,7 +33,7 @@ function ordersCom() {
 
     const fetchOrders = async () => {
         const response = await GetOrders(locale, token, selectedCurrency.code)
-        if(response.length < 0){
+        if (response.length < 0) {
             router.push('/account/login')
         }
         setOrders(response)
@@ -67,10 +68,17 @@ function ordersCom() {
                         <Accordion flush open={open} toggle={toggle}>
                             {orders.map((order, i) => (
                                 <AccordionItem>
-                                    <AccordionHeader targetId={i} >
+                                    <AccordionHeader targetId={i}>
                                         <span className="w-100 text-start">
-                                            <Row className="m-0">
+                                            <Row className="m-0 align-items-center">
                                                 #{order.id} - {moment(order.created_at).format('D/M/Y - HH:MM')}
+                                                <Badge
+                                                    color={order.status == 'pending' ? 'warning' : order.status == 'processing' ? 'info' : order.status == 'canceled' ? 'danger': 'success' }
+                                                    pill
+                                                    className="col-1 h-100 mx-3"
+                                                >
+                                                    {order.status}
+                                                </Badge>
                                                 {order && order.items && order.items.slice(0, 7).map((item, i) =>
                                                     <Media src={item.base_image.small_image_url} width={50} height={50} alt={item.name} className="blur-up lazyload col-1 object-fit-contain" />
                                                 )}

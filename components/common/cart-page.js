@@ -1,24 +1,71 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { Container, Row, Col, Media, Input } from "reactstrap";
+import { Container, Row, Col, Media, Input, Spinner, InputGroup, Label, Form, Button } from "reactstrap";
 import { useTranslation } from "react-i18next";
 import CartLoader from "../layouts/Bags/common/cartLoader";
 import useCartStore from "../../helpers/cart/cartStore";
+import { useFormik } from 'formik';
+import { useRouter } from "next/router";
 
 const CartPage = () => {
-  const { getCart, cartData, removeFromCart, cartLoading, updateQty } = useCartStore();
+  const { getCart, cartData, removeFromCart, cartLoading, updateQty, applyCoupon, removeCoupon } = useCartStore();
+  const { locale } = useRouter();
   const { t } = useTranslation();
   const handleQtyUpdate = (id, quantity) => {
     if (quantity >= 1) {
       updateQty(id, quantity);
     }
   };
-  
+
+  const [loadQ, setLoadQ] = useState(false)
+
+  const [removing, setRemoving] = useState(false)
+  // Define the changeQty function
+  const changeQty = async (event) => {
+    setLoadQ(true)
+    const newQuantity = parseInt(event.target.value, 10) || 1;
+    await updateQty(newQuantity);
+    setLoadQ(false)
+  };
+
+
+  // Define the plusQty function
+  const plusQty = async (id, q) => {
+    setLoadQ(true);
+    await updateQty(id, q + 1);
+    setLoadQ(false);
+  };
+
+  // Define the minusQty function
+  const minusQty = async (id, q) => {
+    if (q > 1) {
+      setLoadQ(true)
+      await updateQty(id, q - 1);
+      setLoadQ(false)
+    }
+  };
+  const handleRemove = async (id) => {
+    setRemoving(true)
+    await removeFromCart(locale, id)
+    setRemoving(false)
+  }
   useEffect(() => {
     getCart()
   }, []);
+  const [validateCode, setValidateCode] = useState(false)
+  const formik = useFormik({
+    initialValues: {
+      code: cartData.coupon,
+    },
+    onSubmit: async (values) => {
+      setValidateCode(true)
+      await applyCoupon(locale, values)
+      setValidateCode(false)
+      console.log(values);
+    },
+  });
   return (
-    <div>
+    <>
       {cartData && cartData.items && cartData.items.length > 0 ?
         (
           <section className="cart-section section-b-space">
@@ -59,18 +106,17 @@ const CartPage = () => {
                               <div className="mobile-cart-content row">
                                 <div className="col-xs-3">
                                   <div className="qty-box">
-                                    <div className="input-group">
-                                      <input
-                                        type="number"
-                                        name="quantity"
-                                        min={'1'}
-                                        value={item.quantity}
-                                        onChange={(e) =>
-                                          handleQtyUpdate(item.id, e.target.value)
-                                        }
-                                        className="form-control input-number"
-                                        defaultValue={item.quantity}
-                                      />
+                                    <div className="input-group"><input
+                                      type="number"
+                                      name="quantity"
+                                      min={'1'}
+                                      value={item.quantity}
+                                      onChange={(e) =>
+                                        handleQtyUpdate(item.id, e.target.value)
+                                      }
+                                      className="form-control input-number"
+                                      defaultValue={item.quantity}
+                                    />
                                     </div>
                                   </div>
                                   {item.product.quantity >= item.product.stock ? t('out_of_stock') : ""}
@@ -83,10 +129,11 @@ const CartPage = () => {
                                 <div className="col-xs-3">
                                   <h2 className="td-color">
                                     <a href="#" className="icon">
-                                      <i
-                                        className="fa fa-times"
-                                        onClick={() => removeFromCart(item.id)}
-                                      ></i>
+                                      {removing ? <Spinner size='sm' /> :
+                                        <i
+                                          className="fa fa-times"
+                                          onClick={() => handleRemove(item.id)}
+                                        ></i>}
                                     </a>
                                   </h2>
                                 </div>
@@ -100,16 +147,40 @@ const CartPage = () => {
                             <td>
                               <div className="qty-box">
                                 <div className="input-group">
-                                  <input
-                                    type="number"
-                                    name="quantity"
-                                    min={'1'}
-                                    onChange={(e) =>
-                                      handleQtyUpdate(item.id, e.target.value)
-                                    }
-                                    className="form-control input-number"
-                                    defaultValue={item.quantity}
-                                  />
+                                  {loadQ == true ? <Spinner size='sm' color="black" /> :
+                                    <>
+                                      <span className="input-group-prepend">
+                                        <button
+                                          type="button"
+                                          className="btn quantity-left-minus"
+                                          onClick={() => minusQty(item.id, item.quantity)}
+                                          data-type="minus"
+                                          data-field=""
+                                        >
+                                          <i className="fa fa-angle-left"></i>
+                                        </button>
+                                      </span>
+
+                                      <Input
+                                        type="text"
+                                        name="quantity"
+                                        value={item.quantity}
+                                        disabled
+                                        className="form-control input-number"
+                                      />
+                                      <span className="input-group-prepend">
+                                        <button
+                                          type="button"
+                                          className="btn quantity-right-plus"
+                                          onClick={() => plusQty(item.id, item.quantity)}
+                                          data-type="plus"
+                                          data-field=""
+                                        >
+                                          <i className="fa fa-angle-right"></i>
+                                        </button>
+                                      </span>
+                                    </>
+                                  }
                                 </div>
                               </div>
                               {item.product.quantity >= item.product.stock ? t('out_of_stock') : ""}
@@ -122,7 +193,6 @@ const CartPage = () => {
                             </td>
                             <td>
                               <h2 className="td-color">
-
                                 {item.formatted_total}
                               </h2>
                             </td>
@@ -134,8 +204,28 @@ const CartPage = () => {
                   <table className="table cart-table table-responsive-md">
                     <tfoot>
                       <tr>
-                        <td>{t('total_price')} :</td>
-                        <td>
+                        <td className="coupon-section">
+                          <Form className="theme-form" onSubmit={formik.handleSubmit}>
+                            <InputGroup>
+                              <Label className="w-100 text-start form-label">{t('coupon')}</Label>
+                              <Input
+                                className="form-control me-1"
+                                type="text"
+                                name="code"
+                                disabled={cartData.coupon ? true : false}
+                                onChange={formik.handleChange}
+                                value={formik.values.code}
+                              />
+                              <Button className={cartData.coupon ? "btn-danger" : "btn-solid"} disabled={validateCode} type={cartData.coupon ? "button" : "submit"}
+                                onClick={() => cartData.coupon ? removeCoupon() : ''}
+                              >
+                                {validateCode ? <Spinner size='md' /> : cartData.coupon ? t('delete') : t('save')}
+                              </Button>
+                            </InputGroup>
+                          </Form>
+                        </td>
+                        <td className="total-text">{t('total_price')} :</td>
+                        <td className="total">
                           <h2>
                             {cartData.formatted_grand_total}{" "}
                           </h2>
@@ -146,6 +236,7 @@ const CartPage = () => {
                 </Col>
               </Row>
               <Row className="cart-buttons">
+
                 <Col xs="6">
                   <Link href="/" className="btn btn-solid">
                     {t('continue_shopping')}
@@ -189,7 +280,7 @@ const CartPage = () => {
 
         )
       }
-    </div>
+    </>
 
   );
 };

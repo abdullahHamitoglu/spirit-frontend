@@ -51,7 +51,7 @@ export async function CancelOrder(locale, order_id, token) {
     try {
 
         const response = await axios({
-            method: 'delete',
+            method: 'post',
             url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/customer/orders/${order_id}/cancel`,
             params: {
                 locale: locale.slice(0, 2)

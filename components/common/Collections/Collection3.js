@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Row, Col, Container } from "reactstrap";
+import { Row, Col, Container, Media } from "reactstrap";
 import PostLoader from "../PostLoader";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
@@ -8,16 +8,19 @@ import ProductItem from "../product-box/ProductBox12";
 import useCartStore from "../../../helpers/cart/cartStore";
 import currencyStore from "../../../helpers/Currency/CurrencyStore";
 import useWishListStore from "../../../helpers/wishlist/wishlistStore";
+import Link from "next/link";
+import CardLoader from "../cardLoader";
+import { useRouter } from "next/router";
 
 
 const TopCollection = ({ type, title, subtitle, designClass, noSlider, cartClass, productSlider, titleClass, noTitle, innerClass, inner, backImage, collection }) => {
   const { wishList, wishListLoading } = useWishListStore();
 
   const { selectedCurrency } = currencyStore()
-
+  const { locale } = useRouter();
   const symbol = selectedCurrency.symbol;
 
-  const {addToCart,getCart} = useCartStore();
+  const { addToCart, getCart } = useCartStore();
   const [delayProduct, setDelayProduct] = useState(true);
 
   var data = collection;
@@ -32,35 +35,27 @@ const TopCollection = ({ type, title, subtitle, designClass, noSlider, cartClass
         <Container>
           <Row>
             <Col>
-              {noTitle === "null" ? (
-                ""
-              ) : (
-                <div className={innerClass}>
-                  {subtitle ? <h4>{subtitle}</h4> : ""}
-                  <h2 className={inner}>{data && data.collection_name}</h2>
-                  {titleClass ? (
-                    <hr role="tournament6" />
-                  ) : (
-                    <div className="line">
-                      <span></span>
-                    </div>
-                  )}
-                </div>
-              )}
-
-              {delayProduct ? (
+              <div className={innerClass}>
+                <h2 className={inner}>{collection.title}</h2>
+              </div>
+              {collection.image &&
+                <Link href={collection.path} className="my-5 d-block">
+                  <Media className="mw-100" src={collection.image} alt={collection.title} />
+                </Link>
+              }
+              {!collection && !collection.items && collection.items.length < 0 ? (
                 <div className="row mx-0 margin-default">
                   <div className="col-xl-3 col-lg-4 col-6">
-                    <PostLoader />
+                    <CardLoader />
                   </div>
                   <div className="col-xl-3 col-lg-4 col-6">
-                    <PostLoader />
+                    <CardLoader />
                   </div>
                   <div className="col-xl-3 col-lg-4 col-6">
-                    <PostLoader />
+                    <CardLoader />
                   </div>
                   <div className="col-xl-3 col-lg-4 col-6">
-                    <PostLoader />
+                    <CardLoader />
                   </div>
                 </div>
               ) : (
@@ -78,15 +73,15 @@ const TopCollection = ({ type, title, subtitle, designClass, noSlider, cartClass
                       768: {
                         slidesPerView: 3,
                       },
-                      0:{
-                        slidesPerView:2
+                      0: {
+                        slidesPerView: 2
                       }
                     }}
                     centeredSlides={false}
                     centerInsufficientSlides={true}
                   >
-                    {data &&
-                      data.collection_products.map((product, i) => (
+                    {collection && collection.items && collection.items.length > 0 &&
+                      collection.items.map((product, i) => (
                         <SwiperSlide key={i}>
                           <ProductItem
                             des={true}
@@ -97,13 +92,14 @@ const TopCollection = ({ type, title, subtitle, designClass, noSlider, cartClass
                               wishList('post', product.id)
                             }
                             wishListLoading={wishListLoading}
-                            addCart={() =>{
-                              addToCart({
-                                product_id:product.id,
-                                quantity : 1,
-                              })
+                            addCart={() => {
+                              addToCart(locale,
+                                {
+                                  product_id: product.id,
+                                  quantity: 1,
+                                })
                               getCart()
-                              }
+                            }
                             }
                           />
                         </SwiperSlide>

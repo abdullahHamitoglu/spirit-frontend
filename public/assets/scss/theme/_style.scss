@@ -9494,6 +9494,7 @@ footer {
 }
 .cart-section,
 .wishlist-section {
+  min-height: 80vh;
   .table {
     tbody {
       & + tbody {
@@ -9608,8 +9609,9 @@ footer {
           font-size: 24px;
           margin-bottom: 0;
         }
-        &:first-child {
-          width: 85%;
+        &:nth-child(2) {
+          width: 40%;
+          text-align: end;
           font-size: 15px;
           padding-right: 10px;
           text-transform: capitalize;

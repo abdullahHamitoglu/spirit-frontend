@@ -30,14 +30,14 @@ const ProductList = ({ colClass, layoutList, openSidebar, noSidebar, productsDat
   const [quantity, setQuantity] = useState(1);
   const { t } = useTranslation();
   const [pageCount, setPageCount] = useState(1); // Initialize pageCount to 1
-  const [noNextPage , setNoNextPage] = useState(false)
+  const [noNextPage, setNoNextPage] = useState(false)
   const handlePagination = async () => {
     if (productsData && productsData.length >= 12 && !noNextPage) {
       setIsLoading(true);
       let nextPageCount = pageCount + 1;
       try {
-        const response = await getProducts(locale, { ...router.query, page: nextPageCount, currency: selectedCurrency.code }, token , (router.query.slug ? router.query.slug[0] : ''));
-        if(response.data.length <= 0 ){
+        const response = await getProducts(locale, { ...router.query, page: nextPageCount, currency: selectedCurrency.code }, token, (router.query.slug ? router.query.slug[0] : ''));
+        if (response.data.length <= 0) {
           setNoNextPage(true);
         }
         setPageCount(nextPageCount);
@@ -88,12 +88,12 @@ const ProductList = ({ colClass, layoutList, openSidebar, noSidebar, productsDat
     };
   }, [handleScroll]);
   const changeDataCurrency = async () => {
-    const response = await getProducts(locale, { ...router.query, currency: selectedCurrency.code } , token );
+    const response = await getProducts(locale, { ...router.query, currency: selectedCurrency.code }, token);
     setProductsData(response.data);
   }
-  useEffect(()=>{
+  useEffect(() => {
     changeDataCurrency()
-  },[])
+  }, [])
   return (
     <Col className="collection-content">
       <div className="page-main-content">
@@ -294,7 +294,7 @@ const ProductList = ({ colClass, layoutList, openSidebar, noSidebar, productsDat
                                 wishList('post', product.id)
                               }
                               addCart={() => {
-                                addToCart({
+                                addToCart(locale, {
                                   product_id: product.id,
                                   quantity,
                                 });

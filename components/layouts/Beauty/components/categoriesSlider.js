@@ -7,9 +7,17 @@ import 'swiper/swiper-bundle.css';
 SwiperCore.use([Navigation, Pagination, Autoplay]);
 
 const CategoriesSlider = ({ categories }) => {
-
+  console.log(categories.items);
   return (
     <div>
+      <Link href={categories.path} className="my-5 d-block">
+        <div className='title1'>
+          <h2 className='title-inner1'>{categories.title}</h2>
+        </div>
+        {categories.image &&
+          <Media className="mw-100" src={categories.image} alt={categories.title} />
+        }
+      </Link>
       <Swiper
         spaceBetween={15}
         pagination={{ clickable: true }}
@@ -23,7 +31,7 @@ const CategoriesSlider = ({ categories }) => {
           },
         }}
       >
-        {categories.map((item, index) => (
+        {categories && categories.items && categories.items.map((item, index) => (
           <SwiperSlide key={index}>
             <Link href={`/categories/${item.slug}`}>
               <img className='mw-100' src={item.image_url} alt={item.name} onError={(e) => e.target.src = '/assets/images/logos/brand-placeholder.png'} />

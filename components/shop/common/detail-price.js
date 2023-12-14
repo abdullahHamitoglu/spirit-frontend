@@ -14,6 +14,7 @@ import "swiper/css/navigation";
 import "swiper/css/thumbs";
 import { toast } from "react-toastify";
 import Trans from "@/helpers/Trans";
+import { useRouter } from "next/router";
 const DetailsWithPrice = ({ item, stickyClass }) => {
   const [modal, setModal] = useState(false);
   const toggle = () => setModal(!modal);
@@ -41,10 +42,11 @@ const DetailsWithPrice = ({ item, stickyClass }) => {
       setQuantity(quantity - 1);
     }
   };
+  const {locale} = useRouter()
   const handleAddToCart = () => {
     if (product.variants) {
       if (document.querySelector("input[name=variant]:checked")) {
-        addToCart({
+        addToCart(locale,{
           quantity,
           product_id: product.id,
           selected_configurable_option: parseInt(
@@ -62,7 +64,7 @@ const DetailsWithPrice = ({ item, stickyClass }) => {
         });
       }
     } else {
-      addToCart({
+      addToCart(locale,{
         quantity,
         product_id: product.id,
       });

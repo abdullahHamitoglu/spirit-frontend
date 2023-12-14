@@ -35,12 +35,14 @@ const useCartStore = create(
                 console.error(error);
             });
         },
-        addToCart: (data) => {
+        addToCart: (locale, data) => {
             set({ cartLoading: true });
             axios({
                 method: "post",
                 url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/customer/cart/add`,
-
+                params: {
+                    locale: locale,
+                },
                 withCredentials: true,
                 headers: {
                     'Authorization': `Bearer ${useUserStore.getState().token}`
@@ -58,17 +60,18 @@ const useCartStore = create(
                 console.error(error);
             });
         },
-        removeFromCart: (id) => {
+        removeFromCart: (locale, id) => {
             set({ cartLoading: true });
             axios({
                 method: "DELETE",
                 url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/customer/cart/remove/${id}`,
-
+                params: {
+                    locale: locale,
+                },
                 withCredentials: true,
                 headers: {
                     'Authorization': `Bearer ${useUserStore.getState().token}`
                 },
-
             }).then((res) => {
                 toast.success(res.data.message);
                 get().getCart();
@@ -99,15 +102,14 @@ const useCartStore = create(
         updateQty: (id, qyt) => {
             set({ cartLoading: true });
             axios({
-                method: "POST",
+                method: "put",
                 url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/customer/cart/update`,
-
                 withCredentials: true,
                 headers: {
                     'Authorization': `Bearer ${useUserStore.getState().token}`
                 },
                 data: {
-                    qyt: { [id]: qyt }
+                    "qty": { [id]: qyt }
                 },
             }).then((res) => {
                 toast.success(res.data.message);
@@ -137,21 +139,22 @@ const useCartStore = create(
                 console.error(error);
             });
         },
-        applyCoupon: async (code) => {
+        applyCoupon: async (locale, data) => {
             set({ cartLoading: true });
             await axios({
                 method: "POST",
                 url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/customer/cart/coupon`,
-
+                params: {
+                    locale: locale.slice(0, 2)
+                },
                 withCredentials: true,
                 headers: {
                     'Authorization': `Bearer ${useUserStore.getState().token}`
                 },
-                data: {
-                    "code": code
-                }
+                data,
             }).then((res) => {
                 toast.success(res.data.message);
+                console.log(res);
             }).catch((error) => {
                 set({ cartLoading: false });
                 console.error(error);
@@ -250,7 +253,7 @@ const useCartStore = create(
                 }
             }).then((res) => {
                 set({ redirect_url: res.data.data.redirect_url });
-                if(typeof window !== "undefined" && res.data.data.redirect_url){
+                if (typeof window !== "undefined" && res.data.data.redirect_url) {
                     window.location = res.data.data.redirect_url
                 }
             }).catch((error) => {

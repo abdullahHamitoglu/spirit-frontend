@@ -340,5 +340,6 @@
     "my-orders":"طلباتي",
     "cancel_order":"الغاء الطلب",
     "do_you_want_to_cancel_the_order":"هل تريد الغاء الطلبية ؟",
-    "yes":"نعم"
+    "yes":"نعم",
+    "coupon":"رمز الخصم"
 }
