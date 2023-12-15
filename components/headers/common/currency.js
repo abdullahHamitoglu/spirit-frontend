@@ -36,12 +36,12 @@ const Currency = ({ icon }) => {
         <h6>{t('language')}</h6>
         <ul>
             <li>
-              <Link href={{ pathname: router.pathname, query: router.query, }} locale="ar-KW">
+              <Link href={{ pathname: router.pathname, query: router.query, }} locale="ar">
                 {t('ar-kw')}
               </Link>
             </li>
             <li>
-              <Link href={{ pathname: router.pathname, query: router.query, }} locale="en-US">
+              <Link href={{ pathname: router.pathname, query: router.query, }} locale="en">
                 {t('en-us')}
               </Link>
             </li>
