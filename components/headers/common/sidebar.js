@@ -1,7 +1,6 @@
 import React, { Fragment, useEffect } from "react";
 import { Row, Col, Media } from "reactstrap";
 import Image from "next/image";
-import { getCategoriesTree } from "@/controllers/productsController";
 import { useRouter } from "next/router";
 import MenuLoader from "@/components/layouts/Bags/common/MenuLoader";
 import Link from "next/link";

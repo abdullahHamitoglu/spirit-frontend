@@ -8,7 +8,6 @@ import Head from 'next/head';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import MasterFooter from "../components/footers/common/MasterFooter";
 import VideoSection from "../components/layouts/Beauty/components/Video-Section";
-import ThemeSettings from "../components/customizer/theme-settings";
 import MainBanner from "../components/layouts/Beauty/components/MainBanner";
 import AboutSection from "../components/layouts/Beauty/components/About-Section";
 import { useTranslation } from "react-i18next";
@@ -108,7 +107,6 @@ const Fashion = ({ page, homeData, video }) => {
         newLatter={true}
         logoName={"layout3/logo.png"}
       />
-      <ThemeSettings />
     </Fragment>
   );
 };

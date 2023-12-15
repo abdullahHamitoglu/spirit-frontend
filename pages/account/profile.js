@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import useUserStore from '@/helpers/user/userStore';
 import ProfilePage from '@/components/account/profile-page';
 import ProfileLoader from '@/components/account/profileLoader';
+import { useTranslation } from 'react-i18next';
 
 const Profile = () => {
     const { user, isAuthenticated } = useUserStore(); // Use the useUser hook to access user data and functions
@@ -13,8 +14,9 @@ const Profile = () => {
     if (!isAuthenticated) {
         router.push('/');
     }
+    const { t } = useTranslation();
     return (
-        <CommonLayout parent="home" title="profile">
+        <CommonLayout parent={t("home")} title={t("profile")}>
             {
                 isAuthenticated && user ?
                     <ProfilePage userDetails={user} /> :
@@ -24,7 +26,7 @@ const Profile = () => {
     )
 }
 
-export async function getServerSideProps(context) { 
+export async function getServerSideProps(context) {
     // extract the locale identifier from the URL
     const { locale } = context
 

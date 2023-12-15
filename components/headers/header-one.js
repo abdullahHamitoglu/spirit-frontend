@@ -68,14 +68,15 @@ const HeaderOne = ({
     document.getElementById("search-overlay").style.display = "block";
   };
   const [categories, setCategories] = useState([]);
+  const { locale } = useRouter()
   const fetchCates = async () => {
-      const response = await getCategoriesTree(router.locale);
-      setCategories(response);
-    };
-  
-    useEffect(() => {
-      fetchCates();
-    }, [])
+    const response = await getCategoriesTree(router.locale);
+    setCategories(response);
+  };
+
+  useEffect(() => {
+    fetchCates();
+  }, [locale])
   // eslint-disable-next-line
   const load = () => {
     setIsLoading(true);

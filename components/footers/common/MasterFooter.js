@@ -55,22 +55,16 @@ const MasterFooter = ({
     window.addEventListener("resize", changeCollapse);
 
     return () => {
-      getFields();
-      getPages();
+
       window.removeEventListener("resize", changeCollapse);
     };
 
   }, []);
   const router = useRouter();
-  const [categories, setCategories] = useState([]);
-  const fetchCates = async () => {
-    const response = await getCategoriesTree(router.locale);
-    setCategories(response);
-  };
-
   useEffect(() => {
-    fetchCates();
-  }, [])
+    getFields();
+    getPages();
+  }, [locale]);
   return (
     <div>
       <footer className={footerClass}>

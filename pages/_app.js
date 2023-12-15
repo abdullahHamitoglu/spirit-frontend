@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import ThemeSettings from "../components/customizer/theme-settings";
 import "../public/assets/scss/app.scss";
 import { ToastContainer } from "react-toastify";
 import TapTop from "../components/common/widgets/Tap-Top";
@@ -14,6 +13,7 @@ import { setCookie } from "nookies";
 import { getServerSideProps } from "./account/dashboard";
 import { getProducts } from "@/controllers/productsController";
 import PageLoader from "@/components/layouts/Bags/common/PageLoader";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 function MyApp({ Component, pageProps }) {
   const [isLoading, setIsLoading] = useState(true);
@@ -86,13 +86,11 @@ function MyApp({ Component, pageProps }) {
             />
             <title>{t('spirit')}</title>
           </Head>
-          <SettingProvider>
-            <CompareContextProvider>
-              <FilterProvider>
-                <Component {...pageProps} />
-              </FilterProvider>
-            </CompareContextProvider>
-          </SettingProvider>
+          <CompareContextProvider>
+            <FilterProvider>
+              <Component {...pageProps} />
+            </FilterProvider>
+          </CompareContextProvider>
           <ToastContainer />
           <TapTop />
         </>
@@ -100,5 +98,15 @@ function MyApp({ Component, pageProps }) {
     </>
   );
 }
+export async function getStaticProps(context) {
+  // extract the locale identifier from the URL
+  const { locale } = context
 
+  return {
+    props: {
+      // pass the translation props to the page component
+      ...(await serverSideTranslations(locale)),
+    },
+  }
+}
 export default appWithTranslation(MyApp);

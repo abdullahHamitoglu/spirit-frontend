@@ -27,8 +27,8 @@ const TapTop = () => {
       style={goingUp ? { display: "block" } : { display: "none" }}
       onClick={tapToTop}
     >
-      <div>
-        <i className="fa fa-angle-double-up"></i>
+      <div className="d-flex justify-content-center align-items-center">
+        <i className="fa fa-angle-double-up w-auto h-auto"></i>
       </div>
     </div>
   );
