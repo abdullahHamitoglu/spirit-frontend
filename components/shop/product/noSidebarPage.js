@@ -7,13 +7,30 @@ import DetailsWithPrice from "../common/detail-price";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Thumbs } from 'swiper/modules';
 import { useTranslation } from "react-i18next";
+import { useRouter } from "next/router";
+import currencyStore from "@/helpers/Currency/CurrencyStore";
+import { getProductBySlug } from "@/controllers/productsController";
 
 
 const NoSidebarPage = ({ reviews, product }) => {
+  const [data, setData] = useState(product);
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
-  var data = product;
 
   const { t } = useTranslation();
+
+
+  const { locale, query } = useRouter();
+  const { selectedCurrency } = currencyStore();
+
+
+  useEffect(() => {
+    const updateData = async () => {
+      const productData = await getProductBySlug(locale, query.slug, selectedCurrency.code);
+      setData(productData);
+    };
+
+    updateData();
+  }, [locale, ])
   return (
     <section>
       <div className="collection-wrapper">
@@ -28,7 +45,6 @@ const NoSidebarPage = ({ reviews, product }) => {
                 ) : (
                   <Row>
                     <Col lg="6" className="product-thumbnail">
-
                       <Swiper modules={[Thumbs]} zoom={true} thumbs={{ swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null }} >
                         {data.images.map((vari, index) => (
                           <SwiperSlide key={index} className="d-flex justify-content-center">

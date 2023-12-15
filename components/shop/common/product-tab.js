@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Container, Row, Col, TabContent, TabPane, Nav, NavItem, NavLink, Media, Button, Spinner } from "reactstrap";
+import { Container, Row, Col, TabContent, TabPane, Nav, NavItem, NavLink, Button, Spinner } from "reactstrap";
 import Review from "./review";
 import { getProductReviews } from "@/controllers/productsController";
 import { useRouter } from "next/router";
 import Trans from "@/helpers/Trans";
 import RatingForm from "@/components/common/widgets/RatingForm";
-import { Rating, Stack } from "@mui/material";
 
 const ProductTab = ({ item, reviews }) => {
   const router = useRouter();

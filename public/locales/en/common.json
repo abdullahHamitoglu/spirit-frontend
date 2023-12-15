@@ -14,7 +14,7 @@
     "category_no_sidebar": "no sidebar",
     "category_metro": "metro",
     "category_full_width": "full width",
-    "Products": "Products",
+    "products": "Products",
     "left_sidebar": "left sidebar",
     "right_sidebar": "right sidebar",
     "no_sidebar": "no sidebar",
@@ -266,6 +266,13 @@
     "subtotal": "Subtotal",
     "shipping": "Shipping",
     "free_shipping": "Free Shipping",
+    "free_shipping_desc": "For all areas of Kuwait",
+    "cash_delivery": "cash on delivery",
+    "cash_delivery_desc": "Cash or Knet card",
+    "contact_pharmacy": "Consult a pharmacist",
+    "contact_pharmacy_desc": "Call : PHONE",
+    "branches_pharmacy": "pharmacy branches",
+    "branches_pharmacy_desc": "browse our branches",
     "local_pickup": "Local Pickup",
     "total_label": "Total",
     "cod": "COD",
@@ -340,5 +347,6 @@
     "yes":"yes",
     "coupon":"coupon",
     "back_to_home":"back to home",
-    "page_not_found":"PAGE NOT FOUND"
+    "page_not_found":"PAGE NOT FOUND",
+    "copy_right" : "Copyright © 2023, Spirit Pharmacy, All Rights Reserved"
 }

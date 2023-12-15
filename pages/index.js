@@ -1,15 +1,10 @@
 import React, { Fragment, useContext, useEffect } from "react";
 import TopCollection from "../components/common/Collections/Collection3";
-import Blog from "../components/common/Blog/blog1";
-import Instagram from "../components/common/instagram/instagram1";
-import { Product5 } from "../services/script";
-import ModalComponent from "../components/common/Modal";
 import Head from 'next/head';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import MasterFooter from "../components/footers/common/MasterFooter";
 import VideoSection from "../components/layouts/Beauty/components/Video-Section";
 import MainBanner from "../components/layouts/Beauty/components/MainBanner";
-import AboutSection from "../components/layouts/Beauty/components/About-Section";
 import { useTranslation } from "react-i18next";
 import { getHomePageData, getPageData } from "../controllers/homeController";
 import { parseCookies } from "nookies";
@@ -18,11 +13,8 @@ import axios from "axios";
 import PageLoader from "@/components/layouts/Bags/common/PageLoader";
 import BrandSlider from "@/components/layouts/Beauty/components/brandSlider";
 import CategoriesSlider from "@/components/layouts/Beauty/components/categoriesSlider";
-import Collection from "@/components/layouts/Electronic/Electronic-2/component/collection";
-import CollectionsSlider from "@/components/layouts/Beauty/components/collectionsSlider";
 import Link from "next/link";
-import { useRouter } from "next/router";
-import currencyStore from "@/helpers/Currency/CurrencyStore";
+import Service from "@/components/common/Service/service4";
 
 
 const Fashion = ({ page, homeData, video }) => {
@@ -48,7 +40,7 @@ const Fashion = ({ page, homeData, video }) => {
       </Head>
       {/* <ModalComponent /> */}
       <MainBanner sliders={homeData.sliders} />
-
+      <Service />
       {homeData && homeData.collections &&
         <div className="section-b-space mt-5">
           {homeData.collections.map((collection, key) => {

@@ -40,19 +40,6 @@ const ProfilePage = ({ userDetails }) => {
         password_confirmation: Yup.string().oneOf([Yup.ref('password'), null], t('passwords_must_match')),
     });
 
-    const addressValidationSchema = Yup.object().shape({
-        company_name: Yup.string(),
-        first_name: Yup.string(),
-        last_name: Yup.string(),
-        email: Yup.string().email(t('invalid_email')),
-        address1: Yup.array(),
-        state: Yup.string(),
-        city: Yup.string(),
-        postcode: Yup.string(),
-        phone: Yup.string(),
-        vat_id: Yup.string()
-    });
-
 
     const today = new Date();
     const maxDate = new Date(today);

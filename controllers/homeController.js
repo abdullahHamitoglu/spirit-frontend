@@ -77,4 +77,21 @@ export async function coreConfigFrontFields(locale) {
         throw error;
     }
 }
+export async function coreConfigFrontField(locale, code) {
+    try {
+        const response = await axios({
+            method: "post",
+            url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/core-config-by-code`,
+            params: {
+                locale: locale.slice(0, 2)
+            },
+            data: {
+                code: code
+            }
+        })
+        return response.data.data;
+    } catch (error) {
+        throw error;
+    }
+}
 

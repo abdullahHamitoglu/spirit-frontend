@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Container, Row, Col } from "reactstrap";
 import {
   svgFastEfficient,
@@ -7,31 +7,49 @@ import {
   svgservice,
 } from "../../../services/script";
 import MasterServiceContent from "./MasterServiceConternt";
+import { useTranslation } from "react-i18next";
+import { coreConfigFrontField } from "@/controllers/homeController";
+import { useRouter } from "next/router";
 
-const Data = [
-  {
-    link: svgFreeShipping,
-    title: "free shipping",
-    service: "on orders over $50",
-  },
-  {
-    link: svgpayment,
-    title: "online payment",
-    service: "instantly pay online",
-  },
-  {
-    link: svgservice,
-    title: "24 X 7 service",
-    service: "Our service is available 24/7",
-  },
-  {
-    link: svgFastEfficient,
-    title: "fast & efficient",
-    service: "fast and qualitative product",
-  },
-];
 
 const Service = () => {
+  const { t } = useTranslation();
+  const [phone, setPhone] = useState([]);
+  const { locale } = useRouter()
+  useEffect(() => {
+    const getPhone = async (params) => {
+      const response = await coreConfigFrontField(locale, "config.show.frontend.phone");
+
+      setPhone(response);
+    }
+    getPhone()
+  }, [phone,])
+  const Data = [
+    {
+      link: svgFreeShipping,
+      title: t("free_shipping"),
+      service: t('free_shipping_desc'),
+      href: '/page/terms-of-usage-return/'
+    },
+    {
+      link: svgpayment,
+      title: t("cash_delivery"),
+      service: t("cash_delivery_desc"),
+      href: '/page/about-us'
+    },
+    {
+      link: svgservice,
+      title: t("contact_pharmacy"),
+      service:  phone.value && t("contact_pharmacy_desc").replace('PHONE', phone.value ),
+      href: `tel:${phone.value}`
+    },
+    {
+      link: svgFastEfficient,
+      title: t("branches_pharmacy"),
+      service: t("branches_pharmacy_desc"),
+      href: '/branches'
+    },
+  ];
   return (
     <Container>
       <section className="service small-section pb-0">
@@ -48,6 +66,7 @@ const Service = () => {
                   title={data.title}
                   link={data.link}
                   service={data.service}
+                  href={data.href}
                   marijuana={true}
                 />
               </Col>

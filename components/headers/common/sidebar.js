@@ -1,13 +1,12 @@
 import React, { Fragment, useEffect } from "react";
 import { Row, Col, Media } from "reactstrap";
-import Image from "next/image";
 import { useRouter } from "next/router";
 import MenuLoader from "@/components/layouts/Bags/common/MenuLoader";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import Trans from "@/helpers/Trans";
 
-const SideBar = ({ categories  }) => {
+const SideBar = ({ categories }) => {
   const closeNav = async () => {
     var closemyslide = document.getElementById("mySidenav");
     var body = document.body;
@@ -398,8 +397,8 @@ const SideBar = ({ categories  }) => {
                               </div>
                             </Col>
                             <Col xl="6">
-                              <a href="#" className="mega-menu-banner">
-                                <img width={500} height={600} src={category.image_url} alt="" className="img-fluid" />
+                              <a href={`/categories/${category.slug}`} className="mega-menu-banner">
+                                <img width={500} height={600} src={category.image_url} alt={category.name} className="img-fluid" />
                               </a>
                             </Col>
                           </Row>

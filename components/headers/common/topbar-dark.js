@@ -16,15 +16,11 @@ const TopBarDark = ({ topClass, fluid }) => {
     <div className={topClass}>
       <Container fluid={fluid}>
         <Row>
-          <Col lg="6">
-          </Col>
-          <Col lg="6" className="text-end">
+          <Col lg="12" className="text-end">
             <ul className="header-dropdown">
               <li className="mobile-wishlist">
                 <Link href="/account/wishlist">
-                  {/* <a> */}
                   <i className="fa fa-heart" aria-hidden="true"></i> {t("wishlist")}
-                  {/* </a> */}
                 </Link>
               </li>
               <li className="onhover-dropdown mobile-account">
@@ -33,15 +29,15 @@ const TopBarDark = ({ topClass, fluid }) => {
                   {isAuthenticated ?
                     <>
                       <li>
+                        <Link href={'/account/dashboard'}>{t('dashboard')}</Link>
+                      </li>
+                      <li>
                         <Link href={`/account/profile`}>
                           {t('profile')}
                         </Link>
                       </li>
                       <li onClick={() => Logout()}>
                         <a>{t('logout')}</a>
-                      </li>
-                      <li>
-                        <Link href={'/account/dashboard'}>{t('dashboard')}</Link>
                       </li>
                     </>
                     :

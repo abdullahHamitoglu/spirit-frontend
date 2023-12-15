@@ -11,7 +11,7 @@ import nookies, { parseCookies } from "nookies";
 
 const Dashboard = ({ page }) => {
   const [accountInfo, setAccountInfo] = useState(false);
-  const { getAddresses ,user, logout, isAuthenticated, deleteAddress, addresses } =
+  const { getAddresses, user, logout, isAuthenticated, deleteAddress, addresses } =
     useUserStore();
   const { t } = useTranslation();
   const { locale } = useRouter();
@@ -64,25 +64,24 @@ const Dashboard = ({ page }) => {
                 <div className="block-content">
                   <ul>
                     <li className="active">
-                      <a href="/account/profile">{t("account_info")}</a>
-                    </li>
-                    {/* <li><a href="#">{t('address_book')}</a></li> */}
-                    <li>
-                      <a href="/account/orders">{t("my_orders")}</a>
+                      <Link href="/account/profile">{t("account_info")}</Link>
                     </li>
                     <li>
-                      <a href="/account/wishlist">{t("my_wishlist")}</a>
+                      <Link href="/addresses">{t('address_book')}</Link>
                     </li>
                     <li>
-                      <a href="/account/newsletter">{t("newsletter")}</a>
+                      <Link href="/account/orders">{t("my_orders")}</Link>
                     </li>
                     <li>
-                      <a href="/account/profile">{t("my_account")}</a>
+                      <Link href="/account/wishlist">{t("my_wishlist")}</Link>
                     </li>
                     <li>
-                      <a href="/account/profile#change_password">
+                      <Link href="/account/profile">{t("my_account")}</Link>
+                    </li>
+                    <li>
+                      <Link href="/account/profile#change_password">
                         {t("change_password")}
-                      </a>
+                      </Link>
                     </li>
                     <li className="last">
                       <a onClick={() => logout()}>{t("log_out")}</a>
@@ -106,78 +105,30 @@ const Dashboard = ({ page }) => {
                       <h2>{t("account_information")}</h2>
                     </div>
                     <Row>
-                      <Col sm="6">
+                      <Col sm="12">
                         <div className="box">
                           <div className="box-title">
                             <h3>{t("contact_information")}</h3>
-                            <a href="#">{t("edit")}</a>
+                            <Link href="/account/profile">{t("edit")}</Link>
                           </div>
-                          <div className="box-content">
-                            <h6>{user.name} </h6>
-                            <h6>{user.email}</h6>
-                            <h6>
-                              <Link href="/account/profile">
-                                {t("change_password_link")}
-                              </Link>
-                            </h6>
-                          </div>
-                        </div>
-                      </Col>
-                      <Col sm="6">
-                        <div className="box">
-                          <div className="box-title">
-                            <h3>{t("newsletters")}</h3>
-                            <a href="#">{t("edit")}</a>
-                          </div>
-                          <div className="box-content">
-                            <p>{t("not_subscribed_to_newsletter")}</p>
-                          </div>
+                          <Row>
+                            <Col md='6' className="box-content">
+                              <h6>{user.name} </h6>
+                              <h6>{user.email}</h6>
+                              <h6>
+                                <Link href="/account/profile">
+                                  {t("change_password_link")}
+                                </Link>
+                              </h6>
+                            </Col>
+                            <Col md='6' className="box-content">
+                              <h6>{user.phone_code} {user.phone} </h6>
+                              <h6>{user.date_of_birth} - {user.gender}</h6>
+                            </Col>
+                          </Row>
                         </div>
                       </Col>
                     </Row>
-                    <div>
-                      <div className="box">
-                        <div className="box-title">
-                          <h3>{t("address_book")}</h3>
-                          <Link href="/addresses">{t("manage_addresses")}</Link>
-                        </div>
-                        <Row>
-                          {addresses
-                            ? addresses.map((address) => (
-                                <Col sm="6">
-                                  <h6> {address.company_name}</h6>
-                                  <address>
-                                    <h6 className="text-black">
-                                      {t("address_label")}:{" "}
-                                      {address.company_name}
-                                    </h6>
-                                    {t("name")}: {address.first_name}{" "}
-                                    {address.last_name} <br />
-                                    {t("phone")}: {address.phone} <br />
-                                    {t("email")}: {address.email} <br />
-                                    {t("address")}: {address.country} /{" "}
-                                    {address.city} / {address.state}{" "}
-                                    {address.postcode} <br />
-                                    {t("address1")}: {address.address1[0]}{" "}
-                                    <br />
-                                    <Link href={`/addresses/${address.id}`}>
-                                      {t("edit")}
-                                    </Link>
-                                    <a
-                                      className="text-danger ms-2 btn"
-                                      onClick={() => {
-                                        handleDeleteAddress(address.id);
-                                      }}
-                                    >
-                                      {t("delete")}
-                                    </a>
-                                  </address>
-                                </Col>
-                              ))
-                            : ""}
-                        </Row>
-                      </div>
-                    </div>
                   </div>
                 </div>
               </div>
