@@ -98,7 +98,7 @@ const TopCollection = ({ type, title, subtitle, designClass, noSlider, cartClass
                                   product_id: product.id,
                                   quantity: 1,
                                 })
-                              getCart()
+                              getCart(locale)
                             }
                             }
                           />

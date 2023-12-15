@@ -8,14 +8,19 @@ import useCartStore from '@/helpers/cart/cartStore';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/router';
 import CheckoutLoader from '@/components/layouts/Bags/common/checkoutLoader';
+import currencyStore from '@/helpers/Currency/CurrencyStore';
 
 const Checkout = () => {
     const [currentUser, setCurrentUser] = useState(localStorage.getItem('user'));
     const { t } = useTranslation();
+    const { locale } = useRouter();
     const router = useRouter();
+    const { selectedCurrency } = currencyStore();
+    
     useEffect(() => {
         setCurrentUser(localStorage.getItem('user'))
     }, [localStorage.getItem('user')]);
+    
     const {
         cartData,
         getCart
@@ -25,16 +30,16 @@ const Checkout = () => {
             toast.warn(t('your_cart_is_empty'));
             router.push('/products');
         }
-        getCart();
+        getCart(locale, selectedCurrency.code);
     }, []);
     useEffect(() => {
         if (router.query && router.query.status) {
             toast.error(t(router.query.status));
         }
     }, [router.query])
-    
+
     if (router.query && router.query.status) {
-        if (typeof window !== "undefined") { window.history.replaceState(null, '', router.pathname ) }
+        if (typeof window !== "undefined") { window.history.replaceState(null, '', router.pathname) }
     }
     if (!cartData) {
         router.push('/products');

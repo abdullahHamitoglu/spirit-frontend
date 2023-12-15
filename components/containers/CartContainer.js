@@ -4,13 +4,15 @@ import CartHeader from "../headers/common/cart-header";
 import { Media } from "reactstrap";
 import currencyStore from "../../helpers/Currency/CurrencyStore";
 import useCartStore from "../../helpers/cart/cartStore";
+import { useRouter } from "next/router";
 
 const CartContainer = ({ icon }) => {
-  const { selectedCurrency }  = currencyStore();
-  const {getCart,cartData , cartLoading } = useCartStore();
-  useEffect(()=>{
-    getCart()
-  },[]);
+  const { selectedCurrency } = currencyStore();
+  const { getCart, cartData, cartLoading } = useCartStore();
+  const { locale } = useRouter();
+  useEffect(() => {
+    getCart(locale, selectedCurrency.code);
+  }, []);
   return (
     <Fragment>
       <li className="onhover-div mobile-cart">

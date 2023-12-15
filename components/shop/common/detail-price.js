@@ -42,18 +42,18 @@ const DetailsWithPrice = ({ item, stickyClass }) => {
       setQuantity(quantity - 1);
     }
   };
-  const {locale} = useRouter()
+  const { locale } = useRouter()
   const handleAddToCart = () => {
     if (product.variants) {
       if (document.querySelector("input[name=variant]:checked")) {
-        addToCart(locale,{
+        addToCart(locale, {
           quantity,
           product_id: product.id,
           selected_configurable_option: parseInt(
             document.querySelector("input[name=variant]:checked").value,
           ),
         });
-        getCart();
+        getCart(locale, selectedCurrency.code);
         document.querySelectorAll(".variants .variant").forEach((e) => {
           e.classList.remove("invalid");
         });
@@ -64,11 +64,11 @@ const DetailsWithPrice = ({ item, stickyClass }) => {
         });
       }
     } else {
-      addToCart(locale,{
+      addToCart(locale, {
         quantity,
         product_id: product.id,
       });
-      getCart();
+      getCart(locale, selectedCurrency.code);
     }
   };
 

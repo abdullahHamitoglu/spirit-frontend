@@ -13,26 +13,19 @@ const CartPage = () => {
   const { t } = useTranslation();
   const handleQtyUpdate = (id, quantity) => {
     if (quantity >= 1) {
-      updateQty(id, quantity);
+      updateQty(id, quantity, locale);
     }
   };
 
   const [loadQ, setLoadQ] = useState(false)
 
   const [removing, setRemoving] = useState(false)
-  // Define the changeQty function
-  const changeQty = async (event) => {
-    setLoadQ(true)
-    const newQuantity = parseInt(event.target.value, 10) || 1;
-    await updateQty(newQuantity);
-    setLoadQ(false)
-  };
 
 
   // Define the plusQty function
   const plusQty = async (id, q) => {
     setLoadQ(true);
-    await updateQty(id, q + 1);
+    await updateQty(id, q + 1, locale);
     setLoadQ(false);
   };
 
@@ -40,7 +33,7 @@ const CartPage = () => {
   const minusQty = async (id, q) => {
     if (q > 1) {
       setLoadQ(true)
-      await updateQty(id, q - 1);
+      await updateQty(id, q - 1, locale);
       setLoadQ(false)
     }
   };
@@ -51,7 +44,7 @@ const CartPage = () => {
     document.getElementById(`cart-item-${id}`).remove();
   }
   useEffect(() => {
-    getCart()
+    getCart(locale)
   }, []);
   const [validateCode, setValidateCode] = useState(false)
   const formik = useFormik({
