@@ -338,5 +338,7 @@
     "cancel_order":"cancel order",
     "do_you_want_to_cancel_the_order":"Do you want to cancel the order?",
     "yes":"yes",
-    "coupon":"coupon"
+    "coupon":"coupon",
+    "back_to_home":"back to home",
+    "page_not_found":"PAGE NOT FOUND"
 }

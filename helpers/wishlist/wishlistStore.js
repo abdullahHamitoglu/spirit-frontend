@@ -9,7 +9,7 @@ import Router from 'next/router'
 const useWishListStore = create(
     persist(
         (set, get) => ({
-            wishListItems: [],
+            updatedWishListItems: [],
             wishListLoading: false,
 
             wishList: async (method, id, moveToCart) => {
@@ -19,7 +19,27 @@ const useWishListStore = create(
                     method: method,
                     url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/customer/wishlist${id != undefined ? '/' + id : ''}${moveToCart ? '/move-to-cart' : ''}`,
 
-                            withCredentials: true,
+                    withCredentials: true,
+                    headers: {
+                        'Authorization': `Bearer ${useUserStore.getState().token}`
+                    },
+                }).then((res) => {
+                    set({ updatedWishListItems: res.data.data, wishListLoading: false });
+                    if (method == 'post') {
+                        toast.success(res.data.message);
+                    }
+                }).catch((error) => {
+                    set({ wishListLoading: false });
+                    console.error(error);
+                });
+            },
+            addOrRemoveFromWishlist: () => {
+                axios({
+                    validateStatus: false,
+                    method: method,
+                    url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/customer/wishlist${id != undefined ? '/' + id : ''}${moveToCart ? '/move-to-cart' : ''}`,
+
+                    withCredentials: true,
                     headers: {
                         'Authorization': `Bearer ${useUserStore.getState().token}`
                     },
@@ -32,7 +52,7 @@ const useWishListStore = create(
                     set({ wishListLoading: false });
                     console.error(error);
                 });
-            },
+            }
         }),
         {
             name: 'wishList-storage', // name of the item in the storage (must be unique)

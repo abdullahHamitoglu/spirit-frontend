@@ -45,9 +45,10 @@ const CartPage = () => {
     }
   };
   const handleRemove = async (id) => {
-    setRemoving(true)
-    await removeFromCart(locale, id)
-    setRemoving(false)
+    setRemoving(true);
+    await removeFromCart(locale, id);
+    setRemoving(false);
+    document.getElementById(`cart-item-${id}`).remove();
   }
   useEffect(() => {
     getCart()
@@ -85,7 +86,7 @@ const CartPage = () => {
                     </thead>
                     {cartData.items.map((item, index) => {
                       return (
-                        <tbody key={index}>
+                        <tbody key={index} id={`cart-item-${item.id}`}>
                           <tr>
                             <td>
                               <Link href={`/products/` + item.product.url_key}>
@@ -128,13 +129,13 @@ const CartPage = () => {
                                 </div>
                                 <div className="col-xs-3">
                                   <h2 className="td-color">
-                                    <a href="#" className="icon">
+                                    <Button color="danger" className="icon">
                                       {removing ? <Spinner size='sm' /> :
                                         <i
                                           className="fa fa-times"
                                           onClick={() => handleRemove(item.id)}
                                         ></i>}
-                                    </a>
+                                    </Button>
                                   </h2>
                                 </div>
                               </div>
@@ -186,10 +187,14 @@ const CartPage = () => {
                               {item.product.quantity >= item.product.stock ? t('out_of_stock') : ""}
                             </td>
                             <td>
-                              <i
-                                className="fa fa-times"
-                                onClick={() => removeFromCart(item.id)}
-                              ></i>
+                              {removing ? <Spinner size='sm' /> :
+                                <Button color="danger" className="icon me-3 p-2 rounded d-inline-flex justify-content-center align-items-center m-auto">
+                                  <i
+                                    className="fa fa-times"
+                                    onClick={() => handleRemove(item.id)}
+                                  ></i>
+                                </Button>
+                              }
                             </td>
                             <td>
                               <h2 className="td-color">

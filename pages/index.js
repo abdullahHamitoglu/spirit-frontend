@@ -22,6 +22,8 @@ import CategoriesSlider from "@/components/layouts/Beauty/components/categoriesS
 import Collection from "@/components/layouts/Electronic/Electronic-2/component/collection";
 import CollectionsSlider from "@/components/layouts/Beauty/components/collectionsSlider";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import currencyStore from "@/helpers/Currency/CurrencyStore";
 
 
 const Fashion = ({ page, homeData, video }) => {
@@ -114,11 +116,11 @@ const Fashion = ({ page, homeData, video }) => {
 export async function getServerSideProps(context) {
   // extract the locale identifier from the URL
   const { locale } = context;
-  const { token } = parseCookies(context);
+  const { token, currencyCode } = parseCookies(context);
 
-  const homeData = await getHomePageData(locale);
+  const homeData = await getHomePageData(locale, token, currencyCode);
 
-  const page = await getPageData(locale, 'home', token);
+  const page = await getPageData(locale, 'home', token, currencyCode);
 
   let video = []
   try {

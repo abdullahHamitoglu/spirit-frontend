@@ -4,10 +4,14 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import WishlistPage from '@/components/common/wishlist-page';
 import useUserStore from '@/helpers/user/userStore';
 import { useRouter } from 'next/router';
+import { getWishlist } from '@/controllers/productsController';
+import { parseCookies } from 'nookies';
+import { useTranslation } from 'react-i18next';
 
 
-const Wishliat = () => {
+const Wishlist = ({ wishListItems }) => {
     const { isAuthenticated, user } = useUserStore();
+    const { locale } = useRouter();
     const router = useRouter();
     if (!isAuthenticated && !user) {
         router.push({
@@ -18,24 +22,26 @@ const Wishliat = () => {
             },
         });
     }
+    const { t } = useTranslation();
     return (
-        <CommonLayout parent="home" title="wishlist">
-            <WishlistPage />
+        <CommonLayout parent={t("home")} title={t("wishlist")}>
+            <WishlistPage wishListItems={wishListItems} />
         </CommonLayout>
     )
 }
 
 
-export async function getStaticProps(context) {
+export async function getServerSideProps(context) {
     // extract the locale identifier from the URL
-    const { locale } = context
-
+    const { locale } = context;
+    const { token } = parseCookies(context);
+    const wishListItems = await getWishlist(locale, token);
     return {
         props: {
-            // pass the translation props to the page component
+            wishListItems,
             ...(await serverSideTranslations(locale)),
         },
     }
 }
 
-export default Wishliat;
+export default Wishlist;

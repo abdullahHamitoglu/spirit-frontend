@@ -17,7 +17,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import useUserStore from "@/helpers/user/userStore";
 import currencyStore from "@/helpers/Currency/CurrencyStore";
-const Products = ({ products, page, attributes, categories }) => {
+const Products = ({ products, page, attributes, categories, getProducts }) => {
     if (!products) {
         return (
             <div className="loader-wrapper">
@@ -45,12 +45,12 @@ const Products = ({ products, page, attributes, categories }) => {
             setSidebarView(!sidebarView);
         }
     };
-    const handelCategory = async (id) => {
-        const response = await getProducts(locale, { ...router.query, category_id: id }, token);
-        if (response.length > 0) {
-            setProductsData((prevData) => [...prevData, ...response]);
-        }
-    }
+    // const handelCategory = async (id) => {
+    //     const response = await getProductsByCategorySlug(locale, { ...router.query, category_id: id }, token);
+    //     if (response.length > 0) {
+    //         setProductsData((prevData) => [...prevData, ...response]);
+    //     }
+    // }
     const origin =
         typeof window !== 'undefined' && window.location.origin
             ? window.location.origin
@@ -105,8 +105,8 @@ const Products = ({ products, page, attributes, categories }) => {
                                     loop={true}
                                 >
                                     {categories.map((category) => (
-                                        <SwiperSlide onClick={() => handelCategory(category.id)}>
-                                            <MasterCategory title={category.name} img={category.image_url} />
+                                        <SwiperSlide >
+                                            <MasterCategory title={category.name} link={`/categories/${category.slug}`} img={category.image_url} />
                                         </SwiperSlide>
                                     ))}
                                 </Swiper>

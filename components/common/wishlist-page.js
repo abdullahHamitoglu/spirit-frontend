@@ -1,29 +1,41 @@
-import React, { useContext, useEffect } from "react";
-import { Container, Row, Col, Table } from "reactstrap";
+import React, { useContext, useEffect, useState } from "react";
+import { Container, Row, Col, Table, Button, Spinner, Media } from "reactstrap";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 import useWishListStore from "../../helpers/wishlist/wishlistStore";
 
-const WishlistPage = () => {
+const WishlistPage = ({ wishListItems }) => {
   const router = useRouter();
-  const { wishList, wishListItems } = useWishListStore();
+  const { wishList, updatedWishListItems } = useWishListStore();
   const { t } = useTranslation();
-  if (wishListItems.length < 0) {
+  const [loading, setLoading] = useState(false)
+  const [wishListItemsData, setWishListItemsData] = useState(wishListItems)
+  if (wishListItemsData.length < 0) {
     router.push('/');
     toast.warn(t('wishlist_is_empty'))
   }
   const checkOut = () => {
     router.push("/account/checkout");
   };
-  useEffect(() => {
-    wishList('get');
-  }, []);
+
+  const handleRemove = async (id) => {
+    setLoading(true);
+    await wishList('POST', id);
+    setLoading(false);
+    document.getElementById(id).remove();
+  }
+  const handleMove = async (id) => {
+    setLoading(true);
+    await wishList('POST', id, true);
+    setLoading(false);
+    document.getElementById(id).remove();
+  }
 
   return (
     <>
-      {wishListItems.length >= 0 ? (
+      {wishListItemsData.length > 0 ? (
         <section className="wishlist-section section-b-space">
           <Container>
             <Row>
@@ -38,8 +50,8 @@ const WishlistPage = () => {
                       <th scope="col">{t('action')}</th>
                     </tr>
                   </thead>
-                  {wishListItems.map((item, i) => (
-                    <tbody key={i}>
+                  {wishListItemsData.map((item, i) => (
+                    <tbody key={i} id={item.product.id}>
                       <tr>
                         <td>
                           <a href="#">
@@ -74,20 +86,23 @@ const WishlistPage = () => {
                           <p>{item.product.in_stock > 0 ? t('in_stock') : t('out_of_stock')}</p>
                         </td>
                         <td>
-                          <a
-                            href={null}
-                            className="icon me-3"
-                            onClick={() => wishList('POST', item.product.id)}
+                          <Button
+                            color={loading ? "secondary" : "danger"}
+                            disabled={loading}
+                            className="icon me-3 p-2 rounded d-inline-flex justify-content-center align-items-center"
+                            onClick={() => handleRemove(item.product.id)}
                           >
-                            <i className="fa fa-times"></i>
-                          </a>
-                          <a
-                            href={null}
-                            className="cart"
-                            onClick={() => wishList('POST', item.product.id, true)}
+                            {loading ? <Spinner size='sm' className="m-0" /> :
+                              <i className="fa fa-times"></i>
+                            }
+                          </Button>
+                          <Button
+                            color="success"
+                            className="icon me-3 p-2 rounded d-inline-flex justify-content-center align-items-center"
+                            onClick={() => handleMove(item.product.id)}
                           >
                             <i className="fa fa-shopping-cart"></i>
-                          </a>
+                          </Button>
                         </td>
                       </tr>
                     </tbody>
@@ -108,7 +123,27 @@ const WishlistPage = () => {
           </Container>
         </section>
       ) : (
-        ""
+        <section className="cart-section section-b-space">
+          <Container>
+            <Row>
+              <Col sm="12">
+                <div>
+                  <div className="col-sm-12 empty-cart-cls text-center">
+                    <Media
+                      src="/assets/images/icon-empty-cart.png"
+                      className="img-fluid mb-4 m-auto"
+                      alt={t('wishlist_is_empty')}
+                    />
+                    <h3>
+                      <strong>{t('wishlist_is_empty')}</strong>
+                    </h3>
+                    <h4>{t('explore_more_shortlist_items')}</h4>
+                  </div>
+                </div>
+              </Col>
+            </Row>
+          </Container>
+        </section>
       )}
     </>
   );

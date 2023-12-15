@@ -6,7 +6,7 @@ import { parseCookies } from "nookies";
 const { token, currencyCode } = parseCookies();
 
 
-const currency = currencyCode ;
+const currency = currencyCode;
 
 export async function getPagesData(locale) {
     try {
@@ -24,12 +24,13 @@ export async function getPagesData(locale) {
     }
 
 }
-export async function getPageData(locale, page, token) {
+export async function getPageData(locale, page, token, currencyCode) {
     try {
         const response = await axios({
             url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/pages-slug/${page}`,
             params: {
-                locale: locale.slice(0, 2)
+                locale: locale.slice(0, 2),
+                currency: currencyCode
             },
             withCredentials: true,
             headers: {
@@ -44,9 +45,19 @@ export async function getPageData(locale, page, token) {
 
 }
 
-export async function getHomePageData(locale) {
+export async function getHomePageData(locale, token, currencyCode) {
     try {
-        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}api/v1/home-page?locale=${locale.slice(0, 2)}&currency=${currency}`)
+        const response = await axios({
+            url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/home-page`,
+            params: {
+                locale: locale.slice(0, 2),
+                currency: currencyCode
+            },
+            withCredentials: true,
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        })
         return response.data.data;
     } catch (error) {
         throw error;

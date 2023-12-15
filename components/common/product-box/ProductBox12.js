@@ -20,6 +20,7 @@ const ProductItem = ({
 
   const { count, increment, decrement } = useCartStore();
   const [modal, setModal] = useState(false);
+  const [isInWishlist, setIsInWishlist] = useState(product.is_in_wishlist);
   const [modalCompare, setModalCompare] = useState(false);
   const toggle = () => setModal(!modal);
   const toggleCompare = () => setModalCompare(!modalCompare);
@@ -110,8 +111,13 @@ const ProductItem = ({
       </div>
       <div className="product-info">
         <div className="cart-info cart-wrap px-2">
-          <a className="btn p-0" href={null} title={Trans('add_to_wishlist')} onClick={addWishlist}>
-            <i className="fa fa-heart" aria-hidden="true"></i>
+          <a className="btn p-0" href={null} title={Trans('add_to_wishlist')}
+            onClick={(e) => {
+              setIsInWishlist(!isInWishlist);
+              addWishlist();
+            }}
+          >
+            <i className={`fa fa-heart${!isInWishlist ? '-o' : ''}`} aria-hidden="true"></i>
           </a>
           <a className="d-flex align-items-center text-nowrap w-100 justify-content-center text-black ms-2 btn"
             onClick={handelAddCart}> {Trans("add_to_cart")}
