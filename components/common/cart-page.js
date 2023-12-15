@@ -49,7 +49,7 @@ const CartPage = () => {
   const [validateCode, setValidateCode] = useState(false)
   const formik = useFormik({
     initialValues: {
-      code: cartData.coupon,
+      code: cartData && cartData.coupon,
     },
     onSubmit: async (values) => {
       setValidateCode(true)
