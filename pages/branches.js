@@ -26,7 +26,7 @@ function Branches({ branches }) {
                     <Container>
                         <Row>
                             {branches.map((branch) => (
-                                <Col sm="6">
+                                <Col sm="6" className=" mb-4">
                                     <Card className="h-100">
                                         <CardHeader>
                                             {branch.title}
