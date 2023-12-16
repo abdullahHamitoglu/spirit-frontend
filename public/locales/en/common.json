@@ -348,5 +348,6 @@
     "coupon":"coupon",
     "back_to_home":"back to home",
     "page_not_found":"PAGE NOT FOUND",
-    "copy_right" : "Copyright © 2023, Spirit Pharmacy, All Rights Reserved"
+    "copy_right" : "Copyright © 2023, Spirit Pharmacy, All Rights Reserved",
+    "search_a_product":"Search a Product"
 }

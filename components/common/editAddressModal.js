@@ -14,6 +14,7 @@ import { isEqual } from 'lodash';
 function EditAddressModal(args) {
     const [loading, setLoading] = React.useState(false);
     const [cities, setCities] = useState([]);
+    const [states, setStates] = useState([]);
     const { query } = useRouter();
     const router = useRouter();
     const [stateLoading, setStateLoading] = useState(false);
@@ -21,7 +22,7 @@ function EditAddressModal(args) {
     const { t } = useTranslation();
     const { locale } = useRouter();
     const { updateAddress, getAddresses } = useUserStore();
-    const { getCountries, countries, fetchStates, states } = addressStore();
+    const { getCountries, countries } = addressStore();
     useEffect(() => {
         getCountries(locale);
     }, []);
@@ -38,8 +39,12 @@ function EditAddressModal(args) {
     });
 
     const getStatesByCountry = (code) => {
-        fetchStates(locale, code);
         setCities([]);
+        countries.map((country) => {
+            if (country.code == code) {
+                setStates(country.states);
+            }
+        })
     };
 
 
@@ -50,14 +55,31 @@ function EditAddressModal(args) {
             }
         })
     };
-
+    console.log(args.address.country);
+    useEffect(() => {
+        if (countries && args.address && args.address.country) {
+            setCities([]);
+            countries.map((country) => {
+                if (country.code == args.address.country) {
+                    setStates(country.states);
+                }
+            })
+            if(args.address.state_id){
+                states.map((state) => {
+                    if (state.id == args.address.state_id) {
+                        setCities(state.cities);
+                    }
+                })
+            }
+        }
+    }, [countries])
     return (
         <div>
             <Modal {...args} centered backdrop='static' size='xl' >
                 <ModalHeader toggle={args.toggle}>
                     {t("address")}
                 </ModalHeader>
-                <ModalBody className='p-4'> 
+                <ModalBody className='p-4'>
                     {!args.address ? <ContactFormLoader className="d-flex justify-content-center w-100" /> :
                         <Formik
                             enableReinitialize
@@ -135,7 +157,7 @@ function EditAddressModal(args) {
                                             >
                                                 <option value=''>{t("select.state")}</option>
                                                 {states && states.map((state, i) => {
-                                                    if (values.state_id == state.id) {
+                                                    if (args.address.state_id == state.id) {
                                                         return <option key={i} selected value={state.code} id={state.id} data-cities={state.cities}>{state.default_name}</option>
                                                     } else {
                                                         return <option key={i} value={state.code} id={state.id} data-cities={state.cities}>{state.default_name}</option>

@@ -43,22 +43,7 @@ function Pages({ page }) {
         </>
     );
 };
-export async function getStaticPaths(context) {
-    const { locales } = context
-
-    const paths = locales.map((locale) => ({
-        params: {
-            slug: ['slug'],
-        },
-        locale,
-    }));
-
-    return {
-        paths,
-        fallback: true,
-    };
-}
-export async function getStaticProps(context) {
+export async function getServerSideProps(context) {
     try {
         const { locale, params } = context;
         const page = await getPageData(locale, params.slug);
