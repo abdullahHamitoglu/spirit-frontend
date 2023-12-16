@@ -43,11 +43,9 @@ const ProductTab = ({ item, reviews }) => {
                   </NavItem>
                 }
                 <NavItem className="nav nav-tabs" id="reviews" role="tablist">
-                  {item.reviews && item.reviews.total > 0 &&
-                    <NavLink className={activeTab === "reviews" ? "active" : ""} onClick={() => setActiveTab("reviews")}>
-                      {t('tabText.writeReview')}
-                    </NavLink>
-                  }
+                  <NavLink className={activeTab === "reviews" ? "active" : ""} onClick={() => setActiveTab("reviews")}>
+                    {t('tabText.writeReview')}
+                  </NavLink>
                 </NavItem>
               </Nav>
               <TabContent activeTab={activeTab} className="nav-material">

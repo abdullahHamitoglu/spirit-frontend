@@ -24,7 +24,7 @@ const RatingForm = ({ id }) => {
                 setSubmitting(false);
             }}>
             {({ handleChange, errors, handleSubmit }) => (
-                <Form onSubmit={handleSubmit} className=' theme-form mb-5'>
+                <Form onSubmit={handleSubmit} className=' theme-form my-5'>
                     <Row>
                         <Col md="6" sm="12" xs="12" className="form-group">
                             <Label for="title" className='form-label'>{Trans('title')} </Label>

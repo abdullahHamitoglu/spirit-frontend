@@ -95,7 +95,7 @@ const DetailsWithPrice = ({ item, stickyClass }) => {
         }
         <Link className="h6 mb-5" href={`/brands/${product.brand.replace(' ', '-').toLowerCase()}`}>{product.brand}</Link>
         <h1 className="h3"> {product.name} </h1>
-        <Link className="h6 mb-5" href={`/categories/${product.category.replace(' ', '-').toLowerCase()}`}>{product.category}</Link>
+        <Link className="h6 mb-5" href={`/categories/${product.category_slug}`}>{product.category}</Link>
         <h6>
           {Trans('model_no')} : {product.sku}
           <span className="opacity-25 fw-bold fs-5"> | </span>
