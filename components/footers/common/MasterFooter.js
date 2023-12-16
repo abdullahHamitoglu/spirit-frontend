@@ -179,7 +179,7 @@ const MasterFooter = ({
                         <ul>
                           {pages.slice(0, 6).map((page, i) => (
                             <li key={i}>
-                              <Link href={page.url_key}>
+                              <Link href={`/page/${page.url_key}`}>
                                 {page.title}
                               </Link>
                             </li>

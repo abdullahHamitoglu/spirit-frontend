@@ -51,7 +51,9 @@ const HeaderOne = ({
       if (document.getElementById("sticky")) {
         document.getElementById("sticky").classList.add("fixed");
       }
-      document.getElementById("sticky").classList.remove("fixed");
+      if (document.getElementById("sticky")) {
+        document.getElementById("sticky").classList.remove("fixed");
+      }
     }
   };
 
