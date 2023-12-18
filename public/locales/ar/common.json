@@ -329,7 +329,10 @@
     "empty_search": "استكشف المزيد قم بتحديد بعض العناصر.",
     "model_no": "رقم الموديل",
     "title": "العنوان",
-    "comment": "التعليق",
+    "comment": "تعليق",
+    "hits": "الزيارات",
+    "posted_by": "الكاتب",
+    "leave_your_comment": "اترك تعليقك",
     "rating": "التقييم",
     "discount": "الخصم",
     "payment_method": "طريقة الدفع",
@@ -352,5 +355,11 @@
     "back_to_home": "الرجوع الى الصفحة الرئيسية",
     "page_not_found": "الصفحة غير موجودة",
     "copy_right": "جميع الحقوق محفوظة © 2023 صيدلية سبيريت",
-    "search_a_product":"ابحث عن منتج"
+    "search_a_product": "ابحث عن منتج",
+    "notfound_product": "لم يتم العثور على المنتج",
+    "name_required": "الاسم مطلوب",
+    "comment_required": "التعليق مطلوب",
+    "email_required": "البريد الإلكتروني مطلوب",
+    "write_your_comment": "اكتب تعليقك",
+    "blog_page":"نصائح لجمالك"
 }

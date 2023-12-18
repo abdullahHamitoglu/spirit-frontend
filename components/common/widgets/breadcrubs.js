@@ -7,12 +7,7 @@ const Breadcrubs = ({ title, parent, subTitle  , parentLink}) => {
     <div className="breadcrumb-section">
       <Container>
         <Row>
-          <Col sm="6">
-            <div className="page-title">
-              <h2>{title}</h2>
-            </div>
-          </Col>
-          <Col sm="6">
+          <Col sm="12">
             <nav aria-label="breadcrumb" className="theme-breadcrumb">
               <ol className="breadcrumb">
                 <li className="breadcrumb-item">

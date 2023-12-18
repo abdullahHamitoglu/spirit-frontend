@@ -14,7 +14,7 @@ import { getPageData } from '@/controllers/homeController';
 import AddressForm from '@/components/account/addressPageForm';
 import EditAddressModal from '@/components/common/editAddressModal';
 
-const Addresses = ({addresses}) => {
+const Addresses = ({ addresses }) => {
     const { locale } = useRouter();
     const router = useRouter();
     const { addAddress, getAddresses, user, deleteAddress } = useUserStore()
@@ -60,7 +60,7 @@ const Addresses = ({addresses}) => {
                 <section className="section-b-space border-1">
                     <Container>
                         <Row>
-                            {addresses ?
+                            {addresses && addAddress.length > 0 ?
                                 addresses.map((address, i) => (
                                     <Col lg='3' sm="12" key={i} className='mb-4'>
                                         <address className='card h-100'>
@@ -110,16 +110,16 @@ const Addresses = ({addresses}) => {
     )
 }
 export async function getServerSideProps(context) {
-    const { locale , query } = context
+    const { locale, query } = context
     const { token } = parseCookies(context)
-    const addresses = await getAddresses(locale, token )
+    const addresses = await getAddresses(locale, token)
     return {
-      props: {
-        addresses,
-        ...(await serverSideTranslations(locale)),
-      }
+        props: {
+            addresses,
+            ...(await serverSideTranslations(locale)),
+        }
     }
-  }
-  
+}
+
 
 export default Addresses;

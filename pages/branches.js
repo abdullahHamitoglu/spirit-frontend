@@ -33,15 +33,6 @@ function Branches({ branches }) {
                                         </CardHeader>
                                         <CardBody>
                                             <h6>{branch.address}</h6>
-                                            <iframe src={branch.map_path}
-                                                width="100%"
-                                                height="250"
-                                                frameBorder="0"
-                                                style={{ border: 0 }}
-                                                allowFullScreen=""
-                                                aria-hidden="false"
-                                                tabIndex="0"
-                                            />
                                         </CardBody>
                                         <CardFooter>
                                             <a target="_blank" href={branch.map_path} className="btn-solid d-inline-block btn-sm rounded">

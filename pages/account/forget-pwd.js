@@ -12,7 +12,7 @@ const ForgetPwd = () => {
     const { forgetPwd } = useUserStore();
     const { locale } = useRouter();
     const validationSchema = Yup.object().shape({
-        email: Yup.string().email('Invalid email').required('Email is required'),
+        email: Yup.string().email('Invalid email').required(t('this_field_is_required')),
     });
     const { t } = useTranslation();
     return (

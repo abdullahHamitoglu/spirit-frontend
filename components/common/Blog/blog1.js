@@ -34,7 +34,7 @@ const BlogSection = ({ type, sectionClass, title, inner, hrClass }) => {
                 {data &&
                   data.blog.map((item, index) => (
                     <Col md="12" key={index}>
-                      <Link href={`/blogs/blog_detail`}>
+                      <Link href={`/blog/blog_detail`}>
                         <div className="classic-effect">
                           <Media src={item.img} className="img-fluid" alt="" />
                           <span></span>
@@ -42,7 +42,7 @@ const BlogSection = ({ type, sectionClass, title, inner, hrClass }) => {
                       </Link>
                       <div className="blog-details">
                         <h4>{item.title}</h4>
-                        <Link href={`/blogs/blog_detail`}>
+                        <Link href={`/blog/blog_detail`}>
                           <p>{item.desc} </p>
                         </Link>
                         <hr className="style1" />

@@ -46,12 +46,12 @@ const Currency = ({ icon }) => {
             </Link>
           </li>
         </ul>
-        <h6>{t("currency")}</h6>
+        <h6>{t("country")}</h6>
         <ul className="list-inline">
           {currencies.data && currencies.data.map((currency, i) => (
-            <li className={selectedCurrency.code.toLowerCase() == currency.code.toLowerCase() ? 'active fw-bolder' : ''} key={i} title={currency.name}>
-              <div onClick={() => handleCurrencyClick(currency.id, currency.code)} title={currency.name}>
-                {currency.code} {currency.symbol}
+            <li className={`text-start ${selectedCurrency.code.toLowerCase() == currency.code.toLowerCase() ? 'active fw-bolder' : ''}`} key={i} title={currency.name}>
+              <div  onClick={() => handleCurrencyClick(currency.id, currency.code)} title={currency.name}>
+                {currency.name} {currency.symbol}
               </div>
             </li>
           ))}

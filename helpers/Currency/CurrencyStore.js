@@ -17,7 +17,7 @@ const currencyStore = create(
             fetchCurrencies: async (locale) => {
                 await axios({
                     method: 'GET',
-                    url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/currencies`,
+                    url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/countries`,
                     params: {
                         locale: locale.slice(0, 2)
                     }

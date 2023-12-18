@@ -16,7 +16,17 @@ const TopBarDark = ({ topClass, fluid }) => {
     <div className={topClass}>
       <Container fluid={fluid}>
         <Row>
-          <Col lg="12" className="text-end">
+          <Col lg="6" className="text-end">
+            <ul className="header-dropdown">
+              <li className="w-100 text-start">
+                <Link href="/blog" className="w-100 text-start">
+                  <i class="fa fa-newspaper-o" aria-hidden="true"></i>
+                  {t("blog_page")}
+                </Link>
+              </li>
+            </ul>
+          </Col>
+          <Col lg="6" className="text-end">
             <ul className="header-dropdown">
               <li className="mobile-wishlist">
                 <Link href="/account/wishlist">

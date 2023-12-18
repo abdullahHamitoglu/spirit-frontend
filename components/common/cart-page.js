@@ -261,7 +261,7 @@ const CartPage = () => {
                           <Media
                             src="/assets/images/icon-empty-cart.png"
                             className="img-fluid mb-4 m-auto"
-                            alt=""
+                            alt="icon empty cart"
                           />
                           <h3>
                             <strong>{t('your_cart_is_empty')}</strong>

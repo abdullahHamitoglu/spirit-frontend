@@ -11,10 +11,10 @@ import ContactFormLoader from '../layouts/Bags/common/formLoader';
 import CustomPhoneInput from '../account/customPhoneInput';
 import { isEqual } from 'lodash';
 import useCartStore from '@/helpers/cart/cartStore';
+import axios from 'axios';
 
 function AddressModal(args) {
     const [loading, setLoading] = React.useState(false);
-    const [cities, setCities] = useState([]);
     const { query } = useRouter();
     const router = useRouter();
     const [stateLoading, setStateLoading] = useState(false);
@@ -22,10 +22,30 @@ function AddressModal(args) {
     const { t } = useTranslation();
     const { locale } = useRouter();
     const { saveCheckoutAddress } = useCartStore();
-    const { getCountries, countries, fetchStates, states } = addressStore();
-
+    const [selectedCountries, setSelectedCountries] = useState('');
+    const [countries, setCountries] = useState([]);
+    const [states, setStates] = useState([]);
+    const [cities, setCities] = useState([]);
+    const getCountries = async () => {
+        const response = await axios({
+            url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/countries`,
+            params: {
+                locale: locale.slice(0, 2)
+            },
+        }).catch((error) => {
+            console.error(error);
+        });
+        setCountries(response.data.data);
+        setSelectedCountries(response.data.data[0].code);
+        setStates(response.data.data[0].states);
+        setCities(response.data.data[0].states[0].cities);
+    }
     useEffect(() => {
-        getCountries(locale);
+        const defaultAddress = async () => {
+            await getCountries();
+        }
+
+        defaultAddress();
     }, []);
     const addressValidationSchema = Yup.object().shape({
         company_name: Yup.string().required(t('this_field_is_required')),
@@ -40,8 +60,12 @@ function AddressModal(args) {
     });
 
     const getStatesByCountry = (code) => {
-        fetchStates('en', code);
         setCities([]);
+        countries.map((country) => {
+            if (country.code == code) {
+                setStates(country.states);
+            }
+        })
     };
 
 
@@ -52,7 +76,6 @@ function AddressModal(args) {
             }
         })
     };
-
     return (
         <div>
             <Modal {...args} centered backdrop='static' size='xl' >
@@ -68,7 +91,7 @@ function AddressModal(args) {
                             last_name: '',
                             email: '',
                             address1: '',
-                            country: '',
+                            country: selectedCountries,
                             state: '',
                             state_id: '',
                             city: '',
@@ -80,10 +103,10 @@ function AddressModal(args) {
                         }}
                         validationSchema={addressValidationSchema}
                         onSubmit={(values, { setSubmitting }) => {
-                            if(document.querySelector('[name=address]') && document.querySelector('[name=address]').checked){
+                            if (document.querySelector('[name=address]') && document.querySelector('[name=address]').checked) {
                                 document.querySelector('[name=address]').checked = false
                             }
-                            saveCheckoutAddress(values, locale,args.toggle);
+                            saveCheckoutAddress(values, locale, args.toggle);
                             setSubmitting(false);
                         }}
                         errors={(errors) => {
@@ -108,11 +131,14 @@ function AddressModal(args) {
                                             onChange={(e) => { setFieldValue('country', e.target.value); getStatesByCountry(e.target.value) }}
                                             required=""
                                         >
-                                            {countries && countries.map((country, i) => (
-                                                <option key={i} value={country.code} >{country.name}</option>
-                                            ))}
+                                            {countries && countries.map((country, i) => {
+                                                if (i == 0) {
+                                                    return <option key={i} value={country.code} selected>{country.name}</option>
+                                                } else {
+                                                    return <option key={i} value={country.code}>{country.name}</option>
+                                                }
+                                            })}
                                         </Field>
-
                                     </Col>
                                     <Col md="6" sm="12" xs="12" className="form-group">
                                         <Label className="form-label" for="state">
@@ -137,10 +163,10 @@ function AddressModal(args) {
                                         >
                                             <option value=''>{t("select.state")}</option>
                                             {states && states.map((state, i) => {
-                                                if (values.state_id == state.id) {
-                                                    return <option key={i} selected value={state.code} id={state.id} data-cities={state.cities}>{state.default_name}</option>
+                                                if (i == 0) {
+                                                    return <option key={i} checked value={state.id} id={state.id}>{state.default_name}</option>
                                                 } else {
-                                                    return <option key={i} value={state.code} id={state.id} data-cities={state.cities}>{state.default_name}</option>
+                                                    return <option key={i} value={state.id} id={state.id}>{state.default_name}</option>
                                                 }
 
                                             }

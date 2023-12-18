@@ -64,7 +64,7 @@ function EditAddressModal(args) {
                     setStates(country.states);
                 }
             })
-            if(args.address.state_id){
+            if (args.address.state_id) {
                 states.map((state) => {
                     if (state.id == args.address.state_id) {
                         setCities(state.cities);

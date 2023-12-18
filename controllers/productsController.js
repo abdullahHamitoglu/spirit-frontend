@@ -68,6 +68,30 @@ export async function getProducts(locale, params, token, currencyCode) {
     return []
   }
 }
+
+export async function searchProducts(locale, params, token, currencyCode,search) {
+  try {
+    const response = await axios({
+      method: "GET",
+      url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/search`,
+      params: {
+        locale: locale.slice(0, 2),
+        currency: currencyCode,
+        search,
+        page: 1,
+        ...params,
+      },
+      withCredentials: true,
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      }
+    })
+    return response.data;
+  } catch (error) {
+    return []
+  }
+}
+
 export async function getProductBySlug(locale, slug, currencyCode) {
   const response = await axios({
     url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/products-slug/${slug}`,
@@ -81,6 +105,7 @@ export async function getProductBySlug(locale, slug, currencyCode) {
 
   return response.data.data;
 }
+
 export async function getProductReviews(locale, id, params, currencyCode) {
   const response = await axios({
     url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/products/${id}/reviews`,
@@ -97,7 +122,6 @@ export async function getProductReviews(locale, id, params, currencyCode) {
   return response.data.data;
 }
 
-
 export async function getCatagories(locale, id, currencyCode) {
   const response = await axios({
     method: "GET",
@@ -113,6 +137,7 @@ export async function getCatagories(locale, id, currencyCode) {
 
   return response.data.data;
 }
+
 export async function getCategoryBySlug(locale, slug, token, query, currencyCode) {
   try {
 
@@ -136,6 +161,7 @@ export async function getCategoryBySlug(locale, slug, token, query, currencyCode
     return []
   }
 }
+
 export async function getCategoriesTree(locale, currencyCode) {
   try {
     const response = await axios({
@@ -190,6 +216,7 @@ export async function getFilterAttr(locale, params, currencyCode) {
     throw error;
   }
 }
+
 export async function getMaxPrice(locale, params, currencyCode) {
   try {
     const response = await axios({

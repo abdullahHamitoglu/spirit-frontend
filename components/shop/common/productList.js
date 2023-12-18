@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import { Col, Row, Media, Button, Spinner } from "reactstrap";
+import { Col, Row, Media, Button, Spinner, Container } from "reactstrap";
 
 import ProductItem from "../../../components/common/product-box/ProductBox12";
 
@@ -26,8 +26,8 @@ const ProductList = ({ colClass, layoutList, openSidebar, noSidebar, productsDat
   const [sortBy, setSortBy] = useState("AscOrder");
   const [isLoading, setIsLoading] = useState(false);
   const [layout, setLayout] = useState(layoutList);
-  const [url, setUrl] = useState();
   const [quantity, setQuantity] = useState(1);
+  const [DataNotFound, setDataNotFound] = useState(false);
   const { t } = useTranslation();
   const [pageCount, setPageCount] = useState(1); // Initialize pageCount to 1
   const [noNextPage, setNoNextPage] = useState(false)
@@ -70,30 +70,30 @@ const ProductList = ({ colClass, layoutList, openSidebar, noSidebar, productsDat
     },
       undefined, { shallow: true });
     try {
-      const response = await getProducts(locale, { ...router.query, currency: selectedCurrency.code }, token , (router.query.slug ? router.query.slug[0] : ''));
+      const response = await getProducts(locale, { ...router.query, currency: selectedCurrency.code }, token, (router.query.slug ? router.query.slug[0] : ''));
       setProductsData(response.data);
     } catch (error) {
       console.error("Error fetching products:", error);
     } finally {
       setIsLoading(false);
     }
-
   };
+
+  useEffect(() => {
+    if (productsData == null) {
+      setTimeout(() => {
+        setDataNotFound(true);
+      }, 10000);
+    }
+  }, []);
+
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
-
     // Remove the event listener when the component is unmounted
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, [handleScroll]);
-  // const changeDataCurrency = async () => {
-  //   const response = await getProducts(locale, { ...router.query, currency: selectedCurrency.code }, token, (router.query.slug ? router.query.slug[0] : ''));
-  //   setProductsData(response.data);
-  // }
-  // useEffect(() => {
-  //   changeDataCurrency()
-  // }, [])
   return (
     <Col className="collection-content">
       <div className="page-main-content">
@@ -252,7 +252,8 @@ const ProductList = ({ colClass, layoutList, openSidebar, noSidebar, productsDat
                       productsData &&
                         productsData &&
                         productsData.length === 0 ?
-                        '' : (
+                        '' :
+                        !DataNotFound ? (
                           <>
                             <div lassName={grid} className="col-xl-3 col-lg-4 col-6">
                               <ProductCardLoader />
@@ -266,6 +267,29 @@ const ProductList = ({ colClass, layoutList, openSidebar, noSidebar, productsDat
                             <div lassName={grid} className="col-xl-3 col-lg-4 col-6">
                               <ProductCardLoader />
                             </div>
+                          </>
+                        ) : (
+                          <>
+                            <section className="cart-section section-b-space">
+                              <Container>
+                                <Row>
+                                  <Col sm="12">
+                                    <div>
+                                      <div className="col-sm-12 empty-cart-cls text-center">
+                                        <Media
+                                          src="/assets/images/empty-search.jpg"
+                                          className="img-fluid mb-4 m-auto"
+                                          alt="icon empty cart"
+                                        />
+                                        <h3>
+                                          <strong>{t('notfound_product')}</strong>
+                                        </h3>
+                                      </div>
+                                    </div>
+                                  </Col>
+                                </Row>
+                              </Container>
+                            </section>
                           </>
                         )
                     ) : (
@@ -314,6 +338,9 @@ const ProductList = ({ colClass, layoutList, openSidebar, noSidebar, productsDat
                       </div>
                     </>
                   )}
+                  {
+
+                  }
                 </Row>
               </div>
             </div>

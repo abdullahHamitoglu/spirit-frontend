@@ -16,7 +16,7 @@ const Login = () => {
   const { t } = useTranslation();
   const router = useRouter();
   const validationSchema = Yup.object().shape({
-    email: Yup.string().email('Invalid email').required('Email is required'),
+    email: Yup.string().email('Invalid email').required(t('this_field_is_required')),
     password: Yup.string()
       .min(6, 'Password must be at least 6 characters')
       .required('Password is required'),

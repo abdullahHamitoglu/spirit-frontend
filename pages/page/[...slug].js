@@ -3,10 +3,11 @@ import { getPageData } from "@/controllers/homeController";
 import Trans from "@/helpers/Trans";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import Head from "next/head";
+import { useTranslation } from "react-i18next";
 import { Col, Container, Media, Row } from "reactstrap";
 
 function Pages({ page }) {
-    console.log(page);
+    const { t } = useTranslation();
     if (!page) {
         return (
             <div className="loader-wrapper">
@@ -28,13 +29,13 @@ function Pages({ page }) {
                 <meta property="og:description" content={page.meta_description} />
                 <title>{page.meta_title}</title>
             </Head>
-            <CommonLayout parent={Trans("home")} title={page.title}>
+            <CommonLayout parent={t("home")} title={page.title}>
                 <section className="about-page section-b-space">
                     <Container>
                         <Row>
                             <Col sm="12">
                                 <h1 className="fs-3 text-center mb-3">{page.title}</h1>
-                                <p dangerouslySetInnerHTML={{ __html:page.content}} />
+                                <p dangerouslySetInnerHTML={{ __html: page.content }} />
                             </Col>
                         </Row>
                     </Container>
