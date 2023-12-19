@@ -19,6 +19,7 @@ const Currency = ({ icon }) => {
 
   const handleCurrencyClick = async (currencyID, currencyCode) => {
     await setCurrency(locale, currencyID);
+    console.log(currencyCode);
     await setCookie(null, "currencyCode", currencyCode, {
       maxAge: 7 * 24 * 60 * 60,
       path: "/",
@@ -50,7 +51,7 @@ const Currency = ({ icon }) => {
         <ul className="list-inline">
           {currencies.data && currencies.data.map((currency, i) => (
             <li className={`text-start ${selectedCurrency.id == currency.id ? 'active fw-bolder' : ''}`} key={i} title={currency.name}>
-              <div  onClick={() => handleCurrencyClick(currency.id, currency.code)} title={currency.name}>
+              <div  onClick={() => handleCurrencyClick(currency.id, currency.currency_code)} title={currency.name}>
                 {currency.name} {currency.symbol}
               </div>
             </li>

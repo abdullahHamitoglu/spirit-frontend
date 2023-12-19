@@ -1,4 +1,4 @@
-import React, { Fragment, useContext, useEffect } from "react";
+import React, { Fragment, useContext, useEffect, useState } from "react";
 import TopCollection from "../components/common/Collections/Collection3";
 import Head from 'next/head';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
@@ -17,7 +17,8 @@ import Link from "next/link";
 import Service from "@/components/common/Service/service4";
 
 
-const Fashion = ({ page, homeData, video }) => {
+const Fashion = ({ page, home, video }) => {
+  const [homeData , setHomeData] = useState(home)
   const { t } = useTranslation();
   if (!homeData) {
     return <PageLoader />
@@ -108,7 +109,7 @@ export async function getServerSideProps(context) {
   const { locale } = context;
   const { token, currencyCode } = parseCookies(context);
 
-  const homeData = await getHomePageData(locale, token, currencyCode);
+  const home = await getHomePageData(locale, token, currencyCode);
 
   const page = await getPageData(locale, 'home', token, currencyCode);
 
@@ -146,7 +147,7 @@ export async function getServerSideProps(context) {
     props: {
       page,
       video,
-      homeData,
+      home,
       ...(await serverSideTranslations(locale)),
     },
   };
