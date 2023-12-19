@@ -107,7 +107,7 @@ const DetailsWithPrice = ({ item, stickyClass }) => {
             </a>
           }
         </h6>
-        {parseFloat(product.special_price) < 0 ?
+        {parseFloat(product.special_price) > 0 ?
           <h4>
             <del>
               {product.formatted_special_price}

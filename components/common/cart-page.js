@@ -217,7 +217,7 @@ const CartPage = () => {
                               <Button className={cartData.coupon ? "btn-danger" : "btn-solid"} disabled={validateCode} type={cartData.coupon ? "button" : "submit"}
                                 onClick={() => cartData.coupon ? removeCoupon() : ''}
                               >
-                                {validateCode ? <Spinner size='md' /> : cartData.coupon ? t('delete') : t('save')}
+                                {validateCode ? <Spinner size='md' className="m-auto" /> : cartData.coupon ? t('delete') : t('save')}
                               </Button>
                             </InputGroup>
                           </Form>
