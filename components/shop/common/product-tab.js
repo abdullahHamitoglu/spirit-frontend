@@ -14,9 +14,10 @@ const ProductTab = ({ item, reviews }) => {
   const [reviewsData, setReviewsData] = useState(reviews);
   const [isLoading, setIsLoading] = useState(false);
   const [page, setPage] = useState(1);
+  const { selectedCurrency } = useRouter();
   const loadMoreReviews = async () => {
     setIsLoading(true)
-    const response = await getProductReviews(locale, item.id, { page: page });
+    const response = await getProductReviews(locale, item.id, { page: page }, selectedCurrency.code);
     console.log(response);
     setReviewsData((prevData) => [...prevData, ...response]);
     setPage((prevData) => prevData + 1);
