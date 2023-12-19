@@ -19,11 +19,10 @@ const Service = () => {
   useEffect(() => {
     const getPhone = async (params) => {
       const response = await coreConfigFrontField(locale, "config.show.frontend.phone");
-
       setPhone(response);
     }
     getPhone()
-  }, [phone,])
+  }, [])
   const Data = [
     {
       link: svgFreeShipping,
