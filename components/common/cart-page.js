@@ -135,7 +135,7 @@ const CartPage = () => {
                             </td>
                             <td>
                               <h2>
-                                {item.product.formatted_price}
+                                {item.formatted_price}
                               </h2>
                             </td>
                             <td>

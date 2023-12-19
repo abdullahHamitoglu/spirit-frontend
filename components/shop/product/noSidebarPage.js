@@ -48,7 +48,7 @@ const NoSidebarPage = ({ reviews, product }) => {
                       <Swiper modules={[Thumbs]} zoom={true} thumbs={{ swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null }} >
                         {data.images.map((vari, index) => (
                           <SwiperSlide key={index} className="d-flex justify-content-center">
-                            <Media src={`${vari.original_image_url}`} alt={data.name} className="img-fluid image_zoom_cls-0" />
+                            <Media src={`${vari.original_image_url}`} alt={data.name} className="img-fluid large-image image_zoom_cls-0" />
                           </SwiperSlide>
                         ))}
                       </Swiper>
@@ -58,14 +58,14 @@ const NoSidebarPage = ({ reviews, product }) => {
                         watchSlidesProgress
                         onSwiper={setThumbsSwiper}
                       >
-                        {data.images
+                        {data.images && data.images.length > 1
                           ? data.images.map((vari, index) => (
                             <SwiperSlide key={index} className="d-flex justify-content-center">
                               <Media
                                 src={`${vari.small_image_url}`}
                                 key={index}
                                 alt={vari.alt}
-                                className="img-fluid"
+                                className="img-fluid small-image"
                               />
                             </SwiperSlide>
                           ))

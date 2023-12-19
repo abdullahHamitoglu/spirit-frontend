@@ -15,7 +15,7 @@ const Currency = ({ icon }) => {
   const router = useRouter();
   useEffect(() => {
     fetchCurrencies(locale);
-  }, []);
+  }, [locale,]);
 
   const handleCurrencyClick = async (currencyID, currencyCode) => {
     await setCurrency(locale, currencyID);
@@ -49,7 +49,7 @@ const Currency = ({ icon }) => {
         <h6>{t("country")}</h6>
         <ul className="list-inline">
           {currencies.data && currencies.data.map((currency, i) => (
-            <li className={`text-start ${selectedCurrency.code.toLowerCase() == currency.code.toLowerCase() ? 'active fw-bolder' : ''}`} key={i} title={currency.name}>
+            <li className={`text-start ${selectedCurrency.id == currency.id ? 'active fw-bolder' : ''}`} key={i} title={currency.name}>
               <div  onClick={() => handleCurrencyClick(currency.id, currency.code)} title={currency.name}>
                 {currency.name} {currency.symbol}
               </div>

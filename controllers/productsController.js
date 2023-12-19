@@ -69,7 +69,7 @@ export async function getProducts(locale, params, token, currencyCode) {
   }
 }
 
-export async function searchProducts(locale, params, token, currencyCode,search) {
+export async function searchProducts(locale, params, token, currencyCode, search) {
   try {
     const response = await axios({
       method: "GET",
@@ -93,17 +93,20 @@ export async function searchProducts(locale, params, token, currencyCode,search)
 }
 
 export async function getProductBySlug(locale, slug, currencyCode) {
-  const response = await axios({
-    url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/products-slug/${slug}`,
-    params: {
-      locale: locale.slice(0, 2),
-      currency: currencyCode,
-    },
-  }).catch((error) => {
-    console.error(error);
-  });
+  try {
 
-  return response.data.data;
+    const response = await axios({
+      url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/products-slug/${slug}`,
+      params: {
+        locale: locale.slice(0, 2),
+        currency: currencyCode,
+      },
+    })
+
+    return response.data.data;
+  } catch (error) {
+    return []
+  }
 }
 
 export async function getProductReviews(locale, id, params, currencyCode) {

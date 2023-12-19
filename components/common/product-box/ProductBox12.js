@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Row, Col, Media, Modal, ModalBody, ModalHeader } from "reactstrap";
 import currencyStore from "@/helpers/Currency/CurrencyStore";
 import useCartStore from "@/helpers/cart/cartStore";
-import Trans from "@/helpers/Trans";
+import { useTranslation } from "react-i18next";
 
 const ProductItem = ({
   product,
@@ -25,7 +25,7 @@ const ProductItem = ({
   const toggle = () => setModal(!modal);
   const toggleCompare = () => setModalCompare(!modalCompare);
   const uniqueTags = [];
-
+  const { t } = useTranslation()
   const changeQty = (e) => {
     setQuantity(parseInt(e.target.value));
   };
@@ -111,7 +111,7 @@ const ProductItem = ({
       </div>
       <div className="product-info">
         <div className="cart-info cart-wrap px-2">
-          <a className="btn p-0" href={null} title={Trans('add_to_wishlist')}
+          <a className="btn p-0" href={null} title={t('add_to_wishlist')}
             onClick={(e) => {
               setIsInWishlist(!isInWishlist);
               addWishlist();
@@ -120,7 +120,7 @@ const ProductItem = ({
             <i className={`fa fa-heart${!isInWishlist ? '-o' : ''}`} aria-hidden="true"></i>
           </a>
           <a className="d-flex align-items-center text-nowrap w-100 justify-content-center text-black ms-2 btn"
-            onClick={handelAddCart}> {Trans("add_to_cart")}
+            onClick={handelAddCart}> {t("add_to_cart")}
           </a>
         </div>
 
@@ -130,13 +130,15 @@ const ProductItem = ({
           </div>
           <h6 title={product.name}>{product.name}</h6>
           <h4 className="justify-content-center flex-column">
-            {product.formatted_price}
-            {product.special_price > 0 &&
-              <del>
-                <span className="money">
-                  {product.formatted_special_price}
-                </span>
-              </del>
+            {product.special_price > 0 ?
+              <>
+                {product.formatted_special_price}
+                <del>
+                  <span className="money">
+                    {product.formatted_price}
+                  </span>
+                </del>
+              </> : product.formatted_price
             }
           </h4>
         </Link>
@@ -179,12 +181,12 @@ const ProductItem = ({
                   <button
                     className="btn btn-solid"
                     onClick={() => handelAddCart(product, count)}>
-                    add to cart
+                    {t("add_to_cart")}
                   </button>
                   <button
                     className="btn btn-solid"
                     onClick={clickProductDetail}>
-                    View detail
+                    {t("view_detail")}
                   </button>
                 </div>
               </div>

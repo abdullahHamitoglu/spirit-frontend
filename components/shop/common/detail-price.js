@@ -108,16 +108,21 @@ const DetailsWithPrice = ({ item, stickyClass }) => {
           }
         </h6>
         {parseFloat(product.special_price) > 0 ?
-          <h4>
-            <del>
+          <>
+            <h4>
+              <del>
+                {product.formatted_price}
+              </del>
+              <span>{product.percentage} {t('off')}</span>
+            </h4>
+            <h3 className="price">
               {product.formatted_special_price}
-            </del>
-            <span>{product.percentage} {t('off')}</span>
-          </h4> :
-          ''}
-        <h3 className="price">
-          {product.formatted_price}
-        </h3>
+            </h3>
+          </> :
+          <h3 className="price">
+            {product.formatted_price}
+          </h3>
+        }
         <div className="product-description border-product">
           <span className="instock-cls">
             {product.in_stock ? t("in_stock") : t("out_of_stock")}
