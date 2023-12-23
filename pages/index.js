@@ -18,7 +18,7 @@ import Service from "@/components/common/Service/service4";
 
 
 const Fashion = ({ page, home, video }) => {
-  const [homeData , setHomeData] = useState(home)
+  const [homeData, setHomeData] = useState(home)
   const { t } = useTranslation();
   if (!homeData) {
     return <PageLoader />
@@ -37,7 +37,7 @@ const Fashion = ({ page, home, video }) => {
         <meta property="og:image" content={page.image} />
         <meta property="og:image:alt" content={page.meta_title} />
         <meta property="og:description" content={page.meta_description} />
-        <title>{page.meta_title}</title>
+        <title>{page.meta_title ? page.meta_title : t('spirit')}</title>
       </Head>
       {/* <ModalComponent /> */}
       <MainBanner sliders={homeData.sliders} />

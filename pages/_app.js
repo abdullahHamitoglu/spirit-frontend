@@ -14,7 +14,14 @@ import { getServerSideProps } from "./account/dashboard";
 import { getProducts } from "@/controllers/productsController";
 import PageLoader from "@/components/layouts/Bags/common/PageLoader";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { Tajawal } from 'next/font/google';
 
+const tajawal = Tajawal({
+  subsets: ['arabic'],
+  style: ['normal'],
+  display: 'swap',
+  weight: ['200', '300', '400', '500', '700', '800', '900'],
+})
 function MyApp({ Component, pageProps }) {
   const [isLoading, setIsLoading] = useState(true);
   const [url, setUrl] = useState();
@@ -22,6 +29,27 @@ function MyApp({ Component, pageProps }) {
   const { locale } = useRouter();
   const { token, registerDevice } = useUserStore();
   const { t } = useTranslation();
+
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const handleStart = (url) => (url !== router.asPath) && setLoading(true);
+    const handleComplete = (url) => (url === router.asPath) && setLoading(false);
+
+    router.events.on('routeChangeStart', handleStart)
+    router.events.on('routeChangeComplete', handleComplete)
+    router.events.on('routeChangeError', handleComplete)
+
+    return () => {
+      router.events.off('routeChangeStart', handleStart)
+      router.events.off('routeChangeComplete', handleComplete)
+      router.events.off('routeChangeError', handleComplete)
+      setTimeout(() => {
+        setLoading(false)
+      }, 10000);
+    }
+  })
+
   useEffect(() => {
     setIsLoading(true);
     document.documentElement.style.setProperty("--theme-deafult", "#00c2b5");
@@ -47,7 +75,7 @@ function MyApp({ Component, pageProps }) {
     registerDevice();
     document.body.classList.remove("overflow-hidden");
   }, []);
-
+  console.log(tajawal.style.fontFamily);
   return (
     <>
       {isLoading ? (
@@ -56,24 +84,8 @@ function MyApp({ Component, pageProps }) {
         </div>
       ) : (
         <>
-          {isLoading && <PageLoader />}
+          {loading && <PageLoader />}
           <Head>
-            {locale == "ar" ? (
-              <>
-                <link rel="preconnect" href="https://fonts.googleapis.com" />
-                <link
-                  rel="preconnect"
-                  href="https://fonts.gstatic.com"
-                  crossorigin
-                />
-                <link
-                  href="https://fonts.googleapis.com/css2?family=Tajawal:wght@200;300;400;500;700;800;900&display=swap"
-                  rel="stylesheet"
-                />
-              </>
-            ) : (
-              ""
-            )}
             <meta
               name="viewport"
               content="width=device-width, initial-scale=1"
@@ -88,6 +100,18 @@ function MyApp({ Component, pageProps }) {
           </Head>
           <CompareContextProvider>
             <FilterProvider>
+              {locale == "ar" ? (
+                <style jsx global>{`
+                html {
+                  font-family: ${tajawal.style.fontFamily} , sans-serif;
+                }
+                html *{
+                  font-family: ${tajawal.style.fontFamily} , sans-serif;
+                }
+              `}</style>
+              ) : (
+                ""
+              )}
               <Component {...pageProps} />
             </FilterProvider>
           </CompareContextProvider>

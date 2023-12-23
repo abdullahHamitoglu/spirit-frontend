@@ -110,7 +110,6 @@ const useCartStore = create(
             });
         },
         updateQty: (id, qyt, locale) => {
-            set({ cartLoading: true });
             axios({
                 method: "put",
                 url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/customer/cart/update`,
@@ -127,8 +126,7 @@ const useCartStore = create(
                 },
             }).then((res) => {
                 toast.success(res.data.message);
-                set({ cartData: res.data.data, cartLoading: false });
-                toast.success(res.data.message);
+                set({ cartData: res.data.data});
             }).catch((error) => {
                 set({ cartLoading: false });
                 console.error(error);

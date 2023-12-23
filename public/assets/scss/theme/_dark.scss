@@ -381,15 +381,6 @@ body {
       }
     }
 
-    .addtocart_count {
-      .product-box {
-        .add-button {
-          background-color: $dark-top;
-          color: $white;
-        }
-      }
-    } 
-
     .tools-brand {
       background-color: #2b2b2b;
     }
@@ -756,37 +747,6 @@ body {
         li {
           > a {
             color: $white-1;
-          }
-        }
-      }
-    }
-  
-    .theme-tab {
-      .tab-title,
-      .tab-title2 {
-        a {
-          color: $dark-link;
-        }
-  
-        .current {
-          a {
-            color: var(--theme-deafult);
-          }
-        }
-      }
-  
-      .tab-title2 {
-        &:after {
-          border-color: $dark-border;
-        }
-  
-        .current {
-          background-color: $dark-top;
-          transition: all 0.3s ease;
-  
-          a {
-            background-color: $dark-top;
-            transition: all 0.3s ease;
           }
         }
       }
@@ -1499,27 +1459,6 @@ body {
       background-color: $dark-top;
       transition: all 0.3s ease;
       background-image: none;
-    }
-  
-    .theme-tab {
-      .tab-content {
-        .product-tab {
-          .tab-box {
-            background-color: $dark-body;
-            transition: all 0.3s ease;
-  
-            .product-box2 {
-              .media {
-                .media-body {
-                  h4 {
-                    color: $white-3;
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
     }
   
     .flower-bg {

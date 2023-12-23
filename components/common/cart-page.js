@@ -6,9 +6,11 @@ import CartLoader from "../layouts/Bags/common/cartLoader";
 import useCartStore from "../../helpers/cart/cartStore";
 import { useFormik } from 'formik';
 import { useRouter } from "next/router";
+import CartCount from "./widgets/cartCount";
 
 const CartPage = () => {
   const { getCart, cartData, removeFromCart, cartLoading, updateQty, applyCoupon, removeCoupon } = useCartStore();
+  const [count, setCount] = useState(1);
   const { locale } = useRouter();
   const { t } = useTranslation();
   const handleQtyUpdate = (id, quantity) => {
@@ -16,27 +18,10 @@ const CartPage = () => {
       updateQty(id, quantity, locale);
     }
   };
-
   const [loadQ, setLoadQ] = useState(false)
 
   const [removing, setRemoving] = useState(false)
-
-
-  // Define the plusQty function
-  const plusQty = async (id, q) => {
-    setLoadQ(true);
-    await updateQty(id, q + 1, locale);
-    setLoadQ(false);
-  };
-
-  // Define the minusQty function
-  const minusQty = async (id, q) => {
-    if (q > 1) {
-      setLoadQ(true)
-      await updateQty(id, q - 1, locale);
-      setLoadQ(false)
-    }
-  };
+  
   const handleRemove = async (id) => {
     setRemoving(true);
     await removeFromCart(locale, id);
@@ -139,7 +124,7 @@ const CartPage = () => {
                               </h2>
                             </td>
                             <td>
-                              <div className="qty-box">
+                              {/* <div className="qty-box">
                                 <div className="input-group">
                                   {loadQ == true ? <Spinner size='sm' color="black" /> :
                                     <>
@@ -176,7 +161,8 @@ const CartPage = () => {
                                     </>
                                   }
                                 </div>
-                              </div>
+                              </div> */}
+                              <CartCount item={item} />
                               {item.product.quantity >= item.product.stock ? t('out_of_stock') : ""}
                             </td>
                             <td>
