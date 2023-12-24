@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import Link from "next/link";
-import { Modal, ModalBody, ModalHeader, Media, Input, Badge } from "reactstrap";
+import { Modal, ModalBody, ModalHeader, Media, Input, Badge, Row, Card } from "reactstrap";
 import CountdownComponent from "../../../components/common/widgets/countdownComponent";
 import MasterSocial from "./master_social";
 import { useTranslation } from "react-i18next";
@@ -15,6 +15,7 @@ import "swiper/css/thumbs";
 import { toast } from "react-toastify";
 import Trans from "@/helpers/Trans";
 import { useRouter } from "next/router";
+import Image from "next/image";
 const DetailsWithPrice = ({ item, stickyClass }) => {
   const [modal, setModal] = useState(false);
   const toggle = () => setModal(!modal);
@@ -201,12 +202,14 @@ const DetailsWithPrice = ({ item, stickyClass }) => {
           <h6 className="product-title">{t('product_details')}</h6>
           <p>{product.short_description}</p>
         </div>
-        {/* <div className="border-product">
-          <h6 className="product-title">share it</h6>
-          <div className="product-icon">
-            <MasterSocial />
-          </div>
-        </div> */}
+        <div className="border-product">
+          <Row className="m-0">
+            <Link href={`/brands/${product.brand.replace(' ', '-').toLowerCase()}`} className="card col-2 flex align-items-center text-center">
+              <Image width={60} height={60} src={product.brand_image} alt={product.brand} />
+              <p className="text-nowrap overflow-hidden">{product.brand}</p>
+            </Link>
+          </Row>
+        </div>
         {product.reminder &&
           <div className="border-product">
             <h6 className="product-title">{t('time_reminder')}</h6>

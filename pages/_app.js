@@ -75,7 +75,6 @@ function MyApp({ Component, pageProps }) {
     registerDevice();
     document.body.classList.remove("overflow-hidden");
   }, []);
-  console.log(tajawal.style.fontFamily);
   return (
     <>
       {isLoading ? (

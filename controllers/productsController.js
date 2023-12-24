@@ -91,6 +91,21 @@ export async function searchProducts(locale, params, token, currencyCode, search
     return []
   }
 }
+export async function getRedirectProduct(url) {
+  try {
+    const response = await axios({
+      method: "GET",
+      url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/opencart-url`,
+      params: {
+        url,
+      },
+    });
+    
+    return response.data.data;
+  } catch (error) {
+    return []
+  }
+}
 
 export async function getProductBySlug(locale, slug, currencyCode) {
   try {

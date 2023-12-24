@@ -8,6 +8,7 @@ const nextConfig = {
   reactStrictMode: true,
   images: {
     formats: ['image/webp', 'image/avif'],
+    domains: ['localhost' , 'newsite.spirit.com.kw'],
     remotePatterns: [
       {
         protocol: 'http',
