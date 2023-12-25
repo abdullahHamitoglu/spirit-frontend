@@ -31,22 +31,25 @@ function MyApp({ Component, pageProps }) {
   const { t } = useTranslation();
 
   const [loading, setLoading] = useState(false);
-
+  console.log(router.asPath);
   useEffect(() => {
-    const handleStart = (url) => (url !== router.asPath) && setLoading(true);
-    const handleComplete = (url) => (url === router.asPath) && setLoading(false);
+    if (router.asPath.includes('products')) {
 
-    router.events.on('routeChangeStart', handleStart)
-    router.events.on('routeChangeComplete', handleComplete)
-    router.events.on('routeChangeError', handleComplete)
+      const handleStart = (url) => (url !== router.asPath) && setLoading(true);
+      const handleComplete = (url) => (url === router.asPath) && setLoading(false);
 
-    return () => {
-      router.events.off('routeChangeStart', handleStart)
-      router.events.off('routeChangeComplete', handleComplete)
-      router.events.off('routeChangeError', handleComplete)
-      setTimeout(() => {
-        setLoading(false)
-      }, 10000);
+      router.events.on('routeChangeStart', handleStart)
+      router.events.on('routeChangeComplete', handleComplete)
+      router.events.on('routeChangeError', handleComplete)
+
+      return () => {
+        router.events.off('routeChangeStart', handleStart)
+        router.events.off('routeChangeComplete', handleComplete)
+        router.events.off('routeChangeError', handleComplete)
+        setTimeout(() => {
+          setLoading(false)
+        }, 10000);
+      }
     }
   })
 
