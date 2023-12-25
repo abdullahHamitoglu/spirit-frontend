@@ -14,15 +14,15 @@ const Page404 = () => {
 
     const checkOldProduct = async (second) => {
         const response = await getRedirectProduct(document.location.origin + router.asPath);
-        setOldProduct(response.new_url);
-        
+        console.log(response);
+        if(response.new_url){
+            router.push(response.new_url);
+            setOldProduct(response.new_url);
+        }
     }
 
     useEffect(() => {
         checkOldProduct();
-        if (oldProduct) {
-            router.push(oldProduct);
-        }
     }, []);
     
     return (

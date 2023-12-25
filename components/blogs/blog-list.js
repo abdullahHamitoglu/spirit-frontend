@@ -27,7 +27,7 @@ const BlogList = ({ posts }) => {
           <Row className="blog-media" key={i}>
             <Col xl="6">
               <div className="blog-left">
-                <Link href={`/blog/${item.id}`}>
+                <Link href={`/blog/${item.slug}`}>
                   <Media
                     src={item.image}
                     className="img-fluid blur-up lazyload bg-img w-100"
@@ -41,7 +41,7 @@ const BlogList = ({ posts }) => {
               <div className="blog-right">
                 <div>
                   <h6>{item.name}</h6>
-                  <Link href={`/blog/${item.id}`}>
+                  <Link href={`/blog/${item.slug}`}>
                     <h4 dangerouslySetInnerHTML={{ __html: item.short_description }} />
                   </Link>
                   <ul className="post-social">

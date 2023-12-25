@@ -17,6 +17,7 @@ function post({ post, comments }) {
   const { locale } = useRouter();
   const router = useRouter();
   const { token, isAuthenticated } = useUserStore();
+  console.log(post);
   const formik = useFormik({
     initialValues: {
       name: '',
@@ -77,7 +78,7 @@ function post({ post, comments }) {
               <h2>{t('leave_your_comment')}</h2>
               <Form className="theme-form" onSubmit={formik.handleSubmit}>
                 <Row>
-                  <Col md="12">
+                  <Col md="12"> 
                     <Label className="form-label" htmlFor="name">
                       {t('name')}
                     </Label>
@@ -88,7 +89,7 @@ function post({ post, comments }) {
                       placeholder={t('inter.name')}
                       required=""
                       onChange={formik.handleChange}
-                      value={formik.values.name}
+                      value={formik.values.name} 
                       name="name"
                     />
                     {formik.errors.name && (
@@ -146,17 +147,28 @@ function post({ post, comments }) {
   );
 }
 export async function getServerSideProps(context) {
-  const { locale, query, params } = context;
-  const { token, currencyCode } = parseCookies(context);
-  const post = await getPostById(locale, currencyCode, params.id);
-  const comments = await getPostComments(locale, currencyCode, params.id);
+  try {
 
-  return {
-    props: {
-      post,
-      comments,
-      ...(await serverSideTranslations(locale)),
-    },
-  };
+    const { locale, query, params } = context;
+    const { token, currencyCode } = parseCookies(context);
+    const post = await getPostBySlug(locale, currencyCode, params.slug);
+    const comments = await getPostComments(locale, currencyCode, params.slug);
+    if (!post.length <= 0) {
+      return {
+        notFound: true
+      }
+    }
+    return {
+      props: {
+        post,
+        comments,
+        ...(await serverSideTranslations(locale)),
+      },
+    };
+  } catch (error) {
+    return {
+      notFound: true
+    }
+  }
 }
 export default post;

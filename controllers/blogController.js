@@ -33,6 +33,22 @@ export async function getPostById(locale, currencyCode, id) {
         return []
     }
 }
+export async function getPostBySlug(locale, currencyCode, slug) {
+    try {
+        const response = await axios({
+            method: "GET",
+            url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/blog/posts-by-slug/${slug}`,
+            params: {
+                locale: locale.slice(0, 2),
+                currency: currencyCode,
+                page: 1,
+            },
+        })
+        return response.data.data;
+    } catch (error) {
+        return []
+    }
+}
 export async function getPostComments(locale, currencyCode, id) {
     try {
         const response = await axios({

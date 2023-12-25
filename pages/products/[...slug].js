@@ -53,30 +53,36 @@ function Product({ product, reviews }) {
 
 
 export async function getServerSideProps(context) {
+  try {
 
-  const { locale } = context;
+    const { locale } = context;
 
-  const slug = context.params.slug;
+    const slug = context.params.slug;
 
-  const { token, currencyCode } = parseCookies(context);
-  
-  const product = await getProductBySlug(locale, slug, currencyCode);
+    const { token, currencyCode } = parseCookies(context);
 
-  const reviews = await getProductReviews(locale, product.id);
+    const product = await getProductBySlug(locale, slug, currencyCode);
 
-  if (!product && !reviews) {
+    const reviews = await getProductReviews(locale, product.id);
+
+    if (!product && !reviews) {
+      return {
+        notFound: true,
+      };
+    }
+
+    return {
+      props: {
+        product,
+        reviews,
+        ...(await serverSideTranslations(locale)),
+      },
+    };
+  } catch (error) {
     return {
       notFound: true,
     };
   }
-
-  return {
-    props: {
-      product,
-      reviews,
-      ...(await serverSideTranslations(locale)),
-    },
-  };
 
 }
 
