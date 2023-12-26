@@ -21,9 +21,9 @@ const Page404 = () => {
         }
     }
 
-    // useEffect(() => {
-    //     checkOldProduct();
-    // }, []);
+    useEffect(() => {
+        checkOldProduct();
+    }, []);
     
     return (
         <CommonLayout parent={t("home")} title="404">
