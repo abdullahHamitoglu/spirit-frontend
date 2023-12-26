@@ -51,6 +51,7 @@
     "react-phone-input-2": "^2.15.1",
     "react-range": "^1.8.14",
     "react-range-slider-input": "^3.0.7",
+    "react-responsive": "^9.0.2",
     "react-slick": "^0.29.0",
     "react-tabs": "^6.0.2",
     "react-toastify": "^9.1.3",

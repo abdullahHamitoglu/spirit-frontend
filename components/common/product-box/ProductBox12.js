@@ -1,10 +1,12 @@
 import React, { useState, useContext } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import { Row, Col, Media, Modal, ModalBody, ModalHeader } from "reactstrap";
+import { Row, Col, Media, Modal, ModalBody, ModalHeader, Spinner } from "reactstrap";
 import currencyStore from "@/helpers/Currency/CurrencyStore";
 import useCartStore from "@/helpers/cart/cartStore";
 import { useTranslation } from "react-i18next";
+import Image from "next/image";
+import { useMediaQuery } from "react-responsive";
 
 const ProductItem = ({
   product,
@@ -59,6 +61,9 @@ const ProductItem = ({
       clickProductDetail();
     }
   };
+  const isMobile = useMediaQuery({ maxWidth: 767 }); // Define your mobile breakpoint
+  const imageSize = isMobile ? { width: 170, height: 170 } : { width: 240, height: 240 };
+
   return (
     <div className="product-box product-wrap">
       <div className="img-wrapper">
@@ -71,11 +76,14 @@ const ProductItem = ({
           )}
         </div>
         <div className="front">
-          <a href={null}>
-            <Media
-              alt=""
+          <a href={null} className="w-100 h-100 d-flex justify-content-center align-items-center">
+            <Image
               src={product.base_image.original_image_url}
-              className="img-fluid blur-up lazyload bg-img"
+              {...imageSize}
+              alt={product.name}
+              loading='lazy'
+              className="object-fit-contain"
+              onError={(e) => e.target.srcset = '/assets/images/lazy.jpg'}
             />
           </a>
         </div>
@@ -110,7 +118,7 @@ const ProductItem = ({
         </div>
       </div>
       <div className="product-info">
-        <div className="cart-info cart-wrap px-2">
+        <div className="cart-info cart-wrap px-2 pb-2">
           <a className="btn p-0" href={null} title={t('add_to_wishlist')}
             onClick={(e) => {
               setIsInWishlist(!isInWishlist);
@@ -125,9 +133,11 @@ const ProductItem = ({
         </div>
 
         <Link href={`/products/${product.url_key}`}>
-          <div className="rating">
-            {renderStars()}
-          </div>
+          {renderStars.length > 0 &&
+            <div className="rating">
+              {renderStars()}
+            </div>
+          }
           <h6 title={product.name}>{product.name}</h6>
           <h4 className="justify-content-center flex-column">
             {product.special_price > 0 ?
@@ -153,9 +163,12 @@ const ProductItem = ({
           <Row>
             <Col lg="6" xs="12">
               <div className="quick-view-img">
-                <Media
+                <Image
                   src={product.base_image.original_image_url}
-                  alt=""
+                  width={375}
+                  height={375}
+                  alt={product.name}
+                  // loader={<Spinner />}
                   className="img-fluid"
                 />
               </div>

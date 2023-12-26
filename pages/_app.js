@@ -17,92 +17,92 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { Tajawal } from 'next/font/google';
 
 const tajawal = Tajawal({
-  subsets: ['arabic'],
-  style: ['normal'],
-  display: 'swap',
-  weight: ['200', '300', '400', '500', '700', '800', '900'],
+    subsets: ['arabic'],
+    style: ['normal'],
+    display: 'swap',
+    weight: ['200', '300', '400', '500', '700', '800', '900'],
 })
 function MyApp({ Component, pageProps }) {
-  const [isLoading, setIsLoading] = useState(true);
-  const [url, setUrl] = useState();
-  const router = useRouter();
-  const { locale } = useRouter();
-  const { token, registerDevice } = useUserStore();
-  const { t } = useTranslation();
+    const [isLoading, setIsLoading] = useState(true);
+    const [url, setUrl] = useState();
+    const router = useRouter();
+    const { locale } = useRouter();
+    const { token, registerDevice } = useUserStore();
+    const { t } = useTranslation();
 
-  const [loading, setLoading] = useState(false);
-  useEffect(() => {
-    if (router.asPath.includes('products')) {
+    const [loading, setLoading] = useState(false);
+    useEffect(() => {
+        if (router.asPath.includes('products')) {
 
-      const handleStart = (url) => (url !== router.asPath) && setLoading(true);
-      const handleComplete = (url) => (url === router.asPath) && setLoading(false);
+            const handleStart = (url) => (url !== router.asPath) && setLoading(true);
+            const handleComplete = (url) => (url === router.asPath) && setLoading(false);
 
-      router.events.on('routeChangeStart', handleStart)
-      router.events.on('routeChangeComplete', handleComplete)
-      router.events.on('routeChangeError', handleComplete)
+            router.events.on('routeChangeStart', handleStart)
+            router.events.on('routeChangeComplete', handleComplete)
+            router.events.on('routeChangeError', handleComplete)
 
-      return () => {
-        router.events.off('routeChangeStart', handleStart)
-        router.events.off('routeChangeComplete', handleComplete)
-        router.events.off('routeChangeError', handleComplete)
-        setTimeout(() => {
-          setLoading(false)
-        }, 10000);
-      }
-    }
-  })
+            return () => {
+                router.events.off('routeChangeStart', handleStart)
+                router.events.off('routeChangeComplete', handleComplete)
+                router.events.off('routeChangeError', handleComplete)
+                setTimeout(() => {
+                    setLoading(false)
+                }, 10000);
+            }
+        }
+    })
 
-  useEffect(() => {
-    setIsLoading(true);
-    document.documentElement.style.setProperty("--theme-deafult", "#00c2b5");
-    if (locale == "ar") {
-      setIsLoading(false);
-      document.documentElement.dir = "rtl";
-      document.body.classList.add("rtl");
-    } else {
-      setIsLoading(false);
-      document.body.classList.remove("ltr");
-      document.documentElement.dir = "ltr";
-      document.body.classList.remove("rtl");
-    }
-    setCookie(null, "token", token, {
-      maxAge: 7 * 24 * 60 * 60,
-      path: "/",
-    });
-  }, [locale])
+    useEffect(() => {
+        setIsLoading(true);
+        document.documentElement.style.setProperty("--theme-deafult", "#00c2b5");
+        if (locale == "ar") {
+            setIsLoading(false);
+            document.documentElement.dir = "rtl";
+            document.body.classList.add("rtl");
+        } else {
+            setIsLoading(false);
+            document.body.classList.remove("ltr");
+            document.documentElement.dir = "ltr";
+            document.body.classList.remove("rtl");
+        }
+        setCookie(null, "token", token, {
+            maxAge: 7 * 24 * 60 * 60,
+            path: "/",
+        });
+    }, [locale])
 
 
-  useEffect(() => {
-    setIsLoading(false);
-    registerDevice();
-    document.body.classList.remove("overflow-hidden");
-  }, []);
-  return (
-    <>
-      {isLoading ? (
-        <div className="loader-wrapper">
-          <div className="loader"></div>
-        </div>
-      ) : (
+    useEffect(() => {
+        setIsLoading(false);
+        registerDevice();
+        document.body.classList.remove("overflow-hidden");
+    }, []);
+    return (
         <>
-          {loading && <PageLoader />}
-          <Head>
-            <meta
-              name="viewport"
-              content="width=device-width, initial-scale=1"
-            />
-            <meta name="token" content="" />
-            <link
-              rel="icon"
-              type="image/x-icon"
-              href="assets/images/favicon.png"
-            />
-            <title>{t('spirit')}</title>
-          </Head>
-          <CompareContextProvider>
-            <FilterProvider>
-              {locale == "ar" ? (
-                <style jsx global>{`
+            {isLoading ? (
+                <div className="loader-wrapper">
+                    <div className="loader"></div>
+                </div>
+            ) : (
+                <>
+                    {loading && <PageLoader />}
+                    <Head>
+                        <meta
+                            name="viewport"
+                            content="width=device-width, initial-scale=1"
+                        />
+                        <meta name="token" content="" />
+                        <link
+                            rel="icon"
+                            type="image/x-icon"
+                            href="assets/images/favicon.png"
+                        />
+                        <title>{t('spirit')}</title>
+                    </Head>
+                    <CompareContextProvider>
+                        <FilterProvider>
+                            {locale == "ar" ? (
+                                <style jsx global>{`
                 html {
                   font-family: ${tajawal.style.fontFamily} , sans-serif;
                 }
@@ -110,29 +110,28 @@ function MyApp({ Component, pageProps }) {
                   font-family: ${tajawal.style.fontFamily} , sans-serif;
                 }
               `}</style>
-              ) : (
-                ""
-              )}
-              <Component {...pageProps} />
-            </FilterProvider>
-          </CompareContextProvider>
-          <ToastContainer />
-          <TapTop />
+                            ) : (
+                                ""
+                            )}
+                            <Component {...pageProps} />
+                        </FilterProvider>
+                    </CompareContextProvider>
+                    <ToastContainer />
+                    <TapTop />
+                </>
+            )}
         </>
-      )}
-    </>
-  );
+    );
 }
 export async function getStaticProps(context) {
-  // extract the locale identifier from the URL
-  const { locale } = context
+    // extract the locale identifier from the URL
+    const { locale } = context
 
-  return {
-    props: {
-      // pass the translation props to the page component
-      ...(await serverSideTranslations(locale)),
-    },
-  }
+    return {
+        props: {
+            // pass the translation props to the page component
+            ...(await serverSideTranslations(locale)),
+        },
+    }
 }
 export default appWithTranslation(MyApp);
- 
