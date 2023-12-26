@@ -78,7 +78,7 @@ const ProductItem = ({
         <div className="front">
           <a href={null} className="w-100 h-100 d-flex justify-content-center align-items-center">
             <Image
-              src={product.base_image.original_image_url}
+              src={product.base_image.medium_image_url}
               {...imageSize}
               alt={product.name}
               loading='lazy'
