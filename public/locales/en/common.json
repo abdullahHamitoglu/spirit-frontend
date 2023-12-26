@@ -358,5 +358,6 @@
     "comment_required": "Comment is required",
     "email_required": "Email is required",
     "write_your_comment": "Write your comment",
-    "blog_page":"BEAUTY TIPS"
+    "blog_page":"BEAUTY TIPS",
+    "redacting":"redacting"
 }

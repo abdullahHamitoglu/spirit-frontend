@@ -16,7 +16,7 @@ const Page404 = () => {
         const response = await getRedirectProduct(document.location.origin + router.asPath);
         console.log(response);
         if(response.new_url){
-            router.push(response.new_url);
+            // router.push(response.new_url);
             setOldProduct(response.new_url);
         }
     }

@@ -1,5 +1,5 @@
 import CommonLayout from "@/components/shop/common-layout";
-import { addCommentPost, getPostById, getPostComments } from "@/controllers/blogController";
+import { addCommentPost, getPostById, getPostBySlug, getPostComments } from "@/controllers/blogController";
 import useUserStore from "@/helpers/user/userStore";
 import { useFormik } from "formik";
 import moment from "moment";

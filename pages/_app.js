@@ -31,7 +31,6 @@ function MyApp({ Component, pageProps }) {
   const { t } = useTranslation();
 
   const [loading, setLoading] = useState(false);
-  console.log(router.asPath);
   useEffect(() => {
     if (router.asPath.includes('products')) {
 
