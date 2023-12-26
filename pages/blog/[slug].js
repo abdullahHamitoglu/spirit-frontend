@@ -35,7 +35,7 @@ function post({ post, comments }) {
     },
   });
   return (
-    <CommonLayout parent={t("home")} title={t("blogs")} subTitle={post.name}>
+    <CommonLayout parent={t("home")} title={t("blogs")} titleLink={'/blog'} subTitle={post.name}>
       <section className="blog-detail-page section-b-space ratio2_3">
         <Container>
           <Row>

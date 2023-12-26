@@ -2,7 +2,7 @@ import React from "react";
 import { Container, Row, Col } from "reactstrap";
 import Link from 'next/link';
 
-const Breadcrubs = ({ title, parent, subTitle  , parentLink}) => {
+const Breadcrubs = ({ title, parent, subTitle, parentLink, titleLink }) => {
   return (
     <div className="breadcrumb-section">
       <Container>
@@ -14,14 +14,17 @@ const Breadcrubs = ({ title, parent, subTitle  , parentLink}) => {
                   <Link href={parentLink ? parentLink : '/'}>{parent}</Link>
                 </li>
                 <li className="breadcrumb-item" aria-current="page">
-                  {title}
+                  {titleLink ?
+                    <Link href={titleLink ? titleLink : ''}>{title}</Link>
+                    :
+                    title
+                  }
                 </li>
                 {subTitle === undefined ? (
                   ""
                 ) : (
                   <li className="breadcrumb-item active" aria-current="page">
                     {subTitle}
-                    
                   </li>
                 )}
               </ol>

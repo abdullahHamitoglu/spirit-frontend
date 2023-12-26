@@ -6,7 +6,7 @@ import Head from "next/head";
 import { getCategoriesTree } from "@/controllers/productsController";
 import { useRouter } from "next/router";
 
-const CommonLayout = ({ children, title, parent, subTitle, parentLink }) => {
+const CommonLayout = ({ children, title, parent, subTitle, parentLink ,titleLink }) => {
   const [categories, setCategories] = useState([]);
   const router = useRouter();
   const fetchCates = async () => {
@@ -24,7 +24,7 @@ const CommonLayout = ({ children, title, parent, subTitle, parentLink }) => {
         <link rel="icon" type="image/x-icon" href="/assets/images/favicon/1.png" />
       </Head>
       <HeaderOne topClass="top-header" logoName="logo.png" />
-      <Breadcrubs title={title} parent={parent} subTitle={subTitle} parentLink={parentLink} />
+      <Breadcrubs title={title} parent={parent} titleLink={titleLink} subTitle={subTitle} parentLink={parentLink} />
       <>{children}</>
       <MasterFooter
         footerClass={`footer-light `}
