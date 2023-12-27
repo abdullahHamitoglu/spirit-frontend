@@ -27,7 +27,7 @@ const tajawal = Tajawal({
 
 
 const tagManagerArgs = {
-    gtmId: 'GTM-XXXX'
+    gtmId: 'GTM-KDKQLGCS'
 }
 
 
