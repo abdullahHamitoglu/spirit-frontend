@@ -16,6 +16,7 @@ import PageLoader from "@/components/layouts/Bags/common/PageLoader";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { Tajawal } from 'next/font/google';
 import Script from "next/script";
+import TagManager from "react-gtm-module";
 
 const tajawal = Tajawal({
     subsets: ['arabic'],
@@ -23,6 +24,13 @@ const tajawal = Tajawal({
     display: 'swap',
     weight: ['200', '300', '400', '500', '700', '800', '900'],
 })
+
+
+const tagManagerArgs = {
+    gtmId: 'GTM-XXXX'
+}
+
+
 function MyApp({ Component, pageProps }) {
     const [isLoading, setIsLoading] = useState(true);
     const [url, setUrl] = useState();
@@ -31,6 +39,8 @@ function MyApp({ Component, pageProps }) {
     const { token, registerDevice } = useUserStore();
     const { t } = useTranslation();
     const [loading, setLoading] = useState(false);
+    console.log('node env :',process.env.NODE_ENV);
+
     useEffect(() => {
 
         const handleStart = (url) => {
@@ -79,6 +89,7 @@ function MyApp({ Component, pageProps }) {
         setIsLoading(false);
         registerDevice();
         document.body.classList.remove("overflow-hidden");
+        TagManager.initialize(tagManagerArgs)
     }, []);
     return (
         <>
@@ -101,10 +112,11 @@ function MyApp({ Component, pageProps }) {
                             href="assets/images/favicon.png"
                         />
                         <title>{t('spirit')}</title>
-                        <Script src="https://www.googletagmanager.com/gtag/js?id=GTM-KDKQLGCS" />
+                        
                     </Head>
                     <CompareContextProvider>
                         <FilterProvider>
+                           
                             {locale == "ar" ? (
                                 <style jsx global>{`
                                     html {
