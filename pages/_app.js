@@ -39,7 +39,6 @@ function MyApp({ Component, pageProps }) {
     const { token, registerDevice } = useUserStore();
     const { t } = useTranslation();
     const [loading, setLoading] = useState(false);
-    console.log('node env :',process.env.NODE_ENV);
 
     useEffect(() => {
 
