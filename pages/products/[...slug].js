@@ -26,7 +26,6 @@ function Product({ product, reviews }) {
       </div>
     );
   }
-
   return (
     <>
       <Head>
@@ -45,7 +44,7 @@ function Product({ product, reviews }) {
         <ProductSection />
       </CommonLayout>
       <Script type="application/ld+json">
-        {product.rich_snippets}
+        {JSON.parse(product.rich_snippets)}
       </Script>
     </>
   );

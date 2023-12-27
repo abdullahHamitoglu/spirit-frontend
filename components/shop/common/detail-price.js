@@ -45,31 +45,35 @@ const DetailsWithPrice = ({ item, stickyClass }) => {
   };
   const { locale } = useRouter()
   const handleAddToCart = () => {
-    if (product.variants) {
-      if (document.querySelector("input[name=variant]:checked")) {
+    if (product.in_stock) {
+      if (product.variants) {
+        if (document.querySelector("input[name=variant]:checked")) {
+          addToCart(locale, {
+            quantity,
+            product_id: product.id,
+            selected_configurable_option: parseInt(
+              document.querySelector("input[name=variant]:checked").value,
+            ),
+          });
+          getCart(locale, selectedCurrency.code);
+          document.querySelectorAll(".variants .variant").forEach((e) => {
+            e.classList.remove("invalid");
+          });
+        } else {
+          toast.warn(t("pleas select variant"));
+          document.querySelectorAll(".variants .variant").forEach((e) => {
+            e.classList.add("invalid");
+          });
+        }
+      } else {
         addToCart(locale, {
           quantity,
           product_id: product.id,
-          selected_configurable_option: parseInt(
-            document.querySelector("input[name=variant]:checked").value,
-          ),
         });
         getCart(locale, selectedCurrency.code);
-        document.querySelectorAll(".variants .variant").forEach((e) => {
-          e.classList.remove("invalid");
-        });
-      } else {
-        toast.warn(t("pleas select variant"));
-        document.querySelectorAll(".variants .variant").forEach((e) => {
-          e.classList.add("invalid");
-        });
       }
     } else {
-      addToCart(locale, {
-        quantity,
-        product_id: product.id,
-      });
-      getCart(locale, selectedCurrency.code);
+      toast.warning(t("out_of_stock"))
     }
   };
 
