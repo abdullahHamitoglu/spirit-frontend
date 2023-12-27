@@ -15,6 +15,7 @@ import { getProducts } from "@/controllers/productsController";
 import PageLoader from "@/components/layouts/Bags/common/PageLoader";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { Tajawal } from 'next/font/google';
+import Script from "next/script";
 
 const tajawal = Tajawal({
     subsets: ['arabic'],
@@ -56,7 +57,7 @@ function MyApp({ Component, pageProps }) {
                 setLoading(false)
             }, 10000);
         }
-    },[router.asPath])
+    }, [router.asPath])
 
     useEffect(() => {
         setIsLoading(true);
@@ -105,17 +106,18 @@ function MyApp({ Component, pageProps }) {
                         <FilterProvider>
                             {locale == "ar" ? (
                                 <style jsx global>{`
-                html {
-                  font-family: ${tajawal.style.fontFamily} , sans-serif;
-                }
-                html *{
-                  font-family: ${tajawal.style.fontFamily} , sans-serif;
-                }
-              `}</style>
+                                    html {
+                                    font-family: ${tajawal.style.fontFamily} , sans-serif;
+                                    }
+                                    html *{
+                                    font-family: ${tajawal.style.fontFamily} , sans-serif;
+                                    }
+                                `}</style>
                             ) : (
                                 ""
                             )}
                             <Component {...pageProps} />
+                            <Script src="https://www.googletagmanager.com/gtag/js?id=GTM-KDKQLGCS" />
                         </FilterProvider>
                     </CompareContextProvider>
                     <ToastContainer />
