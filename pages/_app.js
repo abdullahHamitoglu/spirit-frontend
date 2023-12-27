@@ -15,7 +15,7 @@ import { getProducts } from "@/controllers/productsController";
 import PageLoader from "@/components/layouts/Bags/common/PageLoader";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { Tajawal } from 'next/font/google';
-import Script from "next/script";
+import { initializeGoogleTagManager } from "@/controllers/googleTagManager";
 
 const tajawal = Tajawal({
     subsets: ['arabic'],
@@ -79,7 +79,9 @@ function MyApp({ Component, pageProps }) {
         setIsLoading(false);
         registerDevice();
         document.body.classList.remove("overflow-hidden");
+        initializeGoogleTagManager('GTM-KDKQLGCS');
     }, []);
+    
     return (
         <>
             {isLoading ? (
@@ -117,7 +119,6 @@ function MyApp({ Component, pageProps }) {
                                 ""
                             )}
                             <Component {...pageProps} />
-                            <Script src="https://www.googletagmanager.com/gtag/js?id=GTM-KDKQLGCS" />
                         </FilterProvider>
                     </CompareContextProvider>
                     <ToastContainer />
