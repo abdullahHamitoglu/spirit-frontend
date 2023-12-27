@@ -7,6 +7,7 @@ import useCartStore from "@/helpers/cart/cartStore";
 import { useTranslation } from "react-i18next";
 import Image from "next/image";
 import { useMediaQuery } from "react-responsive";
+import { toast } from "react-toastify";
 
 const ProductItem = ({
   product,
@@ -55,10 +56,14 @@ const ProductItem = ({
     return starArray;
   };
   const handelAddCart = () => {
-    if (product.type == 'simple') {
-      addCart();
+    if (product.in_stock) {
+      if (product.type == 'simple') {
+        addCart();
+      } else {
+        clickProductDetail();
+      }
     } else {
-      clickProductDetail();
+      toast.warning(t("out_of_stock"))
     }
   };
   const isMobile = useMediaQuery({ maxWidth: 767 }); // Define your mobile breakpoint
