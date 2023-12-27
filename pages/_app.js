@@ -29,7 +29,6 @@ function MyApp({ Component, pageProps }) {
     const { locale } = useRouter();
     const { token, registerDevice } = useUserStore();
     const { t } = useTranslation();
-    console.log(url, router.asPath);
     const [loading, setLoading] = useState(false);
     useEffect(() => {
 
@@ -72,10 +71,6 @@ function MyApp({ Component, pageProps }) {
             document.documentElement.dir = "ltr";
             document.body.classList.remove("rtl");
         }
-        setCookie(null, "token", token, {
-            maxAge: 7 * 24 * 60 * 60,
-            path: "/",
-        });
     }, [locale])
 
 

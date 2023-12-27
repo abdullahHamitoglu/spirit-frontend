@@ -286,7 +286,7 @@ export async function getWishlist(locale, token) {
     return response.data.data;
 
   } catch (error) {
-    throw error;
+    return []
   }
 }
 

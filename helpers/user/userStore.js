@@ -5,21 +5,10 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import { persist, createJSONStorage } from "zustand/middleware";
 import uuid from "react-uuid";
-import Cookies from "js-cookie";
+import { destroyCookie, setCookie } from "nookies";
 
 const osDetails = getUserAgent();
-function getCookie(name) {
-  const cookies = document.cookie.split(';');
 
-  for (let i = 0; i < cookies.length; i++) {
-    const cookie = cookies[i].trim();
-    if (cookie.startsWith(name + '=')) {
-      return cookie.substring(name.length + 1);
-    }
-  }
-
-  return null;
-}
 const useUserStore = create(
   persist(
     (set, get) => ({
@@ -61,13 +50,17 @@ const useUserStore = create(
         })
           .then((res) => {
             if (res.data && res.status == 200) {
+              setCookie(null, "token", res.data.token, {
+                maxAge: 7 * 24 * 60 * 60,
+                path: "/",
+              });
               toast.success(res.data.message);
               console.log(res.headers);
               set({
                 user: res.data.data,
                 isAuthenticated: true,
                 token: res.data.token,
-                api_session: Cookies.get('spirit_session'),
+                api_session: '',
                 expirationTime: new Date().getTime() + 24 * 60 * 60 * 1000,
               });
               document
@@ -124,6 +117,7 @@ const useUserStore = create(
           token: null,
           expirationTime: null,
         });
+        destroyCookie(null, 'token');
       },
       forgetPwd: async (data, locale) => {
         await axios({
@@ -222,7 +216,7 @@ const useUserStore = create(
             console.error(error);
           });
       },
-      updateAddress: async (data, locale, id , closeModal) => {
+      updateAddress: async (data, locale, id, closeModal) => {
         await axios({
           method: "put",
           url: `${process.env.NEXT_PUBLIC_API_URL}api/v1/customer/addresses/${id}`,
