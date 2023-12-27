@@ -107,8 +107,7 @@ function MyApp({ Component, pageProps }) {
                         <meta name="token" content="" />
                         <link
                             rel="icon"
-                            type="image/x-icon"
-                            href="assets/images/favicon.png"
+                            href="/assets/favicon.ico"
                         />
                         <title>{t('spirit')}</title>
                         
