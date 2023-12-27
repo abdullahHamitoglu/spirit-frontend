@@ -1,10 +1,7 @@
 import Link from 'next/link';
 import React from 'react';
-import SwiperCore, { Navigation, Pagination, Autoplay } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/swiper-bundle.css';
-
-SwiperCore.use([Navigation, Pagination, Autoplay]);
 
 const CategoriesSlider = ({ categories }) => {
   console.log(categories.items);
