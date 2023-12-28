@@ -19,7 +19,7 @@ import Script from "next/script";
 import TagManager from "react-gtm-module";
 
 const tajawal = Tajawal({
-    subsets: ['arabic'],
+    subsets: ['latin'],
     style: ['normal'],
     display: 'swap',
     weight: ['200', '300', '400', '500', '700', '800', '900'],
@@ -90,6 +90,7 @@ function MyApp({ Component, pageProps }) {
         document.body.classList.remove("overflow-hidden");
         TagManager.initialize(tagManagerArgs)
     }, []);
+    console.log(locale == "ar");
     return (
         <>
             {isLoading ? (
@@ -110,18 +111,18 @@ function MyApp({ Component, pageProps }) {
                             href="/assets/favicon.ico"
                         />
                         <title>{t('spirit')}</title>
-                        
+
                     </Head>
                     <CompareContextProvider>
                         <FilterProvider>
-                           
+
                             {locale == "ar" ? (
                                 <style jsx global>{`
                                     html {
                                     font-family: ${tajawal.style.fontFamily} , sans-serif;
                                     }
                                     html *{
-                                    font-family: ${tajawal.style.fontFamily} , sans-serif;
+                                    font-family: ${tajawal.style.fontFamily} , sans-serif ; 
                                     }
                                 `}</style>
                             ) : (
@@ -144,7 +145,6 @@ export async function getStaticProps(context) {
 
     return {
         props: {
-            // pass the translation props to the page component
             ...(await serverSideTranslations(locale)),
         },
     }

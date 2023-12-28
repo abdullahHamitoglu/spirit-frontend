@@ -121,7 +121,7 @@ export async function getServerSideProps(context) {
       method: 'GET',
     });
 
-    const $ = cheerio.load(response.data);
+  const $ = cheerio.load(response.data);
 
     const title = $('meta[name="title"]').attr('content');
     const description = $('meta[name="description"]').attr('content');
